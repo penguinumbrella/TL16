@@ -1,0 +1,333 @@
+#! <?xml version="1.0" encoding="UTF-8" ?>
+#! <WORKSPACE
+#    Command line to run this workspace:
+#        "C:\Program Files\FME\fme.exe" C:\Users\aayus\OneDrive\Desktop\TL16\data-consolidation\weather.fmw
+#          --FME_LAUNCH_VIEWER_APP "YES"
+#    
+#!   A0_PREVIEW_IMAGE="data:image/png;base64,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"
+#!   ARCGIS_COMPATIBILITY="ARCGIS_AUTO"
+#!   ATTR_TYPE_ENCODING="SDF"
+#!   BEGIN_PYTHON=""
+#!   BEGIN_TCL=""
+#!   CATEGORY=""
+#!   DESCRIPTION=""
+#!   DESTINATION="NONE"
+#!   DESTINATION_ROUTING_FILE=""
+#!   DOC_EXTENTS="2117.48 99.1253"
+#!   DOC_TOP_LEFT="556.256 -396.003"
+#!   END_PYTHON=""
+#!   END_TCL=""
+#!   EXPLICIT_BOOKMARK_ORDER="false"
+#!   FME_BUILD_NUM="22765"
+#!   FME_BULK_MODE_THRESHOLD="2000"
+#!   FME_DOCUMENT_GUID="ca2d60d1-5fa1-4d4f-94d7-bafeda69f9f7"
+#!   FME_DOCUMENT_PRIORGUID=""
+#!   FME_GEOMETRY_HANDLING="Enhanced"
+#!   FME_IMPLICIT_CSMAP_REPROJECTION_MODE="Auto"
+#!   FME_NAMES_ENCODING="UTF-8"
+#!   FME_REPROJECTION_ENGINE="FME"
+#!   FME_SERVER_SERVICES=""
+#!   FME_STROKE_MAX_DEVIATION="0"
+#!   HISTORY=""
+#!   IGNORE_READER_FAILURE="No"
+#!   LAST_SAVE_BUILD="FME(R) 2022.2.0.0 (20221103 - Build 22765 - WIN64)"
+#!   LAST_SAVE_DATE="2024-03-09T21:48:41"
+#!   LOG_FILE=""
+#!   LOG_MAX_RECORDED_FEATURES="200"
+#!   MARKDOWN_DESCRIPTION=""
+#!   MARKDOWN_USAGE=""
+#!   MAX_LOG_FEATURES="200"
+#!   MULTI_WRITER_DATASET_ORDER="BY_ID"
+#!   PASSWORD=""
+#!   PYTHON_COMPATIBILITY="310"
+#!   REDIRECT_TERMINATORS="NONE"
+#!   SAVE_ON_PROMPT_AND_RUN="Yes"
+#!   SHOW_ANNOTATIONS="true"
+#!   SHOW_INFO_NODES="true"
+#!   SOURCE="NONE"
+#!   SOURCE_ROUTING_FILE=""
+#!   TERMINATE_REJECTED="YES"
+#!   TITLE=""
+#!   USAGE=""
+#!   USE_MARKDOWN=""
+#!   VIEW_POSITION="1388.54 -257.735"
+#!   WARN_INVALID_XFORM_PARAM="Yes"
+#!   WORKSPACE_VERSION="1"
+#!   ZOOM_SCALE="97"
+#! >
+#! <DATASETS>
+#! </DATASETS>
+#! <DATA_TYPES>
+#! </DATA_TYPES>
+#! <GEOM_TYPES>
+#! </GEOM_TYPES>
+#! <FEATURE_TYPES>
+#! </FEATURE_TYPES>
+#! <FMESERVER>
+#! </FMESERVER>
+#! <GLOBAL_PARAMETERS>
+#! </GLOBAL_PARAMETERS>
+#! <USER_PARAMETERS
+#!   FORM="eyJwYXJhbWV0ZXJzIjpbXX0="
+#! >
+#! <PARAMETER_INFO>
+#! </PARAMETER_INFO>
+#! </USER_PARAMETERS>
+#! <COMMENTS>
+#! </COMMENTS>
+#! <CONSTANTS>
+#! </CONSTANTS>
+#! <BOOKMARKS>
+#! </BOOKMARKS>
+#! <TRANSFORMERS>
+#! <TRANSFORMER
+#!   IDENTIFIER="2"
+#!   TYPE="Creator"
+#!   VERSION="6"
+#!   POSITION="556.2555625556256 -325.00325003250032"
+#!   BOUNDING_RECT="556.2555625556256 -325.00325003250032 430 71"
+#!   ORDER="500000000000001"
+#!   PARMS_EDITED="true"
+#!   ENABLED="true"
+#!   LAST_PARM_EDIT="22765"
+#! >
+#!     <OUTPUT_FEAT NAME="CREATED"/>
+#!     <FEAT_COLLAPSED COLLAPSED="0"/>
+#!     <XFORM_ATTR ATTR_NAME="_creation_instance" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_PARM PARM_NAME="ATEND" PARM_VALUE="no"/>
+#!     <XFORM_PARM PARM_NAME="COORDS" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="COORDSYS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="CRE_ATTR" PARM_VALUE="_creation_instance"/>
+#!     <XFORM_PARM PARM_NAME="GEOM" PARM_VALUE="&lt;lt&gt;?xml&lt;space&gt;version=&lt;quote&gt;1.0&lt;quote&gt;&lt;space&gt;encoding=&lt;quote&gt;US_ASCII&lt;quote&gt;&lt;space&gt;standalone=&lt;quote&gt;no&lt;quote&gt;&lt;space&gt;?&lt;gt&gt;&lt;lt&gt;geometry&lt;space&gt;dimension=&lt;quote&gt;2&lt;quote&gt;&lt;gt&gt;&lt;lt&gt;null&lt;solidus&gt;&lt;gt&gt;&lt;lt&gt;&lt;solidus&gt;geometry&lt;gt&gt;"/>
+#!     <XFORM_PARM PARM_NAME="GEOMTYPE" PARM_VALUE="Geometry Object"/>
+#!     <XFORM_PARM PARM_NAME="NUM" PARM_VALUE="1"/>
+#!     <XFORM_PARM PARM_NAME="OAN_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="Creator"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#!   IDENTIFIER="3"
+#!   TYPE="HTTPCaller"
+#!   VERSION="6"
+#!   POSITION="1315.6381563815637 -296.87796877968782"
+#!   BOUNDING_RECT="1315.6381563815637 -296.87796877968782 454 71"
+#!   ORDER="500000000000003"
+#!   PARMS_EDITED="true"
+#!   ENABLED="true"
+#!   LAST_PARM_EDIT="22765"
+#! >
+#!     <OUTPUT_FEAT NAME="Output"/>
+#!     <FEAT_COLLAPSED COLLAPSED="0"/>
+#!     <XFORM_ATTR ATTR_NAME="_creation_instance" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="_response_body" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="_http_status_code" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <OUTPUT_FEAT NAME="&lt;REJECTED&gt;"/>
+#!     <FEAT_COLLAPSED COLLAPSED="1"/>
+#!     <XFORM_ATTR ATTR_NAME="_creation_instance" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#!     <XFORM_ATTR ATTR_NAME="_error" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#!     <XFORM_ATTR ATTR_NAME="fme_rejection_code" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#!     <XFORM_ATTR ATTR_NAME="_response_body" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#!     <XFORM_ATTR ATTR_NAME="_http_status_code" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#!     <XFORM_PARM PARM_NAME="ADDITIONAL_PARAMETERS_GROUP" PARM_VALUE="FME_DISCLOSURE_OPEN"/>
+#!     <XFORM_PARM PARM_NAME="ADDITIONAL_URL_PARAMETERS" PARM_VALUE="lat;49.26 lon;-123.25 appid;608d7d3767d254be0d1a9ccd1e3c01c7 exclude;current&lt;comma&gt;minutely&lt;comma&gt;daily&lt;comma&gt;alerts"/>
+#!     <XFORM_PARM PARM_NAME="ADVANCED_REQUEST_PARAMETERS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="AUTH_METHOD" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="AUTH_NAMED_CONNECTION" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="AUTH_PASSWORD" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="AUTH_USERNAME" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="CONCURRENCY_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="CONNECTION_TIMEOUT_LENGTH" PARM_VALUE="60"/>
+#!     <XFORM_PARM PARM_NAME="CUSTOM_HEADERS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="CUSTOM_HEADERS_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="ERROR_ATTR" PARM_VALUE="_error"/>
+#!     <XFORM_PARM PARM_NAME="FILE_PATH_ATTR" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="FILE_PATH_ATTR2" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="FILE_TYPE" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="FOLLOW_REDIRECTS" PARM_VALUE="FOLLOW_WITH_GET"/>
+#!     <XFORM_PARM PARM_NAME="HTTPURL_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="HTTP_AUTH_GROUP" PARM_VALUE="NO"/>
+#!     <XFORM_PARM PARM_NAME="HTTP_METHOD" PARM_VALUE="GET"/>
+#!     <XFORM_PARM PARM_NAME="HTTP_RESPONSE_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="LOOP_MESSAGE" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="MAX_HTTP_VERSION" PARM_VALUE="HTTP_2"/>
+#!     <XFORM_PARM PARM_NAME="MAX_TRANSFERS_IN_PROGRESS" PARM_VALUE="25"/>
+#!     <XFORM_PARM PARM_NAME="MINIMUM_ENCRYPTION_LEVEL" PARM_VALUE="OS_DEFAULT"/>
+#!     <XFORM_PARM PARM_NAME="MULTIPARTS" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="MULTIPART_GROUP" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="MULTIPART_RESPONSE_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="MULTIPART_RESPONSE_HEADER_LIST_ATTR" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="OUTPUT_DIRNAME" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="OUTPUT_FILENAME" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="RATE_LIMIT_GROUP" PARM_VALUE="NO"/>
+#!     <XFORM_PARM PARM_NAME="RATE_LIMIT_INTERVAL_IN_SECONDS" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="RATE_LIMIT_MAX_REQUESTS" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="RATE_LIMIT_REQUEST_TIMING" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="REDIRECT_AUTH" PARM_VALUE="ORIGINAL_DOMAIN_ONLY"/>
+#!     <XFORM_PARM PARM_NAME="RESPONSE_ATTRS_GROUP" PARM_VALUE="FME_DISCLOSURE_CLOSED"/>
+#!     <XFORM_PARM PARM_NAME="RESPONSE_ATTR_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="RESPONSE_DIR_GROUP" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="RESPONSE_FILE_GROUP" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="RESPONSE_HEADER_LIST_ATTR" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="RESPONSE_TYPE" PARM_VALUE="Attribute"/>
+#!     <XFORM_PARM PARM_NAME="RETRY_FAILED_TRANSFERS" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="RETRY_GROUP" PARM_VALUE="NO"/>
+#!     <XFORM_PARM PARM_NAME="RETRY_INITIAL_BACKOFF" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="RETRY_MAX_RETRIES" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="SPLIT_MULTIPART_DOWNLOADS" PARM_VALUE="NO"/>
+#!     <XFORM_PARM PARM_NAME="STATUS_CODE_ATTR" PARM_VALUE="_http_status_code"/>
+#!     <XFORM_PARM PARM_NAME="TARGET_ATTR" PARM_VALUE="_response_body"/>
+#!     <XFORM_PARM PARM_NAME="TARGET_ATTR_ENCODING" PARM_VALUE="auto-detect"/>
+#!     <XFORM_PARM PARM_NAME="TARGET_URL" PARM_VALUE="https:&lt;solidus&gt;&lt;solidus&gt;api.openweathermap.org&lt;solidus&gt;data&lt;solidus&gt;3.0&lt;solidus&gt;onecall"/>
+#!     <XFORM_PARM PARM_NAME="TLS_PARAMETERS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="TRANSFER_TIMEOUT_LENGTH" PARM_VALUE="90"/>
+#!     <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="UPLOAD_BODY" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="UPLOAD_CONTENT_TYPE" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="UPLOAD_FILE" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="UPLOAD_GROUP" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="UPLOAD_TYPE" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="USE_COOKIES" PARM_VALUE="No"/>
+#!     <XFORM_PARM PARM_NAME="VERIFY_SSL_CERTIFICATES" PARM_VALUE="Yes"/>
+#!     <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="HTTPCaller"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#!   IDENTIFIER="6"
+#!   TYPE="PythonCaller"
+#!   VERSION="4"
+#!   POSITION="2219.7386922322839 -325.00325003250032"
+#!   BOUNDING_RECT="2219.7386922322839 -325.00325003250032 454 71"
+#!   ORDER="500000000000009"
+#!   PARMS_EDITED="true"
+#!   ENABLED="true"
+#!   LAST_PARM_EDIT="22765"
+#! >
+#!     <OUTPUT_FEAT NAME="OUTPUT"/>
+#!     <FEAT_COLLAPSED COLLAPSED="0"/>
+#!     <XFORM_ATTR ATTR_NAME="_creation_instance" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="_response_body" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="_http_status_code" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_PARM PARM_NAME="ADVANCED_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="GROUP_BY" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="GROUP_BY_MODE" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="GROUP_PROCESSING_GROUP" PARM_VALUE="NO"/>
+#!     <XFORM_PARM PARM_NAME="HIDE_ATTRIBUTES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="LIST_ATTRS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="NEW_ATTRIBUTES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="PYTHONSOURCE" PARM_VALUE="import&lt;space&gt;fmeobjects&lt;lf&gt;import&lt;space&gt;json&lt;lf&gt;&lt;lf&gt;&lt;lf&gt;class&lt;space&gt;FeatureProcessor&lt;openparen&gt;object&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;Template&lt;space&gt;Class&lt;space&gt;Interface:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;When&lt;space&gt;using&lt;space&gt;this&lt;space&gt;class&lt;comma&gt;&lt;space&gt;make&lt;space&gt;sure&lt;space&gt;its&lt;space&gt;name&lt;space&gt;is&lt;space&gt;set&lt;space&gt;as&lt;space&gt;the&lt;space&gt;value&lt;space&gt;of&lt;space&gt;the&lt;space&gt;&lt;apos&gt;Class&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;to&lt;space&gt;Process&lt;space&gt;Features&lt;apos&gt;&lt;space&gt;transformer&lt;space&gt;parameter.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;__init__&lt;openparen&gt;self&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;Base&lt;space&gt;constructor&lt;space&gt;for&lt;space&gt;class&lt;space&gt;members.&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;pass&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;input&lt;openparen&gt;self&lt;comma&gt;&lt;space&gt;feature&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;response&lt;space&gt;=&lt;space&gt;json.loads&lt;openparen&gt;feature.getAttribute&lt;openparen&gt;&lt;apos&gt;_response_body&lt;apos&gt;&lt;closeparen&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;newFeature&lt;space&gt;=&lt;space&gt;fmeobjects.FMEFeature&lt;openparen&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;newFeature.setAttribute&lt;openparen&gt;&lt;apos&gt;json&lt;apos&gt;&lt;comma&gt;&lt;space&gt;json.dumps&lt;openparen&gt;response&lt;closeparen&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;hourly&lt;space&gt;=&lt;space&gt;response&lt;openbracket&gt;&lt;apos&gt;hourly&lt;apos&gt;&lt;closebracket&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;csv&lt;space&gt;=&lt;space&gt;&lt;apos&gt;&lt;apos&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;for&lt;space&gt;data&lt;space&gt;in&lt;space&gt;hourly:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;for&lt;space&gt;key&lt;space&gt;in&lt;space&gt;data:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;if&lt;space&gt;key&lt;space&gt;!=&lt;space&gt;&lt;apos&gt;weather&lt;apos&gt;&lt;space&gt;and&lt;space&gt;key&lt;space&gt;!=&lt;space&gt;&lt;apos&gt;rain&lt;apos&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;csv&lt;space&gt;+=&lt;space&gt;f&lt;quote&gt;&lt;opencurly&gt;data&lt;openbracket&gt;key&lt;closebracket&gt;&lt;closecurly&gt;&lt;comma&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;csv&lt;space&gt;+=&lt;space&gt;&lt;apos&gt;&lt;backslash&gt;n&lt;apos&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;feature.setAttribute&lt;openparen&gt;&lt;apos&gt;csv&lt;apos&gt;&lt;comma&gt;&lt;space&gt;csv&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;self.pyoutput&lt;openparen&gt;feature&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;close&lt;openparen&gt;self&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;This&lt;space&gt;method&lt;space&gt;is&lt;space&gt;called&lt;space&gt;at&lt;space&gt;the&lt;space&gt;end&lt;space&gt;of&lt;space&gt;the&lt;space&gt;class.&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;pass&lt;lf&gt;"/>
+#!     <XFORM_PARM PARM_NAME="PYTHONSYMBOL" PARM_VALUE="FeatureProcessor"/>
+#!     <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="PythonCaller"/>
+#! </TRANSFORMER>
+#! </TRANSFORMERS>
+#! <FEAT_LINKS>
+#! <FEAT_LINK
+#!   IDENTIFIER="4"
+#!   SOURCE_NODE="2"
+#!   TARGET_NODE="3"
+#!   SOURCE_PORT_DESC="fo 0 CREATED"
+#!   TARGET_PORT_DESC="fi 0 "
+#!   ENABLED="true"
+#!   EXECUTION_IDX="0"
+#!   HIDDEN="false"
+#!   COLOUR="0,0,0,1"
+#!   PEN_WIDTH="4"
+#!   PEN_STYLE="1"
+#!   LINK_STYLE_NAME="&lt;Default&gt;"
+#!   EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#!   IDENTIFIER="7"
+#!   SOURCE_NODE="3"
+#!   TARGET_NODE="6"
+#!   SOURCE_PORT_DESC="fo 0 Output"
+#!   TARGET_PORT_DESC="fi 0 "
+#!   ENABLED="true"
+#!   EXECUTION_IDX="0"
+#!   HIDDEN="false"
+#!   COLOUR="0,0,0,1"
+#!   PEN_WIDTH="4"
+#!   PEN_STYLE="1"
+#!   LINK_STYLE_NAME="&lt;Default&gt;"
+#!   EXTRA_POINTS=""
+#! />
+#! </FEAT_LINKS>
+#! <BREAKPOINTS>
+#! </BREAKPOINTS>
+#! <ATTR_LINKS>
+#! </ATTR_LINKS>
+#! <SUBDOCUMENTS>
+#! </SUBDOCUMENTS>
+#! <LOOKUP_TABLES>
+#! </LOOKUP_TABLES>
+#! </WORKSPACE>
+
+FME_PYTHON_VERSION 310
+ARCGIS_COMPATIBILITY ARCGIS_AUTO
+#! START_HEADER
+#! START_WB_HEADER
+READER_TYPE MULTI_READER
+WRITER_TYPE NULL
+WRITER_KEYWORD NULL_DEST
+NULL_DEST_DATASET null
+#! END_WB_HEADER
+#! START_WB_HEADER
+#! END_WB_HEADER
+#! END_HEADER
+
+LOG_FILENAME "$(FME_MF_DIR)weather.log"
+LOG_APPEND NO
+LOG_FILTER_MASK -1
+LOG_MAX_FEATURES 200
+LOG_MAX_RECORDED_FEATURES 200
+FME_REPROJECTION_ENGINE FME
+FME_IMPLICIT_CSMAP_REPROJECTION_MODE Auto
+FME_GEOMETRY_HANDLING Enhanced
+FME_STROKE_MAX_DEVIATION 0
+FME_NAMES_ENCODING UTF-8
+FME_BULK_MODE_THRESHOLD 2000
+LAST_SAVE_BUILD "FME 2022.2.0.0 (20221103 - Build 22765 - WIN64)"
+# -------------------------------------------------------------------------
+
+MULTI_READER_CONTINUE_ON_READER_FAILURE No
+
+# -------------------------------------------------------------------------
+
+MACRO WORKSPACE_NAME weather
+MACRO FME_VIEWER_APP fmedatainspector
+DEFAULT_MACRO WB_CURRENT_CONTEXT
+# -------------------------------------------------------------------------
+Tcl2 proc Creator_CoordSysRemover {} {   global FME_CoordSys;   set FME_CoordSys {}; }
+MACRO Creator_XML     NOT_ACTIVATED
+MACRO Creator_CLASSIC NOT_ACTIVATED
+MACRO Creator_2D3D    2D_GEOMETRY
+MACRO Creator_COORDS  <Unused>
+INCLUDE [ if { {Geometry Object} == {Geometry Object} } {            puts {MACRO Creator_XML *} } ]
+INCLUDE [ if { {Geometry Object} == {2D Coordinate List} } {            puts {MACRO Creator_2D3D 2D_GEOMETRY};            puts {MACRO Creator_CLASSIC *} } ]
+INCLUDE [ if { {Geometry Object} == {3D Coordinate List} } {            puts {MACRO Creator_2D3D 3D_GEOMETRY};            puts {MACRO Creator_CLASSIC *} } ]
+INCLUDE [ if { {Geometry Object} == {2D Min/Max Box} } {            set comment {                We need to turn the COORDS which are                    minX minY maxX maxY                into a full polygon list of coordinates            };            set splitCoords [split [string trim {<Unused>}]];            if { [llength $splitCoords] > 4} {               set trimmedCoords {};               foreach item $splitCoords { if { $item != {} } {lappend trimmedCoords $item} };               set splitCoords $trimmedCoords;            };            if { [llength $splitCoords] != 4 } {                error {Creator: Coordinate list is expected to be a space delimited list of four numbers as 'minx miny maxx maxy' - `<Unused>' is invalid};            };            set minX [lindex $splitCoords 0];            set minY [lindex $splitCoords 1];            set maxX [lindex $splitCoords 2];            set maxY [lindex $splitCoords 3];            puts "MACRO Creator_COORDS $minX $minY $minX $maxY $maxX $maxY $maxX $minY $minX $minY";            puts {MACRO Creator_2D3D 2D_GEOMETRY};            puts {MACRO Creator_CLASSIC *} } ]
+FACTORY_DEF {$(Creator_XML)} CreationFactory    FACTORY_NAME { Creator_XML_Creator }    CREATE_AT_END { no }    OUTPUT { FEATURE_TYPE _____CREATED______        @Geometry(FROM_ENCODED_STRING,<lt>?xml<space>version=<quote>1.0<quote><space>encoding=<quote>US_ASCII<quote><space>standalone=<quote>no<quote><space>?<gt><lt>geometry<space>dimension=<quote>2<quote><gt><lt>null<solidus><gt><lt><solidus>geometry<gt>) }
+FACTORY_DEF {$(Creator_CLASSIC)} CreationFactory    FACTORY_NAME { Creator_CLASSIC_Creator }    $(Creator_2D3D) { $(Creator_COORDS) }    CREATE_AT_END { no }    OUTPUT { FEATURE_TYPE _____CREATED______ }
+FACTORY_DEF {*} TeeFactory    FACTORY_NAME { Creator_Cloner }    INPUT FEATURE_TYPE _____CREATED______        @Tcl2(Creator_CoordSysRemover)        @CoordSys()    NUMBER_OF_COPIES { 1 }    COPY_NUMBER_ATTRIBUTE { "_creation_instance" }    OUTPUT { FEATURE_TYPE Creator_CREATED        fme_feature_type Creator         }
+FACTORY_DEF * BranchingFactory   FACTORY_NAME "Creator_CREATED Brancher -1 4"   INPUT FEATURE_TYPE Creator_CREATED   TARGET_FACTORY "$(WB_CURRENT_CONTEXT)_CREATOR_BRANCH_TARGET"   MAXIMUM_COUNT None   OUTPUT PASSED FEATURE_TYPE *
+# -------------------------------------------------------------------------
+FACTORY_DEF * TeeFactory   FACTORY_NAME "$(WB_CURRENT_CONTEXT)_CREATOR_BRANCH_TARGET"   INPUT FEATURE_TYPE *  OUTPUT FEATURE_TYPE *
+# -------------------------------------------------------------------------
+# Combine the two "file path attribute" parameters into one value.
+DEFAULT_MACRO HTTPCaller_FILE_PATH_ATTR
+INCLUDE [ 	if { {<Unused>} == {<Unused>} } { 		puts {MACRO HTTPCaller_FILE_PATH_ATTR "<Unused>"}; 	} else { 		puts {MACRO HTTPCaller_FILE_PATH_ATTR "<Unused>"}; 	} ]
+FACTORY_DEF {*} HTTPFactory    FACTORY_NAME { HTTPCaller }       INPUT  FEATURE_TYPE Creator_CREATED    TARGET_URL { "https:<solidus><solidus>api.openweathermap.org<solidus>data<solidus>3.0<solidus>onecall" }    HTTP_METHOD { GET }    SAVE_FILE { NO }    OUTPUT_FILENAME { "<Unused>" }    OUTPUT_DIRECTORY { "<Unused>" }    FILE_EXTENSION { "<Unused>" }    TARGET_ATTR { "_response_body" }    FILE_PATH_ATTR { $(HTTPCaller_FILE_PATH_ATTR) }    UPLOAD_FILE { "<Unused>" }    UPLOAD_BODY { "<Unused>" }    MULTIPART_UPLOAD { <Unused> }    UPLOAD_CONTENT_TYPE { "<Unused>" }    COMBINED_MULTIPART_TABLE {  }    REQUEST_HEADER_TABLE {  }    ADDITIONAL_URL_PARAMETERS { lat;49.26 lon;-123.25 appid;608d7d3767d254be0d1a9ccd1e3c01c7 exclude;current<comma>minutely<comma>daily<comma>alerts }    AUTH_USERNAME { "<Unused>" }    AUTH_PASSWORD { "<Unused>" }    AUTH_METHOD { "<Unused>" }    TARGET_ATTRIBUTE_ENCODING { auto-detect }    RESPONSE_HEADER_LIST_ATTR { "" }    STATUS_CODE_ATTR { "_http_status_code" }    ERROR_ATTR { "_error" }    CONNECTION_TIMEOUT_LENGTH { 60 }    TRANSFER_TIMEOUT_LENGTH { 90 }    FOLLOW_REDIRECTS { FOLLOW_WITH_GET }    REDIRECT_AUTH { ORIGINAL_DOMAIN_ONLY }    VERIFY_SSL_CERTIFICATES { Yes }    NAMED_CONNECTION { "<Unused>" }    USE_COOKIES { No }    MAX_TRANSFERS_IN_PROGRESS { 25 }    MAX_HTTP_VERSION { HTTP_2 }    RATE_LIMIT_MAX_REQUESTS { <Unused> }    RATE_LIMIT_INTERVAL_IN_SECONDS { <Unused> }    RATE_LIMIT_REQUEST_TIMING { <Unused> }    RETRY_FAILED_TRANSFERS { <Unused> }    RETRY_MAX_RETRIES { <Unused> }    RETRY_INITIAL_BACKOFF { <Unused> }    SPLIT_MULTIPART_RESPONSE { NO }    MULTIPART_RESPONSE_HEADER_LIST_ATTR { "<Unused>" }    MINIMUM_ENCRYPTION_LEVEL { "OS_DEFAULT" }    OUTPUT { OUTPUT FEATURE_TYPE HTTPCaller_Output          }    OUTPUT { REJECTED FEATURE_TYPE HTTPCaller_<REJECTED>          }
+DEFAULT_MACRO _WB_BYPASS_TERMINATION No
+FACTORY_DEF * TeeFactory FACTORY_NAME HTTPCaller_<Rejected> INPUT FEATURE_TYPE HTTPCaller_<REJECTED>  NO_LOGGING   OUTPUT FAILED FEATURE_TYPE * @Abort(ENCODED, HTTPCaller<space>output<space>a<space><lt>Rejected<gt><space>feature.<space><space>To<space>continue<space>translation<space>when<space>features<space>are<space>rejected<comma><space>change<space><apos>Workspace<space>Parameters<apos><space><gt><space>Translation<space><gt><space><apos>Rejected<space>Feature<space>Handling<apos><space>to<space><apos>Continue<space>Translation<apos>)
+# -------------------------------------------------------------------------
+FME_PYTHON_PATH "$(FME_MF_DIR)"
+FACTORY_DEF {*} PythonFactory    FACTORY_NAME { PythonCaller }    FLUSH_WHEN_GROUPS_CHANGE { <Unused> }    INPUT  FEATURE_TYPE HTTPCaller_Output    SYMBOL_NAME { FeatureProcessor }    PYTHON_NAMESPACE FMEOBJECTS    SOURCE_CODE { import<space>fmeobjects<lf>import<space>json<lf><lf><lf>class<space>FeatureProcessor<openparen>object<closeparen>:<lf><space><space><space><space><quote><quote><quote>Template<space>Class<space>Interface:<lf><space><space><space><space>When<space>using<space>this<space>class<comma><space>make<space>sure<space>its<space>name<space>is<space>set<space>as<space>the<space>value<space>of<space>the<space><apos>Class<lf><space><space><space><space>to<space>Process<space>Features<apos><space>transformer<space>parameter.<lf><space><space><space><space><quote><quote><quote><lf><space><space><space><space><lf><space><space><space><space>def<space>__init__<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>Base<space>constructor<space>for<space>class<space>members.<quote><quote><quote><lf><space><space><space><space><space><space><space><space>pass<lf><space><space><space><space><space><space><space><space><lf><space><space><space><space>def<space>input<openparen>self<comma><space>feature<closeparen>:<lf><space><space><space><space><space><space><space><space>response<space>=<space>json.loads<openparen>feature.getAttribute<openparen><apos>_response_body<apos><closeparen><closeparen><lf><space><space><space><space><space><space><space><space>#<space>newFeature<space>=<space>fmeobjects.FMEFeature<openparen><closeparen><lf><space><space><space><space><space><space><space><space>#<space>newFeature.setAttribute<openparen><apos>json<apos><comma><space>json.dumps<openparen>response<closeparen><closeparen><lf><space><space><space><space><space><space><space><space>hourly<space>=<space>response<openbracket><apos>hourly<apos><closebracket><lf><space><space><space><space><space><space><space><space>csv<space>=<space><apos><apos><lf><space><space><space><space><space><space><space><space>for<space>data<space>in<space>hourly:<lf><space><space><space><space><space><space><space><space><space><space><space><space>for<space>key<space>in<space>data:<lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space>if<space>key<space>!=<space><apos>weather<apos><space>and<space>key<space>!=<space><apos>rain<apos>:<lf><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space><space>csv<space>+=<space>f<quote><opencurly>data<openbracket>key<closebracket><closecurly><comma><quote><lf><space><space><space><space><space><space><space><space><space><space><space><space>csv<space>+=<space><apos><backslash>n<apos><lf><space><space><space><space><space><space><space><space>feature.setAttribute<openparen><apos>csv<apos><comma><space>csv<closeparen><lf><space><space><space><space><space><space><space><space>self.pyoutput<openparen>feature<closeparen><lf><space><space><space><space><space><space><space><space><lf><space><space><space><space>def<space>close<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>This<space>method<space>is<space>called<space>at<space>the<space>end<space>of<space>the<space>class.<quote><quote><quote><lf><space><space><space><space><space><space><space><space>pass<lf> }    OUTPUT { PYOUTPUT FEATURE_TYPE PythonCaller_OUTPUT         }
+FACTORY_DEF * TeeFactory   FACTORY_NAME "PythonCaller OUTPUT Transformer Output Nuker"   INPUT FEATURE_TYPE PythonCaller_OUTPUT
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * RoutingFactory FACTORY_NAME "Destination Feature Type Routing Correlator"   COMMAND_PARM_EVALUATION SINGLE_PASS   INPUT FEATURE_TYPE *   FEATURE_TYPE_ATTRIBUTE __wb_out_feat_type__   OUTPUT ROUTED FEATURE_TYPE *    OUTPUT NOT_ROUTED FEATURE_TYPE __nuke_me__ @Tcl2("FME_StatMessage 818059 [FME_GetAttribute fme_template_feature_type] 818060 818061 fme_warn")
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * TeeFactory   FACTORY_NAME "Final Output Nuker"   INPUT FEATURE_TYPE __nuke_me__
+
