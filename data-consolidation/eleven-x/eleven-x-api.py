@@ -2,37 +2,9 @@ import os
 import subprocess
 import json 
 import csv
-
-import json
-import csv
+import re
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-
-def json_file_to_csv(json_file_path, csv_file_path):
-    # Open the JSON file and load the data
-    with open(json_file_path, 'r') as json_file:
-        data = json.load(json_file)
-
-    # Open the CSV file for writing
-    with open(csv_file_path, mode='w', newline='') as csv_file:
-        # Check if the data is a list of dictionaries
-        if isinstance(data, list) and all(isinstance(item, dict) for item in data):
-            # Get the headers from the keys of the first dictionary
-            headers = data[0].keys()
-            
-            # Create a CSV writer object
-            csv_writer = csv.DictWriter(csv_file, fieldnames=headers)
-            
-            # Write the header to the CSV file
-            csv_writer.writeheader()
-            
-            # Write the rows to the CSV file
-            for row in data:
-                csv_writer.writerow(row)
-        else:
-            raise ValueError("JSON file must contain an array of objects")
-
-import re
 
 def handle_parameters(input_string):
     """
@@ -90,11 +62,10 @@ def run_api_call(api_key, api_call):
 
 
     # Construct the full file path
-    output_file = os.path.join(script_dir, 'output.json')
+    output_file = os.path.join(script_dir, api_call_with_params + '.json')
 
     try:
         subprocess.run(curl_command, shell=True, check=True, stdout=open(output_file, 'w'))
-        # json_file_to_csv(output_file, 'json.csv')
         print("API call successful. Output saved to 'output.json'.\n")
     except subprocess.CalledProcessError as e:
         print(f"Error executing curl command: {e}")
@@ -200,21 +171,21 @@ class Application:
         print("api call list: ", self.api_call_list)
 
         self.menu_options = {
-            1: ("Action 1"   + self.api_call_list[0] [0], self.action_method,   self.api_call_list[0] ),
-            2: ("Action 2"   + self.api_call_list[1] [0], self.action_method,   self.api_call_list[1] ),
-            3: ("Action 3"   + self.api_call_list[2] [0], self.action_method,   self.api_call_list[2] ),
-            4: ("Action 4"   + self.api_call_list[3] [0], self.action_method,   self.api_call_list[3] ),
-            5: ("Action 5"   + self.api_call_list[4] [0], self.action_method,   self.api_call_list[4] ),
-            6: ("Action 6"   + self.api_call_list[5] [0], self.action_method,   self.api_call_list[5] ),
-            7: ("Action 7"   + self.api_call_list[6] [0], self.action_method,   self.api_call_list[6] ),
-            8: ("Action 8"   + self.api_call_list[7] [0], self.action_method,   self.api_call_list[7] ),
-            9: ("Action 9"   + self.api_call_list[8] [0], self.action_method,   self.api_call_list[8] ),
-            10: ("Action 10" + self.api_call_list[9] [0], self.action_method,   self.api_call_list[9] ),
-            11: ("Action 11" + self.api_call_list[10][0], self.action_method,   self.api_call_list[10]),
-            12: ("Action 12" + self.api_call_list[11][0], self.action_method,   self.api_call_list[11]),
-            13: ("Action 13" + self.api_call_list[12][0], self.action_method,   self.api_call_list[12]),
-            14: ("Action 14" + self.api_call_list[13][0], self.action_method,   self.api_call_list[13]),
-            15: ("Action 15" + self.api_call_list[14][0], self.action_method,   self.api_call_list[14])
+            1:  ("API call 1:   "   + self.api_call_list[0] [0], self.action_method,   self.api_call_list[0] ),
+            2:  ("API call 2:   "   + self.api_call_list[1] [0], self.action_method,   self.api_call_list[1] ),
+            3:  ("API call 3:   "   + self.api_call_list[2] [0], self.action_method,   self.api_call_list[2] ),
+            4:  ("API call 4:   "   + self.api_call_list[3] [0], self.action_method,   self.api_call_list[3] ),
+            5:  ("API call 5:   "   + self.api_call_list[4] [0], self.action_method,   self.api_call_list[4] ),
+            6:  ("API call 6:   "   + self.api_call_list[5] [0], self.action_method,   self.api_call_list[5] ),
+            7:  ("API call 7:   "   + self.api_call_list[6] [0], self.action_method,   self.api_call_list[6] ),
+            8:  ("API call 8:   "   + self.api_call_list[7] [0], self.action_method,   self.api_call_list[7] ),
+            9:  ("API call 9:   "   + self.api_call_list[8] [0], self.action_method,   self.api_call_list[8] ),
+            10: ("API call 10: " + self.api_call_list[9] [0], self.action_method,   self.api_call_list[9] ),
+            11: ("API call 11: " + self.api_call_list[10][0], self.action_method,   self.api_call_list[10]),
+            12: ("API call 12: " + self.api_call_list[11][0], self.action_method,   self.api_call_list[11]),
+            13: ("API call 13: " + self.api_call_list[12][0], self.action_method,   self.api_call_list[12]),
+            14: ("API call 14: " + self.api_call_list[13][0], self.action_method,   self.api_call_list[13]),
+            15: ("API call 15: " + self.api_call_list[14][0], self.action_method,   self.api_call_list[14])
         }
 
 
@@ -226,6 +197,8 @@ class Application:
         if(check_yes_no(input("Are you sure you want to run this API call? (y/n)"))):        
             run_api_call(self.api_key, api_call)
             print_output()
+        else:
+            print("Returning to API menu\n")
 
     def display_menu(self):
         for key, value in self.menu_options.items():
