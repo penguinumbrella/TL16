@@ -112,7 +112,7 @@ def print_output():
 
 def start_api_connection():
     # Check if API key file exists, if not, prompt for API key
-    if not os.path.exists('api_key.txt'):
+    if not os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'api_key.txt')):
         print("api_key.txt not found. Must enter key manually")
         api_key = get_and_save_api_key_manually()
     else:
@@ -123,6 +123,20 @@ def start_api_connection():
 
     # Return API key
     return api_key
+
+def check_yes_no(input_string):
+    """
+    Check if the input string is a variation of "yes" or "no".
+    :param input_string: The string to check.
+    :return: True if the string is a variation of "yes", False if it's a variation of "no".
+    """
+    normalized_str = input_string.strip().lower()  # Remove whitespace and convert to lowercase
+    if normalized_str in ["y", "yes"]:
+        return True
+    elif normalized_str in ["n", "no"]:
+        return False
+    else:
+        raise ValueError("Input must be a variation of 'yes' or 'no'.")
 
 class Application:
     def __init__(self, api_key):
@@ -186,21 +200,21 @@ class Application:
         print("api call list: ", self.api_call_list)
 
         self.menu_options = {
-            1: ("Action 1", self.action_method,   self.api_call_list[0]),
-            2: ("Action 2", self.action_method,   self.api_call_list[1]),
-            3: ("Action 3", self.action_method,   self.api_call_list[2]),
-            4: ("Action 4", self.action_method,   self.api_call_list[3]),
-            5: ("Action 5", self.action_method,   self.api_call_list[4]),
-            6: ("Action 6", self.action_method,   self.api_call_list[5]),
-            7: ("Action 7", self.action_method,   self.api_call_list[6]),
-            8: ("Action 8", self.action_method,   self.api_call_list[7]),
-            9: ("Action 9", self.action_method,   self.api_call_list[8]),
-            10: ("Action 10", self.action_method, self.api_call_list[9]),
-            11: ("Action 11", self.action_method, self.api_call_list[10]),
-            12: ("Action 12", self.action_method, self.api_call_list[11]),
-            13: ("Action 13", self.action_method, self.api_call_list[12]),
-            14: ("Action 14", self.action_method, self.api_call_list[13]),
-            15: ("Action 15", self.action_method, self.api_call_list[14])
+            1: ("Action 1"   + self.api_call_list[0] [0], self.action_method,   self.api_call_list[0] ),
+            2: ("Action 2"   + self.api_call_list[1] [0], self.action_method,   self.api_call_list[1] ),
+            3: ("Action 3"   + self.api_call_list[2] [0], self.action_method,   self.api_call_list[2] ),
+            4: ("Action 4"   + self.api_call_list[3] [0], self.action_method,   self.api_call_list[3] ),
+            5: ("Action 5"   + self.api_call_list[4] [0], self.action_method,   self.api_call_list[4] ),
+            6: ("Action 6"   + self.api_call_list[5] [0], self.action_method,   self.api_call_list[5] ),
+            7: ("Action 7"   + self.api_call_list[6] [0], self.action_method,   self.api_call_list[6] ),
+            8: ("Action 8"   + self.api_call_list[7] [0], self.action_method,   self.api_call_list[7] ),
+            9: ("Action 9"   + self.api_call_list[8] [0], self.action_method,   self.api_call_list[8] ),
+            10: ("Action 10" + self.api_call_list[9] [0], self.action_method,   self.api_call_list[9] ),
+            11: ("Action 11" + self.api_call_list[10][0], self.action_method,   self.api_call_list[10]),
+            12: ("Action 12" + self.api_call_list[11][0], self.action_method,   self.api_call_list[11]),
+            13: ("Action 13" + self.api_call_list[12][0], self.action_method,   self.api_call_list[12]),
+            14: ("Action 14" + self.api_call_list[13][0], self.action_method,   self.api_call_list[13]),
+            15: ("Action 15" + self.api_call_list[14][0], self.action_method,   self.api_call_list[14])
         }
 
 
@@ -209,8 +223,9 @@ class Application:
         api_call_explanation = input_data[1]
         print("API CALL: " + api_call)
         print("Explanation: " + api_call_explanation)
-        run_api_call(self.api_key, api_call)
-        print_output()
+        if(check_yes_no(input("Are you sure you want to run this API call? (y/n)"))):        
+            run_api_call(self.api_key, api_call)
+            print_output()
 
     def display_menu(self):
         for key, value in self.menu_options.items():
