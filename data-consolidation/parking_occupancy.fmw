@@ -1,0 +1,658 @@
+#! <?xml version="1.0" encoding="UTF-8" ?>
+#! <WORKSPACE
+#    Command line to run this workspace:
+#        "C:\Program Files\FME\fme.exe" C:\Users\aayus\OneDrive\Desktop\TL16\data-consolidation\parking_occupancy.fmw
+#          --FME_LAUNCH_VIEWER_APP "YES"
+#    
+#!   A0_PREVIEW_IMAGE="data:image/png;base64,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"
+#!   ARCGIS_COMPATIBILITY="ARCGIS_AUTO"
+#!   ATTR_TYPE_ENCODING="SDF"
+#!   BEGIN_PYTHON=""
+#!   BEGIN_TCL=""
+#!   CATEGORY=""
+#!   DESCRIPTION=""
+#!   DESTINATION="NONE"
+#!   DESTINATION_ROUTING_FILE=""
+#!   DOC_EXTENTS="4084.42 702.256"
+#!   DOC_TOP_LEFT="90.6259 -677.256"
+#!   END_PYTHON=""
+#!   END_TCL=""
+#!   EXPLICIT_BOOKMARK_ORDER="false"
+#!   FME_BUILD_NUM="22765"
+#!   FME_BULK_MODE_THRESHOLD="2000"
+#!   FME_DOCUMENT_GUID="23a069de-2541-4258-a977-a1b0d572b560"
+#!   FME_DOCUMENT_PRIORGUID="c74fd741-3d59-46f3-9007-cb59813c8c69"
+#!   FME_GEOMETRY_HANDLING="Enhanced"
+#!   FME_IMPLICIT_CSMAP_REPROJECTION_MODE="Auto"
+#!   FME_NAMES_ENCODING="UTF-8"
+#!   FME_REPROJECTION_ENGINE="FME"
+#!   FME_SERVER_SERVICES=""
+#!   FME_STROKE_MAX_DEVIATION="0"
+#!   HISTORY=""
+#!   IGNORE_READER_FAILURE="No"
+#!   LAST_SAVE_BUILD="FME(R) 2022.2.0.0 (20221103 - Build 22765 - WIN64)"
+#!   LAST_SAVE_DATE="2024-03-24T23:02:43"
+#!   LOG_FILE=""
+#!   LOG_MAX_RECORDED_FEATURES="200"
+#!   MARKDOWN_DESCRIPTION=""
+#!   MARKDOWN_USAGE=""
+#!   MAX_LOG_FEATURES="200"
+#!   MULTI_WRITER_DATASET_ORDER="BY_ID"
+#!   PASSWORD=""
+#!   PYTHON_COMPATIBILITY="310"
+#!   REDIRECT_TERMINATORS="NONE"
+#!   SAVE_ON_PROMPT_AND_RUN="Yes"
+#!   SHOW_ANNOTATIONS="true"
+#!   SHOW_INFO_NODES="true"
+#!   SOURCE="NONE"
+#!   SOURCE_ROUTING_FILE=""
+#!   TERMINATE_REJECTED="YES"
+#!   TITLE=""
+#!   USAGE=""
+#!   USE_MARKDOWN=""
+#!   VIEW_POSITION="1153.14 215.627"
+#!   WARN_INVALID_XFORM_PARAM="Yes"
+#!   WORKSPACE_VERSION="1"
+#!   ZOOM_SCALE="100"
+#! >
+#! <DATASETS>
+#! </DATASETS>
+#! <DATA_TYPES>
+#! </DATA_TYPES>
+#! <GEOM_TYPES>
+#! </GEOM_TYPES>
+#! <FEATURE_TYPES>
+#! </FEATURE_TYPES>
+#! <FMESERVER>
+#! <CONNECTIONS>
+#! <CONNECTION
+#!   NAME="testdb"
+#!   TYPE="DATABASE"
+#!   FAMILY="Microsoft SQL Server"
+#!   USAGE="INTERNAL"
+#! />
+#! </CONNECTIONS>
+#! </FMESERVER>
+#! <GLOBAL_PARAMETERS>
+#! </GLOBAL_PARAMETERS>
+#! <USER_PARAMETERS
+#!   FORM="eyJwYXJhbWV0ZXJzIjpbXX0="
+#! >
+#! <PARAMETER_INFO>
+#! </PARAMETER_INFO>
+#! </USER_PARAMETERS>
+#! <COMMENTS>
+#! </COMMENTS>
+#! <CONSTANTS>
+#! </CONSTANTS>
+#! <BOOKMARKS>
+#! </BOOKMARKS>
+#! <TRANSFORMERS>
+#! <TRANSFORMER
+#!   IDENTIFIER="2"
+#!   TYPE="Creator"
+#!   VERSION="6"
+#!   POSITION="90.62590625906239 -465.62965629656298"
+#!   BOUNDING_RECT="90.62590625906239 -465.62965629656298 430 71"
+#!   ORDER="500000000000001"
+#!   PARMS_EDITED="true"
+#!   ENABLED="true"
+#!   LAST_PARM_EDIT="22765"
+#! >
+#!     <OUTPUT_FEAT NAME="CREATED"/>
+#!     <FEAT_COLLAPSED COLLAPSED="0"/>
+#!     <XFORM_ATTR ATTR_NAME="_creation_instance" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_PARM PARM_NAME="ATEND" PARM_VALUE="no"/>
+#!     <XFORM_PARM PARM_NAME="COORDS" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="COORDSYS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="CRE_ATTR" PARM_VALUE="_creation_instance"/>
+#!     <XFORM_PARM PARM_NAME="GEOM" PARM_VALUE="&lt;lt&gt;?xml&lt;space&gt;version=&lt;quote&gt;1.0&lt;quote&gt;&lt;space&gt;encoding=&lt;quote&gt;US_ASCII&lt;quote&gt;&lt;space&gt;standalone=&lt;quote&gt;no&lt;quote&gt;&lt;space&gt;?&lt;gt&gt;&lt;lt&gt;geometry&lt;space&gt;dimension=&lt;quote&gt;2&lt;quote&gt;&lt;gt&gt;&lt;lt&gt;null&lt;solidus&gt;&lt;gt&gt;&lt;lt&gt;&lt;solidus&gt;geometry&lt;gt&gt;"/>
+#!     <XFORM_PARM PARM_NAME="GEOMTYPE" PARM_VALUE="Geometry Object"/>
+#!     <XFORM_PARM PARM_NAME="NUM" PARM_VALUE="1"/>
+#!     <XFORM_PARM PARM_NAME="OAN_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="Creator"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#!   IDENTIFIER="3"
+#!   TYPE="SQLExecutor"
+#!   VERSION="9"
+#!   POSITION="777.13253132531327 25.000250002500024"
+#!   BOUNDING_RECT="777.13253132531327 25.000250002500024 -1 -1"
+#!   ORDER="500000000000002"
+#!   PARMS_EDITED="true"
+#!   ENABLED="true"
+#!   LAST_PARM_EDIT="22765"
+#! >
+#!     <OUTPUT_FEAT NAME="&lt;SCHEMA&gt;"/>
+#!     <FEAT_COLLAPSED COLLAPSED="0"/>
+#!     <XFORM_ATTR ATTR_NAME="fme_feature_type_name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="attribute{}.name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="attribute{}.fme_data_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="attribute{}.native_data_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="fme_basename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <OUTPUT_FEAT NAME="RESULT"/>
+#!     <FEAT_COLLAPSED COLLAPSED="1"/>
+#!     <XFORM_ATTR ATTR_NAME="ZoneId" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#!     <OUTPUT_FEAT NAME="INITIATOR"/>
+#!     <FEAT_COLLAPSED COLLAPSED="2"/>
+#!     <XFORM_ATTR ATTR_NAME="_creation_instance" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <XFORM_ATTR ATTR_NAME="_matched_records" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <OUTPUT_FEAT NAME="&lt;REJECTED&gt;"/>
+#!     <FEAT_COLLAPSED COLLAPSED="3"/>
+#!     <XFORM_ATTR ATTR_NAME="_creation_instance" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="_reader_error" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="ZoneId" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_PARM PARM_NAME="ATTRIBUTE_TYPES" PARM_VALUE="buffer"/>
+#!     <XFORM_PARM PARM_NAME="ATTR_IGNORE_NULLS" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="COMBINE_ATTRS" PARM_VALUE="Result Attributes Only"/>
+#!     <XFORM_PARM PARM_NAME="COMBINE_GEOM" PARM_VALUE="Initiator Geometry Only"/>
+#!     <XFORM_PARM PARM_NAME="COORDSYS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="DATASET" PARM_VALUE="testdb"/>
+#!     <XFORM_PARM PARM_NAME="DB_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="DYNGROUP_0" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="EXPOSED_ATTRIBUTE_LIST" PARM_VALUE="ZoneId"/>
+#!     <XFORM_PARM PARM_NAME="FEATURETYPES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="FORMAT" PARM_VALUE="MSSQL_ADO"/>
+#!     <XFORM_PARM PARM_NAME="FORMAT_ATTRIBUTE_TYPES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="FORMAT_PARAMS" PARM_VALUE="MSSQL_ADO_COMMAND_TIMEOUT,&quot;OPTIONAL INTEGER&quot;,MSSQL_ADO&lt;space&gt;Command&lt;space&gt;Timeout&lt;space&gt;&lt;openparen&gt;Seconds&lt;closeparen&gt;:,MSSQL_ADO_APPLICATION_INTENT,&quot;OPTIONAL CHOICE ReadWrite%ReadOnly&quot;,MSSQL_ADO&lt;space&gt;Application&lt;space&gt;Intent,MSSQL_ADO_QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS,&quot;IGNORE TEXT&quot;,MSSQL_ADO&lt;space&gt;,MSSQL_ADO_NAMED_CONNECTION,&quot;IGNORE TEXT&quot;,MSSQL_ADO&lt;space&gt;Connection:,MSSQL_ADO_CREATE_FEATURE_TABLES_FROM_DATA,&quot;IGNORE TEXT&quot;,MSSQL_ADO&lt;space&gt;"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_APPLICATION_INTENT" PARM_VALUE="ReadWrite"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_COMMAND_TIMEOUT" PARM_VALUE="30"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_CREATE_FEATURE_TABLES_FROM_DATA" PARM_VALUE="Yes"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_NAMED_CONNECTION" PARM_VALUE="testdb"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS" PARM_VALUE="Yes"/>
+#!     <XFORM_PARM PARM_NAME="OUTPUT_FEATURES_DISPLAY" PARM_VALUE="Schema and Data Features"/>
+#!     <XFORM_PARM PARM_NAME="OUTPUT_FEATURES_GROUP" PARM_VALUE="FME_DISCLOSURE_CLOSED"/>
+#!     <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="SQL_STATEMENT" PARM_VALUE="SELECT&lt;space&gt;DISTINCT&lt;space&gt;ZoneId&lt;space&gt;from&lt;space&gt;dbo.mock_lpr"/>
+#!     <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="GetZoneIds"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#!   IDENTIFIER="4"
+#!   TYPE="PythonCaller"
+#!   VERSION="4"
+#!   POSITION="2118.7711877118772 -606.25606256062542"
+#!   BOUNDING_RECT="2118.7711877118772 -606.25606256062542 430 71"
+#!   ORDER="500000000000003"
+#!   PARMS_EDITED="true"
+#!   ENABLED="true"
+#!   LAST_PARM_EDIT="22765"
+#! >
+#!     <OUTPUT_FEAT NAME="OUTPUT"/>
+#!     <FEAT_COLLAPSED COLLAPSED="0"/>
+#!     <XFORM_ATTR ATTR_NAME="_creation_instance" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="timestamp" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_PARM PARM_NAME="ADVANCED_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="GROUP_BY" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="GROUP_BY_MODE" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="GROUP_PROCESSING_GROUP" PARM_VALUE="NO"/>
+#!     <XFORM_PARM PARM_NAME="HIDE_ATTRIBUTES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="LIST_ATTRS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="NEW_ATTRIBUTES" PARM_VALUE="timestamp"/>
+#!     <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="PYTHONSOURCE" PARM_VALUE="import&lt;space&gt;fmeobjects&lt;lf&gt;import&lt;space&gt;json&lt;lf&gt;import&lt;space&gt;time&lt;lf&gt;import&lt;space&gt;datetime&lt;lf&gt;&lt;lf&gt;&lt;lf&gt;class&lt;space&gt;FeatureProcessor&lt;openparen&gt;object&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;Template&lt;space&gt;Class&lt;space&gt;Interface:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;When&lt;space&gt;using&lt;space&gt;this&lt;space&gt;class&lt;comma&gt;&lt;space&gt;make&lt;space&gt;sure&lt;space&gt;its&lt;space&gt;name&lt;space&gt;is&lt;space&gt;set&lt;space&gt;as&lt;space&gt;the&lt;space&gt;value&lt;space&gt;of&lt;space&gt;the&lt;space&gt;&lt;apos&gt;Class&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;to&lt;space&gt;Process&lt;space&gt;Features&lt;apos&gt;&lt;space&gt;transformer&lt;space&gt;parameter.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;__init__&lt;openparen&gt;self&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;pass&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;input&lt;openparen&gt;self&lt;comma&gt;&lt;space&gt;feature&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;pass&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;close&lt;openparen&gt;self&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;This&lt;space&gt;method&lt;space&gt;is&lt;space&gt;called&lt;space&gt;at&lt;space&gt;the&lt;space&gt;end&lt;space&gt;of&lt;space&gt;the&lt;space&gt;class.&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;newFeature&lt;space&gt;=&lt;space&gt;fmeobjects.FMEFeature&lt;openparen&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;curr_time&lt;space&gt;=&lt;space&gt;int&lt;openparen&gt;time.time&lt;openparen&gt;&lt;closeparen&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;while&lt;openparen&gt;curr_time&lt;space&gt;%&lt;space&gt;3600&lt;space&gt;!=&lt;space&gt;0&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;curr_time&lt;space&gt;-=&lt;space&gt;1&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;newFeature.setAttribute&lt;openparen&gt;&lt;apos&gt;timestamp&lt;apos&gt;&lt;comma&gt;&lt;space&gt;str&lt;openparen&gt;datetime.datetime.fromtimestamp&lt;openparen&gt;curr_time&lt;closeparen&gt;&lt;closeparen&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;self.pyoutput&lt;openparen&gt;newFeature&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;pass&lt;lf&gt;"/>
+#!     <XFORM_PARM PARM_NAME="PYTHONSYMBOL" PARM_VALUE="FeatureProcessor"/>
+#!     <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="GetTimestamps"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#!   IDENTIFIER="7"
+#!   TYPE="SQLExecutor"
+#!   VERSION="9"
+#!   POSITION="2118.7711877118772 25.000250002500024"
+#!   BOUNDING_RECT="2118.7711877118772 25.000250002500024 -1 -1"
+#!   ORDER="500000000000004"
+#!   PARMS_EDITED="true"
+#!   ENABLED="true"
+#!   LAST_PARM_EDIT="22765"
+#! >
+#!     <OUTPUT_FEAT NAME="&lt;SCHEMA&gt;"/>
+#!     <FEAT_COLLAPSED COLLAPSED="0"/>
+#!     <XFORM_ATTR ATTR_NAME="fme_feature_type_name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="attribute{}.name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="attribute{}.fme_data_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="attribute{}.native_data_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="fme_basename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <OUTPUT_FEAT NAME="RESULT"/>
+#!     <FEAT_COLLAPSED COLLAPSED="1"/>
+#!     <XFORM_ATTR ATTR_NAME="table_name" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#!     <OUTPUT_FEAT NAME="INITIATOR"/>
+#!     <FEAT_COLLAPSED COLLAPSED="2"/>
+#!     <XFORM_ATTR ATTR_NAME="ZoneId" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <XFORM_ATTR ATTR_NAME="table_name" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <XFORM_ATTR ATTR_NAME="_matched_records" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <OUTPUT_FEAT NAME="&lt;REJECTED&gt;"/>
+#!     <FEAT_COLLAPSED COLLAPSED="3"/>
+#!     <XFORM_ATTR ATTR_NAME="ZoneId" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="_reader_error" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="table_name" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_PARM PARM_NAME="ATTRIBUTE_TYPES" PARM_VALUE="buffer"/>
+#!     <XFORM_PARM PARM_NAME="ATTR_IGNORE_NULLS" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="COMBINE_ATTRS" PARM_VALUE="Result Attributes Only"/>
+#!     <XFORM_PARM PARM_NAME="COMBINE_GEOM" PARM_VALUE="Initiator Geometry Only"/>
+#!     <XFORM_PARM PARM_NAME="COORDSYS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="DATASET" PARM_VALUE="testdb"/>
+#!     <XFORM_PARM PARM_NAME="DB_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="DYNGROUP_0" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="EXPOSED_ATTRIBUTE_LIST" PARM_VALUE="table_name"/>
+#!     <XFORM_PARM PARM_NAME="FEATURETYPES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="FORMAT" PARM_VALUE="MSSQL_ADO"/>
+#!     <XFORM_PARM PARM_NAME="FORMAT_ATTRIBUTE_TYPES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="FORMAT_PARAMS" PARM_VALUE="MSSQL_ADO_COMMAND_TIMEOUT,&quot;OPTIONAL INTEGER&quot;,MSSQL_ADO&lt;space&gt;Command&lt;space&gt;Timeout&lt;space&gt;&lt;openparen&gt;Seconds&lt;closeparen&gt;:,MSSQL_ADO_APPLICATION_INTENT,&quot;OPTIONAL CHOICE ReadWrite%ReadOnly&quot;,MSSQL_ADO&lt;space&gt;Application&lt;space&gt;Intent,MSSQL_ADO_QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS,&quot;IGNORE TEXT&quot;,MSSQL_ADO&lt;space&gt;,MSSQL_ADO_NAMED_CONNECTION,&quot;IGNORE TEXT&quot;,MSSQL_ADO&lt;space&gt;Connection:,MSSQL_ADO_CREATE_FEATURE_TABLES_FROM_DATA,&quot;IGNORE TEXT&quot;,MSSQL_ADO&lt;space&gt;"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_APPLICATION_INTENT" PARM_VALUE="ReadWrite"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_COMMAND_TIMEOUT" PARM_VALUE="30"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_CREATE_FEATURE_TABLES_FROM_DATA" PARM_VALUE="Yes"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_NAMED_CONNECTION" PARM_VALUE="testdb"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS" PARM_VALUE="Yes"/>
+#!     <XFORM_PARM PARM_NAME="OUTPUT_FEATURES_DISPLAY" PARM_VALUE="Schema and Data Features"/>
+#!     <XFORM_PARM PARM_NAME="OUTPUT_FEATURES_GROUP" PARM_VALUE="FME_DISCLOSURE_CLOSED"/>
+#!     <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="SQL_STATEMENT" PARM_VALUE="IF&lt;space&gt;NOT&lt;space&gt;EXISTS&lt;space&gt;&lt;openparen&gt;SELECT&lt;space&gt;*&lt;space&gt;FROM&lt;space&gt;INFORMATION_SCHEMA.TABLES&lt;space&gt;WHERE&lt;space&gt;TABLE_NAME&lt;space&gt;=&lt;space&gt;&lt;apos&gt;&lt;at&gt;Value&lt;openparen&gt;table_name&lt;closeparen&gt;&lt;apos&gt;&lt;closeparen&gt;&lt;lf&gt;BEGIN&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;CREATE&lt;space&gt;TABLE&lt;space&gt;&lt;openbracket&gt;&lt;at&gt;Value&lt;openparen&gt;table_name&lt;closeparen&gt;&lt;closebracket&gt;&lt;space&gt;&lt;openparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;TimeStamp&lt;space&gt;DATETIME&lt;comma&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;Vehicles&lt;space&gt;INT&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;closeparen&gt;&lt;semicolon&gt;&lt;lf&gt;END"/>
+#!     <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="CreateTables"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#!   IDENTIFIER="8"
+#!   TYPE="PythonCaller"
+#!   VERSION="4"
+#!   POSITION="1443.7644376443764 -12.500125001250012"
+#!   BOUNDING_RECT="1443.7644376443764 -12.500125001250012 461.76669325772946 71"
+#!   ORDER="500000000000005"
+#!   PARMS_EDITED="true"
+#!   ENABLED="true"
+#!   LAST_PARM_EDIT="22765"
+#! >
+#!     <OUTPUT_FEAT NAME="OUTPUT"/>
+#!     <FEAT_COLLAPSED COLLAPSED="0"/>
+#!     <XFORM_ATTR ATTR_NAME="ZoneId" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="table_name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_PARM PARM_NAME="ADVANCED_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="GROUP_BY" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="GROUP_BY_MODE" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="GROUP_PROCESSING_GROUP" PARM_VALUE="NO"/>
+#!     <XFORM_PARM PARM_NAME="HIDE_ATTRIBUTES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="LIST_ATTRS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="NEW_ATTRIBUTES" PARM_VALUE="ZoneId table_name"/>
+#!     <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="PYTHONSOURCE" PARM_VALUE="import&lt;space&gt;fme&lt;lf&gt;import&lt;space&gt;fmeobjects&lt;lf&gt;&lt;lf&gt;&lt;lf&gt;class&lt;space&gt;FeatureProcessor&lt;openparen&gt;object&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;Template&lt;space&gt;Class&lt;space&gt;Interface:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;When&lt;space&gt;using&lt;space&gt;this&lt;space&gt;class&lt;comma&gt;&lt;space&gt;make&lt;space&gt;sure&lt;space&gt;its&lt;space&gt;name&lt;space&gt;is&lt;space&gt;set&lt;space&gt;as&lt;space&gt;the&lt;space&gt;value&lt;space&gt;of&lt;space&gt;the&lt;space&gt;&lt;apos&gt;Class&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;to&lt;space&gt;Process&lt;space&gt;Features&lt;apos&gt;&lt;space&gt;transformer&lt;space&gt;parameter.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;__init__&lt;openparen&gt;self&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;Base&lt;space&gt;constructor&lt;space&gt;for&lt;space&gt;class&lt;space&gt;members.&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;pass&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;input&lt;openparen&gt;self&lt;comma&gt;&lt;space&gt;feature&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;zoneId&lt;space&gt;=&lt;space&gt;feature.getAttribute&lt;openparen&gt;&lt;apos&gt;ZoneId&lt;apos&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;feature.setAttribute&lt;openparen&gt;&lt;apos&gt;table_name&lt;apos&gt;&lt;comma&gt;&lt;space&gt;zoneId.replace&lt;openparen&gt;&lt;apos&gt;-&lt;apos&gt;&lt;comma&gt;&lt;space&gt;&lt;apos&gt;_&lt;apos&gt;&lt;closeparen&gt;.lower&lt;openparen&gt;&lt;closeparen&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;self.pyoutput&lt;openparen&gt;feature&lt;closeparen&gt;&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;close&lt;openparen&gt;self&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;This&lt;space&gt;method&lt;space&gt;is&lt;space&gt;called&lt;space&gt;once&lt;space&gt;all&lt;space&gt;the&lt;space&gt;FME&lt;space&gt;Features&lt;space&gt;have&lt;space&gt;been&lt;space&gt;processed&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;from&lt;space&gt;input&lt;openparen&gt;&lt;closeparen&gt;.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;pass&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;process_group&lt;openparen&gt;self&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;When&lt;space&gt;&lt;apos&gt;Group&lt;space&gt;By&lt;apos&gt;&lt;space&gt;attribute&lt;openparen&gt;s&lt;closeparen&gt;&lt;space&gt;are&lt;space&gt;specified&lt;comma&gt;&lt;space&gt;this&lt;space&gt;method&lt;space&gt;is&lt;space&gt;called&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;once&lt;space&gt;all&lt;space&gt;the&lt;space&gt;FME&lt;space&gt;Features&lt;space&gt;in&lt;space&gt;a&lt;space&gt;current&lt;space&gt;group&lt;space&gt;have&lt;space&gt;been&lt;space&gt;sent&lt;space&gt;to&lt;space&gt;input&lt;openparen&gt;&lt;closeparen&gt;.&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;FME&lt;space&gt;Features&lt;space&gt;sent&lt;space&gt;to&lt;space&gt;input&lt;openparen&gt;&lt;closeparen&gt;&lt;space&gt;should&lt;space&gt;generally&lt;space&gt;be&lt;space&gt;cached&lt;space&gt;for&lt;space&gt;group-by&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;processing&lt;space&gt;in&lt;space&gt;this&lt;space&gt;method&lt;space&gt;when&lt;space&gt;knowledge&lt;space&gt;of&lt;space&gt;all&lt;space&gt;Features&lt;space&gt;is&lt;space&gt;required.&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;The&lt;space&gt;resulting&lt;space&gt;Feature&lt;openparen&gt;s&lt;closeparen&gt;&lt;space&gt;from&lt;space&gt;the&lt;space&gt;group-by&lt;space&gt;processing&lt;space&gt;should&lt;space&gt;be&lt;space&gt;emitted&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;through&lt;space&gt;self.pyoutput&lt;openparen&gt;&lt;closeparen&gt;.&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;FME&lt;space&gt;will&lt;space&gt;continue&lt;space&gt;calling&lt;space&gt;input&lt;openparen&gt;&lt;closeparen&gt;&lt;space&gt;a&lt;space&gt;number&lt;space&gt;of&lt;space&gt;times&lt;space&gt;followed&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;by&lt;space&gt;process_group&lt;openparen&gt;&lt;closeparen&gt;&lt;space&gt;for&lt;space&gt;each&lt;space&gt;&lt;apos&gt;Group&lt;space&gt;By&lt;apos&gt;&lt;space&gt;attribute&lt;comma&gt;&lt;space&gt;so&lt;space&gt;this&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;implementation&lt;space&gt;should&lt;space&gt;reset&lt;space&gt;any&lt;space&gt;class&lt;space&gt;members&lt;space&gt;for&lt;space&gt;the&lt;space&gt;next&lt;space&gt;group.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;pass&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;has_support_for&lt;openparen&gt;self&lt;comma&gt;&lt;space&gt;support_type&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;This&lt;space&gt;method&lt;space&gt;returns&lt;space&gt;whether&lt;space&gt;this&lt;space&gt;PythonCaller&lt;space&gt;supports&lt;space&gt;a&lt;space&gt;certain&lt;space&gt;type.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;The&lt;space&gt;only&lt;space&gt;supported&lt;space&gt;type&lt;space&gt;is&lt;space&gt;fmeobjects.FME_SUPPORT_FEATURE_TABLE_SHIM.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;:param&lt;space&gt;int&lt;space&gt;support_type:&lt;space&gt;The&lt;space&gt;support&lt;space&gt;type&lt;space&gt;being&lt;space&gt;queried.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;:returns:&lt;space&gt;True&lt;space&gt;if&lt;space&gt;the&lt;space&gt;passed&lt;space&gt;in&lt;space&gt;support&lt;space&gt;type&lt;space&gt;is&lt;space&gt;supported.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;:rtype:&lt;space&gt;bool&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;if&lt;space&gt;support_type&lt;space&gt;==&lt;space&gt;fmeobjects.FME_SUPPORT_FEATURE_TABLE_SHIM:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;If&lt;space&gt;this&lt;space&gt;is&lt;space&gt;set&lt;space&gt;to&lt;space&gt;return&lt;space&gt;True&lt;comma&gt;&lt;space&gt;FME&lt;space&gt;will&lt;space&gt;pass&lt;space&gt;features&lt;space&gt;to&lt;space&gt;the&lt;space&gt;input&lt;openparen&gt;&lt;closeparen&gt;&lt;space&gt;method&lt;space&gt;that&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;come&lt;space&gt;from&lt;space&gt;a&lt;space&gt;feature&lt;space&gt;table&lt;space&gt;object.&lt;space&gt;This&lt;space&gt;allows&lt;space&gt;for&lt;space&gt;significant&lt;space&gt;performance&lt;space&gt;gains&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;when&lt;space&gt;processing&lt;space&gt;large&lt;space&gt;numbers&lt;space&gt;of&lt;space&gt;features.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;To&lt;space&gt;enable&lt;space&gt;this&lt;comma&gt;&lt;space&gt;the&lt;space&gt;following&lt;space&gt;conditions&lt;space&gt;must&lt;space&gt;be&lt;space&gt;met:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;&lt;space&gt;&lt;space&gt;1&lt;closeparen&gt;&lt;space&gt;features&lt;space&gt;passed&lt;space&gt;into&lt;space&gt;the&lt;space&gt;input&lt;openparen&gt;&lt;closeparen&gt;&lt;space&gt;method&lt;space&gt;cannot&lt;space&gt;be&lt;space&gt;copied&lt;space&gt;or&lt;space&gt;cached&lt;space&gt;for&lt;space&gt;later&lt;space&gt;use&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;&lt;space&gt;&lt;space&gt;2&lt;closeparen&gt;&lt;space&gt;features&lt;space&gt;cannot&lt;space&gt;be&lt;space&gt;read&lt;space&gt;or&lt;space&gt;modified&lt;space&gt;after&lt;space&gt;being&lt;space&gt;passed&lt;space&gt;to&lt;space&gt;self.pyoutput&lt;openparen&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;&lt;space&gt;&lt;space&gt;3&lt;closeparen&gt;&lt;space&gt;Group&lt;space&gt;Processing&lt;space&gt;must&lt;space&gt;not&lt;space&gt;be&lt;space&gt;enabled&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Violations&lt;space&gt;will&lt;space&gt;cause&lt;space&gt;undefined&lt;space&gt;behavior.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;return&lt;space&gt;False&lt;lf&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;return&lt;space&gt;False&lt;lf&gt;"/>
+#!     <XFORM_PARM PARM_NAME="PYTHONSYMBOL" PARM_VALUE="FeatureProcessor"/>
+#!     <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="ConvertToTableName"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#!   IDENTIFIER="11"
+#!   TYPE="SQLExecutor"
+#!   VERSION="9"
+#!   POSITION="2843.7784377843782 -118.75118751187512"
+#!   BOUNDING_RECT="2843.7784377843782 -118.75118751187512 -1 -1"
+#!   ORDER="500000000000006"
+#!   PARMS_EDITED="true"
+#!   ENABLED="true"
+#!   LAST_PARM_EDIT="22765"
+#! >
+#!     <OUTPUT_FEAT NAME="&lt;SCHEMA&gt;"/>
+#!     <FEAT_COLLAPSED COLLAPSED="0"/>
+#!     <XFORM_ATTR ATTR_NAME="fme_feature_type_name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="attribute{}.name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="attribute{}.fme_data_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="attribute{}.native_data_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="fme_basename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <OUTPUT_FEAT NAME="RESULT"/>
+#!     <FEAT_COLLAPSED COLLAPSED="1"/>
+#!     <XFORM_ATTR ATTR_NAME="ZoneId" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#!     <XFORM_ATTR ATTR_NAME="TimeStamp" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#!     <XFORM_ATTR ATTR_NAME="Vehicles" IS_USER_CREATED="false" FEAT_INDEX="1" />
+#!     <OUTPUT_FEAT NAME="INITIATOR"/>
+#!     <FEAT_COLLAPSED COLLAPSED="2"/>
+#!     <XFORM_ATTR ATTR_NAME="ZoneId" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <XFORM_ATTR ATTR_NAME="table_name" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <XFORM_ATTR ATTR_NAME="_matched_records" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <XFORM_ATTR ATTR_NAME="_creation_instance" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <XFORM_ATTR ATTR_NAME="timestamp" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <OUTPUT_FEAT NAME="&lt;REJECTED&gt;"/>
+#!     <FEAT_COLLAPSED COLLAPSED="3"/>
+#!     <XFORM_ATTR ATTR_NAME="table_name" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="_matched_records" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="_creation_instance" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="timestamp" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="_reader_error" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="ZoneId" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="TimeStamp" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="Vehicles" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_PARM PARM_NAME="ATTRIBUTE_TYPES" PARM_VALUE="buffer,buffer,buffer"/>
+#!     <XFORM_PARM PARM_NAME="ATTR_IGNORE_NULLS" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="COMBINE_ATTRS" PARM_VALUE="Result Attributes Only"/>
+#!     <XFORM_PARM PARM_NAME="COMBINE_GEOM" PARM_VALUE="Initiator Geometry Only"/>
+#!     <XFORM_PARM PARM_NAME="COORDSYS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="DATASET" PARM_VALUE="testdb"/>
+#!     <XFORM_PARM PARM_NAME="DB_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="DYNGROUP_0" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="EXPOSED_ATTRIBUTE_LIST" PARM_VALUE="ZoneId,TimeStamp,Vehicles"/>
+#!     <XFORM_PARM PARM_NAME="FEATURETYPES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="FORMAT" PARM_VALUE="MSSQL_ADO"/>
+#!     <XFORM_PARM PARM_NAME="FORMAT_ATTRIBUTE_TYPES" PARM_VALUE=",,"/>
+#!     <XFORM_PARM PARM_NAME="FORMAT_PARAMS" PARM_VALUE="MSSQL_ADO_COMMAND_TIMEOUT,&quot;OPTIONAL INTEGER&quot;,MSSQL_ADO&lt;space&gt;Command&lt;space&gt;Timeout&lt;space&gt;&lt;openparen&gt;Seconds&lt;closeparen&gt;:,MSSQL_ADO_APPLICATION_INTENT,&quot;OPTIONAL CHOICE ReadWrite%ReadOnly&quot;,MSSQL_ADO&lt;space&gt;Application&lt;space&gt;Intent,MSSQL_ADO_QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS,&quot;IGNORE TEXT&quot;,MSSQL_ADO&lt;space&gt;,MSSQL_ADO_NAMED_CONNECTION,&quot;IGNORE TEXT&quot;,MSSQL_ADO&lt;space&gt;Connection:,MSSQL_ADO_CREATE_FEATURE_TABLES_FROM_DATA,&quot;IGNORE TEXT&quot;,MSSQL_ADO&lt;space&gt;"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_APPLICATION_INTENT" PARM_VALUE="ReadWrite"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_COMMAND_TIMEOUT" PARM_VALUE="30"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_CREATE_FEATURE_TABLES_FROM_DATA" PARM_VALUE="Yes"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_NAMED_CONNECTION" PARM_VALUE="testdb"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS" PARM_VALUE="Yes"/>
+#!     <XFORM_PARM PARM_NAME="OUTPUT_FEATURES_DISPLAY" PARM_VALUE="Schema and Data Features"/>
+#!     <XFORM_PARM PARM_NAME="OUTPUT_FEATURES_GROUP" PARM_VALUE="FME_DISCLOSURE_OPEN"/>
+#!     <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="SQL_STATEMENT" PARM_VALUE="SELECT&lt;space&gt;ZoneId&lt;comma&gt;&lt;space&gt;CONVERT&lt;openparen&gt;VARCHAR&lt;comma&gt;&lt;space&gt;TimeStamp&lt;comma&gt;&lt;space&gt;120&lt;closeparen&gt;&lt;space&gt;AS&lt;space&gt;TimeStamp&lt;comma&gt;&lt;space&gt;Vehicles&lt;space&gt;FROM&lt;space&gt;dbo.mock_lpr&lt;space&gt;WHERE&lt;space&gt;TimeStamp&lt;space&gt;=&lt;space&gt;CONVERT&lt;openparen&gt;DATETIME&lt;comma&gt;&lt;space&gt;&lt;apos&gt;&lt;at&gt;Value&lt;openparen&gt;timestamp&lt;closeparen&gt;&lt;apos&gt;&lt;closeparen&gt;"/>
+#!     <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="FetchData"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#!   IDENTIFIER="14"
+#!   TYPE="SQLExecutor"
+#!   VERSION="9"
+#!   POSITION="4175.0417504175057 -225.00225002250022"
+#!   BOUNDING_RECT="4175.0417504175057 -225.00225002250022 -1 -1"
+#!   ORDER="500000000000007"
+#!   PARMS_EDITED="true"
+#!   ENABLED="true"
+#!   LAST_PARM_EDIT="22765"
+#! >
+#!     <OUTPUT_FEAT NAME="&lt;SCHEMA&gt;"/>
+#!     <FEAT_COLLAPSED COLLAPSED="0"/>
+#!     <XFORM_ATTR ATTR_NAME="fme_feature_type_name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="attribute{}.name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="attribute{}.fme_data_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="attribute{}.native_data_type" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="fme_basename" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <OUTPUT_FEAT NAME="RESULT"/>
+#!     <FEAT_COLLAPSED COLLAPSED="1"/>
+#!     <OUTPUT_FEAT NAME="INITIATOR"/>
+#!     <FEAT_COLLAPSED COLLAPSED="2"/>
+#!     <XFORM_ATTR ATTR_NAME="ZoneId" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <XFORM_ATTR ATTR_NAME="TimeStamp" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <XFORM_ATTR ATTR_NAME="Vehicles" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <XFORM_ATTR ATTR_NAME="table_name" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <XFORM_ATTR ATTR_NAME="_matched_records" IS_USER_CREATED="false" FEAT_INDEX="2" />
+#!     <OUTPUT_FEAT NAME="&lt;REJECTED&gt;"/>
+#!     <FEAT_COLLAPSED COLLAPSED="3"/>
+#!     <XFORM_ATTR ATTR_NAME="ZoneId" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="TimeStamp" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="Vehicles" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="table_name" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_ATTR ATTR_NAME="_reader_error" IS_USER_CREATED="false" FEAT_INDEX="3" />
+#!     <XFORM_PARM PARM_NAME="ATTRIBUTE_TYPES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="ATTR_IGNORE_NULLS" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="COMBINE_ATTRS" PARM_VALUE="Result Attributes Only"/>
+#!     <XFORM_PARM PARM_NAME="COMBINE_GEOM" PARM_VALUE="Initiator Geometry Only"/>
+#!     <XFORM_PARM PARM_NAME="COORDSYS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="DATASET" PARM_VALUE="testdb"/>
+#!     <XFORM_PARM PARM_NAME="DB_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="DYNGROUP_0" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="EXPOSED_ATTRIBUTE_LIST" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="FEATURETYPES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="FORMAT" PARM_VALUE="MSSQL_ADO"/>
+#!     <XFORM_PARM PARM_NAME="FORMAT_ATTRIBUTE_TYPES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="FORMAT_PARAMS" PARM_VALUE="MSSQL_ADO_COMMAND_TIMEOUT,&quot;OPTIONAL INTEGER&quot;,MSSQL_ADO&lt;space&gt;Command&lt;space&gt;Timeout&lt;space&gt;&lt;openparen&gt;Seconds&lt;closeparen&gt;:,MSSQL_ADO_APPLICATION_INTENT,&quot;OPTIONAL CHOICE ReadWrite%ReadOnly&quot;,MSSQL_ADO&lt;space&gt;Application&lt;space&gt;Intent,MSSQL_ADO_QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS,&quot;IGNORE TEXT&quot;,MSSQL_ADO&lt;space&gt;,MSSQL_ADO_NAMED_CONNECTION,&quot;IGNORE TEXT&quot;,MSSQL_ADO&lt;space&gt;Connection:,MSSQL_ADO_CREATE_FEATURE_TABLES_FROM_DATA,&quot;IGNORE TEXT&quot;,MSSQL_ADO&lt;space&gt;"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_APPLICATION_INTENT" PARM_VALUE="ReadWrite"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_COMMAND_TIMEOUT" PARM_VALUE="30"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_CREATE_FEATURE_TABLES_FROM_DATA" PARM_VALUE="Yes"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_NAMED_CONNECTION" PARM_VALUE="testdb"/>
+#!     <XFORM_PARM PARM_NAME="MSSQL_ADO_QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS" PARM_VALUE="Yes"/>
+#!     <XFORM_PARM PARM_NAME="OUTPUT_FEATURES_DISPLAY" PARM_VALUE="Schema and Data Features"/>
+#!     <XFORM_PARM PARM_NAME="OUTPUT_FEATURES_GROUP" PARM_VALUE="FME_DISCLOSURE_CLOSED"/>
+#!     <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="SQL_STATEMENT" PARM_VALUE="IF&lt;space&gt;NOT&lt;space&gt;EXISTS&lt;space&gt;&lt;openparen&gt;SELECT&lt;space&gt;*&lt;space&gt;FROM&lt;space&gt;&lt;at&gt;Value&lt;openparen&gt;table_name&lt;closeparen&gt;&lt;space&gt;WHERE&lt;space&gt;TimeStamp&lt;space&gt;=&lt;space&gt;CONVERT&lt;openparen&gt;DATETIME&lt;comma&gt;&lt;space&gt;&lt;apos&gt;&lt;at&gt;Value&lt;openparen&gt;TimeStamp&lt;closeparen&gt;&lt;apos&gt;&lt;closeparen&gt;&lt;closeparen&gt;&lt;lf&gt;BEGIN&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;INSERT&lt;space&gt;INTO&lt;space&gt;&lt;at&gt;Value&lt;openparen&gt;table_name&lt;closeparen&gt;&lt;space&gt;&lt;openparen&gt;TimeStamp&lt;comma&gt;&lt;space&gt;Vehicles&lt;closeparen&gt;&lt;space&gt;VALUES&lt;space&gt;&lt;openparen&gt;CONVERT&lt;openparen&gt;DATETIME&lt;comma&gt;&lt;space&gt;&lt;apos&gt;&lt;at&gt;Value&lt;openparen&gt;TimeStamp&lt;closeparen&gt;&lt;apos&gt;&lt;closeparen&gt;&lt;comma&gt;&lt;space&gt;&lt;at&gt;Value&lt;openparen&gt;Vehicles&lt;closeparen&gt;&lt;closeparen&gt;&lt;lf&gt;END"/>
+#!     <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="WriteData"/>
+#! </TRANSFORMER>
+#! <TRANSFORMER
+#!   IDENTIFIER="15"
+#!   TYPE="PythonCaller"
+#!   VERSION="4"
+#!   POSITION="3450.4077416013711 -225.00225002250022"
+#!   BOUNDING_RECT="3450.4077416013711 -225.00225002250022 482.78231825772946 71"
+#!   ORDER="500000000000005"
+#!   PARMS_EDITED="true"
+#!   ENABLED="true"
+#!   LAST_PARM_EDIT="22765"
+#! >
+#!     <OUTPUT_FEAT NAME="OUTPUT"/>
+#!     <FEAT_COLLAPSED COLLAPSED="0"/>
+#!     <XFORM_ATTR ATTR_NAME="ZoneId" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="TimeStamp" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="Vehicles" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_ATTR ATTR_NAME="table_name" IS_USER_CREATED="false" FEAT_INDEX="0" />
+#!     <XFORM_PARM PARM_NAME="ADVANCED_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="GROUP_BY" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="GROUP_BY_MODE" PARM_VALUE="&lt;Unused&gt;"/>
+#!     <XFORM_PARM PARM_NAME="GROUP_PROCESSING_GROUP" PARM_VALUE="NO"/>
+#!     <XFORM_PARM PARM_NAME="HIDE_ATTRIBUTES" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="LIST_ATTRS" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="NEW_ATTRIBUTES" PARM_VALUE="ZoneId table_name TimeStamp Vehicles"/>
+#!     <XFORM_PARM PARM_NAME="PARAMETERS_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="PYTHONSOURCE" PARM_VALUE="import&lt;space&gt;fme&lt;lf&gt;import&lt;space&gt;fmeobjects&lt;lf&gt;&lt;lf&gt;&lt;lf&gt;class&lt;space&gt;FeatureProcessor&lt;openparen&gt;object&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;Template&lt;space&gt;Class&lt;space&gt;Interface:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;When&lt;space&gt;using&lt;space&gt;this&lt;space&gt;class&lt;comma&gt;&lt;space&gt;make&lt;space&gt;sure&lt;space&gt;its&lt;space&gt;name&lt;space&gt;is&lt;space&gt;set&lt;space&gt;as&lt;space&gt;the&lt;space&gt;value&lt;space&gt;of&lt;space&gt;the&lt;space&gt;&lt;apos&gt;Class&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;to&lt;space&gt;Process&lt;space&gt;Features&lt;apos&gt;&lt;space&gt;transformer&lt;space&gt;parameter.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;__init__&lt;openparen&gt;self&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;Base&lt;space&gt;constructor&lt;space&gt;for&lt;space&gt;class&lt;space&gt;members.&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;pass&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;input&lt;openparen&gt;self&lt;comma&gt;&lt;space&gt;feature&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;zoneId&lt;space&gt;=&lt;space&gt;feature.getAttribute&lt;openparen&gt;&lt;apos&gt;ZoneId&lt;apos&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;feature.setAttribute&lt;openparen&gt;&lt;apos&gt;table_name&lt;apos&gt;&lt;comma&gt;&lt;space&gt;zoneId.replace&lt;openparen&gt;&lt;apos&gt;-&lt;apos&gt;&lt;comma&gt;&lt;space&gt;&lt;apos&gt;_&lt;apos&gt;&lt;closeparen&gt;.lower&lt;openparen&gt;&lt;closeparen&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;self.pyoutput&lt;openparen&gt;feature&lt;closeparen&gt;&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;close&lt;openparen&gt;self&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;This&lt;space&gt;method&lt;space&gt;is&lt;space&gt;called&lt;space&gt;once&lt;space&gt;all&lt;space&gt;the&lt;space&gt;FME&lt;space&gt;Features&lt;space&gt;have&lt;space&gt;been&lt;space&gt;processed&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;from&lt;space&gt;input&lt;openparen&gt;&lt;closeparen&gt;.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;pass&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;process_group&lt;openparen&gt;self&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;When&lt;space&gt;&lt;apos&gt;Group&lt;space&gt;By&lt;apos&gt;&lt;space&gt;attribute&lt;openparen&gt;s&lt;closeparen&gt;&lt;space&gt;are&lt;space&gt;specified&lt;comma&gt;&lt;space&gt;this&lt;space&gt;method&lt;space&gt;is&lt;space&gt;called&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;once&lt;space&gt;all&lt;space&gt;the&lt;space&gt;FME&lt;space&gt;Features&lt;space&gt;in&lt;space&gt;a&lt;space&gt;current&lt;space&gt;group&lt;space&gt;have&lt;space&gt;been&lt;space&gt;sent&lt;space&gt;to&lt;space&gt;input&lt;openparen&gt;&lt;closeparen&gt;.&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;FME&lt;space&gt;Features&lt;space&gt;sent&lt;space&gt;to&lt;space&gt;input&lt;openparen&gt;&lt;closeparen&gt;&lt;space&gt;should&lt;space&gt;generally&lt;space&gt;be&lt;space&gt;cached&lt;space&gt;for&lt;space&gt;group-by&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;processing&lt;space&gt;in&lt;space&gt;this&lt;space&gt;method&lt;space&gt;when&lt;space&gt;knowledge&lt;space&gt;of&lt;space&gt;all&lt;space&gt;Features&lt;space&gt;is&lt;space&gt;required.&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;The&lt;space&gt;resulting&lt;space&gt;Feature&lt;openparen&gt;s&lt;closeparen&gt;&lt;space&gt;from&lt;space&gt;the&lt;space&gt;group-by&lt;space&gt;processing&lt;space&gt;should&lt;space&gt;be&lt;space&gt;emitted&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;through&lt;space&gt;self.pyoutput&lt;openparen&gt;&lt;closeparen&gt;.&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;FME&lt;space&gt;will&lt;space&gt;continue&lt;space&gt;calling&lt;space&gt;input&lt;openparen&gt;&lt;closeparen&gt;&lt;space&gt;a&lt;space&gt;number&lt;space&gt;of&lt;space&gt;times&lt;space&gt;followed&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;by&lt;space&gt;process_group&lt;openparen&gt;&lt;closeparen&gt;&lt;space&gt;for&lt;space&gt;each&lt;space&gt;&lt;apos&gt;Group&lt;space&gt;By&lt;apos&gt;&lt;space&gt;attribute&lt;comma&gt;&lt;space&gt;so&lt;space&gt;this&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;implementation&lt;space&gt;should&lt;space&gt;reset&lt;space&gt;any&lt;space&gt;class&lt;space&gt;members&lt;space&gt;for&lt;space&gt;the&lt;space&gt;next&lt;space&gt;group.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;pass&lt;lf&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;def&lt;space&gt;has_support_for&lt;openparen&gt;self&lt;comma&gt;&lt;space&gt;support_type&lt;closeparen&gt;:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;This&lt;space&gt;method&lt;space&gt;returns&lt;space&gt;whether&lt;space&gt;this&lt;space&gt;PythonCaller&lt;space&gt;supports&lt;space&gt;a&lt;space&gt;certain&lt;space&gt;type.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;The&lt;space&gt;only&lt;space&gt;supported&lt;space&gt;type&lt;space&gt;is&lt;space&gt;fmeobjects.FME_SUPPORT_FEATURE_TABLE_SHIM.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;:param&lt;space&gt;int&lt;space&gt;support_type:&lt;space&gt;The&lt;space&gt;support&lt;space&gt;type&lt;space&gt;being&lt;space&gt;queried.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;:returns:&lt;space&gt;True&lt;space&gt;if&lt;space&gt;the&lt;space&gt;passed&lt;space&gt;in&lt;space&gt;support&lt;space&gt;type&lt;space&gt;is&lt;space&gt;supported.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;:rtype:&lt;space&gt;bool&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;quote&gt;&lt;quote&gt;&lt;quote&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;if&lt;space&gt;support_type&lt;space&gt;==&lt;space&gt;fmeobjects.FME_SUPPORT_FEATURE_TABLE_SHIM:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;If&lt;space&gt;this&lt;space&gt;is&lt;space&gt;set&lt;space&gt;to&lt;space&gt;return&lt;space&gt;True&lt;comma&gt;&lt;space&gt;FME&lt;space&gt;will&lt;space&gt;pass&lt;space&gt;features&lt;space&gt;to&lt;space&gt;the&lt;space&gt;input&lt;openparen&gt;&lt;closeparen&gt;&lt;space&gt;method&lt;space&gt;that&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;come&lt;space&gt;from&lt;space&gt;a&lt;space&gt;feature&lt;space&gt;table&lt;space&gt;object.&lt;space&gt;This&lt;space&gt;allows&lt;space&gt;for&lt;space&gt;significant&lt;space&gt;performance&lt;space&gt;gains&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;when&lt;space&gt;processing&lt;space&gt;large&lt;space&gt;numbers&lt;space&gt;of&lt;space&gt;features.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;To&lt;space&gt;enable&lt;space&gt;this&lt;comma&gt;&lt;space&gt;the&lt;space&gt;following&lt;space&gt;conditions&lt;space&gt;must&lt;space&gt;be&lt;space&gt;met:&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;&lt;space&gt;&lt;space&gt;1&lt;closeparen&gt;&lt;space&gt;features&lt;space&gt;passed&lt;space&gt;into&lt;space&gt;the&lt;space&gt;input&lt;openparen&gt;&lt;closeparen&gt;&lt;space&gt;method&lt;space&gt;cannot&lt;space&gt;be&lt;space&gt;copied&lt;space&gt;or&lt;space&gt;cached&lt;space&gt;for&lt;space&gt;later&lt;space&gt;use&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;&lt;space&gt;&lt;space&gt;2&lt;closeparen&gt;&lt;space&gt;features&lt;space&gt;cannot&lt;space&gt;be&lt;space&gt;read&lt;space&gt;or&lt;space&gt;modified&lt;space&gt;after&lt;space&gt;being&lt;space&gt;passed&lt;space&gt;to&lt;space&gt;self.pyoutput&lt;openparen&gt;&lt;closeparen&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;&lt;space&gt;&lt;space&gt;3&lt;closeparen&gt;&lt;space&gt;Group&lt;space&gt;Processing&lt;space&gt;must&lt;space&gt;not&lt;space&gt;be&lt;space&gt;enabled&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;#&lt;space&gt;Violations&lt;space&gt;will&lt;space&gt;cause&lt;space&gt;undefined&lt;space&gt;behavior.&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;return&lt;space&gt;False&lt;lf&gt;&lt;space&gt;&lt;lf&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;&lt;space&gt;return&lt;space&gt;False&lt;lf&gt;"/>
+#!     <XFORM_PARM PARM_NAME="PYTHONSYMBOL" PARM_VALUE="FeatureProcessor"/>
+#!     <XFORM_PARM PARM_NAME="TRANSFORMER_GROUP" PARM_VALUE=""/>
+#!     <XFORM_PARM PARM_NAME="XFORMER_NAME" PARM_VALUE="ConvertToTableName2"/>
+#! </TRANSFORMER>
+#! </TRANSFORMERS>
+#! <FEAT_LINKS>
+#! <FEAT_LINK
+#!   IDENTIFIER="5"
+#!   SOURCE_NODE="2"
+#!   TARGET_NODE="4"
+#!   SOURCE_PORT_DESC="fo 0 CREATED"
+#!   TARGET_PORT_DESC="fi 0 "
+#!   ENABLED="true"
+#!   EXECUTION_IDX="0"
+#!   HIDDEN="false"
+#!   COLOUR="0,0,0,1"
+#!   PEN_WIDTH="4"
+#!   PEN_STYLE="1"
+#!   LINK_STYLE_NAME="&lt;Default&gt;"
+#!   EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#!   IDENTIFIER="6"
+#!   SOURCE_NODE="2"
+#!   TARGET_NODE="3"
+#!   SOURCE_PORT_DESC="fo 0 CREATED"
+#!   TARGET_PORT_DESC="fi 0 INITIATOR"
+#!   ENABLED="true"
+#!   EXECUTION_IDX="1"
+#!   HIDDEN="false"
+#!   COLOUR="0,0,0,1"
+#!   PEN_WIDTH="4"
+#!   PEN_STYLE="1"
+#!   LINK_STYLE_NAME="&lt;Default&gt;"
+#!   EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#!   IDENTIFIER="13"
+#!   SOURCE_NODE="4"
+#!   TARGET_NODE="11"
+#!   SOURCE_PORT_DESC="fo 0 OUTPUT"
+#!   TARGET_PORT_DESC="fi 0 INITIATOR"
+#!   ENABLED="true"
+#!   EXECUTION_IDX="0"
+#!   HIDDEN="false"
+#!   COLOUR="0,0,0,1"
+#!   PEN_WIDTH="4"
+#!   PEN_STYLE="1"
+#!   LINK_STYLE_NAME="&lt;Default&gt;"
+#!   EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#!   IDENTIFIER="10"
+#!   SOURCE_NODE="8"
+#!   TARGET_NODE="7"
+#!   SOURCE_PORT_DESC="fo 0 OUTPUT"
+#!   TARGET_PORT_DESC="fi 0 INITIATOR"
+#!   ENABLED="true"
+#!   EXECUTION_IDX="0"
+#!   HIDDEN="false"
+#!   COLOUR="0,0,0,1"
+#!   PEN_WIDTH="4"
+#!   PEN_STYLE="1"
+#!   LINK_STYLE_NAME="&lt;Default&gt;"
+#!   EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#!   IDENTIFIER="17"
+#!   SOURCE_NODE="15"
+#!   TARGET_NODE="14"
+#!   SOURCE_PORT_DESC="fo 0 OUTPUT"
+#!   TARGET_PORT_DESC="fi 0 INITIATOR"
+#!   ENABLED="true"
+#!   EXECUTION_IDX="0"
+#!   HIDDEN="false"
+#!   COLOUR="0,0,0,1"
+#!   PEN_WIDTH="4"
+#!   PEN_STYLE="1"
+#!   LINK_STYLE_NAME="&lt;Default&gt;"
+#!   EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#!   IDENTIFIER="9"
+#!   SOURCE_NODE="3"
+#!   TARGET_NODE="8"
+#!   SOURCE_PORT_DESC="fo 1 RESULT"
+#!   TARGET_PORT_DESC="fi 0 "
+#!   ENABLED="true"
+#!   EXECUTION_IDX="0"
+#!   HIDDEN="false"
+#!   COLOUR="0,0,0,1"
+#!   PEN_WIDTH="4"
+#!   PEN_STYLE="1"
+#!   LINK_STYLE_NAME="&lt;Default&gt;"
+#!   EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#!   IDENTIFIER="16"
+#!   SOURCE_NODE="11"
+#!   TARGET_NODE="15"
+#!   SOURCE_PORT_DESC="fo 1 RESULT"
+#!   TARGET_PORT_DESC="fi 0 "
+#!   ENABLED="true"
+#!   EXECUTION_IDX="0"
+#!   HIDDEN="false"
+#!   COLOUR="0,0,0,1"
+#!   PEN_WIDTH="4"
+#!   PEN_STYLE="1"
+#!   LINK_STYLE_NAME="&lt;Default&gt;"
+#!   EXTRA_POINTS=""
+#! />
+#! <FEAT_LINK
+#!   IDENTIFIER="12"
+#!   SOURCE_NODE="7"
+#!   TARGET_NODE="11"
+#!   SOURCE_PORT_DESC="fo 2 INITIATOR"
+#!   TARGET_PORT_DESC="fi 0 INITIATOR"
+#!   ENABLED="true"
+#!   EXECUTION_IDX="0"
+#!   HIDDEN="false"
+#!   COLOUR="0,0,0,1"
+#!   PEN_WIDTH="4"
+#!   PEN_STYLE="1"
+#!   LINK_STYLE_NAME="&lt;Default&gt;"
+#!   EXTRA_POINTS=""
+#! />
+#! </FEAT_LINKS>
+#! <BREAKPOINTS>
+#! </BREAKPOINTS>
+#! <ATTR_LINKS>
+#! </ATTR_LINKS>
+#! <SUBDOCUMENTS>
+#! </SUBDOCUMENTS>
+#! <LOOKUP_TABLES>
+#! </LOOKUP_TABLES>
+#! </WORKSPACE>
+
+FME_PYTHON_VERSION 310
+ARCGIS_COMPATIBILITY ARCGIS_AUTO
+#! START_HEADER
+#! START_WB_HEADER
+READER_TYPE MULTI_READER
+WRITER_TYPE NULL
+WRITER_KEYWORD NULL_DEST
+NULL_DEST_DATASET null
+#! END_WB_HEADER
+#! START_WB_HEADER
+#! END_WB_HEADER
+#! END_HEADER
+
+LOG_FILENAME "$(FME_MF_DIR)parking_occupancy.log"
+LOG_APPEND NO
+LOG_FILTER_MASK -1
+LOG_MAX_FEATURES 200
+LOG_MAX_RECORDED_FEATURES 200
+FME_REPROJECTION_ENGINE FME
+FME_IMPLICIT_CSMAP_REPROJECTION_MODE Auto
+FME_GEOMETRY_HANDLING Enhanced
+FME_STROKE_MAX_DEVIATION 0
+FME_NAMES_ENCODING UTF-8
+FME_BULK_MODE_THRESHOLD 2000
+LAST_SAVE_BUILD "FME 2022.2.0.0 (20221103 - Build 22765 - WIN64)"
+# -------------------------------------------------------------------------
+
+MULTI_READER_CONTINUE_ON_READER_FAILURE No
+
+# -------------------------------------------------------------------------
+
+MACRO WORKSPACE_NAME parking_occupancy
+MACRO FME_VIEWER_APP fmedatainspector
+DEFAULT_MACRO WB_CURRENT_CONTEXT
+# -------------------------------------------------------------------------
+Tcl2 proc Creator_CoordSysRemover {} {   global FME_CoordSys;   set FME_CoordSys {}; }
+MACRO Creator_XML     NOT_ACTIVATED
+MACRO Creator_CLASSIC NOT_ACTIVATED
+MACRO Creator_2D3D    2D_GEOMETRY
+MACRO Creator_COORDS  <Unused>
+INCLUDE [ if { {Geometry Object} == {Geometry Object} } {            puts {MACRO Creator_XML *} } ]
+INCLUDE [ if { {Geometry Object} == {2D Coordinate List} } {            puts {MACRO Creator_2D3D 2D_GEOMETRY};            puts {MACRO Creator_CLASSIC *} } ]
+INCLUDE [ if { {Geometry Object} == {3D Coordinate List} } {            puts {MACRO Creator_2D3D 3D_GEOMETRY};            puts {MACRO Creator_CLASSIC *} } ]
+INCLUDE [ if { {Geometry Object} == {2D Min/Max Box} } {            set comment {                We need to turn the COORDS which are                    minX minY maxX maxY                into a full polygon list of coordinates            };            set splitCoords [split [string trim {<Unused>}]];            if { [llength $splitCoords] > 4} {               set trimmedCoords {};               foreach item $splitCoords { if { $item != {} } {lappend trimmedCoords $item} };               set splitCoords $trimmedCoords;            };            if { [llength $splitCoords] != 4 } {                error {Creator: Coordinate list is expected to be a space delimited list of four numbers as 'minx miny maxx maxy' - `<Unused>' is invalid};            };            set minX [lindex $splitCoords 0];            set minY [lindex $splitCoords 1];            set maxX [lindex $splitCoords 2];            set maxY [lindex $splitCoords 3];            puts "MACRO Creator_COORDS $minX $minY $minX $maxY $maxX $maxY $maxX $minY $minX $minY";            puts {MACRO Creator_2D3D 2D_GEOMETRY};            puts {MACRO Creator_CLASSIC *} } ]
+FACTORY_DEF {$(Creator_XML)} CreationFactory    FACTORY_NAME { Creator_XML_Creator }    CREATE_AT_END { no }    OUTPUT { FEATURE_TYPE _____CREATED______        @Geometry(FROM_ENCODED_STRING,<lt>?xml<space>version=<quote>1.0<quote><space>encoding=<quote>US_ASCII<quote><space>standalone=<quote>no<quote><space>?<gt><lt>geometry<space>dimension=<quote>2<quote><gt><lt>null<solidus><gt><lt><solidus>geometry<gt>) }
+FACTORY_DEF {$(Creator_CLASSIC)} CreationFactory    FACTORY_NAME { Creator_CLASSIC_Creator }    $(Creator_2D3D) { $(Creator_COORDS) }    CREATE_AT_END { no }    OUTPUT { FEATURE_TYPE _____CREATED______ }
+FACTORY_DEF {*} TeeFactory    FACTORY_NAME { Creator_Cloner }    INPUT FEATURE_TYPE _____CREATED______        @Tcl2(Creator_CoordSysRemover)        @CoordSys()    NUMBER_OF_COPIES { 1 }    COPY_NUMBER_ATTRIBUTE { "_creation_instance" }    OUTPUT { FEATURE_TYPE Creator_CREATED        fme_feature_type Creator         }
+FACTORY_DEF * TeeFactory   FACTORY_NAME "Creator CREATED Splitter"   INPUT FEATURE_TYPE Creator_CREATED   OUTPUT FEATURE_TYPE Creator_CREATED_0_GJAgmIF9G6c=   OUTPUT FEATURE_TYPE Creator_CREATED_1_Exx7idfjvCA=
+FACTORY_DEF * BranchingFactory   FACTORY_NAME "Creator_CREATED_0_GJAgmIF9G6c= Brancher -1 5"   INPUT FEATURE_TYPE Creator_CREATED_0_GJAgmIF9G6c=   TARGET_FACTORY "$(WB_CURRENT_CONTEXT)_CREATOR_BRANCH_TARGET"   MAXIMUM_COUNT None   OUTPUT PASSED FEATURE_TYPE *
+FACTORY_DEF * BranchingFactory   FACTORY_NAME "Creator_CREATED_1_Exx7idfjvCA= Brancher -1 6"   INPUT FEATURE_TYPE Creator_CREATED_1_Exx7idfjvCA=   TARGET_FACTORY "$(WB_CURRENT_CONTEXT)_CREATOR_BRANCH_TARGET"   MAXIMUM_COUNT None   OUTPUT PASSED FEATURE_TYPE *
+# -------------------------------------------------------------------------
+FACTORY_DEF * TeeFactory   FACTORY_NAME "$(WB_CURRENT_CONTEXT)_CREATOR_BRANCH_TARGET"   INPUT FEATURE_TYPE *  OUTPUT FEATURE_TYPE *
+# -------------------------------------------------------------------------
+FME_PYTHON_PATH "$(FME_MF_DIR)"
+FACTORY_DEF {*} PythonFactory    FACTORY_NAME { GetTimestamps }    FLUSH_WHEN_GROUPS_CHANGE { <Unused> }    INPUT  FEATURE_TYPE Creator_CREATED_0_GJAgmIF9G6c=    SYMBOL_NAME { FeatureProcessor }    PYTHON_NAMESPACE FMEOBJECTS    SOURCE_CODE { import<space>fmeobjects<lf>import<space>json<lf>import<space>time<lf>import<space>datetime<lf><lf><lf>class<space>FeatureProcessor<openparen>object<closeparen>:<lf><space><space><space><space><quote><quote><quote>Template<space>Class<space>Interface:<lf><space><space><space><space>When<space>using<space>this<space>class<comma><space>make<space>sure<space>its<space>name<space>is<space>set<space>as<space>the<space>value<space>of<space>the<space><apos>Class<lf><space><space><space><space>to<space>Process<space>Features<apos><space>transformer<space>parameter.<lf><space><space><space><space><quote><quote><quote><lf><space><space><space><space><lf><space><space><space><space>def<space>__init__<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space>pass<lf><space><space><space><space><space><space><space><space><lf><space><space><space><space>def<space>input<openparen>self<comma><space>feature<closeparen>:<lf><space><space><space><space><space><space><space><space>pass<space><space><space><space><space><space><lf><space><space><space><space><space><space><space><space><lf><space><space><space><space>def<space>close<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>This<space>method<space>is<space>called<space>at<space>the<space>end<space>of<space>the<space>class.<quote><quote><quote><lf><space><space><space><space><space><space><space><space>newFeature<space>=<space>fmeobjects.FMEFeature<openparen><closeparen><lf><space><space><space><space><space><space><space><space>curr_time<space>=<space>int<openparen>time.time<openparen><closeparen><closeparen><lf><space><space><space><space><space><space><space><space>while<openparen>curr_time<space>%<space>3600<space>!=<space>0<closeparen>:<lf><space><space><space><space><space><space><space><space><space><space><space><space>curr_time<space>-=<space>1<lf><space><space><space><space><space><space><space><space>newFeature.setAttribute<openparen><apos>timestamp<apos><comma><space>str<openparen>datetime.datetime.fromtimestamp<openparen>curr_time<closeparen><closeparen><closeparen><lf><space><space><space><space><space><space><space><space>self.pyoutput<openparen>newFeature<closeparen><lf><space><space><space><space><space><space><space><space>pass<lf> }    OUTPUT { PYOUTPUT FEATURE_TYPE GetTimestamps_OUTPUT         }
+# -------------------------------------------------------------------------
+MACRO GetZoneIds_DIRECTIVES COMMAND_TIMEOUT 30 APPLICATION_INTENT ReadWrite QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS Yes NAMED_CONNECTION testdb CREATE_FEATURE_TABLES_FROM_DATA Yes
+FACTORY_DEF {*} QueryFactory    FACTORY_NAME { GetZoneIds }    INPUT  FEATURE_TYPE Creator_CREATED_1_Exx7idfjvCA=    QUERY_SQL            { "SELECT<space>DISTINCT<space>ZoneId<space>from<space>dbo.mock_lpr" }    READER_TYPE          { MSSQL_ADO }    READER_DATASET       { "testdb" }    COMBINE_ATTRIBUTES   { RESULT_ONLY }    IGNORE_NULLS         { <Unused> }    COMBINE_GEOMETRY     { QUERY_ONLY }    QUERYFCT_OUTPUT      { "BASED_ON_CONNECTIONS" }    CONTINUE_ON_READER_ERROR YES    QUERYFCT_PROPAGATE_IDS_ON_SQL_EXECUTE YES    READER_PARAMS        { $(GetZoneIds_DIRECTIVES) }    OUTPUT { RESULT FEATURE_TYPE GetZoneIds_RESULT        @SupplyAttributes(fme_feature_type,GetZoneIds)         }    OUTPUT { READER_ERROR FEATURE_TYPE GetZoneIds_<REJECTED>         }
+DEFAULT_MACRO _WB_BYPASS_TERMINATION No
+FACTORY_DEF * TeeFactory FACTORY_NAME GetZoneIds_<Rejected> INPUT FEATURE_TYPE GetZoneIds_<REJECTED>  NO_LOGGING   OUTPUT FAILED FEATURE_TYPE * @Abort(ENCODED, GetZoneIds<space>output<space>a<space><lt>Rejected<gt><space>feature.<space><space>To<space>continue<space>translation<space>when<space>features<space>are<space>rejected<comma><space>change<space><apos>Workspace<space>Parameters<apos><space><gt><space>Translation<space><gt><space><apos>Rejected<space>Feature<space>Handling<apos><space>to<space><apos>Continue<space>Translation<apos>)
+# -------------------------------------------------------------------------
+FME_PYTHON_PATH "$(FME_MF_DIR)"
+FACTORY_DEF {*} PythonFactory    FACTORY_NAME { ConvertToTableName }    FLUSH_WHEN_GROUPS_CHANGE { <Unused> }    INPUT  FEATURE_TYPE GetZoneIds_RESULT    SYMBOL_NAME { FeatureProcessor }    PYTHON_NAMESPACE FMEOBJECTS    SOURCE_CODE { import<space>fme<lf>import<space>fmeobjects<lf><lf><lf>class<space>FeatureProcessor<openparen>object<closeparen>:<lf><space><space><space><space><quote><quote><quote>Template<space>Class<space>Interface:<lf><space><space><space><space>When<space>using<space>this<space>class<comma><space>make<space>sure<space>its<space>name<space>is<space>set<space>as<space>the<space>value<space>of<space>the<space><apos>Class<lf><space><space><space><space>to<space>Process<space>Features<apos><space>transformer<space>parameter.<lf><space><space><space><space><quote><quote><quote><lf><lf><space><space><space><space>def<space>__init__<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>Base<space>constructor<space>for<space>class<space>members.<quote><quote><quote><lf><space><space><space><space><space><space><space><space>pass<lf><lf><space><space><space><space>def<space>input<openparen>self<comma><space>feature<closeparen>:<lf><space><space><space><space><space><space><space><space>zoneId<space>=<space>feature.getAttribute<openparen><apos>ZoneId<apos><closeparen><lf><space><space><space><space><space><space><space><space>feature.setAttribute<openparen><apos>table_name<apos><comma><space>zoneId.replace<openparen><apos>-<apos><comma><space><apos>_<apos><closeparen>.lower<openparen><closeparen><closeparen><lf><space><space><space><space><space><space><space><space>self.pyoutput<openparen>feature<closeparen><lf><lf><space><space><space><space>def<space>close<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>This<space>method<space>is<space>called<space>once<space>all<space>the<space>FME<space>Features<space>have<space>been<space>processed<lf><space><space><space><space><space><space><space><space>from<space>input<openparen><closeparen>.<lf><space><space><space><space><space><space><space><space><quote><quote><quote><lf><space><space><space><space><space><space><space><space>pass<lf><lf><space><space><space><space>def<space>process_group<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>When<space><apos>Group<space>By<apos><space>attribute<openparen>s<closeparen><space>are<space>specified<comma><space>this<space>method<space>is<space>called<space><lf><space><space><space><space><space><space><space><space>once<space>all<space>the<space>FME<space>Features<space>in<space>a<space>current<space>group<space>have<space>been<space>sent<space>to<space>input<openparen><closeparen>.<lf><lf><space><space><space><space><space><space><space><space>FME<space>Features<space>sent<space>to<space>input<openparen><closeparen><space>should<space>generally<space>be<space>cached<space>for<space>group-by<space><lf><space><space><space><space><space><space><space><space>processing<space>in<space>this<space>method<space>when<space>knowledge<space>of<space>all<space>Features<space>is<space>required.<space><lf><space><space><space><space><space><space><space><space>The<space>resulting<space>Feature<openparen>s<closeparen><space>from<space>the<space>group-by<space>processing<space>should<space>be<space>emitted<space><lf><space><space><space><space><space><space><space><space>through<space>self.pyoutput<openparen><closeparen>.<lf><lf><space><space><space><space><space><space><space><space>FME<space>will<space>continue<space>calling<space>input<openparen><closeparen><space>a<space>number<space>of<space>times<space>followed<lf><space><space><space><space><space><space><space><space>by<space>process_group<openparen><closeparen><space>for<space>each<space><apos>Group<space>By<apos><space>attribute<comma><space>so<space>this<space><lf><space><space><space><space><space><space><space><space>implementation<space>should<space>reset<space>any<space>class<space>members<space>for<space>the<space>next<space>group.<lf><space><space><space><space><space><space><space><space><quote><quote><quote><lf><space><space><space><space><space><space><space><space>pass<lf><lf><space><space><space><space>def<space>has_support_for<openparen>self<comma><space>support_type<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>This<space>method<space>returns<space>whether<space>this<space>PythonCaller<space>supports<space>a<space>certain<space>type.<lf><space><space><space><space><space><space><space><space>The<space>only<space>supported<space>type<space>is<space>fmeobjects.FME_SUPPORT_FEATURE_TABLE_SHIM.<lf><space><space><space><space><space><space><space><space><lf><space><space><space><space><space><space><space><space>:param<space>int<space>support_type:<space>The<space>support<space>type<space>being<space>queried.<lf><space><space><space><space><space><space><space><space>:returns:<space>True<space>if<space>the<space>passed<space>in<space>support<space>type<space>is<space>supported.<lf><space><space><space><space><space><space><space><space>:rtype:<space>bool<lf><space><space><space><space><space><space><space><space><quote><quote><quote><lf><space><space><space><space><space><space><space><space>if<space>support_type<space>==<space>fmeobjects.FME_SUPPORT_FEATURE_TABLE_SHIM:<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>If<space>this<space>is<space>set<space>to<space>return<space>True<comma><space>FME<space>will<space>pass<space>features<space>to<space>the<space>input<openparen><closeparen><space>method<space>that<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>come<space>from<space>a<space>feature<space>table<space>object.<space>This<space>allows<space>for<space>significant<space>performance<space>gains<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>when<space>processing<space>large<space>numbers<space>of<space>features.<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>To<space>enable<space>this<comma><space>the<space>following<space>conditions<space>must<space>be<space>met:<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space><space><space>1<closeparen><space>features<space>passed<space>into<space>the<space>input<openparen><closeparen><space>method<space>cannot<space>be<space>copied<space>or<space>cached<space>for<space>later<space>use<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space><space><space>2<closeparen><space>features<space>cannot<space>be<space>read<space>or<space>modified<space>after<space>being<space>passed<space>to<space>self.pyoutput<openparen><closeparen><lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space><space><space>3<closeparen><space>Group<space>Processing<space>must<space>not<space>be<space>enabled<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>Violations<space>will<space>cause<space>undefined<space>behavior.<lf><space><space><space><space><space><space><space><space><space><space><space><space>return<space>False<lf><space><lf><space><space><space><space><space><space><space><space>return<space>False<lf> }    OUTPUT { PYOUTPUT FEATURE_TYPE ConvertToTableName_OUTPUT         }
+# -------------------------------------------------------------------------
+MACRO CreateTables_DIRECTIVES COMMAND_TIMEOUT 30 APPLICATION_INTENT ReadWrite QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS Yes NAMED_CONNECTION testdb CREATE_FEATURE_TABLES_FROM_DATA Yes
+FACTORY_DEF {*} QueryFactory    FACTORY_NAME { CreateTables }    INPUT  FEATURE_TYPE ConvertToTableName_OUTPUT    QUERY_SQL            { "@EvaluateExpression(FDIV,STRING_ENCODED,IF<space>NOT<space>EXISTS<space><openparen>SELECT<space>*<space>FROM<space>INFORMATION_SCHEMA.TABLES<space>WHERE<space>TABLE_NAME<space>=<space><apos><at>Value<openparen>table_name<closeparen><apos><closeparen><lf>BEGIN<lf><space><space><space><space>CREATE<space>TABLE<space><openbracket><at>Value<openparen>table_name<closeparen><closebracket><space><openparen><lf><space><space><space><space><space><space>TimeStamp<space>DATETIME<comma><lf><space><space><space><space><space><space>Vehicles<space>INT<lf><space><space><space><space><closeparen><semicolon><lf>END,CreateTables)" }    READER_TYPE          { MSSQL_ADO }    READER_DATASET       { "testdb" }    COMBINE_ATTRIBUTES   { RESULT_ONLY }    IGNORE_NULLS         { <Unused> }    COMBINE_GEOMETRY     { QUERY_ONLY }    QUERYFCT_OUTPUT      { "BASED_ON_CONNECTIONS" }    CONTINUE_ON_READER_ERROR YES    QUERYFCT_PROPAGATE_IDS_ON_SQL_EXECUTE YES    READER_PARAMS        { $(CreateTables_DIRECTIVES) }    OUTPUT { QUERY FEATURE_TYPE CreateTables_INITIATOR            }    OUTPUT { READER_ERROR FEATURE_TYPE CreateTables_<REJECTED>         }
+DEFAULT_MACRO _WB_BYPASS_TERMINATION No
+FACTORY_DEF * TeeFactory FACTORY_NAME CreateTables_<Rejected> INPUT FEATURE_TYPE CreateTables_<REJECTED>  NO_LOGGING   OUTPUT FAILED FEATURE_TYPE * @Abort(ENCODED, CreateTables<space>output<space>a<space><lt>Rejected<gt><space>feature.<space><space>To<space>continue<space>translation<space>when<space>features<space>are<space>rejected<comma><space>change<space><apos>Workspace<space>Parameters<apos><space><gt><space>Translation<space><gt><space><apos>Rejected<space>Feature<space>Handling<apos><space>to<space><apos>Continue<space>Translation<apos>)
+# -------------------------------------------------------------------------
+MACRO FetchData_DIRECTIVES COMMAND_TIMEOUT 30 APPLICATION_INTENT ReadWrite QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS Yes NAMED_CONNECTION testdb CREATE_FEATURE_TABLES_FROM_DATA Yes
+FACTORY_DEF {*} QueryFactory    FACTORY_NAME { FetchData }    INPUT  FEATURE_TYPE CreateTables_INITIATOR    INPUT  FEATURE_TYPE GetTimestamps_OUTPUT    QUERY_SQL            { "@EvaluateExpression(FDIV,STRING_ENCODED,SELECT<space>ZoneId<comma><space>CONVERT<openparen>VARCHAR<comma><space>TimeStamp<comma><space>120<closeparen><space>AS<space>TimeStamp<comma><space>Vehicles<space>FROM<space>dbo.mock_lpr<space>WHERE<space>TimeStamp<space>=<space>CONVERT<openparen>DATETIME<comma><space><apos><at>Value<openparen>timestamp<closeparen><apos><closeparen>,FetchData)" }    READER_TYPE          { MSSQL_ADO }    READER_DATASET       { "testdb" }    COMBINE_ATTRIBUTES   { RESULT_ONLY }    IGNORE_NULLS         { <Unused> }    COMBINE_GEOMETRY     { QUERY_ONLY }    QUERYFCT_OUTPUT      { "BASED_ON_CONNECTIONS" }    CONTINUE_ON_READER_ERROR YES    QUERYFCT_PROPAGATE_IDS_ON_SQL_EXECUTE YES    READER_PARAMS        { $(FetchData_DIRECTIVES) }    OUTPUT { RESULT FEATURE_TYPE FetchData_RESULT        @SupplyAttributes(fme_feature_type,FetchData)         }    OUTPUT { READER_ERROR FEATURE_TYPE FetchData_<REJECTED>         }
+DEFAULT_MACRO _WB_BYPASS_TERMINATION No
+FACTORY_DEF * TeeFactory FACTORY_NAME FetchData_<Rejected> INPUT FEATURE_TYPE FetchData_<REJECTED>  NO_LOGGING   OUTPUT FAILED FEATURE_TYPE * @Abort(ENCODED, FetchData<space>output<space>a<space><lt>Rejected<gt><space>feature.<space><space>To<space>continue<space>translation<space>when<space>features<space>are<space>rejected<comma><space>change<space><apos>Workspace<space>Parameters<apos><space><gt><space>Translation<space><gt><space><apos>Rejected<space>Feature<space>Handling<apos><space>to<space><apos>Continue<space>Translation<apos>)
+# -------------------------------------------------------------------------
+FME_PYTHON_PATH "$(FME_MF_DIR)"
+FACTORY_DEF {*} PythonFactory    FACTORY_NAME { ConvertToTableName2 }    FLUSH_WHEN_GROUPS_CHANGE { <Unused> }    INPUT  FEATURE_TYPE FetchData_RESULT    SYMBOL_NAME { FeatureProcessor }    PYTHON_NAMESPACE FMEOBJECTS    SOURCE_CODE { import<space>fme<lf>import<space>fmeobjects<lf><lf><lf>class<space>FeatureProcessor<openparen>object<closeparen>:<lf><space><space><space><space><quote><quote><quote>Template<space>Class<space>Interface:<lf><space><space><space><space>When<space>using<space>this<space>class<comma><space>make<space>sure<space>its<space>name<space>is<space>set<space>as<space>the<space>value<space>of<space>the<space><apos>Class<lf><space><space><space><space>to<space>Process<space>Features<apos><space>transformer<space>parameter.<lf><space><space><space><space><quote><quote><quote><lf><lf><space><space><space><space>def<space>__init__<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>Base<space>constructor<space>for<space>class<space>members.<quote><quote><quote><lf><space><space><space><space><space><space><space><space>pass<lf><lf><space><space><space><space>def<space>input<openparen>self<comma><space>feature<closeparen>:<lf><space><space><space><space><space><space><space><space>zoneId<space>=<space>feature.getAttribute<openparen><apos>ZoneId<apos><closeparen><lf><space><space><space><space><space><space><space><space>feature.setAttribute<openparen><apos>table_name<apos><comma><space>zoneId.replace<openparen><apos>-<apos><comma><space><apos>_<apos><closeparen>.lower<openparen><closeparen><closeparen><lf><space><space><space><space><space><space><space><space>self.pyoutput<openparen>feature<closeparen><lf><lf><space><space><space><space>def<space>close<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>This<space>method<space>is<space>called<space>once<space>all<space>the<space>FME<space>Features<space>have<space>been<space>processed<lf><space><space><space><space><space><space><space><space>from<space>input<openparen><closeparen>.<lf><space><space><space><space><space><space><space><space><quote><quote><quote><lf><space><space><space><space><space><space><space><space>pass<lf><lf><space><space><space><space>def<space>process_group<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>When<space><apos>Group<space>By<apos><space>attribute<openparen>s<closeparen><space>are<space>specified<comma><space>this<space>method<space>is<space>called<space><lf><space><space><space><space><space><space><space><space>once<space>all<space>the<space>FME<space>Features<space>in<space>a<space>current<space>group<space>have<space>been<space>sent<space>to<space>input<openparen><closeparen>.<lf><lf><space><space><space><space><space><space><space><space>FME<space>Features<space>sent<space>to<space>input<openparen><closeparen><space>should<space>generally<space>be<space>cached<space>for<space>group-by<space><lf><space><space><space><space><space><space><space><space>processing<space>in<space>this<space>method<space>when<space>knowledge<space>of<space>all<space>Features<space>is<space>required.<space><lf><space><space><space><space><space><space><space><space>The<space>resulting<space>Feature<openparen>s<closeparen><space>from<space>the<space>group-by<space>processing<space>should<space>be<space>emitted<space><lf><space><space><space><space><space><space><space><space>through<space>self.pyoutput<openparen><closeparen>.<lf><lf><space><space><space><space><space><space><space><space>FME<space>will<space>continue<space>calling<space>input<openparen><closeparen><space>a<space>number<space>of<space>times<space>followed<lf><space><space><space><space><space><space><space><space>by<space>process_group<openparen><closeparen><space>for<space>each<space><apos>Group<space>By<apos><space>attribute<comma><space>so<space>this<space><lf><space><space><space><space><space><space><space><space>implementation<space>should<space>reset<space>any<space>class<space>members<space>for<space>the<space>next<space>group.<lf><space><space><space><space><space><space><space><space><quote><quote><quote><lf><space><space><space><space><space><space><space><space>pass<lf><lf><space><space><space><space>def<space>has_support_for<openparen>self<comma><space>support_type<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>This<space>method<space>returns<space>whether<space>this<space>PythonCaller<space>supports<space>a<space>certain<space>type.<lf><space><space><space><space><space><space><space><space>The<space>only<space>supported<space>type<space>is<space>fmeobjects.FME_SUPPORT_FEATURE_TABLE_SHIM.<lf><space><space><space><space><space><space><space><space><lf><space><space><space><space><space><space><space><space>:param<space>int<space>support_type:<space>The<space>support<space>type<space>being<space>queried.<lf><space><space><space><space><space><space><space><space>:returns:<space>True<space>if<space>the<space>passed<space>in<space>support<space>type<space>is<space>supported.<lf><space><space><space><space><space><space><space><space>:rtype:<space>bool<lf><space><space><space><space><space><space><space><space><quote><quote><quote><lf><space><space><space><space><space><space><space><space>if<space>support_type<space>==<space>fmeobjects.FME_SUPPORT_FEATURE_TABLE_SHIM:<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>If<space>this<space>is<space>set<space>to<space>return<space>True<comma><space>FME<space>will<space>pass<space>features<space>to<space>the<space>input<openparen><closeparen><space>method<space>that<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>come<space>from<space>a<space>feature<space>table<space>object.<space>This<space>allows<space>for<space>significant<space>performance<space>gains<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>when<space>processing<space>large<space>numbers<space>of<space>features.<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>To<space>enable<space>this<comma><space>the<space>following<space>conditions<space>must<space>be<space>met:<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space><space><space>1<closeparen><space>features<space>passed<space>into<space>the<space>input<openparen><closeparen><space>method<space>cannot<space>be<space>copied<space>or<space>cached<space>for<space>later<space>use<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space><space><space>2<closeparen><space>features<space>cannot<space>be<space>read<space>or<space>modified<space>after<space>being<space>passed<space>to<space>self.pyoutput<openparen><closeparen><lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space><space><space>3<closeparen><space>Group<space>Processing<space>must<space>not<space>be<space>enabled<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>Violations<space>will<space>cause<space>undefined<space>behavior.<lf><space><space><space><space><space><space><space><space><space><space><space><space>return<space>False<lf><space><lf><space><space><space><space><space><space><space><space>return<space>False<lf> }    OUTPUT { PYOUTPUT FEATURE_TYPE ConvertToTableName2_OUTPUT         }
+# -------------------------------------------------------------------------
+MACRO WriteData_DIRECTIVES COMMAND_TIMEOUT 30 APPLICATION_INTENT ReadWrite QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS Yes NAMED_CONNECTION testdb CREATE_FEATURE_TABLES_FROM_DATA Yes
+FACTORY_DEF {*} QueryFactory    FACTORY_NAME { WriteData }    INPUT  FEATURE_TYPE ConvertToTableName2_OUTPUT    QUERY_SQL            { "@EvaluateExpression(FDIV,STRING_ENCODED,IF<space>NOT<space>EXISTS<space><openparen>SELECT<space>*<space>FROM<space><at>Value<openparen>table_name<closeparen><space>WHERE<space>TimeStamp<space>=<space>CONVERT<openparen>DATETIME<comma><space><apos><at>Value<openparen>TimeStamp<closeparen><apos><closeparen><closeparen><lf>BEGIN<lf><space><space><space><space>INSERT<space>INTO<space><at>Value<openparen>table_name<closeparen><space><openparen>TimeStamp<comma><space>Vehicles<closeparen><space>VALUES<space><openparen>CONVERT<openparen>DATETIME<comma><space><apos><at>Value<openparen>TimeStamp<closeparen><apos><closeparen><comma><space><at>Value<openparen>Vehicles<closeparen><closeparen><lf>END,WriteData)" }    READER_TYPE          { MSSQL_ADO }    READER_DATASET       { "testdb" }    COMBINE_ATTRIBUTES   { RESULT_ONLY }    IGNORE_NULLS         { <Unused> }    COMBINE_GEOMETRY     { QUERY_ONLY }    QUERYFCT_OUTPUT      { "BASED_ON_CONNECTIONS" }    CONTINUE_ON_READER_ERROR YES    QUERYFCT_PROPAGATE_IDS_ON_SQL_EXECUTE YES    READER_PARAMS        { $(WriteData_DIRECTIVES) }    OUTPUT { READER_ERROR FEATURE_TYPE WriteData_<REJECTED>         }
+DEFAULT_MACRO _WB_BYPASS_TERMINATION No
+FACTORY_DEF * TeeFactory FACTORY_NAME WriteData_<Rejected> INPUT FEATURE_TYPE WriteData_<REJECTED>  NO_LOGGING   OUTPUT FAILED FEATURE_TYPE * @Abort(ENCODED, WriteData<space>output<space>a<space><lt>Rejected<gt><space>feature.<space><space>To<space>continue<space>translation<space>when<space>features<space>are<space>rejected<comma><space>change<space><apos>Workspace<space>Parameters<apos><space><gt><space>Translation<space><gt><space><apos>Rejected<space>Feature<space>Handling<apos><space>to<space><apos>Continue<space>Translation<apos>)
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * RoutingFactory FACTORY_NAME "Destination Feature Type Routing Correlator"   COMMAND_PARM_EVALUATION SINGLE_PASS   INPUT FEATURE_TYPE *   FEATURE_TYPE_ATTRIBUTE __wb_out_feat_type__   OUTPUT ROUTED FEATURE_TYPE *    OUTPUT NOT_ROUTED FEATURE_TYPE __nuke_me__ @Tcl2("FME_StatMessage 818059 [FME_GetAttribute fme_template_feature_type] 818060 818061 fme_warn")
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * TeeFactory   FACTORY_NAME "Final Output Nuker"   INPUT FEATURE_TYPE __nuke_me__
+
