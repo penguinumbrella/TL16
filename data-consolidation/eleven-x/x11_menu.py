@@ -3,6 +3,7 @@ import subprocess
 import json 
 import csv
 import re
+import api_lib
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -35,66 +36,6 @@ def handle_parameters(input_string):
     return modified_string
 
 
-# Function to get API key from user input and save it to a file
-def get_and_save_api_key_manually():
-    manual_api_key = input("Please enter your API key: ").strip()
-    return manual_api_key
-
-# Function to read API key from file
-def read_api_key_from_file():
-    try:
-        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'api_key.txt'), 'r') as f:
-            return f.readline().strip()
-    except FileNotFoundError:
-        print("API key file not found.")
-        return None
-
-# Function to execute curl command with API key and save output to file
-def run_api_call(api_key, api_call):
-    if api_key is None:
-        print("No API key found. Please provide an API key.")
-        return
-
-    api_call_with_params = handle_parameters(api_call)
-    curl_command = f'curl -X GET "https://app.eleven-x.com/api/v2/' + api_call_with_params + '" -H "accept: application/json" -H "Authorization: Bearer ' + api_key + '"'
-    print("In the command line: " + curl_command + "\n")
-    # Get the directory of the current script
-
-
-    # Construct the full file path
-    output_file = os.path.join(script_dir, api_call_with_params + '.json')
-
-    try:
-        subprocess.run(curl_command, shell=True, check=True, stdout=open(output_file, 'w'))
-        print("API call successful. Output saved to 'output.json'.\n")
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing curl command: {e}")
-        return
-
-# Function to read and print the output JSON
-def print_output():
-    try:
-        with open(os.path.join(script_dir, 'output.json'), 'r') as f:
-            output = json.load(f)
-            print("Output JSON:")
-            print(json.dumps(output, indent=4))
-    except FileNotFoundError:
-        print("Output file not found.")
-
-def start_api_connection():
-    # Check if API key file exists, if not, prompt for API key
-    if not os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'api_key.txt')):
-        print("api_key.txt not found. Must enter key manually")
-        api_key = get_and_save_api_key_manually()
-    else:
-        print("api_key.txt found")
-        # Read API key
-        api_key = read_api_key_from_file()
-        print("API key is: ", api_key)
-
-    # Return API key
-    return api_key
-
 def check_yes_no(input_string):
     """
     Check if the input string is a variation of "yes" or "no".
@@ -122,51 +63,52 @@ class Application:
             'info/parking/devices/{deviceEui}' :
             'Returns a list of information for a parking device',
 
-            '/info/parking/stalls/{stallId}' :
+            'info/parking/stalls/{stallId}' :
             'Returns a list of information for a parking stall',
             
-            '/payloads/parking/stalls/{stallId}' :
+            'payloads/parking/stalls/{stallId}' :
             'Returns a list of payloads for a stall (short description)',
                 
-            '/payloads/parking/stalls/{stallId}/latest' :
+            'payloads/parking/stalls/{stallId}/latest' :
             'Returns the latest payload for a stall (short description)',
                 
-            '/payloads/parking/zones/{zoneId}' :
+            'payloads/parking/zones/{zoneId}' :
             'Returns a list of latest payloads for each stall of a zone (short description)',
                 
-            '/stats/parking/zones/{zoneId}' :
+            'stats/parking/zones/{zoneId}' :
             'Returns a list of statistical data for a zone',
 
-            '/stats/parking/stalls/{stallId}' :
+            'stats/parking/stalls/{stallId}' :
             'Returns a list of statistical data for a stall',
 
-            '/status/parking/zones/{zoneId}' :
+            'status/parking/zones/{zoneId}' :
             'Returns a summary of current device occupancy status for a zone',
 
-            '/status/parking/zones/{zoneId}/all_stalls' :
+            'status/parking/zones/{zoneId}/all_stalls' :
             'Returns all stall statuses for a zone',
 
-            '/alerts/active_zone_alerts' :
+            'alerts/active_zone_alerts' :
             'Returns a list of active zone-designated parking alert data for a zone',
 
-            '/alerts/active_stall_alerts' :
+            'alerts/active_stall_alerts' :
             'Returns a list of active stall-designated parking alert data for a zone',
 
-            '/alerts/alert_history' :
+            'alerts/alert_history' :
             'Returns a list of parking alert history',
 
-            '/alerts/update_alert' :
+            'alerts/update_alert' :
             'Update a parking alert while status is not off',
 
-            '/info/apps' :
+            'info/apps' :
             'Returns a list of information for owned apps',
 
-            '/payloads/devices/{deviceEui}' :
+            'payloads/devices/{deviceEui}' :
             'Returns a list of payloads for a device (short description)',
                 
-            '/payloads/devices/{deviceEui}/latest' :
+            'payloads/devices/{deviceEui}/latest' :
             'Returns the latest payload for a device (short description)'
         }   
+
         self.api_call_list = list(self.api_calls_map.items())
         print("api call list: ", self.api_call_list)
 
@@ -195,8 +137,8 @@ class Application:
         print("API CALL: " + api_call)
         print("Explanation: " + api_call_explanation)
         if(check_yes_no(input("Are you sure you want to run this API call? (y/n)"))):        
-            run_api_call(self.api_key, api_call)
-            print_output()
+            api_lib.run_api_call(self.api_key, api_call)
+            api_lib.print_output()
         else:
             print("Returning to API menu\n")
 
@@ -220,6 +162,6 @@ class Application:
                 print("Please enter a valid number.")
 
 if __name__ == "__main__":
-    api_key = start_api_connection()
+    api_key = api_lib.get_api_key()
     app = Application(api_key)
     app.run()
