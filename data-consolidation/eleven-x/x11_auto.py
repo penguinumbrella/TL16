@@ -1,5 +1,5 @@
 import re
-import api_lib as x11
+import api_lib as api
 import json
 import os
 import write_to_csv as w_csv
@@ -70,7 +70,7 @@ api_calls_map = {
 # output: temp.json has return value
 def get_zone_info(zone_id):
     api_call = "info/parking/zones/" + str(zone_id)
-    x11.run_api_call(api_call)
+    api.run_api_call(api_call)
 
 
 
@@ -92,19 +92,18 @@ def get_stall_info(stall_id):
     #                          stall_info['linked_devide']['device_eui'],
     #                          stall_info['linked_devide']['linked_date']
     api_call = "info/parking/stalls/" + str(stall_id)
-    x11.run_api_call(api_call)
+    api.run_api_call(api_call)
     # Read the JSON file
     with open(os.path.join(local_dir_path, 'temp.json'), 'r') as file:
         data = json.load(file)
 
     stall_data = data.get("infoParkingStall", {},)
-    print(stall_data)
 
     return stall_data    
 
 def get_stalls_from_temp(subzone_id):
     api_call = "info/parking/zones/" + str(subzone_id)
-    x11.run_api_call(api_call)
+    api.run_api_call(api_call)
     # Read the JSON file
     with open(os.path.join(local_dir_path, 'temp.json'), 'r') as file:
         data = json.load(file)
@@ -147,7 +146,7 @@ def get_subzones(zone_id):
     # Write the subzones data
     for subzone in sub_zones:
         row = [subzone['zone_id'], subzone['display_name']]
-        print("zone_id: " + str(subzone['zone_id']) + "\ndispaly name: " + str(subzone['display_name']) + "\n")
+        # print("zone_id: " + str(subzone['zone_id']) + "\ndispaly name: " + str(subzone['display_name']) + "\n")
     
     # Check if sub_zones is not empty and has the expected structure
     if not sub_zones or not all('zone_id' in subzone and 'display_name' in subzone for subzone in sub_zones):
@@ -221,6 +220,24 @@ def update_new_stalls(list_of_stalls):
 
     return stall_info_list
 
+def get_all_stall_status(stall_id_list):
+    # TODO write this method
+    # given a list of stalls - return a list of statuses, 
+    # last payload timestamp, battery percentage, any any other important data
+    return 0
+
+def get_latest_stall_data(stall_id):
+    stallId = stall_id
+    api_call = f'payloads/parking/stalls/{stallId}/latest'
+    api.run_api_call(api_call)
+    # Read the JSON file
+    with open(os.path.join(local_dir_path, 'temp.json'), 'r') as file:
+        data = json.load(file)
+    latest_stall_data = data.get('data', {})
+
+    return latest_stall_data[0]['payload_timestamp'] 
+
+
 if __name__ == "__main__":
     print("This is a test program to update the 11x management table in" + 
             "a csv file assuming the table is initially empty. aka" + 
@@ -237,7 +254,6 @@ if __name__ == "__main__":
     # print_subzone_stalls(subzone_stalls[79], 79)
     # print(compare_and_get_new_stalls([], subzones, subzone_stalls))
     list_of_stall_data = update_new_stalls([])
-    print(list_of_stall_data)
     if(os.path.exists(os.path.join(local_dir_path, 'temp.json'))):
         print("Removed temp.json file from local folder")
         os.remove(os.path.join(local_dir_path, 'temp.json'))
@@ -250,4 +266,3 @@ if __name__ == "__main__":
     # Calculate and print the duration
     duration = end_time - start_time
     print(f"Script duration: {duration}")
-

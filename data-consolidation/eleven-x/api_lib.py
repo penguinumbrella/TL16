@@ -12,11 +12,11 @@ local_dir_path = os.path.dirname(os.path.abspath(__file__))
 def run_api_call(api_call):
     api_key = get_api_key()
     if api_key is None:
-        print("No API key found. Please provide an API key.")
+        # print("No API key found. Please provide an API key.")
         return
 
     curl_command = f'curl -X GET "https://app.eleven-x.com/api/v2/' + api_call + '" -H "accept: application/json" -H "Authorization: Bearer ' + api_key + '"'
-    print("In the command line: " + curl_command + "\n")
+    # print("In the command line: " + curl_command + "\n")
     # Get the directory of the current script
 
 
@@ -62,10 +62,10 @@ def get_api_key():
         print("api_key.txt not found. Must enter key manually")
         api_key = get_and_save_api_key_manually()
     else:
-        print("api_key.txt found")
+        # print("api_key.txt found")
         # Read API key
         api_key = read_api_key_from_file()
-        print("API key is: ", api_key)
+        # print("API key is: ", api_key)
 
     # Return API key
     return api_key

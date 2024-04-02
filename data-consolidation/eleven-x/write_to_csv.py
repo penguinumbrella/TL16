@@ -6,7 +6,7 @@ import unittest
 
 local_dir_path = os.path.dirname(os.path.abspath(__file__))
 
-def write_dicts_to_csv(dict_list, filename, x11):
+def write_dicts_to_csv(dict_list, filename, x11=True):
     # Check dictionary list not empty
     if not dict_list:
         return  # Exit if the list is empty
