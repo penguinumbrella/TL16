@@ -1,0 +1,143 @@
+#! encoding="UTF-8"
+#    Command line to run this workspace:
+#        "C:\Program Files\FME\fme.exe" C:/Users/aayus/OneDrive/Desktop/TL16/data-consolidation\wb-xlate-1711582232773_33528
+#          --FME_LAUNCH_VIEWER_APP "YES"
+#    
+
+MACRO FME_MF_NAME parking_occupancy.fmw
+MACRO FME_MF_NAME_MASTER parking_occupancy.fmw
+
+FME_PYTHON_VERSION 310
+ARCGIS_COMPATIBILITY ARCGIS_AUTO
+# ============================================================================
+DEFAULT_MACRO FME_DATA_REPOSITORY 
+
+DEFAULT_MACRO FME_ENGINE 
+
+DEFAULT_MACRO FME_JOB_ID 
+
+DEFAULT_MACRO FME_SECURITY_ROLES 
+
+DEFAULT_MACRO FME_SECURITY_USER 
+
+DEFAULT_MACRO FME_SERVER_DEST_DIR 
+
+DEFAULT_MACRO FME_SERVER_HOST 
+
+DEFAULT_MACRO FME_SERVER_PORT 
+
+DEFAULT_MACRO FME_SERVER_REQUEST_HEADERS 
+
+DEFAULT_MACRO FME_SERVER_REQUEST_METHOD 
+
+DEFAULT_MACRO FME_SERVER_REQUEST_PARAMETERS 
+
+DEFAULT_MACRO FME_SERVER_REQUEST_URI 
+
+DEFAULT_MACRO FME_SERVER_RUNTIME_USER 
+
+DEFAULT_MACRO FME_SERVER_RUNTIME_USER_ID 
+
+DEFAULT_MACRO FME_SERVER_WEB_URL 
+
+DEFAULT_MACRO FME_SHAREDRESOURCE_BACKUP 
+
+DEFAULT_MACRO FME_SHAREDRESOURCE_DASHBOARD 
+
+DEFAULT_MACRO FME_SHAREDRESOURCE_DATA 
+
+DEFAULT_MACRO FME_SHAREDRESOURCE_ENGINE 
+
+DEFAULT_MACRO FME_SHAREDRESOURCE_LOG 
+
+DEFAULT_MACRO FME_SHAREDRESOURCE_SYSTEM 
+
+DEFAULT_MACRO FME_SHAREDRESOURCE_TEMP 
+
+DEFAULT_MACRO FME_TOPIC 
+
+DEFAULT_MACRO FME_TOPIC_MESSAGE 
+
+# ============================================================================
+#! START_HEADER
+#! START_WB_HEADER
+READER_TYPE MULTI_READER
+WRITER_TYPE NULL
+WRITER_KEYWORD NULL_DEST
+NULL_DEST_DATASET null
+#! END_WB_HEADER
+#! START_WB_HEADER
+#! END_WB_HEADER
+#! END_HEADER
+
+LOG_END_BANNER 
+LOG_END_BANNER Feature caches have been recorded at every stage of the translation.
+LOG_END_BANNER To inspect the recorded features,
+LOG_END_BANNER click the feature cache icons next to the ports.
+LOG_END_BANNER 
+LOG_FILENAME "$(FME_MF_DIR)parking_occupancy.log"
+LOG_APPEND NO
+LOG_FILTER_MASK -1
+LOG_MAX_FEATURES 200
+LOG_MAX_RECORDED_FEATURES 200
+FME_REPROJECTION_ENGINE FME
+FME_IMPLICIT_CSMAP_REPROJECTION_MODE Auto
+FME_GEOMETRY_HANDLING Enhanced
+FME_STROKE_MAX_DEVIATION 0
+FME_NAMES_ENCODING UTF-8
+FME_BULK_MODE_THRESHOLD 2000
+# -------------------------------------------------------------------------
+
+MULTI_READER_CONTINUE_ON_READER_FAILURE No
+
+# -------------------------------------------------------------------------
+
+MACRO WORKSPACE_NAME parking_occupancy
+MACRO FME_VIEWER_APP fmedatainspector
+DEFAULT_MACRO WB_CURRENT_CONTEXT
+# -------------------------------------------------------------------------
+.metadata XFORMER_BEGIN FetchData;11:Main
+FACTORY_DEF * RecorderFactory FACTORY_NAME GetTimestamps_OUTPUT_-1_13_Player FEATURE_FILE "C:/Users/aayus/AppData/Local/Temp/wb-cache-parking_occupancy-fYPFqn/Main_GetTimestamps -1 4 fo 0 OUTPUT  0  43f5845c49adf0fc97ac5b00c435ae89c2c5e593.ffs" MODE PLAYBACK NO_LOGGING OUTPUT RECORDED FEATURE_TYPE * @LogCount("LINK -1 13") @FeatureType(ENCODED, GetTimestamps_OUTPUT)
+FACTORY_DEF * RecorderFactory FACTORY_NAME CreateTables_INITIATOR_-1_12_Player FEATURE_FILE "C:/Users/aayus/AppData/Local/Temp/wb-cache-parking_occupancy-fYPFqn/Main_CreateTables -1 7 fo 2 INITIATOR  0  d6868c5c8ad617353d12417c28bd6713bb44d0ba.ffs" MODE PLAYBACK NO_LOGGING OUTPUT RECORDED FEATURE_TYPE * @LogCount("LINK -1 12") @FeatureType(ENCODED, CreateTables_INITIATOR)
+MACRO FetchData_DIRECTIVES NAMED_CONNECTION testdb QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS Yes CREATE_FEATURE_TABLES_FROM_DATA Yes APPLICATION_INTENT ReadWrite COMMAND_TIMEOUT 30
+FACTORY_DEF {*} QueryFactory    FACTORY_NAME { FetchData }    INPUT  FEATURE_TYPE GetTimestamps_OUTPUT    INPUT  FEATURE_TYPE CreateTables_INITIATOR    QUERY_SQL            { "@EvaluateExpression(FDIV,STRING_ENCODED,SELECT<space>ZoneId<comma><space>CONVERT<openparen>VARCHAR<comma><space>TimeStamp<comma><space>120<closeparen><space>AS<space>TimeStamp<comma><space>Vehicles<space>FROM<space>dbo.mock_lpr<space>WHERE<space>TimeStamp<space><gt>=<space>CONVERT<openparen>DATETIME<comma><space><apos><at>Value<openparen>timestamp<closeparen><apos><closeparen>,FetchData)" }    READER_TYPE          { MSSQL_ADO }    READER_DATASET       { "testdb" }    COMBINE_ATTRIBUTES   { RESULT_ONLY }    IGNORE_NULLS         { <Unused> }    COMBINE_GEOMETRY     { QUERY_ONLY }    QUERYFCT_OUTPUT      { "BASED_ON_CONNECTIONS" }    CONTINUE_ON_READER_ERROR YES    QUERYFCT_PROPAGATE_IDS_ON_SQL_EXECUTE YES    READER_PARAMS        { $(FetchData_DIRECTIVES) }    OUTPUT { RESULT FEATURE_TYPE FetchData_RESULT        @SupplyAttributes(fme_feature_type,FetchData)         }    OUTPUT { SCHEMA FEATURE_TYPE FetchData_<SCHEMA>           }    OUTPUT { QUERY FEATURE_TYPE FetchData_INITIATOR            }    OUTPUT { READER_ERROR FEATURE_TYPE FetchData_<REJECTED>         }
+FACTORY_DEF {*} RecorderFactory FACTORY_NAME "FetchData_<SCHEMA> Feature Recorder -1 2147614731" INPUT FEATURE_TYPE FetchData_<SCHEMA> FEATURE_FILE  { "C:/Users/aayus/AppData/Local/Temp/wb-cache-parking_occupancy-fYPFqn/Main_FetchData -1 11 fo 0 _lt_SCHEMA_gt_  0  6c6ae21966ee6361a580bb61fe34751bdcd669fd.ffsupdating" } MODE RECORD_PASS_THROUGH STORE_SCANNED_SCHEMA YES NORMALIZE_LIST_ATTRIBUTES_ON_SCHEMA YES CREATE_SPATIAL_INDEX YES INSPECTOR YES RECORD_DIRECTLY_TO_DISK YES FSC_SCHEMA { fme_feature_type_name,buffer,attribute<opencurly><closecurly>.name,buffer,attribute<opencurly><closecurly>.fme_data_type,buffer,attribute<opencurly><closecurly>.native_data_type,buffer,fme_basename,buffer }  FEAT_TYPE_DISPLAY_NAME { FetchData_<lt>Schema<gt> } STORE_SCANNED_METADATA PASS_THROUGH_FME_TYPE NO_LOGGING OUTPUT RECORDED FEATURE_TYPE *
+FACTORY_DEF {*} RecorderFactory FACTORY_NAME "FetchData_RESULT Feature Recorder -1 2147680267" INPUT FEATURE_TYPE FetchData_RESULT FEATURE_FILE  { "C:/Users/aayus/AppData/Local/Temp/wb-cache-parking_occupancy-fYPFqn/Main_FetchData -1 11 fo 1 RESULT  0  19da656c7741132c507d4c229f6bd16cadbf71ec.ffsupdating" } MODE RECORD_PASS_THROUGH STORE_SCANNED_SCHEMA YES NORMALIZE_LIST_ATTRIBUTES_ON_SCHEMA YES CREATE_SPATIAL_INDEX YES INSPECTOR YES RECORD_DIRECTLY_TO_DISK YES FSC_SCHEMA { ZoneId,buffer,TimeStamp,buffer,Vehicles,buffer }  FEAT_TYPE_DISPLAY_NAME { FetchData_Result } STORE_SCANNED_METADATA PASS_THROUGH_FME_TYPE NO_LOGGING OUTPUT RECORDED FEATURE_TYPE *
+FACTORY_DEF {*} RecorderFactory FACTORY_NAME "FetchData_INITIATOR Feature Recorder -1 2147745803" INPUT FEATURE_TYPE FetchData_INITIATOR FEATURE_FILE  { "C:/Users/aayus/AppData/Local/Temp/wb-cache-parking_occupancy-fYPFqn/Main_FetchData -1 11 fo 2 INITIATOR  0  c7f7723e30469f529c427a6dd69516af272d4caa.ffsupdating" } MODE RECORD_PASS_THROUGH STORE_SCANNED_SCHEMA YES NORMALIZE_LIST_ATTRIBUTES_ON_SCHEMA YES CREATE_SPATIAL_INDEX YES INSPECTOR YES RECORD_DIRECTLY_TO_DISK YES FSC_SCHEMA { _creation_instance,uint64,timestamp,buffer,ZoneId,buffer,table_name,buffer,_matched_records,uint32 }  FEAT_TYPE_DISPLAY_NAME { FetchData_Initiator } STORE_SCANNED_METADATA PASS_THROUGH_FME_TYPE NO_LOGGING OUTPUT RECORDED FEATURE_TYPE *
+FACTORY_DEF {*} RecorderFactory FACTORY_NAME "FetchData_<REJECTED> Feature Recorder -1 2147811339" INPUT FEATURE_TYPE FetchData_<REJECTED> FEATURE_FILE  { "C:/Users/aayus/AppData/Local/Temp/wb-cache-parking_occupancy-fYPFqn/Main_FetchData -1 11 fo 3 _lt_REJECTED_gt_  0  ef301f4ff5d9dabe9329e6bc94bcb6a7c6f2fe89.ffsupdating" } MODE RECORD_PASS_THROUGH STORE_SCANNED_SCHEMA YES NORMALIZE_LIST_ATTRIBUTES_ON_SCHEMA YES CREATE_SPATIAL_INDEX YES INSPECTOR YES RECORD_DIRECTLY_TO_DISK YES FSC_SCHEMA { _creation_instance,uint64,timestamp,buffer,table_name,buffer,_matched_records,uint32,_reader_error,buffer,ZoneId,buffer,TimeStamp,buffer,Vehicles,buffer }  FEAT_TYPE_DISPLAY_NAME { FetchData_<lt>Rejected<gt> } STORE_SCANNED_METADATA PASS_THROUGH_FME_TYPE NO_LOGGING OUTPUT RECORDED FEATURE_TYPE *
+.metadata XFORMER_END FetchData;11:Main
+FACTORY_DEF * TeeFactory   FACTORY_NAME "FetchData_<SCHEMA> Feature Counter -1 2147614731"   INPUT FEATURE_TYPE FetchData_<SCHEMA>     @LogCount("PORT -1 2147614731")   NO_LOGGING 
+FACTORY_DEF * TeeFactory   FACTORY_NAME "FetchData_RESULT Feature Counter -1 16"   INPUT FEATURE_TYPE FetchData_RESULT   NO_LOGGING    OUTPUT FEATURE_TYPE *     @LogCount("LINK -1 16")
+FACTORY_DEF * TeeFactory   FACTORY_NAME "FetchData_INITIATOR Feature Counter -1 2147745803"   INPUT FEATURE_TYPE FetchData_INITIATOR     @LogCount("PORT -1 2147745803")   NO_LOGGING 
+FACTORY_DEF * TeeFactory   FACTORY_NAME "FetchData_<REJECTED> Feature Counter -1 2147811339"   INPUT FEATURE_TYPE FetchData_<REJECTED>     @LogCount("PORT -1 2147811339")   NO_LOGGING    OUTPUT FEATURE_TYPE *
+DEFAULT_MACRO _WB_BYPASS_TERMINATION No
+FACTORY_DEF * TeeFactory FACTORY_NAME FetchData_<Rejected> INPUT FEATURE_TYPE FetchData_<REJECTED>  NO_LOGGING   OUTPUT FAILED FEATURE_TYPE * @Abort(ENCODED, FetchData<space>output<space>a<space><lt>Rejected<gt><space>feature.<space><space>To<space>continue<space>translation<space>when<space>features<space>are<space>rejected<comma><space>change<space><apos>Workspace<space>Parameters<apos><space><gt><space>Translation<space><gt><space><apos>Rejected<space>Feature<space>Handling<apos><space>to<space><apos>Continue<space>Translation<apos>)
+# -------------------------------------------------------------------------
+.metadata XFORMER_BEGIN ConvertToTableName2;15:Main
+FME_PYTHON_PATH "$(FME_MF_DIR)"
+FACTORY_DEF {*} PythonFactory    FACTORY_NAME { ConvertToTableName2 }    FLUSH_WHEN_GROUPS_CHANGE { <Unused> }    INPUT  FEATURE_TYPE FetchData_RESULT    SYMBOL_NAME { FeatureProcessor }    PYTHON_NAMESPACE FMEOBJECTS    SOURCE_CODE { import<space>fme<lf>import<space>fmeobjects<lf><lf><lf>class<space>FeatureProcessor<openparen>object<closeparen>:<lf><space><space><space><space><quote><quote><quote>Template<space>Class<space>Interface:<lf><space><space><space><space>When<space>using<space>this<space>class<comma><space>make<space>sure<space>its<space>name<space>is<space>set<space>as<space>the<space>value<space>of<space>the<space><apos>Class<lf><space><space><space><space>to<space>Process<space>Features<apos><space>transformer<space>parameter.<lf><space><space><space><space><quote><quote><quote><lf><lf><space><space><space><space>def<space>__init__<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>Base<space>constructor<space>for<space>class<space>members.<quote><quote><quote><lf><space><space><space><space><space><space><space><space>pass<lf><lf><space><space><space><space>def<space>input<openparen>self<comma><space>feature<closeparen>:<lf><space><space><space><space><space><space><space><space>zoneId<space>=<space>feature.getAttribute<openparen><apos>ZoneId<apos><closeparen><lf><space><space><space><space><space><space><space><space>feature.setAttribute<openparen><apos>table_name<apos><comma><space>zoneId.replace<openparen><apos>-<apos><comma><space><apos>_<apos><closeparen>.lower<openparen><closeparen><closeparen><lf><space><space><space><space><space><space><space><space>self.pyoutput<openparen>feature<closeparen><lf><lf><space><space><space><space>def<space>close<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>This<space>method<space>is<space>called<space>once<space>all<space>the<space>FME<space>Features<space>have<space>been<space>processed<lf><space><space><space><space><space><space><space><space>from<space>input<openparen><closeparen>.<lf><space><space><space><space><space><space><space><space><quote><quote><quote><lf><space><space><space><space><space><space><space><space>pass<lf><lf><space><space><space><space>def<space>process_group<openparen>self<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>When<space><apos>Group<space>By<apos><space>attribute<openparen>s<closeparen><space>are<space>specified<comma><space>this<space>method<space>is<space>called<space><lf><space><space><space><space><space><space><space><space>once<space>all<space>the<space>FME<space>Features<space>in<space>a<space>current<space>group<space>have<space>been<space>sent<space>to<space>input<openparen><closeparen>.<lf><lf><space><space><space><space><space><space><space><space>FME<space>Features<space>sent<space>to<space>input<openparen><closeparen><space>should<space>generally<space>be<space>cached<space>for<space>group-by<space><lf><space><space><space><space><space><space><space><space>processing<space>in<space>this<space>method<space>when<space>knowledge<space>of<space>all<space>Features<space>is<space>required.<space><lf><space><space><space><space><space><space><space><space>The<space>resulting<space>Feature<openparen>s<closeparen><space>from<space>the<space>group-by<space>processing<space>should<space>be<space>emitted<space><lf><space><space><space><space><space><space><space><space>through<space>self.pyoutput<openparen><closeparen>.<lf><lf><space><space><space><space><space><space><space><space>FME<space>will<space>continue<space>calling<space>input<openparen><closeparen><space>a<space>number<space>of<space>times<space>followed<lf><space><space><space><space><space><space><space><space>by<space>process_group<openparen><closeparen><space>for<space>each<space><apos>Group<space>By<apos><space>attribute<comma><space>so<space>this<space><lf><space><space><space><space><space><space><space><space>implementation<space>should<space>reset<space>any<space>class<space>members<space>for<space>the<space>next<space>group.<lf><space><space><space><space><space><space><space><space><quote><quote><quote><lf><space><space><space><space><space><space><space><space>pass<lf><lf><space><space><space><space>def<space>has_support_for<openparen>self<comma><space>support_type<closeparen>:<lf><space><space><space><space><space><space><space><space><quote><quote><quote>This<space>method<space>returns<space>whether<space>this<space>PythonCaller<space>supports<space>a<space>certain<space>type.<lf><space><space><space><space><space><space><space><space>The<space>only<space>supported<space>type<space>is<space>fmeobjects.FME_SUPPORT_FEATURE_TABLE_SHIM.<lf><space><space><space><space><space><space><space><space><lf><space><space><space><space><space><space><space><space>:param<space>int<space>support_type:<space>The<space>support<space>type<space>being<space>queried.<lf><space><space><space><space><space><space><space><space>:returns:<space>True<space>if<space>the<space>passed<space>in<space>support<space>type<space>is<space>supported.<lf><space><space><space><space><space><space><space><space>:rtype:<space>bool<lf><space><space><space><space><space><space><space><space><quote><quote><quote><lf><space><space><space><space><space><space><space><space>if<space>support_type<space>==<space>fmeobjects.FME_SUPPORT_FEATURE_TABLE_SHIM:<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>If<space>this<space>is<space>set<space>to<space>return<space>True<comma><space>FME<space>will<space>pass<space>features<space>to<space>the<space>input<openparen><closeparen><space>method<space>that<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>come<space>from<space>a<space>feature<space>table<space>object.<space>This<space>allows<space>for<space>significant<space>performance<space>gains<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>when<space>processing<space>large<space>numbers<space>of<space>features.<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>To<space>enable<space>this<comma><space>the<space>following<space>conditions<space>must<space>be<space>met:<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space><space><space>1<closeparen><space>features<space>passed<space>into<space>the<space>input<openparen><closeparen><space>method<space>cannot<space>be<space>copied<space>or<space>cached<space>for<space>later<space>use<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space><space><space>2<closeparen><space>features<space>cannot<space>be<space>read<space>or<space>modified<space>after<space>being<space>passed<space>to<space>self.pyoutput<openparen><closeparen><lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space><space><space>3<closeparen><space>Group<space>Processing<space>must<space>not<space>be<space>enabled<lf><space><space><space><space><space><space><space><space><space><space><space><space>#<space>Violations<space>will<space>cause<space>undefined<space>behavior.<lf><space><space><space><space><space><space><space><space><space><space><space><space>return<space>False<lf><space><lf><space><space><space><space><space><space><space><space>return<space>False<lf> }    OUTPUT { PYOUTPUT FEATURE_TYPE ConvertToTableName2_OUTPUT         }
+FACTORY_DEF {*} RecorderFactory FACTORY_NAME "ConvertToTableName2_OUTPUT Feature Recorder -1 2147614735" INPUT FEATURE_TYPE ConvertToTableName2_OUTPUT FEATURE_FILE  { "C:/Users/aayus/AppData/Local/Temp/wb-cache-parking_occupancy-fYPFqn/Main_ConvertToTableName2 -1 15 fo 0 OUTPUT  0  3a2413e58f0336a02a23358912fec6327f49d153.ffsupdating" } MODE RECORD_PASS_THROUGH STORE_SCANNED_SCHEMA YES NORMALIZE_LIST_ATTRIBUTES_ON_SCHEMA YES CREATE_SPATIAL_INDEX YES INSPECTOR YES RECORD_DIRECTLY_TO_DISK YES FSC_SCHEMA { ZoneId,buffer,TimeStamp,buffer,Vehicles,buffer,table_name,buffer }  FEAT_TYPE_DISPLAY_NAME { ConvertToTableName2_Output } STORE_SCANNED_METADATA PASS_THROUGH_FME_TYPE NO_LOGGING OUTPUT RECORDED FEATURE_TYPE *
+.metadata XFORMER_END ConvertToTableName2;15:Main
+FACTORY_DEF * TeeFactory   FACTORY_NAME "ConvertToTableName2_OUTPUT Feature Counter -1 17"   INPUT FEATURE_TYPE ConvertToTableName2_OUTPUT   NO_LOGGING    OUTPUT FEATURE_TYPE *     @LogCount("LINK -1 17")
+# -------------------------------------------------------------------------
+.metadata XFORMER_BEGIN WriteData;14:Main
+MACRO WriteData_DIRECTIVES COMMAND_TIMEOUT 30 APPLICATION_INTENT ReadWrite QUERY_FEATURE_TYPES_FOR_MERGE_FILTERS Yes NAMED_CONNECTION testdb CREATE_FEATURE_TABLES_FROM_DATA Yes
+FACTORY_DEF {*} QueryFactory    FACTORY_NAME { WriteData }    INPUT  FEATURE_TYPE ConvertToTableName2_OUTPUT    QUERY_SQL            { "@EvaluateExpression(FDIV,STRING_ENCODED,IF<space>NOT<space>EXISTS<space><openparen>SELECT<space>*<space>FROM<space><at>Value<openparen>table_name<closeparen><space>WHERE<space>TimeStamp<space>=<space>CONVERT<openparen>DATETIME<comma><space><apos><at>Value<openparen>TimeStamp<closeparen><apos><closeparen><closeparen><lf>BEGIN<lf><space><space><space><space>INSERT<space>INTO<space><at>Value<openparen>table_name<closeparen><space><openparen>TimeStamp<comma><space>Vehicles<closeparen><space>VALUES<space><openparen>CONVERT<openparen>DATETIME<comma><space><apos><at>Value<openparen>TimeStamp<closeparen><apos><closeparen><comma><space><at>Value<openparen>Vehicles<closeparen><closeparen><lf>END,WriteData)" }    READER_TYPE          { MSSQL_ADO }    READER_DATASET       { "testdb" }    COMBINE_ATTRIBUTES   { RESULT_ONLY }    IGNORE_NULLS         { <Unused> }    COMBINE_GEOMETRY     { QUERY_ONLY }    QUERYFCT_OUTPUT      { "BASED_ON_CONNECTIONS" }    CONTINUE_ON_READER_ERROR YES    QUERYFCT_PROPAGATE_IDS_ON_SQL_EXECUTE YES    READER_PARAMS        { $(WriteData_DIRECTIVES) }    OUTPUT { RESULT FEATURE_TYPE WriteData_RESULT        @SupplyAttributes(fme_feature_type,WriteData)         }    OUTPUT { SCHEMA FEATURE_TYPE WriteData_<SCHEMA>           }    OUTPUT { QUERY FEATURE_TYPE WriteData_INITIATOR            }    OUTPUT { READER_ERROR FEATURE_TYPE WriteData_<REJECTED>         }
+FACTORY_DEF {*} RecorderFactory FACTORY_NAME "WriteData_<SCHEMA> Feature Recorder -1 2147614734" INPUT FEATURE_TYPE WriteData_<SCHEMA> FEATURE_FILE  { "C:/Users/aayus/AppData/Local/Temp/wb-cache-parking_occupancy-fYPFqn/Main_WriteData -1 14 fo 0 _lt_SCHEMA_gt_  0  75db07e1d4eaa6a33e68e58a72d82ea5209c61c5.ffsupdating" } MODE RECORD_PASS_THROUGH STORE_SCANNED_SCHEMA YES NORMALIZE_LIST_ATTRIBUTES_ON_SCHEMA YES CREATE_SPATIAL_INDEX YES INSPECTOR YES RECORD_DIRECTLY_TO_DISK YES FSC_SCHEMA { fme_feature_type_name,buffer,attribute<opencurly><closecurly>.name,buffer,attribute<opencurly><closecurly>.fme_data_type,buffer,attribute<opencurly><closecurly>.native_data_type,buffer,fme_basename,buffer }  FEAT_TYPE_DISPLAY_NAME { WriteData_<lt>Schema<gt> } STORE_SCANNED_METADATA PASS_THROUGH_FME_TYPE NO_LOGGING OUTPUT RECORDED FEATURE_TYPE *
+FACTORY_DEF {*} RecorderFactory FACTORY_NAME "WriteData_RESULT Feature Recorder -1 2147680270" INPUT FEATURE_TYPE WriteData_RESULT FEATURE_FILE  { "C:/Users/aayus/AppData/Local/Temp/wb-cache-parking_occupancy-fYPFqn/Main_WriteData -1 14 fo 1 RESULT  0  5871919fd35d637e35a06a143d7491d2c7300198.ffsupdating" } MODE RECORD_PASS_THROUGH STORE_SCANNED_SCHEMA YES NORMALIZE_LIST_ATTRIBUTES_ON_SCHEMA YES CREATE_SPATIAL_INDEX YES INSPECTOR YES RECORD_DIRECTLY_TO_DISK YES FSC_SCHEMA {  }  FEAT_TYPE_DISPLAY_NAME { WriteData_Result } STORE_SCANNED_METADATA PASS_THROUGH_FME_TYPE NO_LOGGING OUTPUT RECORDED FEATURE_TYPE *
+FACTORY_DEF {*} RecorderFactory FACTORY_NAME "WriteData_INITIATOR Feature Recorder -1 2147745806" INPUT FEATURE_TYPE WriteData_INITIATOR FEATURE_FILE  { "C:/Users/aayus/AppData/Local/Temp/wb-cache-parking_occupancy-fYPFqn/Main_WriteData -1 14 fo 2 INITIATOR  1  c9dd463cfe7c4955fedb2032c1658f935cfe2114.ffsupdating" } MODE RECORD_PASS_THROUGH STORE_SCANNED_SCHEMA YES NORMALIZE_LIST_ATTRIBUTES_ON_SCHEMA YES CREATE_SPATIAL_INDEX YES INSPECTOR YES RECORD_DIRECTLY_TO_DISK YES FSC_SCHEMA { ZoneId,buffer,TimeStamp,buffer,Vehicles,buffer,table_name,buffer,_matched_records,uint32 }  FEAT_TYPE_DISPLAY_NAME { WriteData_Initiator } STORE_SCANNED_METADATA PASS_THROUGH_FME_TYPE NO_LOGGING OUTPUT RECORDED FEATURE_TYPE *
+FACTORY_DEF {*} RecorderFactory FACTORY_NAME "WriteData_<REJECTED> Feature Recorder -1 2147811342" INPUT FEATURE_TYPE WriteData_<REJECTED> FEATURE_FILE  { "C:/Users/aayus/AppData/Local/Temp/wb-cache-parking_occupancy-fYPFqn/Main_WriteData -1 14 fo 3 _lt_REJECTED_gt_  0  9294339c2f6576edcd8d9c6ea4df7b4899fbfac7.ffsupdating" } MODE RECORD_PASS_THROUGH STORE_SCANNED_SCHEMA YES NORMALIZE_LIST_ATTRIBUTES_ON_SCHEMA YES CREATE_SPATIAL_INDEX YES INSPECTOR YES RECORD_DIRECTLY_TO_DISK YES FSC_SCHEMA { ZoneId,buffer,TimeStamp,buffer,Vehicles,buffer,table_name,buffer,_reader_error,buffer }  FEAT_TYPE_DISPLAY_NAME { WriteData_<lt>Rejected<gt> } STORE_SCANNED_METADATA PASS_THROUGH_FME_TYPE NO_LOGGING OUTPUT RECORDED FEATURE_TYPE *
+.metadata XFORMER_END WriteData;14:Main
+FACTORY_DEF * TeeFactory   FACTORY_NAME "WriteData_<SCHEMA> Feature Counter -1 2147614734"   INPUT FEATURE_TYPE WriteData_<SCHEMA>     @LogCount("PORT -1 2147614734")   NO_LOGGING 
+FACTORY_DEF * TeeFactory   FACTORY_NAME "WriteData_RESULT Feature Counter -1 2147680270"   INPUT FEATURE_TYPE WriteData_RESULT     @LogCount("PORT -1 2147680270")   NO_LOGGING 
+FACTORY_DEF * TeeFactory   FACTORY_NAME "WriteData_INITIATOR Feature Counter -1 2147745806"   INPUT FEATURE_TYPE WriteData_INITIATOR     @LogCount("PORT -1 2147745806")   NO_LOGGING 
+FACTORY_DEF * TeeFactory   FACTORY_NAME "WriteData_<REJECTED> Feature Counter -1 2147811342"   INPUT FEATURE_TYPE WriteData_<REJECTED>     @LogCount("PORT -1 2147811342")   NO_LOGGING    OUTPUT FEATURE_TYPE *
+DEFAULT_MACRO _WB_BYPASS_TERMINATION No
+FACTORY_DEF * TeeFactory FACTORY_NAME WriteData_<Rejected> INPUT FEATURE_TYPE WriteData_<REJECTED>  NO_LOGGING   OUTPUT FAILED FEATURE_TYPE * @Abort(ENCODED, WriteData<space>output<space>a<space><lt>Rejected<gt><space>feature.<space><space>To<space>continue<space>translation<space>when<space>features<space>are<space>rejected<comma><space>change<space><apos>Workspace<space>Parameters<apos><space><gt><space>Translation<space><gt><space><apos>Rejected<space>Feature<space>Handling<apos><space>to<space><apos>Continue<space>Translation<apos>)
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * RoutingFactory FACTORY_NAME "Destination Feature Type Routing Correlator"   COMMAND_PARM_EVALUATION SINGLE_PASS   INPUT FEATURE_TYPE *   FEATURE_TYPE_ATTRIBUTE __wb_out_feat_type__   OUTPUT ROUTED FEATURE_TYPE *    OUTPUT NOT_ROUTED FEATURE_TYPE __nuke_me__ @Tcl2("FME_StatMessage 818059 [FME_GetAttribute fme_template_feature_type] 818060 818061 fme_warn")
+# -------------------------------------------------------------------------
+
+FACTORY_DEF * TeeFactory   FACTORY_NAME "Final Output Nuker"   INPUT FEATURE_TYPE __nuke_me__
+
