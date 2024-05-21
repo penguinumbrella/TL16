@@ -6,8 +6,12 @@ function App() {
 
   useEffect( () => {
     const fetchData = async () => {
-      const res = await fetch('/api');
-      console.log(await res.json());
+      try {
+        const res = await fetch('/api');
+        console.log(await res.json());
+      } catch (err) {
+        console.log("Error fetching requested resource")
+      }
     };
   fetchData();
   }, [])
