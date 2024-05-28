@@ -9,7 +9,7 @@ const LineGraphComponent = ({ data }) => {
             <YAxis dataKey={"value"} style={{fontSize: "10px"}}/>
             <Tooltip/>
             <Legend/>
-            <Line type="monotone" id="ID01" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+            <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
         </LineChart>
     </ResponsiveContainer>
   )
