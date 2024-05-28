@@ -1,0 +1,15 @@
+.placeHolder {
+    position: relative;
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 170vh;
+    height: 85%;
+    padding: 20px;
+    background-color: #100D1D;
+    border-radius: 10px;
+    overflow: hidden; /* Ensure circle stays inside the rectangle */
+  }
+  

@@ -1,0 +1,107 @@
+/* Updated CSS */
+.searchBar {
+  position: relative;
+  margin: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 85%;
+  padding: 20px;
+  margin-right: 0;
+  background-color: #100D1D;
+  border-radius: 10px;
+  overflow: hidden; /* Ensure circle stays inside the rectangle */
+}
+
+.navIcons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  z-index: 9;
+}
+
+.separator {
+  width: 100%;
+  height: 0.5px;
+  background-color: #9C9FBB; /* Adjust separator color as needed */
+  margin-bottom: 20px;
+}
+
+.bottomIcons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 20px;
+  margin-top: auto;
+}
+
+/* Icon styling */
+.searchBar .chakra-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.navicon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.navicon-container .circle {
+  position: absolute;
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  background-color: #9C9FBB; /* Circle color */
+  border-radius: 50%; /* Ensures it's a circle */
+  top: 50%; /* Position at the center */
+  left: 50%; /* Position at the center */
+  transform: translate(-50%, -50%); /* Centering */
+}
+
+.navicon-container .icon {
+  position: relative; /* Ensure the icon stays in the normal document flow */
+  z-index: 1; /* Places the icon in front of the circle */
+}
+
+
+
+
+
+.searchBar {
+  position: relative;
+}
+
+.blurredCircle1{
+  position: absolute;
+  top: 90%;
+  left: 100%;
+  transform: translate(-50%, -50%);
+  width: 200px; /* Adjust size as needed */
+  height: 200px; /* Adjust size as needed */
+  border-radius: 50%;
+  background-color: rgba(53, 18, 60, 0.5); /* Semi-transparent white */
+  filter: brightness(100%) blur(30px); /* Adjust brightness and blur radius as needed */
+  z-index: 1; /* Ensure the circle stays behind other content */
+}
+
+.blurredCircle2{
+  position: absolute;
+  top: 15%;
+  left: -50%;
+  transform: translate(-50%, -50%);
+  width: 200px; /* Adjust size as needed */
+  height: 200px; /* Adjust size as needed */
+  border-radius: 50%;
+  background-color: rgba(33, 21, 111, 0.5); /* Semi-transparent white */
+  filter: brightness(100%) blur(30px); /* Adjust brightness and blur radius as needed */
+  z-index: 1; /* Ensure the circle stays behind other content */
+}
+
+/* Darken active icon */
+.navIcons .chakra-icon.active {
+  color: black;
+}
