@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript} from '@react-google-maps/api';
 
 import MarkerWithInfoWindow from './MarkerWithInfoWindow';
-
+import mapMarkers from './coordinates.json';
 
 
 const Map = ({ center, zoom }) => {
@@ -21,77 +21,9 @@ const Map = ({ center, zoom }) => {
     streetViewControl: false,
   };
 
-  const mapMarkers = {
-        "parkades":   [
-                          {
-                              "name": "North",
-                              "location":{ "lat": 49.26927494156756, "lng": -123.25087736976562 }
-                          },
-                          {
-                              "name": "West",
-                              "location":{ "lat": 49.2624487, "lng": -123.2564363 }
-                          },
-                          {
-                              "name": "Health Sciences",
-                              "location":{ "lat": 49.2630144, "lng": -123.2475049 }
-                          },
-                          {
-                              "name": "Thunderbird",
-                              "location":{ "lat": 49.2615983, "lng": -123.2430367 }
-                          },
-                          {
-                              "name": "Fraser River",
-                              "location":{ "lat": 49.2660428, "lng": -123.2606111 }
-                          },
-                          {
-                              "name": "Rose Garden",
-                              "location":{ "lat": 49.2695067, "lng": -123.2591884 }
-                          }
-                      ],
-
-        "accessibilty":[{
-          "name": "Rose Garden Accessibilty",
-          "location":{ "lat": 49.2695067, "lng": -123.2591884 }
-        }],
-
-
-        "loading_zones":[{
-          "name": "Fraser River Loading Zone",
-          "location":{  "lat": 49.2660428, "lng": -123.2606111}
-        }],
-
-
-
-
-}
-
-
-const [jsonData, setJsonData] = useState(null);
-const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('./coordinates.json'); // Path to your local JSON file
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setJsonData(data);
-        console.log("mapMarkers")
-
-      } catch (error) {
-        setError(error.message);
-        console.log(error.message)
-      }
-    };
-
-    fetchData();
-  }, []);
 
 
 const [selectedOption, setSelectedOption] = useState('parkades');
-
 
 
   const handleOptionChange = (event) => {
