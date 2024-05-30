@@ -3,6 +3,7 @@ import {MarkerF , InfoWindowF} from '@react-google-maps/api';
 import { useState } from 'react';
 
 import * as imagePaths from './imagePaths.js';
+import newimage from "./assets/accessibility.png"
 
 const MarkerWithInfoWindow = ({ position, 
                                 showInfoWindow,
@@ -13,12 +14,12 @@ const MarkerWithInfoWindow = ({ position,
   
            
 
-  let markerIcon  = imagePaths.parkadeIconImage;
+  let markerIcon  = newimage;
   let markerIconPicked = imagePaths.parkadeIconImagePicked;
 
   if(iconImage === 'parkades') {
-    markerIcon = imagePaths.parkadeIconImage;
-    markerIconPicked = imagePaths.parkadeIconImagePicked;
+    // markerIcon = imagePaths.parkadeIconImage;
+    // markerIconPicked = imagePaths.parkadeIconImagePicked;
 
   } else if(iconImage === 'accessibilty'){
     markerIcon = imagePaths.accessibilityIconImage;

@@ -3,5 +3,5 @@ export const  parkadeIconImagePicked = '/static/media/parking-sign-1-2209719147_
 export const  accessibilityIconImage = '/static/media/accessibility.bc6e9434a44d79ccc351.png'
 export const  accessibilityIconImagePicked = '/static/media/accessibility_filter.48090fb5ca6287212ef9.png'
 export const loadingZoneIconImage = '/static/media/loading_zone.dbe2b32da7609038b1d8.png'
-export const loadingZoneIconImagePicked = '/static/media/loading_zone_filter.cf540a1d8a7bc09ac582.jpg'
+export const loadingZoneIconImagePicked = '/static/media/loading_zone.dbe2b32da7609038b1d8.png'
 
