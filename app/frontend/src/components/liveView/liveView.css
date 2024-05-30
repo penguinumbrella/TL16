@@ -1,6 +1,7 @@
 .liveView {
-    position: relative;
+    position: absolute;
     margin: 50px;
+    margin-left: 180px;
     display: flex;
     flex-direction: column;
     align-items: center;
