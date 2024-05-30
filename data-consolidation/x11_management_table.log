@@ -1,0 +1,110 @@
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Current FME version: FME 2022.2.0.0 (20221103 - Build 22765 - WIN64)
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME_HOME is 'C:\Program Files\FME\'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Desktop ESRI Edition (floating)
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Permanent License.
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Machine host name is: PASS-CDW-245
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|OS Locale Name     : en_US
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|OS Locale Encoding : UTF-8
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Process Encoding   : UTF-8
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME API version: '4.0 20220615'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: FME_BASE is 'no'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: FME_MF_DIR is 'C:\!Capstone\repo\TL16\data-consolidation/'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: FME_MF_NAME is 'x11_management_table.fmw'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: FME_PRODUCT_NAME is 'FME(R) 2022.2.0.0'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Operating System: Microsoft Windows 10 64-bit  (Build 19045)
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Platform: WIN64
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|System Status: 937.70 MB of disk space available in the FME temporary folder (C:\Users\mauer4.stu\AppData\Local\Temp\wbrun_1712605414571_5092\fmetmp_3)
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|System Status: 15.87 GB of physical memory available
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|System Status: 63.49 GB of virtual memory available
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|START - ProcessID: 5948, peak process memory usage: 49772 kB, current process memory usage: 49772 kB
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: Command line arguments are `C:\Program Files\FME\fme.exe' `C:/!Capstone/repo/TL16/data-consolidation\wb-xlate-1712610070275_5092' `LOG_STANDARDOUT' `YES' `LOG_TIMINGS' `YES' `LogCountServerName' `64365' `LOG_STANDARDOUT' `No' `WORKBENCH_LOG_SERVER' `50042'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: Connection Storage: 'C:\Users\mauer4.stu\AppData\Roaming\Safe Software\FME\'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Shared folders for formats are : C:\Program Files\FME\datasources;C:\Users\mauer4.stu\Documents\FME\Formats
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Shared folders for transformers are : C:\Users\mauer4.stu\AppData\Roaming\Safe Software\FME\Packages\22765-win64\transformers;C:\Program Files\FME\transformers;C:\Users\mauer4.stu\AppData\Roaming\Safe Software\FME\FME Store\Transformers
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Shared folders for coordinate systems are : C:\Users\mauer4.stu\Documents\FME\CoordinateSystems
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Shared folders for coordinate system exceptions are : C:\Users\mauer4.stu\Documents\FME\CoordinateSystemExceptions
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Shared folders for coordinate system grid overrides are : C:\Users\mauer4.stu\Documents\FME\CoordinateSystemGridOverrides
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Shared folders for CS-MAP transformation exceptions are : C:\Users\mauer4.stu\Documents\FME\CsmapTransformationExceptions
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Shared folders for transformer categories are : C:\Users\mauer4.stu\Documents\FME\TransformerCategories
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: Reader Keyword is `MULTI_READER'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: Writer Keyword is `MULTI_WRITER'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: Writer Group Definition Keyword is `MULTI_WRITER_DEF'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: Reader type is `MULTI_READER'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: Writer type is `MULTI_WRITER'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: No destination coordinate system set
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: Current working folder is `C:\!Capstone\repo\TL16\data-consolidation'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: Temporary folder is `C:\Users\mauer4.stu\AppData\Local\Temp\wbrun_1712605414571_5092\fmetmp_3', set from environment variable `FME_TEMP'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: Cache folder is 'C:\Users\mauer4.stu\AppData\Local\Temp'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: FME_HOME is `C:\Program Files\FME\'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: Start freeing memory when the process exceeds 47.62 GB
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME Configuration: Stop freeing memory when the process is below 35.72 GB
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Creating writer for format: 
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Creating reader for format: 
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|MULTI_READER(MULTI_READER): Will fail with first member reader failure
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Using Multi Reader with keyword `MULTI_READER' to read multiple datasets
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Using MultiWriter with keyword `MULTI_WRITER' to output data (ID_ATTRIBUTE is `multi_writer_id')
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Writer output will be ordered by value of multi_writer_id
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Loaded module 'LogCount_func' from file 'C:\Program Files\FME\plugins/LogCount_func.dll'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME API version of module 'LogCount_func' matches current internal version (4.0 20220615)
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Loaded module 'PythonFactory' from file 'C:\Program Files\FME\plugins/PythonFactory.dll'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|FME API version of module 'PythonFactory' matches current internal version (4.0 20220615)
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Using Python interpreter from `C:\Program Files\FME\fmepython310\python310.dll' with PYTHONHOME `C:\Program Files\FME\fmepython310'
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Python version 3.10 loaded successfully
+2024-04-08 14:01:13|   0.0|  0.0|INFORM|Adding folder `C:\!Capstone\repo\TL16\data-consolidation\' to the python path
+2024-04-08 14:01:14|   0.1|  0.1|INFORM|Emptying factory pipeline
+2024-04-08 14:01:14|   0.1|  0.0|STATS |Restoring 427 feature(s) from FME feature store file `C:\Users\mauer4.stu\AppData\Local\Temp\wb-cache-x11_management_table-hFyvyY\Main_AddStallnfo -1 15 fo 0 Output  0  e281e94821b045e926a612a57ddf94217d7604ad.ffs'
+2024-04-08 14:01:14|   0.3|  0.2|STATS |Destination Feature Type Routing Correlator (RoutingFactory): Tested 427 input feature(s), wrote 427 output feature(s): 0 matched merge filters, 427 were routed to output, 0 could not be routed.
+2024-04-08 14:01:14|   0.3|  0.0|STATS |Final Output Nuker (TeeFactory): Cloned 0 input feature(s) into 0 output feature(s)
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|MULTI_WRITER: multi_writer_id `1': Started outputting features
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|Creating writer for format: CSV (Comma Separated Value)
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|Trying to find a DYNAMIC plugin for writer named `CSV2'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|Loaded module 'CSV2' from file 'C:\Program Files\FME\plugins/CSV2.dll'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|FME API version of module 'CSV2' matches current internal version (4.0 20220615)
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|FME Configuration: No destination coordinate system set
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|Writer `CSV2_2' of type `CSV2' using group definition keyword `CSV2_2_DEF'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|CSV writer: Directive '_EXTENSION' has the value 'csv'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|CSV writer: Directive '_DELIMITER' has the value ','
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|CSV writer: Directive '_ENCODING' has the value 'UTF-8'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|CSV writer: Directive '_WRITE_BOM_FOR_UNICODE' has the value 'Yes'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|CSV writer: Directive '_QUALIFY_FIELD_NAMES' has the value 'if_needed'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|CSV writer: Directive '_QUALIFY_FIELD_VALUES' has the value 'if_needed'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|CSV writer: Directive '_TREAT_EMBEDDED_FIELD_QUALIFIERS_AS_UNSAFE' has the value 'Yes'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|CSV writer: Directive '_FIELD_QUALIFIER_CHARACTER' has the value '"'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|CSV writer: Directive '_FIELD_QUALIFIER_ESCAPE_CHARACTER' has the value '"'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|CSV writer: Directive '_ROW_TERMINATION' has the value 'System'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|CSV writer: Directive '_WRITE_SCHEMA_FILE' has the value 'NO'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|CSV writer: Opening dataset 'C:\!Capstone\repo\TL16\data-consolidation\HTTP_out_t.csv'
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|Feature output statistics for `CSV2' writer using keyword `CSV2_2':
+2024-04-08 14:01:14|   0.3|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2024-04-08 14:01:14|   0.3|  0.0|STATS |                               Features Written
+2024-04-08 14:01:14|   0.3|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2024-04-08 14:01:14|   0.3|  0.0|STATS |HTTP_out_t                                                                 427
+2024-04-08 14:01:14|   0.3|  0.0|STATS |==============================================================================
+2024-04-08 14:01:14|   0.3|  0.0|STATS |Total Features Written                                                     427
+2024-04-08 14:01:14|   0.3|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|MULTI_WRITER: multi_writer_id `1': done writing 427 feature(s) 
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-04-08 14:01:14|   0.3|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2024-04-08 14:01:14|   0.3|  0.0|STATS |                            Features Read Summary
+2024-04-08 14:01:14|   0.3|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2024-04-08 14:01:14|   0.3|  0.0|STATS |==============================================================================
+2024-04-08 14:01:14|   0.3|  0.0|STATS |Total Features Read                                                          0
+2024-04-08 14:01:14|   0.3|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2024-04-08 14:01:14|   0.3|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2024-04-08 14:01:14|   0.3|  0.0|STATS |                           Features Written Summary
+2024-04-08 14:01:14|   0.3|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2024-04-08 14:01:14|   0.3|  0.0|STATS |HTTP_out_t                                                                 427
+2024-04-08 14:01:14|   0.3|  0.0|STATS |==============================================================================
+2024-04-08 14:01:14|   0.3|  0.0|STATS |Total Features Written                                                     427
+2024-04-08 14:01:14|   0.3|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+2024-04-08 14:01:14|   0.3|  0.0|WARN  |-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-
+2024-04-08 14:01:14|   0.3|  0.0|WARN  |-~                                                                             ~-
+2024-04-08 14:01:14|   0.3|  0.0|WARN  |-~    Feature caches have been recorded at every stage of the translation.     ~-
+2024-04-08 14:01:14|   0.3|  0.0|WARN  |-~                      To inspect the recorded features,                      ~-
+2024-04-08 14:01:14|   0.3|  0.0|WARN  |-~              click the feature cache icons next to the ports.               ~-
+2024-04-08 14:01:14|   0.3|  0.0|WARN  |-~                                                                             ~-
+2024-04-08 14:01:14|   0.3|  0.0|WARN  |-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|Translation was SUCCESSFUL with 7 warning(s) (427 feature(s) output)
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|FME Session Duration: 0.6 seconds. (CPU: 0.2s user, 0.1s system)
+2024-04-08 14:01:14|   0.3|  0.0|INFORM|END - ProcessID: 5948, peak process memory usage: 70988 kB, current process memory usage: 70988 kB
