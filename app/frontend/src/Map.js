@@ -13,7 +13,7 @@ const Map = ({ center, zoom }) => {
   const mapOptions = {
     center: center,
     zoom: zoom,
-    draggable: false,
+    draggable: true,
     zoomControl: false,
     disableDoubleClickZoom: true,
     disableDefaultUI: true,
@@ -28,6 +28,7 @@ const [selectedOption, setSelectedOption] = useState('parkades');
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
+    setActiveIndex("");
   };
 
 
