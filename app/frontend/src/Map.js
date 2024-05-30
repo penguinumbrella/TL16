@@ -54,7 +54,7 @@ const [selectedOption, setSelectedOption] = useState('parkades');
         {
           mapMarkers[selectedOption].map(item => {
             return (<MarkerWithInfoWindow position={item.location} 
-                                          key={item.name}  
+                                          content={item.name}  
                                           infoWindowShown={activeIndex === item.name}  
                                           showInfoWindow={() => setActiveIndex(item.name)} 
                                           exit={() => setActiveIndex('')} iconImage={selectedOption}  />)

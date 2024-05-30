@@ -4,10 +4,12 @@ import { useState } from 'react';
 
 import * as imagePaths from './imagePaths.js';
 
+
+
 const MarkerWithInfoWindow = ({ position, 
                                 showInfoWindow,
                                 infoWindowShown,
-                                key,
+                                content,
                                 exit,
                                 iconImage})=>{
   
@@ -41,7 +43,7 @@ const MarkerWithInfoWindow = ({ position,
                 position={position}
                 onMouseOver={showInfoWindow}>
                 {infoWindowShown &&<InfoWindowF onCloseClick={exit} >
-                    <h3>{key}</h3>
+                    <h3>{content}</h3>
                 </InfoWindowF>}
             </MarkerF>)
 
