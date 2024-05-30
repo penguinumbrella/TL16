@@ -4,20 +4,10 @@ import { useState } from 'react';
 
 import * as imagePaths from './imagePaths.js';
 
-
-import  parkadeIconImage from "./assets/parking-sign-1-2209719147.png"
-import  parkadeIconImagePicked from './assets/parking-sign-1-2209719147_filter.png'
-import  accessibilityIconImage from './assets/accessibility.png'
-import  accessibilityIconImagePicked from './assets/accessibility_filter.png'
-import loadingZoneIconImage from './assets/loading_zone.png'
-import loadingZoneIconImagePicked from './assets/loading_zone_filter.jpg'
-
-console.log("test", parkadeIconImage);
-
 const MarkerWithInfoWindow = ({ position, 
                                 showInfoWindow,
                                 infoWindowShown,
-                                content,
+                                key,
                                 exit,
                                 iconImage})=>{
   
@@ -28,7 +18,6 @@ const MarkerWithInfoWindow = ({ position,
 
   if(iconImage === 'parkades') {
     markerIcon = imagePaths.parkadeIconImage;
-    //console.log(markerIcon);
     markerIconPicked = imagePaths.parkadeIconImagePicked;
 
   } else if(iconImage === 'accessibilty'){
@@ -52,7 +41,7 @@ const MarkerWithInfoWindow = ({ position,
                 position={position}
                 onMouseOver={showInfoWindow}>
                 {infoWindowShown &&<InfoWindowF onCloseClick={exit} >
-                    <h3>{content}</h3>
+                    <h3>{key}</h3>
                 </InfoWindowF>}
             </MarkerF>)
 

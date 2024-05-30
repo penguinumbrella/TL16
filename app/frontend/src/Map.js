@@ -37,13 +37,13 @@ const [selectedOption, setSelectedOption] = useState('parkades');
       <div>
         <form>
           <input type="radio" id="parkades" name="options" value="parkades"  defaultChecked onChange={handleOptionChange} />
-          <label for="parkades">Parkades</label><br/>
+          <label >Parkades</label><br/>
 
           <input type="radio" id="loading_zones" name="options" value="loading_zones" onChange={handleOptionChange}/>
-          <label for="loading_zones">Loading Zones</label><br/>
+          <label >Loading Zones</label><br/>
 
           <input type="radio" id="accessibility" name="options" value="accessibilty"  onChange={handleOptionChange}/>
-          <label for="option3">Accessibility</label><br/>
+          <label >Accessibility</label><br/>
         </form>
       </div>
 
@@ -54,7 +54,7 @@ const [selectedOption, setSelectedOption] = useState('parkades');
         {
           mapMarkers[selectedOption].map(item => {
             return (<MarkerWithInfoWindow position={item.location} 
-                                          content={item.name}  
+                                          key={item.name}  
                                           infoWindowShown={activeIndex === item.name}  
                                           showInfoWindow={() => setActiveIndex(item.name)} 
                                           exit={() => setActiveIndex('')} iconImage={selectedOption}  />)
