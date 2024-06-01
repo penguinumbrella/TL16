@@ -31,7 +31,7 @@ exit: function that resets the state to '' (meaning no infoWindow is currently s
 
 iconImage: string for the marker type, either "parkades", "accessibilty" or "loading_zones"
 
-data: data to be shown still WIP need to connect with server
+data: data to be shown right now it's just a number or a string
 */
 
 const MarkerWithInfoWindow = ({ position, 
@@ -77,11 +77,14 @@ const MarkerWithInfoWindow = ({ position,
     markerIconPicked = loadingZoneIconPicked;
   }   
 
+  let small_icon_size = new window.google.maps.Size(20, 20) ;
+  let large_icon_size = new window.google.maps.Size(25, 25);
+
   return (<MarkerF
                 icon = {{
                   // if picked change the icon size and color
                   url: infoWindowShown ? markerIconPicked : markerIcon,
-                  scaledSize: infoWindowShown ? new window.google.maps.Size(25, 25) : new window.google.maps.Size(20, 20) 
+                  scaledSize: infoWindowShown ?  large_icon_size : small_icon_size
                 }}
 
                 // animation={infoWindowShown ? window.google.maps.Animation.BOUNCE : null}
