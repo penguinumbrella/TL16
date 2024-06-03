@@ -1,8 +1,14 @@
 import { useEffect } from 'react';
-import './App.css';
-import Diagram from './components/diagrams/Diagram';
+import logo from './logo.svg';
+// import './App.css';
+import Map from './Map.js';
+
+const UBC_lat = 49.262141;
+const UBC_lng = -123.247360;
 
 function App() {
+  const center = { lat: UBC_lat, lng: UBC_lng }; 
+  const zoom = 14;
 
 
   useEffect( () => {
@@ -11,7 +17,7 @@ function App() {
         const res = await fetch('/api');
         console.log(await res.json());
       } catch (err) {
-        console.log("Error fetching requested resource")
+        console.log("Frontend Only")
       }
     };
   fetchData();
@@ -19,8 +25,12 @@ function App() {
 
   return (
     <div className="App">
-      <Diagram type='PIE'></Diagram>
-      <Diagram type='LINE'></Diagram>
+      <header className="App-header">
+        {/* <img src={logo}  className="App-logo" alt="logo" /> */}
+        <div>
+      <Map center={center} zoom={zoom}/>
+    </div>
+      </header>
     </div>
   );
 }
