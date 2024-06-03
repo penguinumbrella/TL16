@@ -1,5 +1,11 @@
 # Instructions to work with the app
 
+First in ./app/ run:
+
+```
+npm install
+```
+
 ### To run the frontend individually (for frontend development only, no interaction with the backend):
 
 ```
@@ -29,6 +35,8 @@ npm run dev
 Server starts at http://localhost:8080
 
 ### To run both together (likely for prod not dev):
+
+In ./app/
 
 ```
 npm run build
