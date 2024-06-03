@@ -10,6 +10,7 @@ function App() {
   const center = { lat: UBC_lat, lng: UBC_lng }; 
   const zoom = 14;
 
+
   useEffect( () => {
     const fetchData = async () => {
       try {
