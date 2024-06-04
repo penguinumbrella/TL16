@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import logo from './logo.svg';
-// import './App.css';
+import './App.css';
 import Map from './Map.js';
 
 const UBC_lat = 49.262141;

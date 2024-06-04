@@ -1,6 +1,8 @@
 import React from 'react';
 import {MarkerF , InfoWindowF} from '@react-google-maps/api';
 import { useState } from 'react';
+import Diagram from './components/diagrams/Diagram'
+import './MarkerWithInfoWindow.css'
 
 
 
@@ -90,11 +92,14 @@ const MarkerWithInfoWindow = ({ position,
                 // animation={infoWindowShown ? window.google.maps.Animation.BOUNCE : null}
                 position={position}
                 onMouseOver={showInfoWindow}>
-                {infoWindowShown &&<InfoWindowF onCloseClick={exit} >
-                    <div> 
-                      <h3>{content}</h3>
-                      <h2>{data}</h2>
-                    </div>
+                {infoWindowShown &&<InfoWindowF onCloseClick={exit} className='info-window'>
+                  <div className='info-window-contents'>
+                      <h2 style={{paddingBottom: '20px'}}>{content}</h2>
+                      <div className='info-window-diagrams'>
+                        <Diagram type={'PIE'} height={200} width={200} title='Occupancy'></Diagram>
+                        <Diagram type={'LINE'} height={200} width={200} title='Violations'></Diagram>
+                      </div>
+                  </div>    
                 </InfoWindowF>}
             </MarkerF>)
 }

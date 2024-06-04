@@ -82,7 +82,7 @@ const [selectedOption, setSelectedOption] = useState('parkades');
         </form>
       </div>
 
-    <div style={{ position: 'fixed', top: 0, right: 0, width: '35%', height: '100%' }}>
+    <div style={{ position: 'fixed', top: 0, right: 0, width: '55%', height: '100%' }}>
       <GoogleMap mapContainerStyle={{ width: '100%', height: '100%' }} options={mapOptions} center={center} zoom={zoom}>
         {
           // Loop through every parkade / accessibility spot / loading zone (depending on event.target.value) 

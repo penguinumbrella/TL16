@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Legend, Label } from 'recharts';
 
-const PieChartComponent = ({data, colors}) => {
+const PieChartComponent = ({data, colors, width, height, title=''}) => {
 
   const [ activeIndex, setActiveIndex ] = useState(-1);
 
@@ -16,8 +16,9 @@ const PieChartComponent = ({data, colors}) => {
     if (index != activeIndex)
       toDisplay = data[index].value;
     else toDisplay = `${percent.toFixed(1)*100}%`;
+    console.log(outerRadius)
     return (
-      <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central">
+      <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={`${outerRadius/6}px`}>
         {`${toDisplay}`}
       </text>
     );
@@ -44,8 +45,8 @@ const PieChartComponent = ({data, colors}) => {
 
 
   return (
-    <ResponsiveContainer width={"20%"} height={300}>
-      <PieChart width={400} height={400} >
+    <ResponsiveContainer width={width} height={height} style={{display: 'flex', flexDirection: 'column'}}>
+      <PieChart width={'100%'} height={'100%'}>
         <Pie data={data} label={renderCustomizedLabel} labelLine={false} activeIndex={activeIndex}
          activeShape={renderActiveShape} onMouseEnter={(_, index) => setActiveIndex(index)}
          onMouseLeave={() => setActiveIndex(-1)}>
@@ -55,6 +56,7 @@ const PieChartComponent = ({data, colors}) => {
         </Pie>
         <Legend></Legend>
       </PieChart>
+      <text style={{textAlign: 'center'}}>{title}</text>
     </ResponsiveContainer>
   )
 }

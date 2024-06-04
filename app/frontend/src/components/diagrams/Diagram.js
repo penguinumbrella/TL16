@@ -2,7 +2,7 @@ import React from 'react'
 import PieChartComponent from './PieChart/PieChartComponent'
 import LineGraphComponent from './LineGraph/LineGraphComponent';
 
-const Diagram = ({type}) => {
+const Diagram = ({type, width, height, title=''}) => {
   const DATA = [
         { name: 'Group A', value: 400 },
         { name: 'Group B', value: 300 },
@@ -18,12 +18,12 @@ const Diagram = ({type}) => {
   switch(type) {
     case 'PIE': 
         toRender = <>
-            <PieChartComponent data={DATA} colors={COLORS}></PieChartComponent>
+            <PieChartComponent data={DATA} colors={COLORS} height={height} width={width} title={title}></PieChartComponent>
         </>
         break;
     case 'LINE':
         toRender = <>
-          <LineGraphComponent data={DATA}></LineGraphComponent>
+          <LineGraphComponent data={DATA} height={height} width={width} title={title}></LineGraphComponent>
         </>
         break;
     default:
