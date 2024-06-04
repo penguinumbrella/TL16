@@ -9,8 +9,22 @@
     width: 170vh;
     height: 85%;
     padding: 20px;
-    background-color: #100D1D;
+    background-color: transparent;
     border-radius: 10px;
     overflow: hidden; /* Ensure circle stays inside the rectangle */
   }
   
+
+  .charts {
+    /* Add styles for your charts container */
+  }
+  
+  .key {
+    /* Add styles for your key container */
+    height: 15%; /* Example height for the key container */
+    width: 170vh;
+    border-radius: 10px;
+    background-color: #070811;
+    opacity: 50%;
+
+  }
