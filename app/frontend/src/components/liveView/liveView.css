@@ -48,9 +48,35 @@
   font-weight: bold;
 }
 
+/* Add this to your liveView.css file */
 .warning-sign {
   color: red;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+.warning-tooltip {
+  position: absolute;
+  bottom: -30px; /* Adjust the distance of the tooltip from the icon */
+  left: 50%; /* Position the tooltip horizontally centered */
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  z-index: 1; /* Ensure the tooltip appears above other elements */
+  opacity: 0; /* Initially hide the tooltip */
+  transition: opacity 0.3s ease; /* Add transition effect for smooth visibility */
+}
+
+.warning-sign:hover .warning-tooltip {
+  opacity: 1; /* Show the tooltip on hover */
+}
+
+
+
 
 .chart-content {
   display: flex;
@@ -92,15 +118,17 @@
   border-radius: 10px;
   background-color: rgba(7, 8, 17, 0.5);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column; /* Change flex direction to column */
+  align-items: center; /* Align items in the center horizontally */
+  justify-content: flex-start; /* Align items at the start vertically */
 }
 
 .key {
-  margin: 5vh;
   display: flex;
   align-items: center;
+  margin: 10px;
 }
+
 
 .key-label {
   margin-right: 10px;

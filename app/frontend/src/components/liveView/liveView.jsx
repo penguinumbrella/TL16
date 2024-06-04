@@ -5,11 +5,8 @@ import { WarningTwoIcon } from '@chakra-ui/icons';
 import { ReactComponent as PhGraphOccupancy } from '../../icons/placeholder-occ.svg';
 import { ReactComponent as PhGraphCompliance } from '../../icons/placeholder-com.svg';
 
-import { ReactComponent as phDataOutageOccupancy } from '../../icons/data-outage-occ.svg';
-import { ReactComponent as phDataOutageCompliance } from '../../icons/data-outage-com.svg';
-
-
-import { ReactComponent as clocksvg } from '../../icons/clock-history.svg';
+import { ReactComponent as DataOutageCompliance } from '../../icons/data-outage-com.svg';
+import { ReactComponent as DataOutageOccupancy } from '../../icons/data-outage-occ.svg';
 
 
 const generateChartBox = (parkadeName, dataStatus) => {
@@ -17,13 +14,18 @@ const generateChartBox = (parkadeName, dataStatus) => {
     <div className='chart-box'>
       <div className='chart-header'>
         <span className='parkade-name'>{parkadeName}</span>
-        {dataStatus && <span className='warning-sign'><WarningTwoIcon color='#FFD583' boxSize={30}/></span>}
+        {dataStatus && (
+          <div className='warning-sign'>
+            <WarningTwoIcon color='#FFD583' boxSize={30} />
+            <div className='warning-tooltip'>Data Outage</div>
+          </div>
+        )}
       </div>
       <div className='chart-content'>
         {dataStatus ? (
           <>
-            <div className='large-placeholder'><clocksvg /></div>
-            <div className='small-placeholder'><phDataOutageCompliance /></div>
+            <div className='large-placeholder'><DataOutageOccupancy /></div>
+            <div className='small-placeholder'><DataOutageCompliance /></div>
           </>
         ) : (
           <>
@@ -35,6 +37,8 @@ const generateChartBox = (parkadeName, dataStatus) => {
     </div>
   );
 };
+
+
 
 
 const LiveView = () => {
@@ -86,6 +90,26 @@ const LiveView = () => {
             </div>
           </div>
         </div>
+
+        <div className='key'>
+          <span className='key-label'>Compliance:</span>
+          <div className='key-list'>
+            <div className='key-item'>
+                <span className='key-circle' style={{ backgroundColor: '#FFD583' }}></span>
+                <span className='key-description'>pay station</span>
+              </div>
+              <div className='key-item'>
+                <span className='key-circle' style={{ backgroundColor: '#BAEFFF' }}></span>
+                <span className='key-description'>honk</span>
+              </div>
+              <div className='key-item'>
+                <span className='key-circle' style={{ backgroundColor: '#F765A3' }}></span>
+                <span className='key-description'>violation</span>
+              </div>
+
+          </div>
+        </div>
+        
       </div>
     </div>
   );
