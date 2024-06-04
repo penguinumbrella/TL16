@@ -1,22 +1,58 @@
 import './weatherIcon.css';
-import { FaCloudMoon} from 'react-icons/fa'; // Example with Font Awesome
-import {Cloud} from 'react-icons/fa'; // Example with Font Awesome
-import {FaSun, FaCloudSun, FaCloudRain, FaCloudShowersHeavy, FaWind} from 'react-icons/fa'; // Example with Font Awesome
-
-
+import { FaCloudMoon, FaCloudSun, FaCloudRain, FaCloudShowersHeavy, FaWind, FaSun, FaCloud } from 'react-icons/fa'; // Example with Font Awesome
 
 const WeatherIcon = ({ currTime, temperature, condition }) => {
   let iconComponent;
 
-  switch (currTime) {
-    case 'day':
-      iconComponent = <FaCloudRain className='weatherIconImg' />;
-      break;
-    case 'night':
-      iconComponent = <FaCloudRain me='weatherIconImg' />;
-      break;
-    default:
-      iconComponent = null;
+  // Determine the icon based on time and condition
+  if (currTime === 'day') {
+    switch (condition) {
+      case 'Sunny':
+        iconComponent = <FaSun className='weatherIconImg' />;
+        break;
+      case 'Partly Cloudy':
+        iconComponent = <FaCloudSun className='weatherIconImg' />;
+        break;
+      case 'Cloudy':
+        iconComponent = <FaCloud className='weatherIconImg' />;
+        break;
+      case 'Rain':
+        iconComponent = <FaCloudRain className='weatherIconImg' />;
+        break;
+      case 'Heavy Rain':
+        iconComponent = <FaCloudShowersHeavy className='weatherIconImg' />;
+        break;
+      case 'Windy':
+        iconComponent = <FaWind className='weatherIconImg' />;
+        break;
+      default:
+        iconComponent = <FaCloudSun className='weatherIconImg' />; // Default to partly cloudy
+        break;
+    }
+  } else if (currTime === 'night') {
+    switch (condition) {
+      case 'Clear':
+        iconComponent = <FaCloudMoon className='weatherIconImg' />;
+        break;
+      case 'Partly Cloudy':
+        iconComponent = <FaCloudMoon className='weatherIconImg' />;
+        break;
+      case 'Cloudy':
+        iconComponent = <FaCloud className='weatherIconImg' />;
+        break;
+      case 'Rain':
+        iconComponent = <FaCloudRain className='weatherIconImg' />;
+        break;
+      case 'Heavy Rain':
+        iconComponent = <FaCloudShowersHeavy className='weatherIconImg' />;
+        break;
+      case 'Windy':
+        iconComponent = <FaWind className='weatherIconImg' />;
+        break;
+      default:
+        iconComponent = <FaCloudMoon className='weatherIconImg' />; // Default to clear night
+        break;
+    }
   }
 
   return (

@@ -6,7 +6,7 @@ import { ReactComponent as ClockHistoryIcon } from '../../../icons/clock-history
 import { ReactComponent as PopupWindow } from '../../../icons/slider-popup.svg';
 import './timeSlider.css';
 
-const TimeSlider = () => {
+const TimeSlider = ({onTimeChange}) => {
 
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0); // Set time to 12:00 AM
@@ -41,6 +41,8 @@ const TimeSlider = () => {
     console.log(newTime)
     setCurrentTime(newTime);
     setSliderValue(value);
+
+    onTimeChange(newTime);
   };
 
   const getRange = (ev) => {
