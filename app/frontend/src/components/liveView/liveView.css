@@ -1,68 +1,109 @@
 .liveView {
-    position: absolute;
-    margin: 50px;
-    margin-left: 180px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 170vh;
-    height: 85%;
-    padding: 20px;
-    background-color: transparent;
-    border-radius: 10px;
-    overflow: hidden; /* Ensure circle stays inside the rectangle */
-  }
-  
-
-  .charts {
-    padding: 5vh;
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    max-height: calc(100% - 100px); /* Adjust as needed */
-    overflow-y: auto; /* Add vertical scrollbar if necessary */
-    justify-content: center;
-  }
-  
-  .placeholder-box {
-    width: calc(25%); /* Adjust the width based on your design */
-    height: 25vh; /* Adjust the height based on your design */
-    background-color: #f0f0f0; /* Placeholder color */
-    margin-bottom: 10px; /* Adjust as needed */
-    box-sizing: border-box;
-    border-color: black;
-    border-radius: 20px;
-  }
-  
-  .key {
-    /* Add styles for your key container */
-    height: 15%; /* Example height for the key container */
-    width: 170vh;
-    border-radius: 10px;
-    background-color: #070811;
-    opacity: 50%;
-
-  }
-
-  .liveView {
+  position: absolute;
+  margin: 50px;
+  margin-left: 180px;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  align-items: center;
+  width: 170vh;
+  height: 85%;
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  color: #9C9FBB;
 }
 
 .charts {
-  /* Add styles for your charts container */
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
 }
-.occupancy-key {
+
+.chart-box {
+  width: calc(25% - 20px);
+  height: 50vh;
+  background-color: rgba(7, 8, 17, 0.5);
+  margin: 10px;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  font-size: 2.5vh;
+  font-weight: bold;
+}
+
+.parkade-name {
+  font-weight: bold;
+}
+
+.warning-sign {
+  color: red;
+}
+
+.chart-content {
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+}
+
+
+
+.large-placeholder {
+  width: calc(70%);
+  height: calc(65%); /* This makes the height equal to the width */
+  border-radius: 10px;
+  position: absolute;
+  top: 10px; /* Adjust top position */
+  left: 10px; /* Adjust left position */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.small-placeholder {
+  width: calc(25%); /* Adjust the width so it fits snugly next to the large placeholder */
+  height: calc(20%);
+  border-radius: 10px;
+  position: absolute;
+  bottom: 50px; /* Adjust bottom position */
+  right: 10px; /* Adjust right position */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+.keys {
+  height: 15%;
+  width: 100%;
+  border-radius: 10px;
+  background-color: rgba(7, 8, 17, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.key {
   margin: 5vh;
   display: flex;
   align-items: center;
-  margin-bottom: 10px; /* Adjust as needed */
 }
 
 .key-label {
-  margin-right: 10px; /* Adjust as needed */
+  margin-right: 10px;
 }
 
 .key-list {
@@ -80,9 +121,28 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  margin-right: 5px; /* Adjust as needed */
+  margin-right: 5px;
 }
 
 .key-description {
   /* Add styles for key description */
+}
+
+/* Custom scrollbar styling */
+.charts::-webkit-scrollbar {
+  width: 12px;
+}
+
+.charts::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.charts::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+}
+
+.charts::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.7);
 }
