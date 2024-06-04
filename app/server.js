@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 
+const timeSlider = require("routes")
+
 const PORT = 8080;
 
 const app = express();
