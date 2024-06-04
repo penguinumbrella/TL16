@@ -9,7 +9,7 @@ import AnalyticsView from './components/analyticsView/analyticsView';
 
 function App() {
   // State to track the active view
-  const [activeView, setActiveView] = useState('map'); // 'map' is the default view
+  const [activeView, setActiveView] = useState('live'); // 'map' is the default view
 
   // Function to handle clicking on the icons
   const handleIconClick = (view) => {
