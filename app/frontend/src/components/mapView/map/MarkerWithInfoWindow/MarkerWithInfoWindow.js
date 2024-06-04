@@ -1,7 +1,7 @@
 import React from 'react';
 import {MarkerF , InfoWindowF} from '@react-google-maps/api';
 import { useState } from 'react';
-import Diagram from './components/diagrams/Diagram'
+import Diagram from '../../../diagrams/Diagram'
 import './MarkerWithInfoWindow.css'
 
 

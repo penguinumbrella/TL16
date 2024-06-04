@@ -2,9 +2,9 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript} from '@react-google-maps/api';
 
-import MarkerWithInfoWindow from './MarkerWithInfoWindow';
-import mapMarkers from './coordinates.json';
-import initialMarkerData from './markerData.json';
+import MarkerWithInfoWindow from './MarkerWithInfoWindow/MarkerWithInfoWindow';
+import mapMarkers from '../../../coordinates.json';
+import initialMarkerData from '../../../markerData.json';
 
 
 
