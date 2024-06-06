@@ -10,12 +10,13 @@ import './MarkerWithInfoWindow.css'
 // import * as imagePaths from './imagePaths.js';
 
 // Right now this works consistantly 
-import parkadeIcon from "./assets/parkadeIcon.png"
-import parkadeIconPicked from './assets/parkadeIconPicked.png'
-import accessibilityIcon from './assets/accessibilityIcon.png'
-import accessibilityIconPicked from './assets/accessibilityIconPicked.png'
-import loadingZoneIcon from './assets/loadingZoneIcon.png'
-import loadingZoneIconPicked from './assets/loadingZoneIconPicked.png'
+
+import parkadeIcon from './../../../../assets/parkadeIcon.png'
+import parkadeIconPicked from './../../../../assets/parkadeIconPicked.png'
+import accessibilityIcon from './../../../../assets/accessibilityIcon.png'
+import accessibilityIconPicked from './../../../../assets/accessibilityIconPicked.png'
+import loadingZoneIcon from './../../../../assets/loadingZoneIcon.png'
+import loadingZoneIconPicked from './../../../../assets/loadingZoneIconPicked.png'
 
 
 
@@ -31,7 +32,7 @@ content: the name of the marker
 
 exit: function that resets the state to '' (meaning no infoWindow is currently shown or no marker is currently selected)
 
-iconImage: string for the marker type, either "parkades", "accessibilty" or "loading_zones"
+iconImage: string for the marker type, either "parkades", "accessibility" or "loading_zones"
 
 data: data to be shown right now it's just a number or a string
 */
@@ -52,7 +53,7 @@ const MarkerWithInfoWindow = ({ position,
   //   markerIcon = imagePaths.parkadeIcon;
   //   markerIconPicked = imagePaths.parkadeIconPicked;
 
-  // } else if(iconImage === 'accessibilty'){
+  // } else if(iconImage === 'accessibility'){
   //   markerIcon = imagePaths.accessibilityIcon;
   //   markerIconPicked = imagePaths.accessibilityIconPicked;
 
@@ -70,7 +71,7 @@ const MarkerWithInfoWindow = ({ position,
     markerIcon = parkadeIcon;
     markerIconPicked = parkadeIconPicked;
 
-  } else if(iconImage === 'accessibilty'){
+  } else if(iconImage === 'accessibility'){
     markerIcon = accessibilityIcon;
     markerIconPicked = accessibilityIconPicked;
 
@@ -89,7 +90,7 @@ const MarkerWithInfoWindow = ({ position,
                   scaledSize: infoWindowShown ?  large_icon_size : small_icon_size
                 }}
 
-                // animation={infoWindowShown ? window.google.maps.Animation.BOUNCE : null}
+                //animation={infoWindowShown ? window.google.maps.Animation.BOUNCE : null}
                 position={position}
                 onMouseOver={showInfoWindow}>
                 {infoWindowShown &&<InfoWindowF onCloseClick={exit} className='info-window'>

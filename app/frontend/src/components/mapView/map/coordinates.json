@@ -26,8 +26,8 @@
                       }
                   ],
 
-    "accessibilty":[{
-      "name": "Rose Garden Accessibilty",
+    "accessibility":[{
+      "name": "Rose Garden Accessibility",
       "location":{ "lat": 49.2695067, "lng": -123.2591884 }
     }],
 

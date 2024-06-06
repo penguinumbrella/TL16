@@ -2,19 +2,45 @@ import React, { useState, useEffect } from 'react';
 import './mapView.css';
 import WeatherIcon from './weatherIcon/weatherIcon/weatherIcon';
 import TimeSlider from './timeSlider/timeSlider';
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons from react-icons/fa
-import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi'; // Import eye icons from Chakra UI
+import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
+import Map from './map/Map.js';
+
+import parkadeIcon from "./../../assets/parkadeIcon.png"
+import parkadeIconPicked from './../../assets/parkadeIconPicked.png'
+import accessibilityIcon from './../../assets/accessibilityIcon.png'
+import accessibilityIconPicked from './../../assets/accessibilityIconPicked.png'
+import loadingZoneIcon from './../../assets/loadingZoneIcon.png'
+import loadingZoneIconPicked from './../../assets/loadingZoneIconPicked.png'
+
 
 const MapView = () => {
+  const UBC_lat = 49.262141;
+  const UBC_lng = -123.247360;
+  const center = { lat: UBC_lat, lng: UBC_lng };
+  const zoom = 14;
 
   const PORT = 8080;
 
   const [iconsVisible, setIconsVisible] = useState(true);
   const [weatherData, setWeatherData] = useState(null);
+  const [selectedOption, setSelectedOption] = useState('parkades'); // New state for the selected option
+  const [activeIndex, setActiveIndex] = useState(''); // State for active index
 
   const toggleIconsVisibility = () => {
     setIconsVisible(!iconsVisible);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch('/api');
+        console.log(await res.json());
+      } catch (err) {
+        console.log("Frontend Only");
+      }
+    };
+    fetchData();
+  }, []);
 
   const fetchWeatherData = async (currentTime) => {
     try {
@@ -27,9 +53,13 @@ const MapView = () => {
   };
 
   useEffect(() => {
-    // Fetch initial weather data
     fetchWeatherData(new Date());
   }, []);
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+    setActiveIndex(''); // Reset the active index
+  };
 
   return (
     <div className='mapView'>
@@ -37,7 +67,7 @@ const MapView = () => {
         {/* Content of MapView */}
         {iconsVisible && weatherData && (
           <>
-            <WeatherIcon 
+            <WeatherIcon
               currTime={weatherData.timeOfDay}
               temperature={weatherData.temperature}
               condition={weatherData.condition}
@@ -49,9 +79,20 @@ const MapView = () => {
         <button className="eyeButton" onClick={toggleIconsVisibility}>
           {iconsVisible ? <HiOutlineEye /> : <HiOutlineEyeOff />} {/* Use eye icons */}
         </button>
+
+        <form className="map-form">
+          <input type="radio" id="parkades" name="options" value="parkades" defaultChecked onChange={handleOptionChange} />
+          <label htmlFor="parkades">Parkades</label><br />
+          <input type="radio" id="loading_zones" name="options" value="loading_zones" onChange={handleOptionChange} />
+          <label htmlFor="loading_zones">Loading Zones</label><br />
+          <input type="radio" id="accessibility" name="options" value="accessibility" onChange={handleOptionChange} />
+          <label htmlFor="accessibility">Accessibility</label><br />
+        </form>
+
+        <Map center={center} zoom={zoom} selectedOption={selectedOption} setActiveIndex={setActiveIndex} /> {/* Pass the selected option and setActiveIndex */}
       </div>
     </div>
   );
-}
+};
 
 export default MapView;

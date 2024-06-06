@@ -13,7 +13,7 @@ import loadingZoneIconImagePicked from './assets/loading_zone_filter.jpg'
   //   markerIcon = parkadeIconImage;
   //   markerIconPicked = parkadeIconImagePicked;
 
-  // } else if(iconImage === 'accessibilty'){
+  // } else if(iconImage === 'accessibility'){
   //   markerIcon = accessibilityIconImage;
   //   markerIconPicked = accessibilityIconImagePicked;
 
