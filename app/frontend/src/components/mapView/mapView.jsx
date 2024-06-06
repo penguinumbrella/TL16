@@ -12,15 +12,13 @@ import accessibilityIconPicked from './../../assets/accessibilityIconPicked.png'
 import loadingZoneIcon from './../../assets/loadingZoneIcon.png'
 import loadingZoneIconPicked from './../../assets/loadingZoneIconPicked.png'
 
-
 const MapView = () => {
-
   const PORT = 8080;
 
   const [iconsVisible, setIconsVisible] = useState(true);
   const [weatherData, setWeatherData] = useState(null);
-  const [selectedOption, setSelectedOption] = useState('parkades'); // New state for the selected option
-  const [activeIndex, setActiveIndex] = useState(''); // State for active index
+  const [selectedOption, setSelectedOption] = useState('parkades');
+  const [activeIndex, setActiveIndex] = useState('');
 
   const toggleIconsVisibility = () => {
     setIconsVisible(!iconsVisible);
@@ -76,7 +74,8 @@ const MapView = () => {
           {iconsVisible ? <HiOutlineEye /> : <HiOutlineEyeOff />} {/* Use eye icons */}
         </button>
 
-        <form className="map-form">
+        {iconsVisible &&
+        <form className={`map-form`}>
           <input type="radio" id="parkades" name="options" value="parkades" defaultChecked onChange={handleOptionChange} />
           <label htmlFor="parkades">Parkades</label><br />
           <input type="radio" id="loading_zones" name="options" value="loading_zones" onChange={handleOptionChange} />
@@ -84,8 +83,9 @@ const MapView = () => {
           <input type="radio" id="accessibility" name="options" value="accessibility" onChange={handleOptionChange} />
           <label htmlFor="accessibility">Accessibility</label><br />
         </form>
+        }
 
-        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} /> {/* Pass the selected option and setActiveIndex */}
+        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} />
       </div>
     </div>
   );

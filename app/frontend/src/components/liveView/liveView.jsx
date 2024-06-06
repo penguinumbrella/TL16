@@ -8,6 +8,8 @@ import { ReactComponent as PhGraphCompliance } from '../../icons/placeholder-com
 import { ReactComponent as DataOutageCompliance } from '../../icons/data-outage-com.svg';
 import { ReactComponent as DataOutageOccupancy } from '../../icons/data-outage-occ.svg';
 
+import Diagram from '../diagrams/Diagram';
+
 
 const generateChartBox = (parkadeName, dataStatus) => {
   return (
@@ -24,13 +26,17 @@ const generateChartBox = (parkadeName, dataStatus) => {
       <div className='chart-content'>
         {dataStatus ? (
           <>
-            <div className='large-placeholder'><DataOutageOccupancy /></div>
-            <div className='small-placeholder'><DataOutageCompliance /></div>
+            <Diagram type={'PIE'} height={200} width={200} title="Occupancy" className="large-placeholder"/>
+            <Diagram type={'PIE'} height={200} width={200} title="Compliance" className="small-placeholder"/>
+            {/*<div className='large-placeholder'><DataOutageOccupancy /></div>*/}
+            {/*<div className='small-placeholder'><DataOutageCompliance /></div>*/}
           </>
         ) : (
           <>
-            <div className='large-placeholder'><PhGraphOccupancy /></div>
-            <div className='small-placeholder'><PhGraphCompliance /></div>
+            <Diagram type={'PIE'} height={200} width={200} title="Occupancy" className="large-placeholder"/>
+            <Diagram type={'PIE'} height={200} width={200} title="Compliance" className="small-placeholder"/>
+            {/*<div className='large-placeholder'><PhGraphOccupancy /></div>*/}
+            {/*<div className='small-placeholder'><PhGraphCompliance /></div>*/}
           </>
         )}
       </div>

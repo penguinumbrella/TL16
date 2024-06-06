@@ -68,7 +68,7 @@ const MarkerWithInfoWindow = ({
         url: infoWindowShown ? pickedIcon : icon,
         scaledSize: infoWindowShown ? largeIconSize : smallIconSize,
       }}
-      animation={infoWindowShown ? window.google.maps.Animation.BOUNCE : null}
+      //animation={infoWindowShown ? window.google.maps.Animation.BOUNCE : null}
       position={position}
       onMouseOver={showInfoWindow}
     >
