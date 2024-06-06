@@ -9,96 +9,107 @@ from prophet import Prophet
 import seaborn as sns
 import matplotlib.pyplot as plt
 from pandas.api.types import CategoricalDtype
-from scrape_dates import get_term_dates
+import source.scrape_dates as scrape_dates
+
 
 
 
 parks = ["North","West","Rose","Health Sciences","Fraser","Thunderbird","University Lot Blvd"]
 
 class random_baseline_model():
-    def __init__(self, filename, school_terms=False):
-
-        self.school_terms = school_terms
-        self.data = pd.read_csv(filename,
-                        usecols=["Timestamp", "North","West","Rose","Health Sciences","Fraser","Thunderbird","University Lot Blvd"],
-                        index_col=[0],
-                        parse_dates=[0])
-        
-        cat_type = CategoricalDtype(categories=['Monday','Tuesday',
-                                            'Wednesday',
-                                            'Thursday','Friday',
-                                            'Saturday','Sunday'],
-                                ordered=True)
-
-        df = self.data.copy()
-
-        # Features
-        df['date'] = df.index
-        df['hour'] = df['date'].dt.hour
-        df['dayofweek'] = df['date'].dt.dayofweek
-        df['weekday'] = df['date'].dt.day_name()
-        df['weekday'] = df['weekday'].astype(cat_type)
-        
-        seasons = []
-        for date in self.data.index:
-            seasons.append(get_season(date))
-        df['season'] = seasons
+    def __init__(self, filename, school_terms=False, import_filename="None"):
 
 
-        self.features_and_target = {}
-        self.group= {}
-        self.pivot_group= {}
+        if import_filename != "None":
+            self.school_terms = school_terms
+            self.term_dates_full = pd.read_csv(import_filename, parse_dates=[0])
+            baseline_table = pd.read_csv(filename)
+            self.group = baseline_table.groupby(['park', "hour", "weekday","season","Term"]).first()["cars"]
 
-    
-        #------------------------------------------------------------------------------------------------
-        if self.school_terms == True:
-            # This file has the term dates for the training data
-            term_dates_train = pd.read_csv("term dates.csv",parse_dates=[0])
 
-            term_column = np.zeros(len(self.data)) # Zeros are going to be the breaks
 
-            i = 0
-            t = 0
-            for time in self.data.index:
-                if time >= term_dates_train.iloc[i,0]:
-                    if time < term_dates_train.iloc[i+1,0]:
-                        if time.month >= 5 and time.month <= 8:
-                            term_column[t] = 1 # Summer terms
-                        else:
-                            term_column[t] = 2 # Fall / Winter terms
-                    else:
-                        i += 2
-                t += 1
-                
-            df["Term"] = term_column
-            # df_train.to_csv("df_train.csv",index=True)  
-
-            X = df[['hour', 'weekday','season', 'Term']]
-            for parkade in parks:
-                y = df[parkade]
-
-                self.features_and_target[parkade] =  pd.concat([X, y], axis=1)
-                self.group[parkade]  = round(self.features_and_target[parkade].groupby(['hour', 'weekday', 'season', 'Term'],observed=False )[parkade].mean())
-                self.pivot_group[parkade]  = self.features_and_target[parkade].groupby(['hour', 'weekday', 'season', 'Term'],observed=False )[parkade].mean().reset_index()
-                
-                
-                term_dates_train_list = list(term_dates_train["Timestamp"])
-                term_dates_scraped = get_term_dates()
-                term_dates_train_list.extend(term_dates_scraped)
-                self.term_dates_full=  pd.DataFrame({"Timestamp" : term_dates_train_list})
-
-                
-
-        #------------------------------------------------------------------------------------------------
         else:
-            X = df[['hour', 'weekday','season']]
-        
-            for parkade in parks:
-                y = df[parkade]
+            self.school_terms = school_terms
+            self.data = pd.read_csv(filename,
+                            usecols=["Timestamp", "North","West","Rose","Health Sciences","Fraser","Thunderbird","University Lot Blvd"],
+                            index_col=[0],
+                            parse_dates=[0])
+            
+            cat_type = CategoricalDtype(categories=['Monday','Tuesday',
+                                                'Wednesday',
+                                                'Thursday','Friday',
+                                                'Saturday','Sunday'],
+                                    ordered=True)
 
-                self.features_and_target[parkade] =  pd.concat([X, y], axis=1)
-                self.group[parkade]  = round(self.features_and_target[parkade].groupby(['hour', 'weekday', 'season'],observed=False )[parkade].mean())
-                self.pivot_group[parkade]  = self.features_and_target[parkade].groupby(['hour', 'weekday', 'season'],observed=False )[parkade].mean().reset_index()
+            df = self.data.copy()
+
+            # Features
+            df['date'] = df.index
+            df['hour'] = df['date'].dt.hour
+            df['dayofweek'] = df['date'].dt.dayofweek
+            df['weekday'] = df['date'].dt.day_name()
+            df['weekday'] = df['weekday'].astype(cat_type)
+            
+            seasons = []
+            for date in self.data.index:
+                seasons.append(get_season(date))
+            df['season'] = seasons
+
+
+            self.features_and_target = {}
+            self.group= {}
+            self.pivot_group= {}
+
+        
+            #------------------------------------------------------------------------------------------------
+            if self.school_terms == True:
+                # This file has the term dates for the training data
+                term_dates_train = pd.read_csv("term dates.csv",parse_dates=[0])
+
+                term_column = np.zeros(len(self.data)) # Zeros are going to be the breaks
+
+                i = 0
+                t = 0
+                for time in self.data.index:
+                    if time >= term_dates_train.iloc[i,0]:
+                        if time < term_dates_train.iloc[i+1,0]:
+                            if time.month >= 5 and time.month <= 8:
+                                term_column[t] = 1 # Summer terms
+                            else:
+                                term_column[t] = 2 # Fall / Winter terms
+                        else:
+                            i += 2
+                    t += 1
+                    
+                df["Term"] = term_column
+                # df_train.to_csv("df_train.csv",index=True)  
+
+                X = df[['hour', 'weekday','season', 'Term']]
+                for parkade in parks:
+                    y = df[parkade]
+
+                    self.features_and_target[parkade] =  pd.concat([X, y], axis=1)
+                    self.group[parkade]  = round(self.features_and_target[parkade].groupby(['hour', 'weekday', 'season', 'Term'],observed=False )[parkade].mean())
+                    self.pivot_group[parkade]  = self.features_and_target[parkade].groupby(['hour', 'weekday', 'season', 'Term'],observed=False )[parkade].mean().reset_index()
+                    
+                    
+                    term_dates_train_list = list(term_dates_train["Timestamp"])
+                    term_dates_scraped = scrape_dates.get_term_dates()
+                    term_dates_train_list.extend(term_dates_scraped)
+                    self.term_dates_full=  pd.DataFrame({"Timestamp" : term_dates_train_list})
+
+                    
+
+            #------------------------------------------------------------------------------------------------
+            else:
+                X = df[['hour', 'weekday','season']]
+            
+                for parkade in parks:
+                    y = df[parkade]
+
+                    self.features_and_target[parkade] =  pd.concat([X, y], axis=1)
+                    self.group[parkade]  = round(self.features_and_target[parkade].groupby(['hour', 'weekday', 'season'],observed=False )[parkade].mean())
+                    self.pivot_group[parkade]  = self.features_and_target[parkade].groupby(['hour', 'weekday', 'season'],observed=False )[parkade].mean().reset_index()
 
 
 
@@ -228,6 +239,27 @@ class random_baseline_model():
             dates.to_csv(out_filename,index=True)  
 
         return dates
+    
+
+
+    def save_model(self, group_file_name, term_dates_full_filename):
+        # convert the model table (group) into a  dataframe that can be save as a csv file
+
+        parking_lots = ["North","West","Rose","Health Sciences","Fraser","Thunderbird","University Lot Blvd"]
+        park = "North"
+        full_df = self.group[park].reset_index() 
+        full_df = full_df.rename(columns={park: "cars"})
+        full_df.insert(0, 'park', park)
+
+        for park in parking_lots[1:]:
+            single_park_df = self.group[park].reset_index() 
+            single_park_df = single_park_df.rename(columns={park: "cars"})
+            single_park_df.insert(0, 'park', park)
+            full_df = pd.concat([full_df, single_park_df], axis=0)
+
+        
+        full_df.to_csv(group_file_name, index=False)
+        self.term_dates_full.to_csv(term_dates_full_filename, index=False)
 
 
 
