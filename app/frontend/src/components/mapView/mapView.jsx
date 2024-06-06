@@ -14,10 +14,6 @@ import loadingZoneIconPicked from './../../assets/loadingZoneIconPicked.png'
 
 
 const MapView = () => {
-  const UBC_lat = 49.262141;
-  const UBC_lng = -123.247360;
-  const center = { lat: UBC_lat, lng: UBC_lng };
-  const zoom = 14;
 
   const PORT = 8080;
 
@@ -89,7 +85,7 @@ const MapView = () => {
           <label htmlFor="accessibility">Accessibility</label><br />
         </form>
 
-        <Map center={center} zoom={zoom} selectedOption={selectedOption} setActiveIndex={setActiveIndex} /> {/* Pass the selected option and setActiveIndex */}
+        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} /> {/* Pass the selected option and setActiveIndex */}
       </div>
     </div>
   );

@@ -37,72 +37,61 @@ iconImage: string for the marker type, either "parkades", "accessibility" or "lo
 data: data to be shown right now it's just a number or a string
 */
 
-const MarkerWithInfoWindow = ({ position, 
-                                showInfoWindow,
-                                infoWindowShown,
-                                content,
-                                exit,
-                                iconImage,
-                                data
-                                })=>{
-  
-  // let markerIcon  = imagePaths.parkadeIcon;
-  // let markerIconPicked = imagePaths.parkadeIconPicked;
+const MarkerWithInfoWindow = ({
+  position,
+  showInfoWindow,
+  infoWindowShown,
+  content,
+  exit,
+  iconImage,
+  data,
+  mapCenter, // New prop to pass the map's center
+  setMapCenter, // Function to update the map's center
+}) => {
+  // Define icon paths
+  const iconPaths = {
+    parkades: { icon: parkadeIcon, pickedIcon: parkadeIconPicked },
+    accessibility: { icon: accessibilityIcon, pickedIcon: accessibilityIconPicked },
+    loading_zones: { icon: loadingZoneIcon, pickedIcon: loadingZoneIconPicked },
+  };
 
-  // if(iconImage === 'parkades') {
-  //   markerIcon = imagePaths.parkadeIcon;
-  //   markerIconPicked = imagePaths.parkadeIconPicked;
+  // Select icon based on iconImage
+  const { icon, pickedIcon } = iconPaths[iconImage] || iconPaths.parkades;
 
-  // } else if(iconImage === 'accessibility'){
-  //   markerIcon = imagePaths.accessibilityIcon;
-  //   markerIconPicked = imagePaths.accessibilityIconPicked;
+  // Define icon sizes
+  const smallIconSize = new window.google.maps.Size(20, 20);
+  const largeIconSize = new window.google.maps.Size(25, 25);
 
-  // } else if (iconImage === 'loading_zones'){
-  //   markerIcon = imagePaths.loadingZoneIcon;
-  //   markerIconPicked = imagePaths.loadingZoneIconPicked;
-  // }    
-  
+  return (
+    <MarkerF
+      icon={{
+        url: infoWindowShown ? pickedIcon : icon,
+        scaledSize: infoWindowShown ? largeIconSize : smallIconSize,
+      }}
+      animation={infoWindowShown ? window.google.maps.Animation.BOUNCE : null}
+      position={position}
+      onMouseOver={showInfoWindow}
+    >
+      {infoWindowShown && (
+        <InfoWindowF
+          onCloseClick={() => {
+            exit();
+            // Ensure mapCenter remains unchanged when the InfoWindow is closed
+            setMapCenter(mapCenter);
+          }}
+          className="info-window"
+        >
+          <div className="info-window-contents">
+            <h2 style={{ paddingBottom: '20px' }}>{content}</h2>
+            <div className="info-window-diagrams">
+              <Diagram type={'PIE'} height={200} width={200} title="Occupancy" />
+              <Diagram type={'LINE'} height={200} width={200} title="Violations" />
+            </div>
+          </div>
+        </InfoWindowF>
+      )}
+    </MarkerF>
+  );
+};
 
-  // Default icon is parkade because that's what the default option is 
-  let markerIcon  = parkadeIcon; 
-  let markerIconPicked = parkadeIconPicked;
-
-  if(iconImage === 'parkades') {
-    markerIcon = parkadeIcon;
-    markerIconPicked = parkadeIconPicked;
-
-  } else if(iconImage === 'accessibility'){
-    markerIcon = accessibilityIcon;
-    markerIconPicked = accessibilityIconPicked;
-
-  } else if (iconImage === 'loading_zones'){
-    markerIcon = loadingZoneIcon;
-    markerIconPicked = loadingZoneIconPicked;
-  }   
-
-  let small_icon_size = new window.google.maps.Size(20, 20) ;
-  let large_icon_size = new window.google.maps.Size(25, 25);
-
-  return (<MarkerF
-                icon = {{
-                  // if picked change the icon size and color
-                  url: infoWindowShown ? markerIconPicked : markerIcon,
-                  scaledSize: infoWindowShown ?  large_icon_size : small_icon_size
-                }}
-
-                //animation={infoWindowShown ? window.google.maps.Animation.BOUNCE : null}
-                position={position}
-                onMouseOver={showInfoWindow}>
-                {infoWindowShown &&<InfoWindowF onCloseClick={exit} className='info-window'>
-                  <div className='info-window-contents'>
-                      <h2 style={{paddingBottom: '20px'}}>{content}</h2>
-                      <div className='info-window-diagrams'>
-                        <Diagram type={'PIE'} height={200} width={200} title='Occupancy'></Diagram>
-                        <Diagram type={'LINE'} height={200} width={200} title='Violations'></Diagram>
-                      </div>
-                  </div>    
-                </InfoWindowF>}
-            </MarkerF>)
-}
-
-export default MarkerWithInfoWindow
+export default MarkerWithInfoWindow;

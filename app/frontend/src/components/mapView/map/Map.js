@@ -7,12 +7,17 @@ import './map.css'; // Add a CSS file to handle the styling
 
 import mapStyleDark from './mapStyleDark.json'
 
-const Map = ({ center, zoom, selectedOption, setActiveIndex }) => { // Accept setActiveIndex as a prop
+const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex as a prop
   const [activeIndex, setActiveIndexState] = useState('');
   const [markerData, setMarkerDataData] = useState(initialMarkerData);
 
+  const defaultCenter = { lat: 49.262141, lng: -123.247360 };
+
+  const [mapCenter, setMapCenter] = useState(defaultCenter);
+  const zoom = 15;
+
   const mapOptions = {
-    center: center,
+    center: mapCenter,
     zoom: zoom,
     draggable: true,
     zoomControl: false,
@@ -48,7 +53,7 @@ const Map = ({ center, zoom, selectedOption, setActiveIndex }) => { // Accept se
   return (
     <LoadScript googleMapsApiKey={process.env.REACT_APP_MAPS_KEY}>
       <div className="map-container">
-        <GoogleMap mapContainerStyle={{ width: '100%', height: '100%' }} options={mapOptions} center={center} zoom={zoom}>
+        <GoogleMap mapContainerStyle={{ width: '100%', height: '100%' }} options={mapOptions} center={mapCenter} zoom={zoom}>
           {mapMarkers[selectedOption].map(item => (
             <MarkerWithInfoWindow
               key={item.name}
@@ -59,6 +64,8 @@ const Map = ({ center, zoom, selectedOption, setActiveIndex }) => { // Accept se
               exit={() => setActiveIndexState('')}
               iconImage={selectedOption}
               data={getMarkerData(selectedOption, item.name)}
+              mapCenter={mapCenter}
+              setMapCenter={setMapCenter} // Ensure setMapCenter is passed
             />
           ))}
         </GoogleMap>
