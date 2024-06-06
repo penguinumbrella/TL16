@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import MarkerWithInfoWindow from './MarkerWithInfoWindow/MarkerWithInfoWindow';
 import mapMarkers from './coordinates.json';
 import initialMarkerData from '../../../markerData.json';
@@ -15,6 +15,12 @@ const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex a
 
   const [mapCenter, setMapCenter] = useState(defaultCenter);
   const zoom = 15;
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.REACT_APP_MAPS_KEY,
+    libraries: ['geometry', 'drawing'],
+  });
 
   const mapOptions = {
     center: mapCenter,
@@ -51,9 +57,8 @@ const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex a
   }, [selectedOption, setActiveIndex]);
 
   return (
-    <LoadScript googleMapsApiKey={process.env.REACT_APP_MAPS_KEY}>
       <div className="map-container">
-        <GoogleMap mapContainerStyle={{ width: '100%', height: '100%' }} options={mapOptions} center={mapCenter} zoom={zoom}>
+        {isLoaded && <GoogleMap mapContainerStyle={{ width: '100%', height: '100%' }} options={mapOptions} center={mapCenter} zoom={zoom}>
           {mapMarkers[selectedOption].map(item => (
             <MarkerWithInfoWindow
               key={item.name}
@@ -68,9 +73,8 @@ const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex a
               setMapCenter={setMapCenter} // Ensure setMapCenter is passed
             />
           ))}
-        </GoogleMap>
+        </GoogleMap>}
       </div>
-    </LoadScript>
   );
 };
 
