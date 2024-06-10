@@ -17,6 +17,7 @@ import 'react-clock/dist/Clock.css';
 import axios from 'axios';
 
 import Diagram from "../diagrams/Diagram";
+import { BsArrowLeft } from 'react-icons/bs';
 
 const DATA_CATEGORY_OPTIONS = [
   'Parkade Occupancy', 'Accessibility Occupancy'
@@ -59,7 +60,25 @@ const renderForm = (data, value, setValue) => (
     <Select sx={{ color: "#9C9FBB" }}
       size="small"
       value={value}
-    >
+
+  MenuProps={{
+    anchorOrigin: {
+      vertical: "bottom",
+      horizontal: "left"
+    },
+    transformOrigin: {
+      vertical: "top",
+      horizontal: "left"
+    },
+    getContentAnchorEl: null,
+    PaperProps: {
+      sx: {
+        backgroundColor: "#323551",
+        color: "#9C9FBB"
+      }
+    }
+  }}
+>
       {menuItems(data, value, setValue)}
     </Select>
   </FormControl>
@@ -93,7 +112,10 @@ const renderParkadeSelection = (data, label, selectedParkades, setSelectedParkad
       <Select sx={{ color: "#9C9FBB" }} displayEmpty
         size="small"
         value=''
-        renderValue={() => <p>{label}</p>}
+        renderValue={() => <p>{label}</p>
+        
+      
+      }
       >
         {menuItems(data, '', (item) => {
           if(selectedParkades.indexOf(item) === -1) {
@@ -155,11 +177,12 @@ const AnalyticsView = () => {
       alert('Please fill out all required fields');
       return;
     }
-
+  
     try {
       setLoading(true); // Set loading state to true
       const PORT = 8080;
-      
+  
+      // Make the request to the backend to fetch the CSV data
       const response = await axios.get(`http://localhost:${PORT}/parking/linegraph/${periodicity}/${avgPeak}`, {
         params: {
           startTime: startTime,
@@ -167,26 +190,47 @@ const AnalyticsView = () => {
           ...selectedParkades.reduce((acc, parkade) => ({ ...acc, [parkade]: true }), {})
         }
       });
-      
-      //alert('Report generated successfully');
-      console.log(response);
+  
+
+      if (generateChecked) {
+      const csvData = response.data;
+  
+      const blob = new Blob([csvData], { type: 'text/csv' });
+  
+      const url = window.URL.createObjectURL(blob);
+  
+      // Create a link element to trigger the download
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'parking_data.csv');
+  
+      // Simulate a click on the link to initiate the download
+      document.body.appendChild(link);
+      link.click();
+  
+      // Clean up by removing the temporary URL and link element
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+      }
+
     } catch (error) {
       console.error('Error generating report:', error);
       alert('Failed to generate report');
     } finally {
-      setLoading(false); // Set loading state to false when done
-      setQueryView(false); // Set queryView to false regardless of success or failure
+      setLoading(false);
+      setQueryView(false);
     }
   };
+  
 
   const handleReturn = () => {
-    // Set queryView to false
     setQueryView(true);
   };
 
 
   return queryView ? (
     <div className='analyticsView'>
+      <div className="queryItems">
       <div className='analytics-options-div'>
         <h3>DATA CATEGORY</h3>
         {renderForm(DATA_CATEGORY_OPTIONS, dataCategory, setDataCategory)}
@@ -196,14 +240,37 @@ const AnalyticsView = () => {
         {renderForm(VISUALIZATION_OPTIONS, visualizationFormat, setVisualizationFormat)}
       </div>
       <div className='analytics-options-div'>
-        <h3>TIME FRAME</h3>
-        <div className="timeframe" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Typography style={{ color: '#9C9FBB' }}>FROM</Typography>
-          <DateTimePicker onChange={setStartTime} value={startTime} />
-          <Typography style={{ color: '#9C9FBB' }}>TO</Typography>
-          <DateTimePicker onChange={setEndTime} value={endTime} />
-        </div>
-      </div>
+  <h3>TIME FRAME</h3>
+  <div className="timeframe" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <Typography style={{ color: '#9C9FBB' }}>FROM</Typography>
+    <DateTimePicker
+      onChange={(date) => {
+        if (date < endTime) {
+          setStartTime(date);
+        } else {
+          alert(`Must select a time lesser than ${endTime}`)
+        }
+      }}
+      value={startTime}
+      minDate={new Date('01-01-2018')}
+      maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
+    />
+    <Typography style={{ color: '#9C9FBB' }}>TO</Typography>
+    <DateTimePicker
+      onChange={(date) => {
+        if (date > startTime) {
+          setEndTime(date);
+        } else {
+          alert(`Must select a time greater than ${startTime}`)
+        }
+      }}
+      value={endTime}
+      minDate={new Date('01-01-2018')}
+      maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
+    />
+  </div>
+</div>
+
 
 
       <div className='analytics-options-div'>
@@ -226,19 +293,30 @@ const AnalyticsView = () => {
         </div>
         {renderParkadeSelection(PARKADE_OPTIONS, '+ Select', selectedParkades, setSelectedParkades, setSelectAllChecked)}
       </div>
-      <div className='generate-button-div'>
+      </div>
+      
+      <div className='generate-container'>
+
+        <div className='generate-checkbox-div' style={{width: "15%", display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+          <Checkbox style={{color: '#323551'}} checked={generateChecked} onChange={handleGenerateChange}></Checkbox>
+          <h3>Generate CSV</h3>
+        </div>
         <Button variant="contained" color="primary" onClick={handleGenerateClick}>
           {loading ? 'Generating...' : 'Generate!'}
         </Button>
+        
       </div>
-      <div className='generate-checkbox-div'>
-        <Checkbox style={{color: '#323551'}} checked={generateChecked} onChange={handleGenerateChange}></Checkbox>
-        <Typography>Generate CSV</Typography>
-      </div>
+
+      
     </div>
   ) : (
     <div className='visualizationView'>
-      <button onClick={handleReturn} style={{ position: 'absolute', top: '10px', left: '10px' }}>Return</button>
+      
+
+      <button onClick={handleReturn} style={{ position: 'absolute', top: '10px', left: '10px', backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}>
+        <BsArrowLeft size={24} color={"white"} /> {/* Adjust the size as needed */}
+      </button>
+
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
         <Diagram type={'LINE'} height={200} width={200} title="Occupancy" className="large-placeholder"/>
       </div>

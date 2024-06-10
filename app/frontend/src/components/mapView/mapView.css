@@ -8,10 +8,13 @@
   justify-content: center;
   width: 170vh;
   height: 85%;
-  padding: 20px;
   background-color: #100D1D;
   border-radius: 10px;
   overflow: hidden;
+}
+
+.queryItems{
+  padding: 20px;
 }
 
 .mapViewContent {

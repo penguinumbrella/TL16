@@ -3,16 +3,20 @@
   margin: 50px;
   margin-left: 180px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between; /* Items will be spread out with maximum space between them */
   align-items: center;
-  justify-content: center;
   width: 170vh;
   height: 85%;
   padding: 20px;
   background-color: #100D1D;
   border-radius: 10px;
   overflow: hidden;
-  }
+}
+
+.queryItems {
+  padding: 20px;
+}
+
 
   .visualizationView {
     position: absolute;
@@ -87,3 +91,9 @@
   gap: 10px;
   width: 100%;
 }
+
+.generate-container {
+  display: flex;
+  flex-direction: column;
+}
+
