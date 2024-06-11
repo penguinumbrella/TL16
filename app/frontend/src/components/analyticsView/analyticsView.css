@@ -1,0 +1,99 @@
+.analyticsView {
+  position: absolute;
+  margin: 50px;
+  margin-left: 180px;
+  display: flex;
+  justify-content: space-between; /* Items will be spread out with maximum space between them */
+  align-items: center;
+  width: 170vh;
+  height: 85%;
+  padding: 20px;
+  background-color: #100D1D;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.queryItems {
+  padding: 20px;
+}
+
+
+  .visualizationView {
+    position: absolute;
+    margin: 50px;
+    margin-left: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 170vh;
+    height: 85%;
+    padding: 20px;
+    background-color: #100D1D;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+.analytics-options-div {
+  width: 70%;
+  height: 15%;
+  margin-bottom: 10px;
+}
+
+.cross :hover {
+  cursor: pointer;
+}
+
+
+/* customDateTimePicker.css */
+
+/* Override calendar container style */
+.react-calendar {
+  background-color: #323551;
+  border: none;
+  border-radius: 10px;
+  color: #9C9FBB;
+}
+
+/* Style calendar navigation */
+.react-calendar__navigation button {
+  color: #9C9FBB;
+}
+
+/* Style the calendar days */
+.react-calendar__tile {
+  background-color: #40436d;
+  color: #9C9FBB;
+}
+
+.react-calendar__tile--active {
+  background-color: #5c5f92;
+  color: white;
+}
+
+.react-calendar__tile--now {
+  background-color: #3e4064;
+  color: white;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #5c5f92;
+  color: white;
+}
+.generate-button-div {
+  align-self: flex-end;
+}
+
+.analytics-options-div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.generate-container {
+  display: flex;
+  flex-direction: column;
+}
+

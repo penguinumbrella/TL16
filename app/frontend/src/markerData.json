@@ -1,0 +1,39 @@
+{
+    "parkades":   [
+                      {
+                          "name": "North",
+                          "data": 201
+                      },
+                      {
+                          "name": "West",
+                          "data": -33
+                      },
+                      {
+                          "name": "Health Sciences",
+                          "data": 420
+                      },
+                      {
+                          "name": "Thunderbird",
+                          "data": "( ͡° ͜ʖ ͡°)"
+                      },
+                      {
+                          "name": "Fraser River",
+                          "data": 999999
+                      },
+                      {
+                          "name": "Rose Garden",
+                          "data": 7007
+                      }
+                  ],
+
+    "accessibility":[{
+      "name": "Rose Garden Accessibility",
+      "data": 7
+    }],
+
+
+    "loading_zones":[{
+      "name": "Fraser River Loading Zone",
+      "data": "no"   
+    }]
+}
