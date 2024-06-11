@@ -102,8 +102,10 @@
   }
   
   label.active {
-    opacity: 1; /* Show the label when active */
+    opacity: 1; /* 
+    Show the label when active */
   }
+
 
   label span {
     position: absolute;
@@ -124,19 +126,52 @@
   }
 
 
-  /* Custom styles for the date picker */
-.customDatePicker {
-    /* Customize background color */
-    background-color: orange;
-  }
-  
-  /* Custom styles for the date picker's day cells */
-  .customDatePicker .react-datepicker__day {
-    /* Customize font color */
-    color: orange;
-  }
   
   
   
+/* Override calendar container style */
+.react-calendar {
+  background-color: #323551;
+  border: none;
+  border-radius: 10px;
+  color: #9C9FBB;
+}
 
+/* Style calendar navigation */
+.react-calendar__navigation button {
+  color: #9C9FBB;
+}
 
+/* Style the calendar days */
+.react-calendar__tile {
+  background-color: #40436d;
+  color: #9C9FBB;
+}
+
+.react-calendar__tile--active {
+  background-color: #5c5f92;
+  color: white;
+}
+
+.react-calendar__tile--now {
+  background-color: #3e4064;
+  color: white;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #5c5f92;
+  color: white;
+}
+
+.dateBoxContainer {
+  width: 40vw;
+  display: flex;
+  justify-content: space-between;
+  position: relative; /* Ensure relative positioning */
+}
+
+.react-datepicker__portal {
+  position: absolute; /* Position the calendar absolutely */
+  z-index: 9999; /* Ensure it's above other elements */
+}

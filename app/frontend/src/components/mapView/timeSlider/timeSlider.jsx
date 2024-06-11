@@ -6,6 +6,11 @@ import { ReactComponent as ClockHistoryIcon } from '../../../icons/clock-history
 import { ReactComponent as PopupWindow } from '../../../icons/slider-popup.svg';
 import './timeSlider.css';
 
+import { BsXCircleFill } from 'react-icons/bs';
+import 'react-datetime-picker/dist/DateTimePicker.css';
+import 'react-calendar/dist/Calendar.css';
+import 'react-clock/dist/Clock.css';
+
 const TimeSlider = ({onTimeChange}) => {
 
   const currentDate = new Date();
@@ -145,42 +150,34 @@ const TimeSlider = ({onTimeChange}) => {
   return (
     <div className='timeSlider'>
       <div className='dateBoxContainer'>
-        <div className='dateBoxLeft' onClick={handleDateLeftClick}>
-          {startDateLeft.toLocaleString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+        <div className='dateBoxLeft'>
+        <DatePicker
+          onChange={(date) => {
+            if (date < startDateRight) {
+              setStartDateLeft(date);
+            } else {
+              alert(`Must select a time lesser than ${startDateRight}`)
+            }
+              }}
+          value={startDateLeft}
+          minDate={new Date('01-01-2018')}
+          maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
+        />
         </div>
-        <div className='datePickerContainer'>
-          {showCalendarLeft && (
-            <DatePicker
-              selected={startDateLeft}
-              onChange={handleDateLeftChange}
-              onClickOutside={() => setShowCalendarLeft(false)}
-              showTimeSelect
-              timeIntervals={60} // Set the time intervals to 1 hour (60 minutes)
-              dateFormat="MM/dd/yyyy h:mm aa"
-              inline
-              className="customDatePicker"
-            />
-          )}
-        </div>
-      </div>
-      <div className='dateBoxContainer'>
-        <div className='dateBoxRight' onClick={handleDateRightClick}>
-          {startDateRight.toLocaleString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
-        </div>
-        <div className='datePickerContainer'>
-          {showCalendarRight && (
-            <DatePicker
-              selected={startDateRight}
-              onChange={handleDateRightChange}
-              onClickOutside={() => setShowCalendarRight(false)}
-              showTimeSelect
-              timeIntervals={60} // Set the time intervals to 1 hour (60 minutes)
-              dateFormat="MM/dd/yyyy h:mm aa"
-              inline
-              className="customDatePicker"
-            />
-          )}
-        </div>
+        <div className='dateBoxRight'>
+        <DatePicker
+            onChange={(date) => {
+              if (date > startDateLeft) {
+                setStartDateRight(date);
+              } else {
+                alert(`Must select a time lesser than ${startDateLeft}`)
+              }
+                }}
+            value={startDateRight}
+            minDate={new Date('01-01-2018')}
+            maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
+          />
+          </div>
       </div>
 
       <div className='sliderContainer'>
