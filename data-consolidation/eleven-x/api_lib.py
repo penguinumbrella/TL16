@@ -15,6 +15,7 @@ def run_api_call(api_call):
         # print("No API key found. Please provide an API key.")
         return
 
+    print("api call: " + api_call)
     curl_command = f'curl -X GET "https://app.eleven-x.com/api/v2/' + api_call + '" -H "accept: application/json" -H "Authorization: Bearer ' + api_key + '"'
     # print("In the command line: " + curl_command + "\n")
     # Get the directory of the current script
