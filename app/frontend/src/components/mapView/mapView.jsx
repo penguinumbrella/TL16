@@ -63,8 +63,9 @@ const MapView = () => {
           <>
             <WeatherIcon
               currTime={weatherData.timeOfDay}
-              temperature={weatherData.temperature}
-              condition={weatherData.condition}
+              temperature={weatherData.temp}
+              condition={weatherData.weather_main}
+              description={weatherData.weather_desc}
             />
             <TimeSlider onTimeChange={fetchWeatherData} />
           </>
