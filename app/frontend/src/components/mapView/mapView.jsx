@@ -12,6 +12,8 @@ import accessibilityIconPicked from './../../assets/accessibilityIconPicked.png'
 import loadingZoneIcon from './../../assets/loadingZoneIcon.png'
 import loadingZoneIconPicked from './../../assets/loadingZoneIconPicked.png'
 
+import axios from 'axios';
+
 const MapView = () => {
   const PORT = 8080;
 
@@ -38,7 +40,7 @@ const MapView = () => {
 
   const fetchWeatherData = async (currentTime) => {
     try {
-      const response = await fetch(`http://localhost:${PORT}/weather?time=${currentTime.toISOString()}`);
+      const response = await axios.get(`http://localhost:${PORT}/weather?time=${currentTime.toISOString()}`);
       const data = await response.json();
       setWeatherData(data);
     } catch (error) {
