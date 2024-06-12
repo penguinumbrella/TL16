@@ -102,8 +102,10 @@
   }
   
   label.active {
-    opacity: 1; /* Show the label when active */
+    opacity: 1; /* 
+    Show the label when active */
   }
+
 
   label span {
     position: absolute;
@@ -124,19 +126,77 @@
   }
 
 
-  /* Custom styles for the date picker */
-.customDatePicker {
-    /* Customize background color */
-    background-color: orange;
-  }
-  
-  /* Custom styles for the date picker's day cells */
-  .customDatePicker .react-datepicker__day {
-    /* Customize font color */
-    color: orange;
-  }
-  
-  
-  
+/* Override styles for the input textbox */
+.react-datepicker__input-container input {
+  /* Your custom styles here */
+  background-color: #323551;
+  color: #9C9FBB;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
 
+/* Override calendar container style */
+.react-datepicker {
+  background-color: #323551;
+  border: none;
+  border-radius: 10px;
+  color: #9C9FBB;
+  display: flex; /* Ensure the container is a flex container */
+  flex-direction: row; /* Arrange children horizontally */
+}
 
+/* Style calendar navigation */
+.react-datepicker__navigation button {
+  color: #9C9FBB;
+}
+
+/* Style the calendar days */
+.react-datepicker__tile {
+  background-color: #40436d;
+  color: #9C9FBB;
+}
+
+.react-datepicker__tile--active {
+  background-color: #5c5f92;
+  color: white;
+}
+
+.react-datepicker__tile--now {
+  background-color: #3e4064;
+  color: white;
+}
+
+.react-datepicker__tile:enabled:hover,
+.react-datepicker__tile:enabled:focus {
+  background-color: #5c5f92;
+  color: white;
+}
+
+/* Move time select to the right */
+.react-datepicker__time-container {
+  background-color: #5c5f92;
+  width: auto; /* Allow the container to adjust its width based on content */
+}
+
+/* Style month selector background */
+.react-datepicker__header {
+  background-color: #323551;
+  border-bottom: none; /* Remove border bottom */
+}
+
+/* Style time container background */
+.react-datepicker__time-container {
+  background-color: #323551; /* Dark gray background */
+}
+/* Style time select options */
+.react-datepicker__time-list-item {
+  background-color: #323551; /* Gray color for time select options */
+}
+
+/* Style time select scroller */
+.react-datepicker__time-scroller {
+  background-color: rgba(0, 0, 0, 0.5); /* Dark black transparent background */
+  border-radius: 5px; /* Optional: Add border-radius for rounded corners */
+  padding: 10px; /* Optional: Add padding for better appearance */
+}

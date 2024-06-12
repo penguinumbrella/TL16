@@ -1,10 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Icon } from '@chakra-ui/react';
-import DatePicker from 'react-datepicker';
+import DateTimePicker from 'react-datepicker';
+import Calendar from 'react-calendar';
+import { DtPicker } from 'react-calendar-datetime-picker'
+import 'react-calendar-datetime-picker/dist/style.css'
 import 'react-datepicker/dist/react-datepicker.css';
 import { ReactComponent as ClockHistoryIcon } from '../../../icons/clock-history.svg';
 import { ReactComponent as PopupWindow } from '../../../icons/slider-popup.svg';
 import './timeSlider.css';
+
+import { BsXCircleFill } from 'react-icons/bs';
+import 'react-datetime-picker/dist/DateTimePicker.css';
+import 'react-calendar/dist/Calendar.css';
+import 'react-clock/dist/Clock.css';
 
 const TimeSlider = ({onTimeChange}) => {
 
@@ -31,6 +39,7 @@ const TimeSlider = ({onTimeChange}) => {
 
   const sliderRef = useRef(null);
   const [step, setStep] = useState(0);
+  //const [sliderStep, setSliderStep] = useState(1);
 
   const handleSliderChange = (event) => {
     const value = parseFloat(event.target.value);
@@ -118,6 +127,14 @@ const TimeSlider = ({onTimeChange}) => {
     const maxSliderValue = hoursDifference;
     const sliderStep = 1;
 
+    /*
+    if (hoursDifference > 48) {
+      setSliderStep(24);
+    } else {
+      setSliderStep(1);
+    }
+      */
+
     const calculateBubblePosition = () => {
         if (sliderRef.current) {
           const sliderWidth = sliderRef.current.offsetWidth;
@@ -145,42 +162,44 @@ const TimeSlider = ({onTimeChange}) => {
   return (
     <div className='timeSlider'>
       <div className='dateBoxContainer'>
-        <div className='dateBoxLeft' onClick={handleDateLeftClick}>
-          {startDateLeft.toLocaleString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+        <div className='dateBoxLeft'>
+        <DateTimePicker
+          selected={startDateLeft} // Use selected prop instead of value
+          onChange={(date) => {
+            if (date < startDateRight) {
+              setStartDateLeft(date);
+            } else {
+              alert(`Must select a time lesser than ${startDateRight}`)
+            }
+          }}
+          minDate={new Date('01-01-2018')}
+          maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
+          showTimeSelect // Enable time selection
+          timeIntervals={60} // Set time intervals to 60 minutes (1 hour)
+          timeFormat="HH:mm" // Use military time format
+          dateFormat="MM/dd/yyyy HH:mm" // Include both date and time
+        />
+
         </div>
-        <div className='datePickerContainer'>
-          {showCalendarLeft && (
-            <DatePicker
-              selected={startDateLeft}
-              onChange={handleDateLeftChange}
-              onClickOutside={() => setShowCalendarLeft(false)}
-              showTimeSelect
-              timeIntervals={60} // Set the time intervals to 1 hour (60 minutes)
-              dateFormat="MM/dd/yyyy h:mm aa"
-              inline
-              className="customDatePicker"
-            />
-          )}
-        </div>
-      </div>
-      <div className='dateBoxContainer'>
-        <div className='dateBoxRight' onClick={handleDateRightClick}>
-          {startDateRight.toLocaleString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
-        </div>
-        <div className='datePickerContainer'>
-          {showCalendarRight && (
-            <DatePicker
-              selected={startDateRight}
-              onChange={handleDateRightChange}
-              onClickOutside={() => setShowCalendarRight(false)}
-              showTimeSelect
-              timeIntervals={60} // Set the time intervals to 1 hour (60 minutes)
-              dateFormat="MM/dd/yyyy h:mm aa"
-              inline
-              className="customDatePicker"
-            />
-          )}
-        </div>
+        <div className='dateBoxRight'>
+        <DateTimePicker
+          selected={startDateRight} // Use selected prop instead of value
+            onChange={(date) => {
+              if (date > startDateLeft) {
+                setStartDateRight(date);
+              } else {
+                alert(`Must select a time lesser than ${startDateLeft}`)
+              }
+                }}
+            value={startDateRight}
+            minDate={new Date('01-01-2018')}
+            maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
+            showTimeSelect
+            timeIntervals={60} // Set time intervals to 60 minutes (1 hour)
+            timeFormat="HH:mm" // Use military time format
+            dateFormat="MM/dd/yyyy HH:mm" // Include both date and time
+          />  
+          </div>
       </div>
 
       <div className='sliderContainer'>

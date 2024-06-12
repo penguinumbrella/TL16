@@ -271,8 +271,6 @@ const AnalyticsView = () => {
   </div>
 </div>
 
-
-
       <div className='analytics-options-div'>
         <div style={{display: 'flex', alignItems: 'flex-start'}}>
             <div style={{marginRight: '25%'}}>
