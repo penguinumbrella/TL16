@@ -16,7 +16,6 @@ const PieChartComponent = ({data, colors, width, height, title=''}) => {
     if (index != activeIndex)
       toDisplay = data[index].value;
     else toDisplay = `${percent.toFixed(1)*100}%`;
-    console.log(outerRadius)
     return (
       <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={`${outerRadius/6}px`}>
         {`${toDisplay}`}
@@ -42,7 +41,6 @@ const PieChartComponent = ({data, colors, width, height, title=''}) => {
       </g>
     );
   };
-
 
   return (
     <ResponsiveContainer width={width} height={height} style={{display: 'flex', flexDirection: 'column'}}>

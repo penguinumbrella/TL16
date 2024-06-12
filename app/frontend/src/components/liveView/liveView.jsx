@@ -10,6 +10,16 @@ import { ReactComponent as DataOutageOccupancy } from '../../icons/data-outage-o
 
 import Diagram from '../diagrams/Diagram';
 
+const TABLES = {
+  'Fraser Parkade': 'FraserParkade',
+  'North Parkade': 'NorthParkade',
+  'West Parkade': 'WestParkade',
+  'Health Sciences Parkade': 'HealthSciencesParkade',
+  'Thunderbird Parkade': 'ThunderbirdParkade',
+  'University West Blvd': 'UnivWstBlvdParkade',
+  'Rose Garden Parkade': 'RoseGardenParkade'
+}
+
 
 const generateChartBox = (parkadeName, dataStatus) => {
   return (
@@ -26,15 +36,19 @@ const generateChartBox = (parkadeName, dataStatus) => {
       <div className='chart-content'>
         {dataStatus ? (
           <>
-            <Diagram type={'PIE'} height={200} width={200} title="Occupancy" className="large-placeholder"/>
-            <Diagram type={'PIE'} height={200} width={200} title="Compliance" className="small-placeholder"/>
+            <Diagram type={'PIE'} height={200} width={200} title="Occupancy" className="large-placeholder"
+              query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`}/>
+            <Diagram type={'PIE'} height={200} width={200} title="Compliance" className="small-placeholder"
+              query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`}/>
             {/*<div className='large-placeholder'><DataOutageOccupancy /></div>*/}
             {/*<div className='small-placeholder'><DataOutageCompliance /></div>*/}
           </>
         ) : (
           <>
-            <Diagram type={'PIE'} height={200} width={200} title="Occupancy" className="large-placeholder"/>
-            <Diagram type={'PIE'} height={200} width={200} title="Compliance" className="small-placeholder"/>
+            <Diagram type={'PIE'} height={200} width={200} title="Occupancy" className="large-placeholder"
+              query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`}/>
+            <Diagram type={'PIE'} height={200} width={200} title="Compliance" className="small-placeholder"
+              query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`}/>
             {/*<div className='large-placeholder'><PhGraphOccupancy /></div>*/}
             {/*<div className='small-placeholder'><PhGraphCompliance /></div>*/}
           </>
@@ -64,8 +78,8 @@ const LiveView = () => {
       <div className='charts'>
         {generateChartBox('North Parkade', dataStatus.northParkade)}
         {generateChartBox('West Parkade', dataStatus.westParkade)}
-        {generateChartBox('Rose Parkade', dataStatus.roseParkade)}
-        {generateChartBox('Health Parkade', dataStatus.healthParkade)}
+        {generateChartBox('Rose Garden Parkade', dataStatus.roseParkade)}
+        {generateChartBox('Health Sciences Parkade', dataStatus.healthParkade)}
         {generateChartBox('Fraser Parkade', dataStatus.fraserParkade)}
         {generateChartBox('Thunderbird Parkade', dataStatus.thunderbirdParkade)}
         {generateChartBox('University West Blvd', dataStatus.universityWestBlvd)}
