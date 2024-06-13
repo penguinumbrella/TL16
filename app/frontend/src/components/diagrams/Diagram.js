@@ -3,7 +3,7 @@ import PieChartComponent from './PieChart/PieChartComponent'
 import LineGraphComponent from './LineGraph/LineGraphComponent';
 import axios from 'axios';
 
-const Diagram = ({type, width, height, title='', query=''}) => {
+const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[], dataOverride=[], customToolTip}) => {
 
   const [diagData, setDiagData] = useState([]);
 
@@ -17,35 +17,31 @@ const Diagram = ({type, width, height, title='', query=''}) => {
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#0FA122']; // TBD
 
-  const getData = (query) => {
-    const data = axios.get(`/executeQuery?query=${query}`);
-    console.log(query);
-    return DATA;
-  }
-
   let toRender;
 
   useEffect(() => {
     const getData = async () => {
-      const data = (await axios.get(`/executeQuery?query=${query}`)).data;
-      console.log(data[0]['Capacity'])
-      setDiagData([
-        {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
-        {name: 'Occupied', value: data[0]['Vehicles']}
-      ]);
+      try {
+        const data = (await axios.get(`/executeQuery?query=${query}`)).data;
+        const toDisplay = dataTransformer(data);
+        setDiagData(toDisplay);
+      } catch (e) {
+        console.log(e)
+      }
     }
-    getData();
-  }, [])
+    if (dataOverride.length == 0)
+      getData();
+  }, []);
   
   switch(type) {
     case 'PIE': 
         toRender = <>
-            <PieChartComponent data={diagData} colors={COLORS} height={height} width={width} title={title}></PieChartComponent>
+            <PieChartComponent data={dataOverride.length != 0 ? dataOverride : diagData} colors={COLORS} height={height} width={width} title={title}></PieChartComponent>
         </>
         break;
     case 'LINE':
         toRender = <>
-          <LineGraphComponent data={DATA} height={height} width={width} title={title}></LineGraphComponent>
+          <LineGraphComponent data={dataOverride.length != 0 ? dataOverride : diagData} height={height} width={width} title={title} customToolTip={customToolTip}></LineGraphComponent>
         </>
         break;
     default:

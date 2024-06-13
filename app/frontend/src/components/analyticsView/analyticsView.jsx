@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FormControl,
   InputLabel,
@@ -15,9 +15,9 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import axios from 'axios';
-
-import Diagram from "../diagrams/Diagram";
-import { BsArrowLeft } from 'react-icons/bs';
+import { getQueries } from "./queryHelper";
+import Diagram from '../diagrams/Diagram';
+import { CustomTooltip } from "./customToolTip";
 
 const DATA_CATEGORY_OPTIONS = [
   'Parkade Occupancy', 'Accessibility Occupancy'
@@ -36,7 +36,7 @@ const AVG_PEAK = [
 ];
 
 const PARKADE_OPTIONS = [
-  'Thunderbird', 'North', 'West', 'Health Sciences', 'Fraser River', 'Rose Garden'
+  'Thunderbird', 'North', 'West', 'Health Sciences', 'Fraser River', 'Rose Garden', 'University West Blvd'
 ];
 
 const menuItems = (data, value, setValue=()=>{}, hideSelected=false, selected) => {
@@ -55,8 +55,8 @@ const menuItems = (data, value, setValue=()=>{}, hideSelected=false, selected) =
   ));
 }
 
-const renderForm = (data, value, setValue) => (
-  <FormControl sx={{ width: "300px", backgroundColor: "#323551", color: "#9C9FBB", margin: "10px 0", borderRadius: "5px"}}>
+const renderForm = (data, value, setValue, width="300px") => (
+  <FormControl sx={{ width: width, backgroundColor: "#323551", color: "#9C9FBB", margin: "10px 0", borderRadius: "5px"}}>
     <Select sx={{ color: "#9C9FBB" }}
       size="small"
       value={value}
@@ -105,7 +105,7 @@ const renderSelectedParkades = (selectedParkades, setSelectedParkades, setChecke
 );
 
 const renderParkadeSelection = (data, label, selectedParkades, setSelectedParkades, setChecked) => (
-  <div style={{display:'flex', alignItems:'flex-start'}}>
+  <div style={{display:'flex', alignItems:'flex-start', flexWrap: 'wrap'}}>
     {renderSelectedParkades(selectedParkades, setSelectedParkades, setChecked)}
     <FormControl sx={{ width: "120px", backgroundColor: "#323551", color: "#9C9FBB", margin: "10px 0", borderRadius: "5px"}}>
       <InputLabel>{'+ Select'}</InputLabel>
@@ -139,8 +139,9 @@ const AnalyticsView = () => {
   const [generateChecked, setGenerateChecked] = useState(false);
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
-  const [queryView, setQueryView] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [queries, setQueries] = useState({});
+  const [results, setResults] = useState("");
 
   const handleSelectAllChange = (event) => {
     const checked = event.target.checked;
@@ -170,6 +171,28 @@ const AnalyticsView = () => {
     }
   };
 
+  const renderResults = async (queries) => {
+    const resultsLocal = {};
+    const promises = Object.keys(queries).map(async (parkade) => {
+      const response = await axios.get(`/executeQuery?query=${queries[parkade]}`);
+      const data = response.data;
+      const result = [];
+      data.forEach((dataPoint) => {
+        result.push({
+          'name': new Date(dataPoint['TimestampUnix']*1000).toISOString(),
+          'value': dataPoint['Vehicles']
+        });
+      })
+      resultsLocal[parkade] = result;
+    });
+    await Promise.all(promises);
+    return Object.keys(resultsLocal).map((parkade) => {
+      return (
+        <Diagram type={'LINE'} height={'30%'} width={'90%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={CustomTooltip}/>
+      )
+    });
+  }
+
   const handleGenerateClick = async () => {
     // Check if any required field is empty or missing
     if (!dataCategory || !visualizationFormat || !periodicity || !avgPeak || selectedParkades.length === 0) {
@@ -180,17 +203,11 @@ const AnalyticsView = () => {
   
     try {
       setLoading(true); // Set loading state to true
-      const PORT = 8080;
   
       // Make the request to the backend to fetch the CSV data
-      const response = await axios.get(`http://localhost:${PORT}/parking/linegraph/${periodicity}/${avgPeak}`, {
-        params: {
-          startTime: startTime,
-          endTime: endTime,
-          ...selectedParkades.reduce((acc, parkade) => ({ ...acc, [parkade]: true }), {})
-        }
-      });
-  
+      const queries = getQueries(dataCategory, visualizationFormat, periodicity, avgPeak, selectedParkades, startTime, endTime)
+      const response = []
+      setQueries(queries);
 
       if (generateChecked) {
       const csvData = response.data;
@@ -218,31 +235,35 @@ const AnalyticsView = () => {
       alert('Failed to generate report');
     } finally {
       setLoading(false);
-      setQueryView(false);
     }
   };
-  
 
-  const handleReturn = () => {
-    setQueryView(true);
-  };
+  useEffect(() => {
+    const fetchResults = async () => {
+      const renderedResults = await renderResults(queries);
+      setResults(renderedResults);
+      console.log('Rendered results');
+      console.log(renderedResults);
+    };
 
+    fetchResults();
+  }, [queries]);
 
-  return queryView ? (
-    <div className='analyticsView'>
+  return (
+    <div className='analyticsView' style={{display: 'flex', alignItems: 'center'}}>
       <div className="queryItems">
       <div className='analytics-options-div'>
-        <h3>DATA CATEGORY</h3>
+        <h4>DATA CATEGORY</h4>
         {renderForm(DATA_CATEGORY_OPTIONS, dataCategory, setDataCategory)}
       </div>
       <div className='analytics-options-div'>
-        <h3>VISUALIZATION FORMAT</h3>
+        <h4>VISUALIZATION FORMAT</h4>
         {renderForm(VISUALIZATION_OPTIONS, visualizationFormat, setVisualizationFormat)}
       </div>
       <div className='analytics-options-div'>
-  <h3>TIME FRAME</h3>
-  <div className="timeframe" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-    <Typography style={{ color: '#9C9FBB' }}>FROM</Typography>
+  <h4>TIME FRAME</h4>
+  <div className="timeframe" style={{ display: 'flex', alignItems: 'center', gap: '10px'}}>
+    <Typography style={{ color: '#9C9FBB' }}>From</Typography>
     <DateTimePicker
       onChange={(date) => {
         if (date < endTime) {
@@ -253,9 +274,10 @@ const AnalyticsView = () => {
       }}
       value={startTime}
       minDate={new Date('01-01-2018')}
-      maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
+      maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())  
+      }
     />
-    <Typography style={{ color: '#9C9FBB' }}>TO</Typography>
+    <Typography style={{ color: '#9C9FBB' }}>To</Typography>
     <DateTimePicker
       onChange={(date) => {
         if (date > startTime) {
@@ -272,55 +294,42 @@ const AnalyticsView = () => {
 </div>
 
       <div className='analytics-options-div'>
-        <div style={{display: 'flex', alignItems: 'flex-start'}}>
-            <div style={{marginRight: '25%'}}>
-              <h3>PERIODICITY</h3>
-              {renderForm(PERIODICITY_OPTIONS, periodicity, setPeriodicity)}
+        <div style={{display: 'flex', alignItems: 'center'}}>
+            <div style={{marginRight: '20%'}}>
+              <h4>PERIODICITY</h4>
+              {renderForm(PERIODICITY_OPTIONS, periodicity, setPeriodicity, '150px')}
             </div>
             <div>
-              <h3>Average/Peak</h3>
-              {renderForm(AVG_PEAK, avgPeak, setAvgPeak)}
+              <h4>Average/Peak</h4>
+              {renderForm(AVG_PEAK, avgPeak, setAvgPeak, '150px')}
             </div>
         </div>
       </div>
       <div className='analytics-options-div'>
-        <h3>PARKADE OPTIONS</h3>
+        <h4>PARKADE OPTIONS</h4>
         <div style={{width: "15%", display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
           <Checkbox style={{color: '#323551'}} checked={selectAllChecked} onChange={handleSelectAllChange}></Checkbox>
-          <h3>Select All</h3>
+          <h4>Select All</h4>
         </div>
         {renderParkadeSelection(PARKADE_OPTIONS, '+ Select', selectedParkades, setSelectedParkades, setSelectAllChecked)}
       </div>
-      </div>
-      
       <div className='generate-container'>
 
-        <div className='generate-checkbox-div' style={{width: "15%", display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Checkbox style={{color: '#323551'}} checked={generateChecked} onChange={handleGenerateChange}></Checkbox>
-          <h3>Generate CSV</h3>
-        </div>
-        <Button variant="contained" color="primary" onClick={handleGenerateClick}>
-          {loading ? 'Generating...' : 'Generate!'}
-        </Button>
-        
-      </div>
-
-      
+    <div className='generate-checkbox-div' style={{width: "15%", display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+      <Checkbox style={{color: '#323551'}} checked={generateChecked} onChange={handleGenerateChange}></Checkbox>
+      <h4>Generate CSV</h4>
     </div>
-  ) : (
-    <div className='visualizationView'>
-      
+    <Button variant="contained" color="primary" onClick={handleGenerateClick} style={{width: "150px"}}>
+    {loading ? 'Generating...' : 'Generate!'}
+    </Button>
 
-      <button onClick={handleReturn} style={{ position: 'absolute', top: '10px', left: '10px', backgroundColor: 'transparent', border: 'none', cursor: 'pointer' }}>
-        <BsArrowLeft size={24} color={"white"} /> {/* Adjust the size as needed */}
-      </button>
-
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-        <Diagram type={'LINE'} height={200} width={200} title="Occupancy" className="large-placeholder"/>
-      </div>
-    
     </div>
-  );
+      </div> 
+      <div className="results">
+        {results}
+      </div>     
+    </div>
+  )
 }
 
 export default AnalyticsView;
