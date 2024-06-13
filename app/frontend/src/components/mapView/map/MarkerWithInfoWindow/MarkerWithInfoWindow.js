@@ -47,6 +47,7 @@ const MarkerWithInfoWindow = ({
   data,
   mapCenter, // New prop to pass the map's center
   setMapCenter, // Function to update the map's center
+  clusterer
 }) => {
   // Define icon paths
   const iconPaths = {
@@ -71,6 +72,7 @@ const MarkerWithInfoWindow = ({
       //animation={infoWindowShown ? window.google.maps.Animation.BOUNCE : null}
       position={position}
       onMouseOver={showInfoWindow}
+      clusterer={clusterer}
     >
       {infoWindowShown && (
         <InfoWindowF

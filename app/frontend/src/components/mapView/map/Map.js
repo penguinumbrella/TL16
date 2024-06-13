@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, MarkerClusterer } from '@react-google-maps/api';
 import MarkerWithInfoWindow from './MarkerWithInfoWindow/MarkerWithInfoWindow';
 import mapMarkers from './coordinates.json';
 import initialMarkerData from '../../../markerData.json';
@@ -58,21 +58,60 @@ const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex a
 
   return (
       <div className="map-container">
-        {isLoaded && <GoogleMap mapContainerStyle={{ width: '100%', height: '100%' }} options={mapOptions} center={mapCenter} zoom={zoom}>
-          {mapMarkers[selectedOption].map(item => (
-            <MarkerWithInfoWindow
-              key={item.name}
-              position={item.location}
-              content={item.name}
-              infoWindowShown={activeIndex === item.name}
-              showInfoWindow={() => setActiveIndexState(item.name)}
-              exit={() => setActiveIndexState('')}
-              iconImage={selectedOption}
-              data={getMarkerData(selectedOption, item.name)}
-              mapCenter={mapCenter}
-              setMapCenter={setMapCenter} // Ensure setMapCenter is passed
-            />
-          ))}
+        {isLoaded && <GoogleMap mapContainerStyle={{ width: '100%', height: '100%' }} options={mapOptions} >
+        {((selectedOption === 'accessibility'  )  && <MarkerClusterer
+                  gridSize={50}
+                  maxZoom={17}
+                  averageCenter={true}
+                  // minClusterSize={5}
+                  zoomOnClick={true}          
+                  >
+                  {
+                  (clusterer) => 
+                  // Loop through every parkade / accessibility spot / loading zone (depending on event.target.value) 
+                  // and render markers for them
+                  
+                  mapMarkers[selectedOption].map(item => {
+                    return (<MarkerWithInfoWindow
+                      key={item.name}
+                      position={item.location}
+                      content={item.name}
+                      infoWindowShown={activeIndex === item.name}
+                      showInfoWindow={() => setActiveIndexState(item.name)}
+                      exit={() => setActiveIndexState('')}
+                      iconImage={selectedOption}
+                      data={getMarkerData(selectedOption, item.name)}
+                      mapCenter={mapCenter}
+                      setMapCenter={setMapCenter} // Ensure setMapCenter is passed
+                      clusterer={clusterer }
+                    />)})
+                } 
+                </MarkerClusterer> )
+                || 
+                // These 2 options don't need marker clusters 
+                (
+                mapMarkers[selectedOption].map(item => {
+                    return ((selectedOption ==='parkades' || selectedOption ==='loading_zones' ||selectedOption ==='_empty_' ) 
+                    &&  <MarkerWithInfoWindow
+                    key={item.name}
+                    position={item.location}
+                    content={item.name}
+                    infoWindowShown={activeIndex === item.name}
+                    showInfoWindow={() => setActiveIndexState(item.name)}
+                    exit={() => setActiveIndexState('')}
+                    iconImage={selectedOption}
+                    data={getMarkerData(selectedOption, item.name)}
+                    mapCenter={mapCenter}
+                    setMapCenter={setMapCenter} // Ensure setMapCenter is passed
+                  />)}))
+
+                }
+
+
+
+
+
+
         </GoogleMap>}
       </div>
   );
