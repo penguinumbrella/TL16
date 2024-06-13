@@ -7,14 +7,10 @@ import './map.css'; // Add a CSS file to handle the styling
 
 import mapStyleDark from './mapStyleDark.json'
 
-const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex as a prop
+const Map = ({ selectedOption, setActiveIndex , zoom, center}) => { // Accept setActiveIndex as a prop
   const [activeIndex, setActiveIndexState] = useState('');
   const [markerData, setMarkerDataData] = useState(initialMarkerData);
 
-  const defaultCenter = { lat: 49.262141, lng: -123.247360 };
-
-  const [mapCenter, setMapCenter] = useState(defaultCenter);
-  const zoom = 15;
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -58,7 +54,7 @@ const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex a
 
   return (
       <div className="map-container">
-        {isLoaded && <GoogleMap mapContainerStyle={{position: 'fixed', top: 0, right: 0, width: '100%', height: '100%' }} options={mapOptions} center={defaultCenter} zoom={zoom} >
+        {isLoaded && <GoogleMap mapContainerStyle={{position: 'fixed', top: 0, right: 0, width: '100%', height: '100%' }} options={mapOptions} center={center} zoom={zoom} >
         {((selectedOption === 'accessibility'  )  && <MarkerClusterer
                   gridSize={50}
                   maxZoom={17}

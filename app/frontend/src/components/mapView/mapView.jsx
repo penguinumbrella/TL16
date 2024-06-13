@@ -56,6 +56,9 @@ const MapView = () => {
     setSelectedOption(event.target.value);
     setActiveIndex(''); // Reset the active index
   };
+  
+  const defaultCenter = { lat: 49.262141, lng: -123.247360 };
+  const zoom = 15;
 
   return (
     <div className='mapView'>
@@ -88,7 +91,7 @@ const MapView = () => {
         </form>
         }
 
-        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} />
+        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} zoom={zoom} center={defaultCenter}/>
       </div>
     </div>
   );
