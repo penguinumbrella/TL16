@@ -23,8 +23,8 @@ const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex a
   });
 
   const mapOptions = {
-    center: mapCenter,
-    zoom: zoom,
+    // center: mapCenter,
+    // zoom: zoom,
     draggable: true,
     zoomControl: false,
     disableDoubleClickZoom: true,
@@ -58,7 +58,7 @@ const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex a
 
   return (
       <div className="map-container">
-        {isLoaded && <GoogleMap mapContainerStyle={{ width: '100%', height: '100%' }} options={mapOptions} >
+        {isLoaded && <GoogleMap mapContainerStyle={{position: 'fixed', top: 0, right: 0, width: '100%', height: '100%' }} options={mapOptions} center={defaultCenter} zoom={zoom} >
         {((selectedOption === 'accessibility'  )  && <MarkerClusterer
                   gridSize={50}
                   maxZoom={17}
@@ -81,8 +81,8 @@ const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex a
                       exit={() => setActiveIndexState('')}
                       iconImage={selectedOption}
                       data={getMarkerData(selectedOption, item.name)}
-                      mapCenter={mapCenter}
-                      setMapCenter={setMapCenter} // Ensure setMapCenter is passed
+                      // mapCenter={mapCenter}
+                      // setMapCenter={setMapCenter} // Ensure setMapCenter is passed
                       clusterer={clusterer }
                     />)})
                 } 
@@ -101,8 +101,8 @@ const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex a
                     exit={() => setActiveIndexState('')}
                     iconImage={selectedOption}
                     data={getMarkerData(selectedOption, item.name)}
-                    mapCenter={mapCenter}
-                    setMapCenter={setMapCenter} // Ensure setMapCenter is passed
+                    // mapCenter={mapCenter}
+                    // setMapCenter={setMapCenter} // Ensure setMapCenter is passed
                   />)}))
 
                 }
