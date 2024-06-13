@@ -51,7 +51,12 @@ app.get("/executeQuery", async (req, res) => {
   res.json(await executeQuery(query));
 });
 
-app.get('/weather', (req, res) => {
+app.get("/executeQuery", async (req, res) => {
+  let query = req.query.query;
+  res.json(await executeQuery(query));
+});
+
+app.get('/weatherquery', (req, res) => {
     const { time } = req.query;
   
     // Parse the time parameter
@@ -66,6 +71,44 @@ app.get('/weather', (req, res) => {
   
     res.json(weatherData);
   });
+
+  
+  app.get('/weather', async (req, res) => {
+    try {
+        const { time } = req.query;
+
+        // Parse the time parameter
+        const requestTime = new Date(time);
+
+        // Convert the requestTime to a Unix timestamp
+        const unixTimestamp = Math.floor(requestTime.getTime() / 1000);
+
+        // Determine if it's day or night
+        const timeOfDay = requestTime.getHours() >= 6 && requestTime.getHours() < 18 ? 'day' : 'night';
+
+        // Construct the SQL query
+        let query = `
+            SELECT [weather_main], [weather_desc], [temp]
+            FROM [Parking].[dbo].[actual_weather]
+            WHERE [dt] = ${unixTimestamp}
+        `;
+
+        // Execute the query
+        const weatherData = await executeQuery(query);
+
+        // If no data found for the specified time, return a not found response
+        if (weatherData.length === 0) {
+            return res.status(404).json({ error: 'No weather data found for the specified time' });
+        }
+
+        // Return the weather data
+        res.json({ ...weatherData[0], timeOfDay });
+    } catch (error) {
+        console.error('Error fetching weather data:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 
   // Whenever the page is refreshed fetch data from the database
 // Then update the json file "markerData.json"

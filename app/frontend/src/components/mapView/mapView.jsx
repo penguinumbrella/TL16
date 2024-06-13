@@ -12,6 +12,8 @@ import accessibilityIconPicked from './../../assets/accessibilityIconPicked.png'
 import loadingZoneIcon from './../../assets/loadingZoneIcon.png'
 import loadingZoneIconPicked from './../../assets/loadingZoneIconPicked.png'
 
+import axios from 'axios';
+
 const MapView = () => {
   const PORT = 8080;
 
@@ -38,7 +40,7 @@ const MapView = () => {
 
   const fetchWeatherData = async (currentTime) => {
     try {
-      const response = await fetch(`http://localhost:${PORT}/weather?time=${currentTime.toISOString()}`);
+      const response = await axios.get(`http://localhost:${PORT}/weather?time=${currentTime.toISOString()}`);
       const data = await response.json();
       setWeatherData(data);
     } catch (error) {
@@ -54,6 +56,9 @@ const MapView = () => {
     setSelectedOption(event.target.value);
     setActiveIndex(''); // Reset the active index
   };
+  
+  const defaultCenter = { lat: 49.262141, lng: -123.247360 };
+  const zoom = 15;
 
   return (
     <div className='mapView'>
@@ -63,8 +68,9 @@ const MapView = () => {
           <>
             <WeatherIcon
               currTime={weatherData.timeOfDay}
-              temperature={weatherData.temperature}
-              condition={weatherData.condition}
+              temperature={weatherData.temp}
+              condition={weatherData.weather_main}
+              description={weatherData.weather_desc}
             />
             <TimeSlider onTimeChange={fetchWeatherData} />
           </>
@@ -85,7 +91,7 @@ const MapView = () => {
         </form>
         }
 
-        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} />
+        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} zoom={zoom} center={defaultCenter}/>
       </div>
     </div>
   );
