@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, MarkerClusterer } from '@react-google-maps/api';
 import MarkerWithInfoWindow from './MarkerWithInfoWindow/MarkerWithInfoWindow';
 import mapMarkers from './coordinates.json';
 import initialMarkerData from '../../../markerData.json';
@@ -7,14 +7,10 @@ import './map.css'; // Add a CSS file to handle the styling
 
 import mapStyleDark from './mapStyleDark.json'
 
-const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex as a prop
+const Map = ({ selectedOption, setActiveIndex , zoom, center}) => { // Accept setActiveIndex as a prop
   const [activeIndex, setActiveIndexState] = useState('');
   const [markerData, setMarkerDataData] = useState(initialMarkerData);
 
-  const defaultCenter = { lat: 49.262141, lng: -123.247360 };
-
-  const [mapCenter, setMapCenter] = useState(defaultCenter);
-  const zoom = 15;
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -23,8 +19,8 @@ const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex a
   });
 
   const mapOptions = {
-    center: mapCenter,
-    zoom: zoom,
+    // center: mapCenter,
+    // zoom: zoom,
     draggable: true,
     zoomControl: false,
     disableDoubleClickZoom: true,
@@ -58,21 +54,60 @@ const Map = ({ selectedOption, setActiveIndex }) => { // Accept setActiveIndex a
 
   return (
       <div className="map-container">
-        {isLoaded && <GoogleMap mapContainerStyle={{ width: '100%', height: '100%' }} options={mapOptions} center={mapCenter} zoom={zoom}>
-          {mapMarkers[selectedOption].map(item => (
-            <MarkerWithInfoWindow
-              key={item.name}
-              position={item.location}
-              content={item.name}
-              infoWindowShown={activeIndex === item.name}
-              showInfoWindow={() => setActiveIndexState(item.name)}
-              exit={() => setActiveIndexState('')}
-              iconImage={selectedOption}
-              data={getMarkerData(selectedOption, item.name)}
-              mapCenter={mapCenter}
-              setMapCenter={setMapCenter} // Ensure setMapCenter is passed
-            />
-          ))}
+        {isLoaded && <GoogleMap mapContainerStyle={{position: 'fixed', top: 0, right: 0, width: '100%', height: '100%' }} options={mapOptions} center={center} zoom={zoom} >
+        {((selectedOption === 'accessibility'  )  && <MarkerClusterer
+                  gridSize={50}
+                  maxZoom={17}
+                  averageCenter={true}
+                  // minClusterSize={5}
+                  zoomOnClick={true}          
+                  >
+                  {
+                  (clusterer) => 
+                  // Loop through every parkade / accessibility spot / loading zone (depending on event.target.value) 
+                  // and render markers for them
+                  
+                  mapMarkers[selectedOption].map(item => {
+                    return (<MarkerWithInfoWindow
+                      key={item.name}
+                      position={item.location}
+                      content={item.name}
+                      infoWindowShown={activeIndex === item.name}
+                      showInfoWindow={() => setActiveIndexState(item.name)}
+                      exit={() => setActiveIndexState('')}
+                      iconImage={selectedOption}
+                      data={getMarkerData(selectedOption, item.name)}
+                      // mapCenter={mapCenter}
+                      // setMapCenter={setMapCenter} // Ensure setMapCenter is passed
+                      clusterer={clusterer }
+                    />)})
+                } 
+                </MarkerClusterer> )
+                || 
+                // These 2 options don't need marker clusters 
+                (
+                mapMarkers[selectedOption].map(item => {
+                    return ((selectedOption ==='parkades' || selectedOption ==='loading_zones' ||selectedOption ==='_empty_' ) 
+                    &&  <MarkerWithInfoWindow
+                    key={item.name}
+                    position={item.location}
+                    content={item.name}
+                    infoWindowShown={activeIndex === item.name}
+                    showInfoWindow={() => setActiveIndexState(item.name)}
+                    exit={() => setActiveIndexState('')}
+                    iconImage={selectedOption}
+                    data={getMarkerData(selectedOption, item.name)}
+                    // mapCenter={mapCenter}
+                    // setMapCenter={setMapCenter} // Ensure setMapCenter is passed
+                  />)}))
+
+                }
+
+
+
+
+
+
         </GoogleMap>}
       </div>
   );

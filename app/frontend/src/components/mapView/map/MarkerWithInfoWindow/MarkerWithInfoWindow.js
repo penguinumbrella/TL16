@@ -45,8 +45,9 @@ const MarkerWithInfoWindow = ({
   exit,
   iconImage,
   data,
-  mapCenter, // New prop to pass the map's center
-  setMapCenter, // Function to update the map's center
+  // mapCenter, // New prop to pass the map's center
+  // setMapCenter, // Function to update the map's center
+  clusterer
 }) => {
   // Define icon paths
   const iconPaths = {
@@ -71,13 +72,14 @@ const MarkerWithInfoWindow = ({
       //animation={infoWindowShown ? window.google.maps.Animation.BOUNCE : null}
       position={position}
       onMouseOver={showInfoWindow}
+      clusterer={clusterer}
     >
       {infoWindowShown && (
         <InfoWindowF
           onCloseClick={() => {
             exit();
             // Ensure mapCenter remains unchanged when the InfoWindow is closed
-            setMapCenter(mapCenter);
+            // setMapCenter(mapCenter);
           }}
           className="info-window"
         >
@@ -86,6 +88,8 @@ const MarkerWithInfoWindow = ({
             <div className="info-window-diagrams">
               <Diagram type={'PIE'} height={200} width={200} title="Occupancy" />
               <Diagram type={'LINE'} height={200} width={200} title="Violations" />
+              <Diagram type={'BAR'} height={200} width={400} title='Violations'/>
+
             </div>
           </div>
         </InfoWindowF>
