@@ -11,7 +11,7 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 
-const TimeSlider = ({onTimeChange}) => {
+const TimeSlider = ({ onTimeChange }) => {
 
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0); // Set time to 12:00 AM
@@ -20,11 +20,11 @@ const TimeSlider = ({onTimeChange}) => {
 
   // Calculate the hour difference rounded down from the time at 12:00 AM
   const startingHourDifference = Math.floor((actualCurrentDate - currentDate) / (1000 * 60 * 60));
-    
+
   const nextDay = new Date();
   nextDay.setDate(nextDay.getDate() + 1); // Get the next day
   nextDay.setHours(0, 0, 0, 0); // Set time to 12:00 AM
-    
+
   const [currentTime, setCurrentTime] = useState(new Date());
   const [sliderValue, setSliderValue] = useState(startingHourDifference);
   const [showTime, setShowTime] = useState(false);
@@ -42,7 +42,7 @@ const TimeSlider = ({onTimeChange}) => {
   const handleSliderChange = (event) => {
     const value = parseFloat(event.target.value);
     const newTime = new Date(startDateLeft);
-    
+
     newTime.setHours(newTime.getHours() + value); // Adjust hours based on slider value
     setCurrentTime(newTime);
     setSliderValue(value);
@@ -62,12 +62,12 @@ const TimeSlider = ({onTimeChange}) => {
   const calculateGradient = () => {
     const progress = (sliderValue / maxSliderValue) * 100; // Calculate progress based on slider value and max value
     const stepPercentage = (1 / maxSliderValue) * 100; // Calculate the percentage of one step
-    
+
     // Calculate the color stops for the gradient
     const colorStop1 = `#37A7E5`;
     const colorStop2 = `#BF46D2 ${progress}%`;
     const colorStop3 = `#323551 ${progress}%`;
-    
+
     return `linear-gradient(to right, ${colorStop1}, ${colorStop2}, ${colorStop3})`;
   };
 
@@ -117,10 +117,13 @@ const TimeSlider = ({onTimeChange}) => {
   // Calculate the difference in hours between startDateLeft and startDateRight
   const hoursDifference = (startDateRight - startDateLeft) / (1000 * 60 * 60);
 
+  // Calculate the difference in days between startDateLeft and startDateRight
+  const daysDifference = hoursDifference / 24;
+
   // Set the min, max, and step values for the slider
   const minSliderValue = 0;
   const maxSliderValue = hoursDifference;
-  const sliderStep = 1;
+  const sliderStep = daysDifference > 2 ? 24 : 1; // Use 1 day step if difference is more than 2 days, otherwise 1 hour
 
   const calculateBubblePosition = () => {
     if (sliderRef.current) {
