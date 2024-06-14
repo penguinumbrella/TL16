@@ -113,11 +113,25 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
           ))}
         </Pie>
         <Legend></Legend>
-        <text x={width / 2} y={height / 2 - 20} textAnchor="middle" fill="#888" fontSize={15} style={{ textAlign: 'center' }}>
+        <text 
+          x={width / 2} 
+          y={height / 2 - 20} 
+          textAnchor="middle" 
+          fill="#888" 
+          style={{ textAlign: 'center' }} 
+          className='chart-title'
+        >
           {title}
         </text>
         {/* Percentage Occupancy */}
-        <text x={width / 2} y={height / 2} dy={8} textAnchor="middle" fill="#FFF" fontSize={22}>
+        <text
+          x={width / 2} 
+          y={height / 2} 
+          dy={8} 
+          textAnchor="middle" 
+          fill="#FFF" 
+          className='percentage-center'
+        >
           {percentageCenter}
         </text>
       </PieChart>

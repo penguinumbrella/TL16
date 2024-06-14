@@ -99,6 +99,23 @@
   align-items: center;
 }
 
+.large-placeholder .percentage-center {
+  font-size: 22px;
+}
+
+.large-placeholder .chart-title{
+  font-size: 15px;
+}
+
+.small-placeholder .percentage-center {
+  font-size: 18px;
+}
+
+.small-placeholder .chart-title{
+  font-size: 12px;
+}
+
+
 .small-placeholder {
   width: calc(25%); /* Adjust the width so it fits snugly next to the large placeholder */
   height: calc(20%);

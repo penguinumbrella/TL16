@@ -8,6 +8,7 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
 
   const [diagData, setDiagData] = useState([]);
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
+  const [compliancePercentage, setCompliancePercentage] = useState('');
 
   const DATA = [
         { name: 'Group A', value: 400 },
@@ -49,6 +50,7 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
       ]);
       // Update state with occupancy percentage
       setOccupancyPercentage(`${occupancyPercentage}%`);
+      setCompliancePercentage(`87%`);
     }
     if (dataOverride.length == 0)
       getData();
@@ -57,7 +59,7 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
   let toRender;
 
   switch(type) {
-    case 'PIE': 
+    case 'OCCUPANCY_PIE': 
         toRender = <>
             <PieChartComponent 
               data={dataOverride.length != 0 ? dataOverride : diagData} 
@@ -68,6 +70,24 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
               innerRadius={50}
               outerRadius={55}
               percentageCenter={occupancyPercentage}
+              startAngle={90}
+              endAngle={450}
+              startColor="#888"
+              className='pie-chart'>
+            </PieChartComponent>
+            </>
+        break;
+    case 'COMPLIANCE_PIE': 
+        toRender = <>
+            <PieChartComponent 
+              data={dataOverride.length != 0 ? dataOverride : diagData} 
+              colors={COLORS} 
+              height={height} 
+              width={width} 
+              title={title} 
+              innerRadius={35}
+              outerRadius={40}
+              percentageCenter={compliancePercentage}
               startAngle={90}
               endAngle={450}
               startColor="#888">
