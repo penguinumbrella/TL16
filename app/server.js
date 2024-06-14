@@ -47,14 +47,18 @@ app.get("/api", (req, res) => {
 });
 
 app.get("/executeQuery", async (req, res) => {
-  let query = req.query.query;
-  res.json(await executeQuery(query));
+  try {
+    let query = req.query.query;
+    console.log(query)
+    const result = await executeQuery(query);
+    console.log(result)
+    res.json(result);
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
-app.get("/executeQuery", async (req, res) => {
-  let query = req.query.query;
-  res.json(await executeQuery(query));
-});
 
 app.get('/weatherquery', (req, res) => {
     const { time } = req.query;
@@ -72,7 +76,6 @@ app.get('/weatherquery', (req, res) => {
     res.json(weatherData);
   });
 
-  
   app.get('/weather', async (req, res) => {
     try {
         const { time } = req.query;
@@ -96,9 +99,15 @@ app.get('/weatherquery', (req, res) => {
         // Execute the query
         const weatherData = await executeQuery(query);
 
-        // If no data found for the specified time, return a not found response
+        // If no data found for the specified time, provide a notification and return null values
         if (weatherData.length === 0) {
-            return res.status(404).json({ error: 'No weather data found for the specified time' });
+            console.log(`No weather data found for ${requestTime}`);
+            return res.json({ 
+                weather_main: null,
+                weather_desc: null,
+                temp: null,
+                timeOfDay
+            });
         }
 
         // Return the weather data
@@ -108,7 +117,6 @@ app.get('/weatherquery', (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
 
   // Whenever the page is refreshed fetch data from the database
 // Then update the json file "markerData.json"

@@ -7,7 +7,7 @@ import './map.css'; // Add a CSS file to handle the styling
 
 import mapStyleDark from './mapStyleDark.json'
 
-const Map = ({ selectedOption, setActiveIndex , zoom, center}) => { // Accept setActiveIndex as a prop
+const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp}) => { // Accept setActiveIndex as a prop
   const [activeIndex, setActiveIndexState] = useState('');
   const [markerData, setMarkerDataData] = useState(initialMarkerData);
 
@@ -52,6 +52,15 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center}) => { // Accept se
     setActiveIndex(''); // Reset parent state when selectedOption changes
   }, [selectedOption, setActiveIndex]);
 
+  const TABLES = {
+    'Fraser Parkade': 'FraserParkade',
+    'North Parkade': 'NorthParkade',
+    'West Parkade': 'WestParkade',
+    'Health Sciences Parkade': 'HealthSciencesParkade',
+    'Thunderbird Parkade': 'ThunderbirdParkade',
+    'University West Blvd': 'UnivWstBlvdParkade',
+    'Rose Garden Parkade': 'RoseGardenParkade'
+  }
   return (
       <div className="map-container">
         {isLoaded && <GoogleMap mapContainerStyle={{position: 'fixed', top: 0, right: 0, width: '100%', height: '100%' }} options={mapOptions} center={center} zoom={zoom} >
@@ -69,6 +78,7 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center}) => { // Accept se
                   
                   mapMarkers[selectedOption].map(item => {
                     return (<MarkerWithInfoWindow
+                      selectedOption = {selectedOption}
                       key={item.name}
                       position={item.location}
                       content={item.name}
@@ -89,6 +99,7 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center}) => { // Accept se
                 mapMarkers[selectedOption].map(item => {
                     return ((selectedOption ==='parkades' || selectedOption ==='loading_zones' ||selectedOption ==='_empty_' ) 
                     &&  <MarkerWithInfoWindow
+                    selectedOption = {selectedOption}
                     key={item.name}
                     position={item.location}
                     content={item.name}
@@ -97,10 +108,10 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center}) => { // Accept se
                     exit={() => setActiveIndexState('')}
                     iconImage={selectedOption}
                     data={getMarkerData(selectedOption, item.name)}
+                    timestamp = {timestamp}
                     // mapCenter={mapCenter}
                     // setMapCenter={setMapCenter} // Ensure setMapCenter is passed
                   />)}))
-
                 }
 
 

@@ -38,6 +38,8 @@ data: data to be shown right now it's just a number or a string
 */
 
 const MarkerWithInfoWindow = ({
+  selectedOption,
+  key,
   position,
   showInfoWindow,
   infoWindowShown,
@@ -47,7 +49,8 @@ const MarkerWithInfoWindow = ({
   data,
   // mapCenter, // New prop to pass the map's center
   // setMapCenter, // Function to update the map's center
-  clusterer
+  clusterer,
+  timestamp
 }) => {
   // Define icon paths
   const iconPaths = {
@@ -62,6 +65,40 @@ const MarkerWithInfoWindow = ({
   // Define icon sizes
   const smallIconSize = new window.google.maps.Size(20, 20);
   const largeIconSize = new window.google.maps.Size(25, 25);
+
+  const TABLES = {
+    'Fraser River': 'FraserParkade',
+    'North': 'NorthParkade',
+    'West': 'WestParkade',
+    'Health Sciences': 'HealthSciencesParkade',
+    'Thunderbird': 'ThunderbirdParkade',
+    'University Lot Blvd': 'UnivWstBlvdParkade',
+    'Rose Garden': 'RoseGardenParkade'
+  }
+
+  const formatTimestampToUnix = (date) => {
+    // Convert the date to Unix timestamp in seconds
+    const unixTimestamp = Math.floor(date.getTime() / 1000);
+    console.log(unixTimestamp);
+    return unixTimestamp;
+  };
+  
+  let formattedTimestamp;
+  // Usage
+  if (selectedOption == "parkades") {
+    formattedTimestamp = formatTimestampToUnix(timestamp); 
+  }
+ 
+
+  const transformData = (data) => {
+    return [
+      {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
+      {name: 'Occupied', value: data[0]['Vehicles']}
+    ];
+  }
+
+  
+  
 
   return (
     <MarkerF
@@ -84,12 +121,18 @@ const MarkerWithInfoWindow = ({
           className="info-window"
         >
           <div className="info-window-contents">
-            <h2 style={{ paddingBottom: '20px' }}>{content}</h2>
+            <h2 style={{ paddingBottom: '20px' }}>{`${content}`}</h2>
             <div className="info-window-diagrams">
-              <Diagram type={'PIE'} height={200} width={200} title="Occupancy" />
-              <Diagram type={'LINE'} height={200} width={200} title="Violations" />
-              <Diagram type={'BAR'} height={200} width={400} title='Violations'/>
-
+            {selectedOption === "parkades" &&
+                <Diagram
+                  type={'PIE'}
+                  height={200}
+                  width={200}
+                  title="Occupancy"
+                  query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formattedTimestamp} ORDER BY TimestampUnix DESC`} 
+                  dataTransformer={transformData}
+                />
+              }
             </div>
           </div>
         </InfoWindowF>

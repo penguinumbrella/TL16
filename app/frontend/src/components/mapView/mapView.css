@@ -80,6 +80,8 @@
   border-radius: 5px;
   z-index: 1; /* Ensure the form is inside the map container */
 
+  color: white;
+
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Add shadow for depth */
 
   backdrop-filter: blur(3px); /* Adjust the blur radius as needed */

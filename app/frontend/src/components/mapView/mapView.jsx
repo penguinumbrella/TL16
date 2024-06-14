@@ -5,12 +5,12 @@ import TimeSlider from './timeSlider/timeSlider';
 import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import Map from './map/Map.js';
 
-import parkadeIcon from "./../../assets/parkadeIcon.png"
-import parkadeIconPicked from './../../assets/parkadeIconPicked.png'
-import accessibilityIcon from './../../assets/accessibilityIcon.png'
-import accessibilityIconPicked from './../../assets/accessibilityIconPicked.png'
-import loadingZoneIcon from './../../assets/loadingZoneIcon.png'
-import loadingZoneIconPicked from './../../assets/loadingZoneIconPicked.png'
+import parkadeIcon from "./../../assets/parkadeIcon.png";
+import parkadeIconPicked from './../../assets/parkadeIconPicked.png';
+import accessibilityIcon from './../../assets/accessibilityIcon.png';
+import accessibilityIconPicked from './../../assets/accessibilityIconPicked.png';
+import loadingZoneIcon from './../../assets/loadingZoneIcon.png';
+import loadingZoneIconPicked from './../../assets/loadingZoneIconPicked.png';
 
 import axios from 'axios';
 
@@ -21,6 +21,7 @@ const MapView = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [selectedOption, setSelectedOption] = useState('parkades');
   const [activeIndex, setActiveIndex] = useState('');
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   const toggleIconsVisibility = () => {
     setIconsVisible(!iconsVisible);
@@ -38,23 +39,26 @@ const MapView = () => {
     fetchData();
   }, []);
 
-  const fetchWeatherData = async (currentTime) => {
+  const fetchWeatherData = async (time) => {
     try {
-      const response = await axios.get(`http://localhost:${PORT}/weather?time=${currentTime.toISOString()}`);
-      const data = await response.json();
-      setWeatherData(data);
+      const response = await axios.get(`/weather?time=${time.toISOString()}`);
+      setWeatherData(response.data);
     } catch (error) {
       console.error("Error fetching weather data:", error);
     }
   };
 
   useEffect(() => {
-    fetchWeatherData(new Date());
-  }, []);
+    fetchWeatherData(currentTime);
+  }, [currentTime]);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
     setActiveIndex(''); // Reset the active index
+  };
+
+  const handleTimeChange = (newTime) => {
+    setCurrentTime(newTime);
   };
   
   const defaultCenter = { lat: 49.262141, lng: -123.247360 };
@@ -72,7 +76,7 @@ const MapView = () => {
               condition={weatherData.weather_main}
               description={weatherData.weather_desc}
             />
-            <TimeSlider onTimeChange={fetchWeatherData} />
+            <TimeSlider onTimeChange={handleTimeChange} />
           </>
         )}
 
@@ -80,18 +84,45 @@ const MapView = () => {
           {iconsVisible ? <HiOutlineEye /> : <HiOutlineEyeOff />} {/* Use eye icons */}
         </button>
 
-        {iconsVisible &&
-        <form className={`map-form`}>
-          <input type="radio" id="parkades" name="options" value="parkades" defaultChecked onChange={handleOptionChange} />
-          <label htmlFor="parkades">Parkades</label><br />
-          <input type="radio" id="loading_zones" name="options" value="loading_zones" onChange={handleOptionChange} />
-          <label htmlFor="loading_zones">Loading Zones</label><br />
-          <input type="radio" id="accessibility" name="options" value="accessibility" onChange={handleOptionChange} />
-          <label htmlFor="accessibility">Accessibility</label><br />
+        {iconsVisible && (
+          <form className="map-form">
+          <div className="form-group">
+            <input
+              type="radio"
+              id="parkades"
+              name="options"
+              value="parkades"
+              defaultChecked
+              onChange={handleOptionChange}
+            />
+            <label htmlFor="parkades">Parkades</label>
+          </div>
+          <div className="form-group">
+            <input
+              type="radio"
+              id="loading_zones"
+              name="options"
+              value="loading_zones"
+              onChange={handleOptionChange}
+            />
+            <label htmlFor="loading_zones">Loading Zones</label>
+          </div>
+          <div className="form-group">
+            <input
+              type="radio"
+              id="accessibility"
+              name="options"
+              value="accessibility"
+              onChange={handleOptionChange}
+            />
+            <label htmlFor="accessibility">Accessibility</label>
+          </div>
+                
         </form>
-        }
+        
+        )}
 
-        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} zoom={zoom} center={defaultCenter}/>
+        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} zoom={zoom} center={defaultCenter} timestamp={currentTime}/>
       </div>
     </div>
   );

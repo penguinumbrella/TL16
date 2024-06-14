@@ -32,7 +32,9 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
     const getData = async () => {
       try {
         const data = (await axios.get(`/executeQuery?query=${query}`)).data;
+        console.log(data);
         const toDisplay = dataTransformer(data);
+        console.log(toDisplay);
         setDiagData(toDisplay);
       } catch (e) {
         console.log(e)
@@ -45,7 +47,7 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
   switch(type) {
     case 'PIE': 
         toRender = <>
-            <PieChartComponent data={dataOverride.length != 0 ? dataOverride : diagData} colors={COLORS} height={height} width={width} title={title}></PieChartComponent>
+          <PieChartComponent data={dataOverride.length != 0 ? dataOverride : diagData} colors={COLORS} height={height} width={width} title={title}></PieChartComponent>
         </>
         break;
     case 'LINE':
