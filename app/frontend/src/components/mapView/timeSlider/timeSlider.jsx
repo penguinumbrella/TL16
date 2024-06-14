@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Icon } from '@chakra-ui/react';
 import DateTimePicker from 'react-datepicker';
-import Calendar from 'react-calendar';
-import { DtPicker } from 'react-calendar-datetime-picker'
-import 'react-calendar-datetime-picker/dist/style.css'
 import 'react-datepicker/dist/react-datepicker.css';
 import { ReactComponent as ClockHistoryIcon } from '../../../icons/clock-history.svg';
 import { ReactComponent as PopupWindow } from '../../../icons/slider-popup.svg';
@@ -37,17 +34,16 @@ const TimeSlider = ({onTimeChange}) => {
   const [showCalendarLeft, setShowCalendarLeft] = useState(false);
   const [showCalendarRight, setShowCalendarRight] = useState(false);
 
+  const actualTime = new Date();
+
   const sliderRef = useRef(null);
   const [step, setStep] = useState(0);
-  //const [sliderStep, setSliderStep] = useState(1);
 
   const handleSliderChange = (event) => {
     const value = parseFloat(event.target.value);
-    console.log(value)
     const newTime = new Date(startDateLeft);
     
     newTime.setHours(newTime.getHours() + value); // Adjust hours based on slider value
-    console.log(newTime)
     setCurrentTime(newTime);
     setSliderValue(value);
 
@@ -74,7 +70,6 @@ const TimeSlider = ({onTimeChange}) => {
     
     return `linear-gradient(to right, ${colorStop1}, ${colorStop2}, ${colorStop3})`;
   };
-  
 
   const handleThumbHover = (event) => {
     const thumbRect = event.target.getBoundingClientRect();
@@ -120,86 +115,86 @@ const TimeSlider = ({onTimeChange}) => {
   };
 
   // Calculate the difference in hours between startDateLeft and startDateRight
-    const hoursDifference = (startDateRight - startDateLeft) / (1000 * 60 * 60);
+  const hoursDifference = (startDateRight - startDateLeft) / (1000 * 60 * 60);
 
-    // Set the min, max, and step values for the slider
-    const minSliderValue = 0;
-    const maxSliderValue = hoursDifference;
-    const sliderStep = 1;
+  // Set the min, max, and step values for the slider
+  const minSliderValue = 0;
+  const maxSliderValue = hoursDifference;
+  const sliderStep = 1;
 
-    /*
-    if (hoursDifference > 48) {
-      setSliderStep(24);
-    } else {
-      setSliderStep(1);
-    }
-      */
+  const calculateBubblePosition = () => {
+    if (sliderRef.current) {
+      const sliderWidth = sliderRef.current.offsetWidth;
+      const sliderMax = sliderRef.current.max;
+      const bubblePosition = (sliderValue / maxSliderValue) * sliderWidth; // Calculate the bubble position
 
-    const calculateBubblePosition = () => {
-        if (sliderRef.current) {
-          const sliderWidth = sliderRef.current.offsetWidth;
-          const sliderMax = sliderRef.current.max;
-          const stepPercentage = (sliderWidth / sliderMax) * 100; // Calculate the percentage of one step
-          const bubblePosition = (sliderValue / maxSliderValue) * sliderWidth; // Calculate the bubble position
-      
-          // Ensure the bubble stays within the slider bounds
-          const boundedPosition = Math.min(Math.max(0, bubblePosition), sliderWidth);
-      
-          return {
-            transform: `translateX(${boundedPosition}px)`,
-          };
-        } else {
-          return {};
-        }
+      // Ensure the bubble stays within the slider bounds
+      const boundedPosition = Math.min(Math.max(0, bubblePosition), sliderWidth);
+
+      return {
+        transform: `translateX(${boundedPosition}px)`,
       };
+    } else {
+      return {};
+    }
+  };
 
+  const calculateMarkerPosition = () => {
+    if (actualTime >= startDateLeft && actualTime <= startDateRight && sliderRef.current) {
+      const sliderWidth = sliderRef.current.offsetWidth;
+      const sliderMax = sliderRef.current.max;
+      const actualTimeDifference = (actualTime - startDateLeft) / (1000 * 60 * 60);
+      const markerPosition = (actualTimeDifference / hoursDifference) * sliderWidth;
 
-      
-      
-      
-  
+      return {
+        left: `${(markerPosition / sliderWidth) * 100}%`,
+        display: 'block'
+      };
+    }
+    return {
+      display: 'none'
+    };
+  };
 
   return (
     <div className='timeSlider'>
       <div className='dateBoxContainer'>
         <div className='dateBoxLeft'>
-        <DateTimePicker
-          selected={startDateLeft} // Use selected prop instead of value
-          onChange={(date) => {
-            if (date < startDateRight) {
-              setStartDateLeft(date);
-            } else {
-              alert(`Must select a time lesser than ${startDateRight}`)
-            }
-          }}
-          minDate={new Date('01-01-2018')}
-          maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
-          showTimeSelect // Enable time selection
-          timeIntervals={60} // Set time intervals to 60 minutes (1 hour)
-          timeFormat="HH:mm" // Use military time format
-          dateFormat="MM/dd/yyyy HH:mm" // Include both date and time
-        />
-
+          <DateTimePicker
+            selected={startDateLeft} // Use selected prop instead of value
+            onChange={(date) => {
+              if (date < startDateRight) {
+                setStartDateLeft(date);
+              } else {
+                alert(`Must select a time lesser than ${startDateRight}`)
+              }
+            }}
+            minDate={new Date('01-01-2018')}
+            maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
+            showTimeSelect // Enable time selection
+            timeIntervals={60} // Set time intervals to 60 minutes (1 hour)
+            timeFormat="HH:mm" // Use military time format
+            dateFormat="MM/dd/yyyy HH:mm" // Include both date and time
+          />
         </div>
         <div className='dateBoxRight'>
-        <DateTimePicker
-          selected={startDateRight} // Use selected prop instead of value
+          <DateTimePicker
+            selected={startDateRight} // Use selected prop instead of value
             onChange={(date) => {
               if (date > startDateLeft) {
                 setStartDateRight(date);
               } else {
-                alert(`Must select a time lesser than ${startDateLeft}`)
+                alert(`Must select a time greater than ${startDateLeft}`)
               }
-                }}
-            value={startDateRight}
+            }}
             minDate={new Date('01-01-2018')}
             maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
             showTimeSelect
             timeIntervals={60} // Set time intervals to 60 minutes (1 hour)
             timeFormat="HH:mm" // Use military time format
             dateFormat="MM/dd/yyyy HH:mm" // Include both date and time
-          />  
-          </div>
+          />
+        </div>
       </div>
 
       <div className='sliderContainer'>
@@ -223,17 +218,29 @@ const TimeSlider = ({onTimeChange}) => {
           ref={sliderRef}
         />
         <label
-            htmlFor="range"
-            className="slider-label"
-            style={{
-                ...calculateBubblePosition(),
-            }}
-            >
-          <span>{currentTime.toLocaleTimeString('en-US', {  month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+          htmlFor="range"
+          className="slider-label"
+          style={{
+            ...calculateBubblePosition(),
+          }}
+        >
+          <span>{currentTime.toLocaleTimeString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
           <div className='windowContainer'>
             <PopupWindow />
           </div>
         </label>
+        <div
+          className='marker'
+          style={{
+            position: 'absolute',
+            top: '-10px',
+            height: '20px',
+            width: '2px',
+            background: 'black',
+            border: '1px dashed #000',
+            ...calculateMarkerPosition(),
+          }}
+        />
       </div>
     </div>
   );
