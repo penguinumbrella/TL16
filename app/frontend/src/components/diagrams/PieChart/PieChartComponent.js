@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Legend, Label } from 'recharts';
 
-const PieChartComponent = ({data, colors, width, height, title='', innerRadius, outerRadius , percentageCenter}) => {
+const PieChartComponent = ({data, colors, width, height, title='', innerRadius, outerRadius , percentageCenter, startAngle, endAngle}) => {
 
   const [ activeIndex, setActiveIndex ] = useState(-1);
 
@@ -105,18 +105,19 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
           onMouseLeave={() => setActiveIndex(-1)}
           innerRadius={innerRadius}
           outerRadius={outerRadius}
+          startAngle={startAngle}
+          endAngle={endAngle}
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
           ))}
-        
         </Pie>
         <Legend></Legend>
-        <text x={width / 2} y={height / 2 - 15} textAnchor="middle" fill="#888" fontSize={15} style={{ textAlign: 'center' }}>
+        <text x={width / 2} y={height / 2 - 20} textAnchor="middle" fill="#888" fontSize={15} style={{ textAlign: 'center' }}>
           {title}
         </text>
         {/* Percentage Occupancy */}
-        <text x={width / 2} y={height / 2 + 5} dy={8} textAnchor="middle" fill="#FFF" fontSize={22}>
+        <text x={width / 2} y={height / 2} dy={8} textAnchor="middle" fill="#FFF" fontSize={22}>
           {percentageCenter}
         </text>
       </PieChart>

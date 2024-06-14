@@ -25,7 +25,7 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
       { name: 'Group E', value_1: 1000, value_2: 200, value_3: 300}
   ] // sample
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#0FA122']; // TBD
+  const COLORS = ['#787878', '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#0FA122']; // TBD
 
   const getData = (query) => {
     const data = axios.get(`/executeQuery?query=${query}`);
@@ -37,10 +37,18 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
     const getData = async () => {
       const data = (await axios.get(`/executeQuery?query=${query}`)).data;
       console.log(data[0]['Capacity'])
+      // Calculate capacity and occupied values
+      const capacity = data[0]['Capacity'];
+      const occupied = data[0]['Vehicles'];
+    
+      // Calculate occupancy percentage
+      const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
       setDiagData([
         {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
         {name: 'Occupied', value: data[0]['Vehicles']}
       ]);
+      // Update state with occupancy percentage
+      setOccupancyPercentage(`${occupancyPercentage}%`);
     }
     if (dataOverride.length == 0)
       getData();
@@ -58,8 +66,11 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
               width={width} 
               title={title} 
               innerRadius={50}
-              outerRadius={57.5}
-              percentageCenter={occupancyPercentage}>
+              outerRadius={55}
+              percentageCenter={occupancyPercentage}
+              startAngle={90}
+              endAngle={450}
+              startColor="#888">
             </PieChartComponent>
             </>
         break;
