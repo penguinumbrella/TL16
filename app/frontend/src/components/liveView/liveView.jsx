@@ -87,26 +87,41 @@ const LiveView = () => {
         <div className='chart-content'>
           {dataStatus ? (
             <>
-              <Diagram type={'OCCUPANCY_PIE'} height={200} width={200} title="Occupancy" className="large-placeholder"
-                query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-              <Diagram type={'COMPLIANCE_PIE'} height={150} width={150} title="Compliance" className="small-placeholder"
-                query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-              {/*<div className='large-placeholder'><DataOutageOccupancy /></div>*/}
-              {/*<div className='small-placeholder'><DataOutageCompliance /></div>*/}
+              <div className='large-placeholder'>
+                <div className='occupancy-chart'>
+                  <Diagram type={'OCCUPANCY_PIE'} height={100} width={200} title="Occupancy"
+                  query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+                </div>
+                <div className='last-update' style={{padding: '10px'}}>
+                  <span>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
+                </div>
+              </div>
+              <div className='small-placeholder'>
+                <Diagram type={'COMPLIANCE_PIE'} height={70} width={150} title="Compliance"
+                  query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+              </div>
+              {/*<div className='large-placeholder'><PhGraphOccupancy /></div>*/}
+              {/*<div className='small-placeholder'><PhGraphCompliance /></div>*/}
             </>
           ) : (
             <>
-              <Diagram type={'OCCUPANCY_PIE'} height={200} width={200} title="Occupancy" className="large-placeholder"
-                query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-              <Diagram type={'COMPLIANCE_PIE'} height={150} width={150} title="Compliance" className="small-placeholder"
-                query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+              <div className='large-placeholder'>
+                <div className='occupancy-chart'>
+                  <Diagram type={'OCCUPANCY_PIE'} height={100} width={200} title="Occupancy"
+                  query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+                </div>
+                <div className='last-update' style={{padding: '10px'}}>
+                  <span>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
+                </div>
+              </div>
+              <div className='small-placeholder'>
+                <Diagram type={'COMPLIANCE_PIE'} height={70} width={150} title="Compliance"
+                  query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+              </div>
               {/*<div className='large-placeholder'><PhGraphOccupancy /></div>*/}
               {/*<div className='small-placeholder'><PhGraphCompliance /></div>*/}
             </>
           )}
-        </div>
-        <div className='lastUpdate' style={{padding: '10px'}}>
-          <span>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
         </div>
       </div>
     );
