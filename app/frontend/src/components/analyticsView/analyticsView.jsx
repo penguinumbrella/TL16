@@ -18,6 +18,7 @@ import axios from 'axios';
 import { getQueries } from "./queryHelper";
 import Diagram from '../diagrams/Diagram';
 import { CustomTooltip } from "./customToolTip";
+import { formatUnixTimestamp } from "../../time";
 
 const DATA_CATEGORY_OPTIONS = [
   'Parkade Occupancy', 'Accessibility Occupancy'
@@ -179,7 +180,7 @@ const AnalyticsView = () => {
       const result = [];
       data.forEach((dataPoint) => {
         result.push({
-          'name': new Date(dataPoint['TimestampUnix']*1000).toISOString(),
+          'name': formatUnixTimestamp(dataPoint['TimestampUnix']),
           'value': dataPoint['Vehicles']
         });
       })
@@ -188,7 +189,7 @@ const AnalyticsView = () => {
     await Promise.all(promises);
     return Object.keys(resultsLocal).map((parkade) => {
       return (
-        <Diagram type={'LINE'} height={'30%'} width={'90%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={CustomTooltip}/>
+        <Diagram className='queryResultDiagram' type={'LINE'} height={'40%'} width={'90%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={CustomTooltip}/>
       )
     });
   }

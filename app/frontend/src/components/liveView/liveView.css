@@ -59,6 +59,7 @@
 
 .warning-tooltip {
   position: absolute;
+  width: 200px;
   bottom: -30px; /* Adjust the distance of the tooltip from the icon */
   left: 50%; /* Position the tooltip horizontally centered */
   transform: translateX(-50%);
