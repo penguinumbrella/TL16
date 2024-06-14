@@ -87,37 +87,51 @@ const LiveView = () => {
         <div className='chart-content'>
           {dataStatus ? (
             <>
-              <div className='large-placeholder'>
                 <div className='occupancy-chart'>
-                  <Diagram type={'OCCUPANCY_PIE'} height={100} width={200} title="Occupancy"
-                  query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+                <Diagram className = 'occupancy-pie' type={'OCCUPANCY_PIE'} height={300} width={300} title="Occupancy" hasLegend={false}
+                query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+
+                               
+                  <div className='last-update' style={{padding: '10px'} }>
+                  <span style={{ fontSize: '10px' }}>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
                 </div>
-                <div className='last-update' style={{padding: '10px'}}>
-                  <span>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
                 </div>
+
+                
+            
+                
+              
+              <div className='compliance-chart'>
+                <Diagram className = 'compliance-pie' type={'COMPLIANCE_PIE'} height={150} width={150} title="Compliance" hasLegend={false}
+                query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+
+
               </div>
-              <div className='small-placeholder'>
-                <Diagram type={'COMPLIANCE_PIE'} height={70} width={150} title="Compliance"
-                  query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-              </div>
+                
               {/*<div className='large-placeholder'><PhGraphOccupancy /></div>*/}
               {/*<div className='small-placeholder'><PhGraphCompliance /></div>*/}
             </>
           ) : (
             <>
-              <div className='large-placeholder'>
+            
                 <div className='occupancy-chart'>
-                  <Diagram type={'OCCUPANCY_PIE'} height={100} width={200} title="Occupancy"
-                  query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+                <Diagram className = 'occupancy-pie' type={'OCCUPANCY_PIE'} height={300} width={300} title="Occupancy" hasLegend={false}
+                query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+
+<div className='last-update' style={{padding: '10px'} }>
+<span style={{ fontSize: '10px' }}>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
+
+</div>
+                
+
+                
                 </div>
-                <div className='last-update' style={{padding: '10px'}}>
-                  <span>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
-                </div>
+
+                <div className='compliance-chart'>
+                <Diagram className = 'compliance-pie' type={'COMPLIANCE_PIE'} height={150} width={150} title="Compliance" hasLegend={false}
+                query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
               </div>
-              <div className='small-placeholder'>
-                <Diagram type={'COMPLIANCE_PIE'} height={70} width={150} title="Compliance"
-                  query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-              </div>
+              
               {/*<div className='large-placeholder'><PhGraphOccupancy /></div>*/}
               {/*<div className='small-placeholder'><PhGraphCompliance /></div>*/}
             </>

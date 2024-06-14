@@ -34,6 +34,8 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
     toDisplayName = data[index].name;
     toDisplayValue = `${percent.toFixed(1)*100}%`;
 
+    
+
     return (
       <g>
         <path 
@@ -92,11 +94,20 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
     );
   };
 
+  const options = {
+    plugins: {
+      legend: {
+        display: false, // This will hide the legend
+      },
+    },
+  };
+
   return (
     <ResponsiveContainer width={width} height={height} style={{display: 'flex', flexDirection: 'column'}}>
       <PieChart width={'100%'} height={'100%'}>
         <Pie 
           data={data} 
+          options = {options}
           label={renderCustomizedLabel} 
           labelLine={false} 
           activeIndex={activeIndex}
@@ -112,7 +123,6 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
             <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
           ))}
         </Pie>
-        <Legend></Legend>
         <text 
           x={width / 2} 
           y={height / 2 - 20} 

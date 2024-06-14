@@ -4,7 +4,7 @@ import LineGraphComponent from './LineGraph/LineGraphComponent';
 import BarGraphComponent from './BarGraph/BarGraphComponent';
 import axios from 'axios';
 
-const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[], dataOverride=[], customToolTip}) => {
+const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip}) => {
 
   const [diagData, setDiagData] = useState([]);
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
@@ -34,8 +34,10 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
     return DATA;
   }
 
+
   useEffect(() => {
     const getData = async () => {
+      
       const data = (await axios.get(`/executeQuery?query=${query}`)).data;
       console.log(data[0]['Capacity'])
       // Calculate capacity and occupied values
@@ -54,21 +56,65 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
     }
     if (dataOverride.length == 0)
       getData();
+  
   }, []);
 
+  const options = {
+    plugins: {
+      legend: {
+        display: false, // This will hide the legend
+      },
+    },
+  };
+  
   let toRender;
 
   switch(type) {
-    case 'OCCUPANCY_PIE': 
+    case 'PH_OCCUPANCY_PIE': 
         toRender = <>
             <PieChartComponent 
-              data={dataOverride.length != 0 ? dataOverride : diagData} 
+              data={dataOverride} 
               colors={COLORS} 
               height={height} 
               width={width} 
               title={title} 
               innerRadius={50}
               outerRadius={55}
+              percentageCenter={0}
+              startAngle={90}
+              endAngle={450}
+              startColor="#888"
+              className='pie-chart'>
+            </PieChartComponent>
+            </>
+        break;
+    case 'PH_COMPLIANCE_PIE': 
+        toRender = <>
+            <PieChartComponent 
+              data={dataOverride} 
+              colors={COLORS} 
+              height={height} 
+              width={width} 
+              title={title} 
+              innerRadius={35}
+              outerRadius={40}
+              percentageCenter={0}
+              startAngle={90}
+              endAngle={450}
+              startColor="#888">
+            </PieChartComponent>
+            </>
+        break;
+      case 'OCCUPANCY_PIE': 
+        toRender = <>
+            <PieChartComponent 
+              data={dataOverride.length != 0 ? dataOverride : diagData}
+              colors={COLORS} 
+              height={height} 
+              width={width} 
+              title={title} 
+              innerRadius={95}
+              outerRadius={100}
               percentageCenter={occupancyPercentage}
               startAngle={90}
               endAngle={450}
@@ -77,7 +123,7 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
             </PieChartComponent>
             </>
         break;
-    case 'COMPLIANCE_PIE': 
+      case 'COMPLIANCE_PIE': 
         toRender = <>
             <PieChartComponent 
               data={dataOverride.length != 0 ? dataOverride : diagData} 
@@ -87,7 +133,7 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
               title={title} 
               innerRadius={35}
               outerRadius={40}
-              percentageCenter={compliancePercentage}
+              percentageCenter={occupancyPercentage}
               startAngle={90}
               endAngle={450}
               startColor="#888">
