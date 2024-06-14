@@ -43,18 +43,18 @@ const generateChartBox = (parkadeName, dataStatus) => {
       <div className='chart-content'>
         {dataStatus ? (
           <>
-            <Diagram type={'PIE'} height={200} width={200} title="Occupancy" className="large-placeholder"
+            <Diagram type={'OCCUPANCY_PIE'} height={200} width={200} title="Occupancy" className="large-placeholder"
               query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-            <Diagram type={'PIE'} height={200} width={200} title="Compliance" className="small-placeholder"
+            <Diagram type={'COMPLIANCE_PIE'} height={150} width={150} title="Compliance" className="small-placeholder"
               query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
             {/*<div className='large-placeholder'><DataOutageOccupancy /></div>*/}
             {/*<div className='small-placeholder'><DataOutageCompliance /></div>*/}
           </>
         ) : (
           <>
-            <Diagram type={'PIE'} height={200} width={200} title="Occupancy" className="large-placeholder"
+            <Diagram type={'OCCUPANCY_PIE'} height={200} width={200} title="Occupancy" className="large-placeholder"
               query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-            <Diagram type={'PIE'} height={200} width={200} title="Compliance" className="small-placeholder"
+            <Diagram type={'COMPLIANCE_PIE'} height={150} width={150} title="Compliance" className="small-placeholder"
               query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
             {/*<div className='large-placeholder'><PhGraphOccupancy /></div>*/}
             {/*<div className='small-placeholder'><PhGraphCompliance /></div>*/}

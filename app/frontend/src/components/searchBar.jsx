@@ -5,6 +5,7 @@ import './searchBar.css';
 
 const SearchBar = ({ onIconClick }) => {
   const [activeIcon, setActiveIcon] = useState(null); // State to keep track of the active icon
+  const [hoveredIcon, setHoveredIcon] = useState(null); // State to keep track of the hovered icon
 
   const handleIconClick = (view, event) => {
     console.log("Icon clicked");
@@ -15,6 +16,14 @@ const SearchBar = ({ onIconClick }) => {
   };
 
   const isIconActive = (icon) => activeIcon === icon; // Function to check if the icon is active
+
+  const handleMouseEnter = (icon) => {
+    setHoveredIcon(icon);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredIcon(null);
+  };
 
   return (
     <div className='searchBar'>
@@ -29,17 +38,26 @@ const SearchBar = ({ onIconClick }) => {
       <Divider className='separator' />
 
       <div className='navIcons'>
-        <div className='navicon-container'>
+        <div 
+          className='navicon-container'
+          onMouseEnter={() => handleMouseEnter('dashboard')}
+          onMouseLeave={handleMouseLeave}
+        >
         <Icon
              as={FaHome}
              onClick={(event) => handleIconClick('dashboard', event)}
              color={isIconActive('dashboard') ? 'black' : '#9C9FBB'} // Change color based on active state
-              className={isIconActive('dashboard') ? 'icon' : ''}
+             className={isIconActive('dashboard') ? 'icon' : ''}
             />
           <div className="circle" style={isIconActive('dashboard') ? {} : { display: 'none' }}></div>
+          {hoveredIcon == 'dashboard' ? <div className="hover-text">Home</div> : ''}
         </div>
         
-        <div className='navicon-container'>
+        <div 
+          className='navicon-container'
+          onMouseEnter={() => handleMouseEnter('map')}
+          onMouseLeave={handleMouseLeave}
+        >
         <Icon
              as={FaMap}
              onClick={(event) => handleIconClick('map', event)}
@@ -47,9 +65,14 @@ const SearchBar = ({ onIconClick }) => {
               className={isIconActive('map') ? 'icon' : ''}
             />
           <div className="circle" style={isIconActive('map') ? {} : { display: 'none' }}></div>
+          {hoveredIcon == 'map' ? <div className="hover-text">Map</div> : ''}
         </div>
         
-        <div className='navicon-container'>
+        <div 
+          className='navicon-container'
+          onMouseEnter={() => handleMouseEnter('live')}
+          onMouseLeave={handleMouseLeave}
+        >
             <Icon
               as={FaChartPie}
               onClick={(event) => handleIconClick('live', event)}
@@ -57,8 +80,13 @@ const SearchBar = ({ onIconClick }) => {
               className={isIconActive('live') ? 'icon' : ''}
             />
           <div className="circle" style={isIconActive('live') ? {} : { display: 'none' }}></div>
+          {hoveredIcon == 'live' ? <div className="hover-text">Live</div> : ''}
         </div>
-        <div className='navicon-container'>
+        <div 
+          className='navicon-container'
+          onMouseEnter={() => handleMouseEnter('analytics')}
+          onMouseLeave={handleMouseLeave}
+        >
           <Icon
             as={FaChartLine}
             onClick={(event) => handleIconClick('analytics', event)}
@@ -66,6 +94,7 @@ const SearchBar = ({ onIconClick }) => {
             className={isIconActive('analytics') ? 'icon' : ''}
           />
           <div className="circle" style={isIconActive('analytics') ? {} : { display: 'none' }}></div>
+          {hoveredIcon == 'analytics' ? <div className="hover-text">Analytics</div> : ''}
         </div>
 
 

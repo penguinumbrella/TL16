@@ -7,6 +7,8 @@ import axios from 'axios';
 const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[], dataOverride=[], customToolTip}) => {
 
   const [diagData, setDiagData] = useState([]);
+  const [occupancyPercentage, setOccupancyPercentage] = useState('');
+  const [compliancePercentage, setCompliancePercentage] = useState('');
 
   const DATA = [
         { name: 'Group A', value: 400 },
@@ -24,29 +26,73 @@ const Diagram = ({type, width, height, title='', query='', dataTransformer=()=>[
       { name: 'Group E', value_1: 1000, value_2: 200, value_3: 300}
   ] // sample
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#0FA122']; // TBD
+  const COLORS = ['#787878', '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#0FA122']; // TBD
 
-  let toRender;
+  const getData = (query) => {
+    const data = axios.get(`/executeQuery?query=${query}`);
+    console.log(query);
+    return DATA;
+  }
 
   useEffect(() => {
     const getData = async () => {
-      try {
-        const data = (await axios.get(`/executeQuery?query=${query}`)).data;
-        const toDisplay = dataTransformer(data);
-        setDiagData(toDisplay);
-      } catch (e) {
-        console.log(e)
-      }
+      const data = (await axios.get(`/executeQuery?query=${query}`)).data;
+      console.log(data[0]['Capacity'])
+      // Calculate capacity and occupied values
+      const capacity = data[0]['Capacity'];
+      const occupied = data[0]['Vehicles'];
+    
+      // Calculate occupancy percentage
+      const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
+      setDiagData([
+        {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
+        {name: 'Occupied', value: data[0]['Vehicles']}
+      ]);
+      // Update state with occupancy percentage
+      setOccupancyPercentage(`${occupancyPercentage}%`);
+      setCompliancePercentage(`87%`);
     }
     if (dataOverride.length == 0)
       getData();
   }, []);
-  
+
+  let toRender;
+
   switch(type) {
-    case 'PIE': 
+    case 'OCCUPANCY_PIE': 
         toRender = <>
-            <PieChartComponent data={dataOverride.length != 0 ? dataOverride : diagData} colors={COLORS} height={height} width={width} title={title}></PieChartComponent>
-        </>
+            <PieChartComponent 
+              data={dataOverride.length != 0 ? dataOverride : diagData} 
+              colors={COLORS} 
+              height={height} 
+              width={width} 
+              title={title} 
+              innerRadius={50}
+              outerRadius={55}
+              percentageCenter={occupancyPercentage}
+              startAngle={90}
+              endAngle={450}
+              startColor="#888"
+              className='pie-chart'>
+            </PieChartComponent>
+            </>
+        break;
+    case 'COMPLIANCE_PIE': 
+        toRender = <>
+            <PieChartComponent 
+              data={dataOverride.length != 0 ? dataOverride : diagData} 
+              colors={COLORS} 
+              height={height} 
+              width={width} 
+              title={title} 
+              innerRadius={35}
+              outerRadius={40}
+              percentageCenter={compliancePercentage}
+              startAngle={90}
+              endAngle={450}
+              startColor="#888">
+            </PieChartComponent>
+            </>
         break;
     case 'LINE':
         toRender = <>

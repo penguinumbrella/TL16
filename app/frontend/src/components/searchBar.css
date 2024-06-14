@@ -67,7 +67,26 @@
   z-index: 1; /* Places the icon in front of the circle */
 }
 
+.hover-text {
+  position: absolute;
+  top: 100%; /* Position above the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s;
+  font-size: 12
+}
 
+.navicon-container:hover .hover-text {
+  visibility: visible;
+  opacity: 1;
+}
 
 
 
