@@ -17,8 +17,8 @@ import 'react-clock/dist/Clock.css';
 import axios from 'axios';
 import { getQueries } from "./queryHelper";
 import Diagram from '../diagrams/Diagram';
-import { CustomTooltip } from "./customToolTip";
 import { formatUnixTimestamp } from "../../time";
+import CustomTooltip from "./customToolTip";
 
 const DATA_CATEGORY_OPTIONS = [
   'Parkade Occupancy', 'Accessibility Occupancy'
@@ -189,7 +189,7 @@ const AnalyticsView = () => {
     await Promise.all(promises);
     return Object.keys(resultsLocal).map((parkade) => {
       return (
-        <Diagram className='queryResultDiagram' type={'LINE'} height={'40%'} width={'90%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={CustomTooltip}/>
+        <Diagram className='queryResultDiagram' type={'LINE'} height={'40%'} width={'90%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>}/>
       )
     });
   }

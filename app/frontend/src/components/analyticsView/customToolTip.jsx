@@ -1,13 +1,18 @@
-export const CustomTooltip = ({ active, payload,  label }) => {
+const CustomTooltip = ({ active, payload,  label }) => {
     if (active && payload?.length) {
-        return <div className="tooltip">
+        const toReturn = <div className="tooltip" style={{width: '250px', backgroundColor: '#000000', opacity: 0.7}}>
             {payload.map((ele, index) => {
-                <>
-                 <p>{`Time: ${ele.name}`}</p>
-                 <p>{`Vehicles: ${ele.value}`}</p>
+                return <>
+                 <p>{`Time: ${ele.payload.name}`}</p>
+                 <p>{`Vehicles: ${ele.payload.value}`}</p>
                 </>
             })}
-        </div>
+        </div>;
+
+        console.log(toReturn);
+        return toReturn;
     }
     return null;
 }
+
+export default CustomTooltip;
