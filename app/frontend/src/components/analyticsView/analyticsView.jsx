@@ -506,7 +506,7 @@ const AnalyticsView = () => {
               {loading ? 'Generating...' : 'go'}
             </Button>
           </div>
-          <div className="longResults" style={{ backgroundColor: (showLongForecastResults ? '#323551' : '#100D1D'), borderRadius: "5px", padding: "15px", width : "220px", marginTop : (showLongForecastResults ? "5%" : "0%"), marginBottom : (showLongForecastResults ? "5%" : "0%")}}>
+          <div className="longResults" style={{ backgroundColor: (showLongForecastResults ? '#323551' : '#100D1D'), borderRadius: "5px", padding: "15px", width : "220px", marginTop : (showLongForecastResults ? "20px" : "0%"), marginBottom : (showLongForecastResults ? "20px" : "0%")}}>
             {showLongForecastResults && <button class="close-button" aria-label="Close" onClick={handleCloseLongResults}>× </button>}
             {showLongForecastResults && longForecastResults }
             {isLoading && <LoadingAnimationComp/>}
