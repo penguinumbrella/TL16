@@ -68,7 +68,7 @@ const MapView = () => {
     <div className='mapView'>
       <div className='mapViewContent'>
         {/* Content of MapView */}
-        {iconsVisible && (
+        {iconsVisible && weatherData && (
           <>
             <WeatherIcon
               currTime={weatherData.timeOfDay}
