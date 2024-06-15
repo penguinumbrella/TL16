@@ -20,7 +20,6 @@ import loadingZoneIconPicked from './../../../../assets/loadingZoneIconPicked.pn
 
 
 
-
 /*
 position: object with lat and lng values e.g. { "lat": 49.26927494156756, "lng": -123.25087736976562 }
 
@@ -119,19 +118,26 @@ const MarkerWithInfoWindow = ({
             // setMapCenter(mapCenter);
           }}
           className="info-window"
+          style={{ backgroundColor: '#123674', border: '2px solid #ccc', padding: '10px', borderRadius: '5px', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)' }}
         >
           <div className="info-window-contents">
             <h2 style={{ paddingBottom: '20px' }}>{`${content}`}</h2>
             <div className="info-window-diagrams">
             {selectedOption === "parkades" &&
-                <Diagram
-                  type={'PIE'}
-                  height={200}
-                  width={200}
-                  title="Occupancy"
-                  query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formattedTimestamp} ORDER BY TimestampUnix DESC`} 
-                  dataTransformer={transformData}
-                />
+
+            <div className='parkadeWindow'>
+            <div className='occupancy-chart'>
+            <Diagram className = 'occupancy-pie' type={'OCCUPANCY_PIE'} height={300} width={300} title="Occupancy" hasLegend={true}
+            query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formattedTimestamp} ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+
+            <div className='last-update' style={{padding: '10px'} }>
+
+            </div>
+            </div>
+            <div className='compliance-chart'>
+              <Diagram className = 'compliance-pie' type={'COMPLIANCE_PIE'} height={150} width={150} title="Compliance" hasLegend={true}
+              query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formattedTimestamp} ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+              </div></div>
               }
             </div>
           </div>

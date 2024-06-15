@@ -122,9 +122,6 @@ const LiveView = () => {
 <span style={{ fontSize: '15px' }}>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
 
 </div>
-                
-
-                
                 </div>
 
                 <div className='compliance-chart'>

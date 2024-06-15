@@ -10,14 +10,6 @@ const SearchBar = ({ activeView, onIconClick }) => {
 
   const isIconActive = (icon) => activeView === icon; // Function to check if the icon is active
 
-  const handleMouseEnter = (icon) => {
-    setHoveredIcon(icon);
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredIcon(null);
-  };
-
   return (
     <div className='searchBar'>
       <div className='blurredCircle1'></div> {/* Blurred Circle */}
@@ -39,7 +31,6 @@ const SearchBar = ({ activeView, onIconClick }) => {
             className={isIconActive('dashboard') ? 'icon' : ''}
           />
           <div className="circle" style={isIconActive('dashboard') ? {} : { display: 'none' }}></div>
-          {hoveredIcon == 'dashboard' ? <div className="hover-text">Home</div> : ''}
         </div>
         
         <div className='navicon-container'>
@@ -50,7 +41,6 @@ const SearchBar = ({ activeView, onIconClick }) => {
             className={isIconActive('map') ? 'icon' : ''}
           />
           <div className="circle" style={isIconActive('map') ? {} : { display: 'none' }}></div>
-          {hoveredIcon == 'map' ? <div className="hover-text">Map</div> : ''}
         </div>
         
         <div className='navicon-container'>
@@ -61,7 +51,6 @@ const SearchBar = ({ activeView, onIconClick }) => {
             className={isIconActive('live') ? 'icon' : ''}
           />
           <div className="circle" style={isIconActive('live') ? {} : { display: 'none' }}></div>
-          {hoveredIcon == 'live' ? <div className="hover-text">Live</div> : ''}
         </div>
         
         <div className='navicon-container'>
@@ -72,7 +61,6 @@ const SearchBar = ({ activeView, onIconClick }) => {
             className={isIconActive('analytics') ? 'icon' : ''}
           />
           <div className="circle" style={isIconActive('analytics') ? {} : { display: 'none' }}></div>
-          {hoveredIcon == 'analytics' ? <div className="hover-text">Analytics</div> : ''}
         </div>
       </div>
 
