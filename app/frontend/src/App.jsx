@@ -9,7 +9,7 @@ import AnalyticsView from './components/analyticsView/analyticsView';
 
 function App() {
   // State to track the active view
-  const [activeView, setActiveView] = useState('live'); // 'map' is the default view
+  const [activeView, setActiveView] = useState('dashboard'); // 'map' is the default view
 
   // Function to handle clicking on the icons
   const handleIconClick = (view) => {
@@ -18,10 +18,10 @@ function App() {
 
   return (
     <div className="container">
-      <SearchBar onIconClick={handleIconClick} />
+      <SearchBar activeView={activeView} onIconClick={handleIconClick} />
       {/* Render appropriate view based on activeView state */}
       {activeView === 'map' ? <MapView /> : 
-       activeView === 'dashboard' ? <DashboardView /> :
+       activeView === 'dashboard' ? <DashboardView onIconClick={handleIconClick}/> :
        activeView === 'live' ? <LiveView /> :
        <AnalyticsView />}
     </div>
