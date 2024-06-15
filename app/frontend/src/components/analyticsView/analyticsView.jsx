@@ -240,7 +240,7 @@ const AnalyticsView = () => {
             <div>                
               {data["long_term_results"].map((dataObj) => {
                 return (
-                  <><h4>  {dataObj.name} : {dataObj.value}  </h4> <br/></>       
+                  <><h4>  {dataObj.name} : &emsp; {dataObj.value}  </h4> <br/></>       
                 )})}
             </div>
           )} 
