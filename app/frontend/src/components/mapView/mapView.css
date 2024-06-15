@@ -70,20 +70,36 @@
   height: 100%;
 }
 
-.map-form {
+.form-container {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  display: flex;
+  flex-direction: row;
+  top: 20px;
+  left: 20px;
   background-color: rgba(7, 8, 17, 0.6); /* Transparent background color */
   background-blend-mode: color-burn;
   padding: 10px;
   border-radius: 5px;
   z-index: 1; /* Ensure the form is inside the map container */
 
-  color: white;
+  font-size: 11px;
 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Add shadow for depth */
 
   backdrop-filter: blur(3px); /* Adjust the blur radius as needed */
   -webkit-backdrop-filter: blur(3px); /* For Safari */
+}
+
+.form-group {
+  
+}
+
+.labels {
+  padding-left: 5px;
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  font-size: 20;
 }
