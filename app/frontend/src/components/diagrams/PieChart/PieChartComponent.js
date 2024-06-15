@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Legend, Label } from 'recharts';
 
-const PieChartComponent = ({data, colors, width, height, title='', innerRadius, outerRadius , percentageCenter, startAngle, endAngle}) => {
+const PieChartComponent = ({data, colors, width, height, title='', innerRadius, outerRadius , percentageCenter, startAngle, endAngle, base_font_size}) => {
 
   const [ activeIndex, setActiveIndex ] = useState(-1);
 
@@ -21,7 +21,7 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
     const sy = cy + (outerRadius + 2) * sin;
     const mx = cx + (outerRadius + 6) * cos;
     const my = cy + (outerRadius + 6) * sin;
-    const ex = mx + (cos >= 0 ? 1 : -1) * 9;
+    const ex = mx + (cos >= 0 ? 1 : -1) * 6;
     const ey = my;
     const textAnchor = cos >= 0 ? 'start' : 'end';
 
@@ -44,7 +44,7 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
           fill="none" 
         />
         <circle cx={ex} cy={ey} r={2} fill={colors[index % colors.length]} stroke="none" />
-        <text x={ex + (cos >= 0 ? 1 : -1) * 6} y={ey} dy={5} textAnchor={textAnchor} fill="#999" fontSize={16}>
+        <text x={ex + (cos >= 0 ? 1 : -1) * 4} y={ey} dy={5} textAnchor={textAnchor} fill="#999" fontSize={base_font_size + 5}>
         {`${toDisplayValue}`}
         </text>
       </g>
@@ -125,22 +125,25 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
         </Pie>
         <text 
           x={width / 2} 
-          y={height / 2 - 20} 
+          y={height / 2 - 10} 
           textAnchor="middle" 
           fill="#888" 
           style={{ textAlign: 'center' }} 
           className='chart-title'
+          fontSize={base_font_size}
         >
           {title}
         </text>
         {/* Percentage Occupancy */}
         <text
           x={width / 2} 
-          y={height / 2} 
+          y={height / 2 + base_font_size - 5} 
           dy={8} 
           textAnchor="middle" 
           fill="#FFF" 
+          style={{ textAlign: 'center'}} 
           className='percentage-center'
+          fontSize={base_font_size + 10}
         >
           {percentageCenter}
         </text>

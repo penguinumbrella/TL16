@@ -93,8 +93,8 @@ const LiveView = () => {
 
                                
                   <div className='last-update' style={{padding: '10px'} }>
-                  <span style={{ fontSize: '10px' }}>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
-                </div>
+                    <span style={{ fontSize: '15px' }}>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
+                  </div>
                 </div>
 
                 
@@ -119,7 +119,7 @@ const LiveView = () => {
                 query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
 
 <div className='last-update' style={{padding: '10px'} }>
-<span style={{ fontSize: '10px' }}>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
+<span style={{ fontSize: '15px' }}>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
 
 </div>
                 

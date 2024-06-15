@@ -69,6 +69,7 @@
 .last-update {
   width: 25%;
   padding-left: 20px;
+  top: -10px;
   text-align: left;
   align-items: center;
   white-space: normal; /* Allow text to wrap */
@@ -81,8 +82,8 @@
   right: 10px;
   display: flex;
   justify-content: center;
-  align-items: center;
   top: -50px;
+  align-items: center;
 }
 
 .compliance-chart {
@@ -90,7 +91,6 @@
   position: relative;
   top: -170px;
   right: -50px;
-  
 }
 
 .warning-tooltip {

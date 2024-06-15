@@ -113,12 +113,13 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               height={height} 
               width={width} 
               title={title} 
-              innerRadius={95}
-              outerRadius={100}
+              innerRadius={85}
+              outerRadius={90}
               percentageCenter={occupancyPercentage}
               startAngle={90}
               endAngle={450}
               startColor="#888"
+              base_font_size={25}
               className='pie-chart'>
             </PieChartComponent>
             </>
@@ -131,11 +132,12 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               height={height} 
               width={width} 
               title={title} 
-              innerRadius={35}
-              outerRadius={40}
+              innerRadius={50}
+              outerRadius={55}
               percentageCenter={occupancyPercentage}
               startAngle={90}
               endAngle={450}
+              base_font_size={15}
               startColor="#888">
             </PieChartComponent>
             </>
