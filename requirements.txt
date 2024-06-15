@@ -1,0 +1,15 @@
+pytest
+pandas 
+torch
+numpy
+pandas 
+prophet 
+seaborn 
+matplotlib
+scikit-learn
+beautifulsoup4
+requests
+lightgbm
+statsmodels
+plotly
+flask

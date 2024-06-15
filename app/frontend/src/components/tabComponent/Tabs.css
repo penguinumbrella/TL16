@@ -1,0 +1,28 @@
+
+
+.tab-buttons {
+  display: flex;
+}
+
+.tab-buttons button {
+  border: none;
+  background-color: transparent;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+  border-bottom: 2px solid transparent;
+  color: aliceblue;
+}
+
+.tab-buttons button:hover {
+  border-bottom-color: #dddcdc;
+}
+
+.tab-buttons button.active {
+  border-bottom-color: #a3a3a3;
+}
+
+.tab-content {
+  margin-top: 10px;
+}

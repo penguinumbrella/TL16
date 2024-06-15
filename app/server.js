@@ -7,6 +7,8 @@ const cors = require("cors");
 
 //const timeSlider = require("routes")
 const fs = require('fs');
+const csv = require('csv-parser');
+const { spawn } = require('child_process');
 
 const PORT = 8080;
 
@@ -131,7 +133,198 @@ app.get('/api/data', (req, res) => {
       res.json(data);
   });
 });
+
+
+
+//-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+
+// LGBM_short short term prediction 
+app.get('/api/LGBM_short',  async (req, res) => {
+  try{
+    shortTermCutoff = '2024-06-13 12:00:00';
+
+    // the qquery is a string of the parkades seperated by commas
+    // convert it to an array of strings
+    parkades_list = req.query.parkades.split(',');
+    // console.log(parkades_list)
+
+    // Set the return object's properties to the input parkades
+    const returnObj = {};
+    const returnValue = parkades_list.reduce((acc, curr) => {
+      acc[curr] = []; 
+      return acc;}, returnObj);
+    
+    // Read the saved prediction data from the CSV file
+    const getCSVData = async (parkade)=>{
+      return new Promise((resolve,reject) =>{
+      
+        filePath = `./LightGBM/predictions/${parkade}_predictions.csv`;
+
+        // Temporary list for the rows
+        let streamData = []
+
+        // explained in more detail below
+        let breakPoint = 0;
+
+        const dataStream = fs.createReadStream(filePath)
+
+        dataStream.on("close", async (err) => {
+          // Remove the unneseccery data (explained in more detail below)
+          resolve(streamData.slice(0,breakPoint));          
+        })
+
+        dataStream.pipe(csv())
+        .on('data',  async (row) => {
+
+          // Each row has 2 properties: Timestamp and Occupancy
+          // rename them to 'name' and 'value' so that they can 
+          // work with the diagrams
+          const newRow = {
+            ["name"]: row.Timestamp,
+            ["value"]: parseInt(row.Occupancy, 10)
+          };
+          
+          // Add the new row to the temporary list
+          streamData.push(newRow);
+
+          // If wereach the cutoff date close the stream
+          // breakpoint will represent the length of the array
+          // it is needed because dataStream does not read one row at
+          // a time instead it reads chunks of data so to prevent adding
+          // any unneseccary values we save the length as breakpoint
+          if(row.Timestamp === shortTermCutoff && breakPoint == 0){
+            breakPoint = streamData.length;
+            dataStream.destroy();
+          } 
+        })
+
+        // this event is only called when the entire file is read
+        .on('end', () => {
+          console.log('Data length:', streamData.length);
+        })
+        .on('error', (error) => {
+          console.error('Error:', error.message);
+          res.status(500).json({ error: 'Internal server error' });
+        });
+      })
+    }
+
+    // Build up the returnValue with the arrays that we got 
+    // from the csv 
+    for (const parkade of parkades_list){
+      returnValue[parkade] = await getCSVData(parkade);
+    }
+    
+    res.json(returnObj);
+
+  }catch(e){
+    console.log("Error in LGBM_short");
+    res.status(500).json({ error: 'Internal server error' });
+  }
   
+});
+
+//---------------------------------------------
+
+// Prediction for the long term because there were some missing dates in the lgbm file
+app.get('/api/baseline_predict', (req, res) => {
+  try{ 
+    // the qquery is a string of the parkades seperated by commas
+    // convert it to an array of strings
+    parkades_list = req.query.parkades.split(',');
+
+    // Run the python script for the baseline model and pass it the date and the parkades
+    const pythonProcess = spawn('python', [`Baseline/src/baseline_predict.py`, req.query.date, parkades_list]);
+    pythonProcess.stdout.on('data', (data) => {
+      try{
+        // Return the output of the process
+        const outputJSON = JSON.parse(data);
+        res.json(outputJSON);
+
+      }catch(e){
+        console.error(`Error executing Python script: ${data}`);
+        res.status(500).json({ e: 'Internal server error' });
+        return;
+      }
+      
+    });
+    pythonProcess.stderr.on('data', (data) => {
+        console.error(`Error executing Python script: ${data}`);
+        res.status(500).json({ error: 'Internal server error' });
+        return;
+    });
+    pythonProcess.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
+    });
+
+  }catch(e){
+    console.log(e);
+    console.log("Error in baseline_predict");
+    res.status(500).json({ error: 'Internal server error' });
+
+  }
+});
+
+//---------------------------------------------
+
+// This is for getting the accessibility stalls' status and time stamp
+// from eleven-x although currently it is from a csv file
+// later it will run the python script and make the necessary API calls
+// to get up to date data
+app.get('/api/elevenX',  async (req, res) => {
+  try{
+    const getCSVData = async ()=>{
+      return new Promise((resolve,reject) =>{
+      
+        filePath = `./tempCSV/stall_current_status_unique.csv`;
+
+        // Temporary array to hold the data
+        let streamData = []
+        const dataStream = fs.createReadStream(filePath)
+
+        dataStream.pipe(csv())
+        .on('data',  async (row) => {
+
+          // Instantiate a new object containing only the neccessary properties
+          const newRow = {
+            ["stall_name"]: row.stall_name,
+            ["status"]: row.status,
+            ["payload_timestamp"] : row.payload_timestamp
+          }
+          
+          // Add the new row 
+          streamData.push(newRow);
+        })
+
+        // Once the entire file was read return the data
+        .on('end', () => {
+          console.log('Data length:', streamData.length);
+          resolve(streamData); 
+        })
+        .on('error', (error) => {
+          console.error('Error:', error.message);
+          res.status(500).json({ error: 'Internal server error' });
+        });
+      })
+
+    }
+    
+    const returnValue = await getCSVData();
+    res.json(returnValue);
+
+  }catch(e){
+    console.log("Error in LGBM_short");
+    res.status(500).json({ error: 'Internal server error' });
+  }
+  
+});
+
+
+//-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+
+
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
