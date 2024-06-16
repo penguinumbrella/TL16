@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Diagram from '../../../diagrams/Diagram'
 import './MarkerWithInfoWindow.css'
 
+import FutureDiagram from '../../../diagrams/FutureDiagram';
 
 
 // This does not work consistantly 
@@ -74,7 +75,7 @@ const MarkerWithInfoWindow = ({
     'West': 'WestParkade',
     'Health Sciences': 'HealthSciencesParkade',
     'Thunderbird': 'ThunderbirdParkade',
-    'University Lot Blvd': 'UnivWstBlvdParkade',
+    'University West Blvd': 'UnivWstBlvdParkade',
     'Rose Garden': 'RoseGardenParkade'
   }
 
@@ -90,6 +91,9 @@ const MarkerWithInfoWindow = ({
   if (selectedOption == "parkades") {
     formattedTimestamp = formatTimestampToUnix(timestamp); 
   }
+
+  const thresholdDate = new Date('2024-06-06T13:00:00Z');
+  const isTimestampPastThreshold = timestamp >= thresholdDate;
  
 
   const transformData = (data) => {
@@ -127,17 +131,67 @@ const MarkerWithInfoWindow = ({
               {selectedOption === "parkades" &&
 
               <div className='parkadeWindow'>
-                <div className='occupancy-chart'>
-                  <Diagram className = 'occupancy-pie' type={'OCCUPANCY_PIE'} height={300} width={300} title="Occupancy" hasLegend={true}
-                  query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formattedTimestamp} ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-
-                  <div className='last-update' style={{padding: '10px'} }></div>
-                </div>
-
-                <div className='compliance-chart'>
-                <Diagram className = 'compliance-pie' type={'COMPLIANCE_PIE'} height={150} width={150} title="Compliance" hasLegend={true}
-                query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formattedTimestamp} ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-                </div>
+                 {!isTimestampPastThreshold ? (
+                    <>
+                      <div className='occupancy-chart'>
+                        <Diagram
+                          className='occupancy-pie'
+                          
+                          type={'OCCUPANCY_PIE'}
+                          height={300}
+                          width={300}
+                          title="Occupancy"
+                          hasLegend={true}
+                          query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`}
+                          dataTransformer={transformData}
+                        />
+                      </div>
+                      <div className='compliance-chart'>
+                        <Diagram
+                          className='compliance-pie'
+                          
+                          type={'COMPLIANCE_PIE'}
+                          height={150}
+                          width={150}
+                          title="Compliance"
+                          hasLegend={true}
+                          query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`}
+                          dataTransformer={transformData}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className='occupancy-chart'>
+                        <FutureDiagram
+                          className='occupancy-pie'
+                          timestamp={timestamp}
+                          parkade={content}
+                          type={'OCCUPANCY_PIE'}
+                          height={300}
+                          width={300}
+                          title="Occupancy"
+                          hasLegend={true}
+                          
+                          dataTransformer={transformData}
+                        />
+                      </div>
+                      <div className='compliance-chart'>
+                        <FutureDiagram
+                          className='compliance-pie'
+                          timestamp={timestamp}
+                          parkade={content}
+                          type={'COMPLIANCE_PIE'}
+                          height={150}
+                          width={150}
+                          title="Compliance"
+                          hasLegend={true}
+                          query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`}
+                          dataTransformer={transformData}
+                        />
+                      </div>
+                    </>
+                  )}
               </div>
               }
               {

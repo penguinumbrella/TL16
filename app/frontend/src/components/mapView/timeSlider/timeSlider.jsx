@@ -25,7 +25,10 @@ const TimeSlider = ({ onTimeChange }) => {
   nextDay.setDate(nextDay.getDate() + 1); // Get the next day
   nextDay.setHours(0, 0, 0, 0); // Set time to 12:00 AM
 
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const roundedDate = new Date();
+  roundedDate.setMinutes(0, 0, 0); // Set minutes, seconds, and milliseconds to 0
+
+  const [currentTime, setCurrentTime] = useState(roundedDate);
   const [sliderValue, setSliderValue] = useState(startingHourDifference);
   const [showTime, setShowTime] = useState(false);
   const [thumbPosition, setThumbPosition] = useState({ left: 0, top: 0 });
@@ -123,7 +126,7 @@ const TimeSlider = ({ onTimeChange }) => {
   // Set the min, max, and step values for the slider
   const minSliderValue = 0;
   const maxSliderValue = hoursDifference;
-  const sliderStep = daysDifference > 2 ? 24 : 1; // Use 1 day step if difference is more than 2 days, otherwise 1 hour
+  const sliderStep = 1; // Use 1 day step if difference is more than 2 days, otherwise 1 hour
 
   const calculateBubblePosition = () => {
     if (sliderRef.current) {
