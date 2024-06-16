@@ -23,6 +23,8 @@ const MapView = () => {
   const [activeIndex, setActiveIndex] = useState('');
   const [currentTime, setCurrentTime] = useState(new Date());
 
+  const [accOccupancyStatus, setAccOccupancyStatus] = useState('');
+
   const toggleIconsVisibility = () => {
     setIconsVisible(!iconsVisible);
   };
@@ -53,8 +55,24 @@ const MapView = () => {
   }, [currentTime]);
 
   const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-    setActiveIndex(''); // Reset the active index
+    if(event.target.value === 'accessibility'){
+      fetch(`/api/elevenX`)
+      .then(response => response.json())
+      .then(data => {
+        setSelectedOption(event.target.value);
+        setActiveIndex(''); // Reset the active index
+        setAccOccupancyStatus(data);
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('Error in onClickLGBM:', error);
+      });
+      
+    } else{
+      setSelectedOption(event.target.value);
+      setActiveIndex(''); // Reset the active index
+
+    }
   };
 
   const handleTimeChange = (newTime) => {
@@ -128,7 +146,7 @@ const MapView = () => {
         
         )}
 
-        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} zoom={zoom} center={defaultCenter} timestamp={currentTime}/>
+        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} zoom={zoom} center={defaultCenter} timestamp={currentTime} accOccupancyStatus={accOccupancyStatus}/>
       </div>
     </div>
   );

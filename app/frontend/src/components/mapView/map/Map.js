@@ -7,7 +7,7 @@ import './map.css'; // Add a CSS file to handle the styling
 
 import mapStyleDark from './mapStyleDark.json'
 
-const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp}) => { // Accept setActiveIndex as a prop
+const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccupancyStatus}) => { // Accept setActiveIndex as a prop
   const [activeIndex, setActiveIndexState] = useState('');
   const [markerData, setMarkerDataData] = useState(initialMarkerData);
 
@@ -29,6 +29,17 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp}) => { /
     streetViewControl: false,
     styles: mapStyleDark // doesnt seem to work with free api key
   };
+
+  // Get the accessibilty stalls information
+  let accLookup = {};
+  if(selectedOption === 'accessibility'){
+    accOccupancyStatus.forEach(obj => {
+      accLookup[obj.stall_name] = {
+        status : obj.status,
+        payload_timestamp : obj.payload_timestamp
+      }
+    });
+  }
 
   const getMarkerData = (option, name) => {
     const indexedObject = markerData[option].reduce((acc, obj) => {
@@ -89,7 +100,14 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp}) => { /
                       data={getMarkerData(selectedOption, item.name)}
                       // mapCenter={mapCenter}
                       // setMapCenter={setMapCenter} // Ensure setMapCenter is passed
-                      clusterer={clusterer }
+                      clusterer={clusterer}
+
+                      // Right now there are stalls missing so they are undefined
+                      // for these stalls they are set to occupied and right now a string that says [stall data is missing]
+                      // although we can put a random place holder timestamp 
+                      vacant={(accLookup[item.name] == undefined) ? false : accLookup[item.name].status === "vacant" }
+                      payload_timestamp = {(accLookup[item.name] == undefined) ? " [stall data is missing]" : accLookup[item.name].payload_timestamp}
+
                     />)})
                 } 
                 </MarkerClusterer> )
@@ -113,12 +131,6 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp}) => { /
                     // setMapCenter={setMapCenter} // Ensure setMapCenter is passed
                   />)}))
                 }
-
-
-
-
-
-
         </GoogleMap>}
       </div>
   );

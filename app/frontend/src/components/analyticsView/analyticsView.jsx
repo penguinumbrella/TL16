@@ -20,6 +20,11 @@ import Diagram from '../diagrams/Diagram';
 import { formatUnixTimestamp } from "../../time";
 import CustomTooltip from "./customToolTip";
 
+import Tabs from '../tabComponent/Tabs.js';
+import ForcastComponent from "../forcastComponent/ForcastComponent.js";
+import LoadingAnimationComp from "../loading_Animation/LoadingAnimationComp.js";
+
+
 const DATA_CATEGORY_OPTIONS = [
   'Parkade Occupancy', 'Accessibility Occupancy'
 ];
@@ -57,7 +62,7 @@ const menuItems = (data, value, setValue=()=>{}, hideSelected=false, selected) =
 }
 
 const renderForm = (data, value, setValue, width="300px") => (
-  <FormControl sx={{ width: width, height: '40px', backgroundColor: "#323551", color: "#9C9FBB", margin: "5px 0", borderRadius: "5px"}}>
+  <FormControl sx={{ width: width, height: '35px', backgroundColor: "#323551", color: "#9C9FBB", margin: "5px 0", borderRadius: "5px"}}>
     <Select sx={{ color: "#9C9FBB" }}
       size="small"
       value={value}
@@ -87,7 +92,7 @@ const renderForm = (data, value, setValue, width="300px") => (
 
 const renderSelectedParkades = (selectedParkades, setSelectedParkades, setChecked) => (
   selectedParkades.map((item) => (
-    <div style={{ width: "fit-content", height: "30px", backgroundColor: "#323551", color: "#9C9FBB", margin: "10px 2% 10px 0", borderRadius: "5px",
+    <div style={{ width: "fit-content", height: "35px", backgroundColor: "#323551", color: "#9C9FBB", margin: "5px 2% 5px 0", borderRadius: "5px",
       display: "flex", alignItems: 'center', padding: '5px'
     }} key={item}>
       <div style={{display: 'flex', alignItems: 'center', 'justifyContent': 'space-evenly'}}>
@@ -108,15 +113,12 @@ const renderSelectedParkades = (selectedParkades, setSelectedParkades, setChecke
 const renderParkadeSelection = (data, label, selectedParkades, setSelectedParkades, setChecked) => (
   <div style={{display:'flex', alignItems:'flex-start', flexWrap: 'wrap'}}>
     {renderSelectedParkades(selectedParkades, setSelectedParkades, setChecked)}
-    <FormControl sx={{ width: "120px", height: '40px', backgroundColor: "#323551", color: "#9C9FBB", margin: "5px 0", borderRadius: "5px"}}>
+    <FormControl sx={{ width: "120px", height: '35px', backgroundColor: "#323551", color: "#9C9FBB", margin: "5px 0", borderRadius: "5px"}}>
       <InputLabel>{'+ Select'}</InputLabel>
       <Select sx={{ color: "#9C9FBB" }} displayEmpty
         size="small"
         value=''
-        renderValue={() => <p>{label}</p>
-        
-      
-      }
+        renderValue={() => <p>{label}</p>}
       >
         {menuItems(data, '', (item) => {
           if(selectedParkades.indexOf(item) === -1) {
@@ -144,6 +146,143 @@ const AnalyticsView = () => {
   const [queries, setQueries] = useState({});
   const [results, setResults] = useState("");
 
+
+  // Forcast states and functions-----------------------------------------------------------
+  const formatDate = (date) =>{
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Month is zero-indexed
+    const day = ('0' + date.getDate()).slice(-2);
+    const hours = ('0' + date.getHours()).slice(-2);
+    const minutes = ('0' + date.getMinutes()).slice(-2);
+    const seconds = ('0' + date.getSeconds()).slice(-2);
+  
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
+
+  const [selectedParkadesForcast, setSelectedParkadesForcast] = useState([]);
+  const [selectAllCheckedForcast, setSelectAllCheckedForcast] = useState(false);
+  const [forcastResults, setForcastResults] = useState("");
+
+  const [longForecastDate, setLongForecastDate] = useState(formatDate(new Date()));
+  const [longForecastResults, setLongForecastResults] = useState('');
+  const [showLongForecastResults, setShowLongForecastResults] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const handleSelectAllChangeForcast = (event) => {
+    const checked = event.target.checked;
+    setSelectAllCheckedForcast(checked);
+    if (checked) {
+      setSelectedParkadesForcast(PARKADE_OPTIONS);
+    } else {
+      setSelectedParkadesForcast([]);
+    }
+  };
+
+
+  const onClickLGBM =(queryParams)=>{
+    fetch(`/api/LGBM_short?${queryParams}`)
+      .then(response => response.json())
+      .then(data => {
+        // Handle response data
+        // console.log(data);
+        setForcastResults (Object.keys(data).map((parkade) => {
+          return (
+            <Diagram type={'LINE'} height={'30%'} width={'90%'} title={parkade} dataOverride={data[parkade]} customToolTip={CustomTooltip}/>
+          )
+        }))
+      })
+      .catch(error => {
+        console.error('Error in onClickLGBM:', error);
+      });
+  };
+
+  const handleGenerateClickForcast = async () => {
+    // Check if any required field is empty or missing
+    if (selectedParkadesForcast.length === 0) {
+      // If any required field is missing, don't generate anything
+      alert('Please pick at least one parkade');
+      return;
+    }
+    try {
+      setLoading(true); // Set loading state to true
+  
+      // Make the request to the backend to fetch the CSV data
+      const queryParams = new URLSearchParams({
+        parkades: selectedParkadesForcast
+        
+      });
+      onClickLGBM(queryParams);
+
+    } catch (error) {
+      console.error('Error generating report:', error);
+      alert('Failed to generate report');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onClickLongForecast = (queryParams) =>{
+    // console.log(queryParams);
+    fetch(`/api/baseline_predict?${queryParams}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json()}
+      )
+      .then(data => {
+        // Handle response data
+        // console.log(data);
+        setIsLoading(false);
+        setLongForecastResults (()=>{
+          setShowLongForecastResults(true);
+          return(
+            <div>                
+              {data["long_term_results"].map((dataObj) => {
+                return (
+                  <><h4>  {dataObj.name} : &emsp; {dataObj.value}  </h4> <br/></>       
+                )})}
+            </div>
+          )} 
+        )})
+      .catch(error => {
+        console.error('onClickLongForecast Error:', error);
+      });
+  };
+
+  const handleLongForcastClick = ()=>{
+    // longForecastDate
+    // Check if any required field is empty or missing
+    if (selectedParkadesForcast.length === 0) {
+      // If any required field is missing, don't generate anything
+      alert('Please pick at least one parkade');
+      return;
+    }
+    try {
+      setShowLongForecastResults(false);
+      setIsLoading(true); // Set loading state to true
+
+      // Make the request to the backend to fetch the CSV data
+      const queryParams = new URLSearchParams({
+        parkades: selectedParkadesForcast,
+        date : longForecastDate
+      });
+      onClickLongForecast(queryParams);
+
+    } catch (error) {
+      console.error('Error generating report:', error);
+      alert('Failed to generate report');
+    }
+  };
+
+  const handleCloseLongResults = ()=>{
+    setShowLongForecastResults(false);
+  };
+
+
+  //-------------------------------------------------------------------------
+  
+  
   const handleSelectAllChange = (event) => {
     const checked = event.target.checked;
     setSelectAllChecked(checked);
@@ -250,88 +389,142 @@ const AnalyticsView = () => {
     fetchResults();
   }, [queries]);
 
+  
+  const tabs = [
+    {
+      title: 'REAL VALUES',
+      content :
+      <div className='analyticsView' style={{display: 'flex', alignItems: 'center'}}>
+        <div className="queryItems">
+          <div className='analytics-options-div'>
+            <h4>DATA CATEGORY</h4>
+            {renderForm(DATA_CATEGORY_OPTIONS, dataCategory, setDataCategory)}
+          </div>
+          <div className='analytics-options-div'>
+            <h4>VISUALIZATION FORMAT</h4>
+            {renderForm(VISUALIZATION_OPTIONS, visualizationFormat, setVisualizationFormat)}
+          </div>
+          <div className='analytics-options-div'>
+            <h4>TIME FRAME</h4>
+            <div className="timeframe" style={{ display: 'flex', alignItems: 'center', gap: '10px'}}>
+              <Typography style={{ color: '#9C9FBB' }}>From</Typography>
+                <DateTimePicker
+                    onChange={(date) => {
+                    if (date < endTime) {
+                      setStartTime(date);
+                    } else {
+                      alert(`Must select a time lesser than ${endTime}`)
+                    }}}
+                    value={startTime}
+                    minDate={new Date('01-01-2018')}
+                    maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())  
+                    }
+                />
+                <Typography style={{ color: '#9C9FBB' }}>To</Typography>
+                <DateTimePicker
+                  onChange={(date) => {
+                  if (date > startTime) {
+                    setEndTime(date);
+                  } else {
+                    alert(`Must select a time greater than ${startTime}`)
+                  }}}
+                  value={endTime}
+                  minDate={new Date('01-01-2018')}
+                  maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
+                />
+            </div>
+          </div>
+          <div className='analytics-options-div'>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <div style={{marginRight: '20%'}}>
+                <h4>PERIODICITY</h4>
+                {renderForm(PERIODICITY_OPTIONS, periodicity, setPeriodicity, '150px')}
+              </div>
+              <div>
+                <h4>Average/Peak</h4>
+                {renderForm(AVG_PEAK, avgPeak, setAvgPeak, '150px')}
+              </div>
+            </div>
+          </div>
+          <div className='analytics-options-div'>
+            <h4>PARKADE OPTIONS</h4>
+            <div style={{width: "15%", display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+              <Checkbox style={{color: '#323551'}} checked={selectAllChecked} onChange={handleSelectAllChange}></Checkbox>
+              <h4>Select All</h4>
+            </div>
+            {renderParkadeSelection(PARKADE_OPTIONS, '+ Select', selectedParkades, setSelectedParkades, setSelectAllChecked)}
+          </div>
+          <div className='generate-container'>
+          <Button variant="contained" color="primary" onClick={handleGenerateClick} style={{width: "150px"}}>
+              {loading ? 'Generating...' : 'Generate!'}
+            </Button>
+            <div className='generate-checkbox-div' style={{width: "15%", display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+              <Checkbox style={{color: '#323551'}} checked={generateChecked} onChange={handleGenerateChange}></Checkbox>
+              <h4>Generate CSV</h4>
+            </div>
+          </div>
+        </div> 
+          <div className="results">
+            {results}
+          </div>     
+      </div>
+  },
+
+  {
+    title: 'FORECAST',
+    content: 
+    <div className="forecastView">
+      <div className="forecast-options">
+
+        <div className='forecast-parkade-options-div'>
+            <h3>PARKADE OPTIONS</h3>
+            <div style={{width: "15%", display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+              <Checkbox style={{color: '#323551'}} checked={selectAllCheckedForcast} onChange={handleSelectAllChangeForcast}></Checkbox>
+              <h4 style={{margin : '10px'}}>Select All</h4>
+            </div>
+            {renderParkadeSelection(PARKADE_OPTIONS, '+ Select', selectedParkadesForcast, setSelectedParkadesForcast, setSelectAllCheckedForcast)}
+        </div>
+        <br/>
+        <div className="forecast-shortTerm">
+          <h3>SHORT TERM PREDICTION </h3><br/>
+
+          <div className='generate-container'>
+            <Button variant="contained" color="primary" onClick={handleGenerateClickForcast} style={{width: "150px"}}>
+              {loading ? 'Generating...' : 'Generate!'}
+            </Button>
+          </div>
+        </div>
+        <br/>
+        <br/>
+        <div className="forecast-longTerm">
+          <h3>LONG TERM PREDICTION </h3><br/>
+          <h4>Please enter a date </h4><br/>
+          <ForcastComponent date={longForecastDate} setDate={setLongForecastDate}/>
+          <br/>
+          <div className='generate-container'>
+            <Button variant="contained" color="primary" onClick={handleLongForcastClick} style={{width: "150px"}}>
+              {loading ? 'Generating...' : 'go'}
+            </Button>
+          </div>
+          <div className="longResults" style={{ backgroundColor: (showLongForecastResults ? '#323551' : '#100D1D'), borderRadius: "5px", padding: "15px", width : "220px", marginTop : (showLongForecastResults ? "20px" : "0%"), marginBottom : (showLongForecastResults ? "20px" : "0%")}}>
+            {showLongForecastResults && <button class="close-button" aria-label="Close" onClick={handleCloseLongResults}>× </button>}
+            {showLongForecastResults && longForecastResults }
+            {isLoading && <LoadingAnimationComp/>}
+          </div>
+        </div>
+      </div>
+      <div className="results" >
+        {forcastResults}
+      </div>  
+    </div>
+  }];
+
+
   return (
-    <div className='analyticsView' style={{display: 'flex', alignItems: 'center'}}>
-      <div className="queryItems">
-      <div className='analytics-options-div'>
-        <h4>DATA CATEGORY</h4>
-        {renderForm(DATA_CATEGORY_OPTIONS, dataCategory, setDataCategory)}
+      <div className='fullView' >
+          <Tabs tabs={tabs} />
       </div>
-      <div className='analytics-options-div'>
-        <h4>VISUALIZATION FORMAT</h4>
-        {renderForm(VISUALIZATION_OPTIONS, visualizationFormat, setVisualizationFormat)}
-      </div>
-      <div className='analytics-options-div'>
-  <h4>TIME FRAME</h4>
-  <div className="timeframe" style={{ display: 'flex', alignItems: 'center', gap: '10px'}}>
-    <Typography style={{ color: '#9C9FBB' }}>From</Typography>
-    <DateTimePicker
-      onChange={(date) => {
-        if (date < endTime) {
-          setStartTime(date);
-        } else {
-          alert(`Must select a time lesser than ${endTime}`)
-        }
-      }}
-      value={startTime}
-      minDate={new Date('01-01-2018')}
-      maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())  
-      }
-    />
-    <Typography style={{ color: '#9C9FBB' }}>To</Typography>
-    <DateTimePicker
-      onChange={(date) => {
-        if (date > startTime) {
-          setEndTime(date);
-        } else {
-          alert(`Must select a time greater than ${startTime}`)
-        }
-      }}
-      value={endTime}
-      minDate={new Date('01-01-2018')}
-      maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
-    />
-  </div>
-</div>
-
-      <div className='analytics-options-div'>
-        <div style={{display: 'flex', alignItems: 'center'}}>
-            <div style={{marginRight: '20%'}}>
-              <h4>PERIODICITY</h4>
-              {renderForm(PERIODICITY_OPTIONS, periodicity, setPeriodicity, '150px')}
-            </div>
-            <div>
-              <h4>Average/Peak</h4>
-              {renderForm(AVG_PEAK, avgPeak, setAvgPeak, '150px')}
-            </div>
-        </div>
-      </div>
-      <div className='analytics-options-div'>
-        <h4>PARKADE OPTIONS</h4>
-        <div style={{width: "15%", display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Checkbox style={{color: '#323551'}} checked={selectAllChecked} onChange={handleSelectAllChange}></Checkbox>
-          <h4>Select All</h4>
-        </div>
-        {renderParkadeSelection(PARKADE_OPTIONS, '+ Select', selectedParkades, setSelectedParkades, setSelectAllChecked)}
-      </div>
-      <div className='generate-container'>
-
-    <Button variant="contained" color="primary" onClick={handleGenerateClick} style={{width: "150px"}}>
-    {loading ? 'Generating...' : 'Generate!'}
-    </Button>
-
-    <div className='generate-checkbox-div' style={{width: "40%", display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '10px'}}>
-      <Checkbox style={{color: '#323551'}} checked={generateChecked} onChange={handleGenerateChange}></Checkbox>
-      <h4>Generate CSV</h4>
-    </div>
-
-    </div>
-      </div> 
-      <div className="results">
-        {results}
-      </div>     
-    </div>
-  )
+    )
 }
 
 export default AnalyticsView;

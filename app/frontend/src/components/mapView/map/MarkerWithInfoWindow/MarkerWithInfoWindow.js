@@ -15,6 +15,7 @@ import parkadeIcon from './../../../../assets/parkadeIcon.png'
 import parkadeIconPicked from './../../../../assets/parkadeIconPicked.png'
 import accessibilityIcon from './../../../../assets/accessibilityIcon.png'
 import accessibilityIconPicked from './../../../../assets/accessibilityIconPicked.png'
+import accessibilityIconOccupied from './../../../../assets/accessibilityIconOccupied.png'
 import loadingZoneIcon from './../../../../assets/loadingZoneIcon.png'
 import loadingZoneIconPicked from './../../../../assets/loadingZoneIconPicked.png'
 
@@ -49,12 +50,14 @@ const MarkerWithInfoWindow = ({
   // mapCenter, // New prop to pass the map's center
   // setMapCenter, // Function to update the map's center
   clusterer,
-  timestamp
+  timestamp,
+  vacant,
+  payload_timestamp
 }) => {
   // Define icon paths
   const iconPaths = {
     parkades: { icon: parkadeIcon, pickedIcon: parkadeIconPicked },
-    accessibility: { icon: accessibilityIcon, pickedIcon: accessibilityIconPicked },
+    accessibility: { icon: (vacant ? accessibilityIcon : accessibilityIconOccupied), pickedIcon: accessibilityIconPicked },
     loading_zones: { icon: loadingZoneIcon, pickedIcon: loadingZoneIconPicked },
   };
 
@@ -96,8 +99,6 @@ const MarkerWithInfoWindow = ({
     ];
   }
 
-  
-  
 
   return (
     <MarkerF
@@ -123,21 +124,24 @@ const MarkerWithInfoWindow = ({
           <div className="info-window-contents">
             <h2 style={{ paddingBottom: '20px' }}>{`${content}`}</h2>
             <div className="info-window-diagrams">
-            {selectedOption === "parkades" &&
+              {selectedOption === "parkades" &&
 
-            <div className='parkadeWindow'>
-            <div className='occupancy-chart'>
-            <Diagram className = 'occupancy-pie' type={'OCCUPANCY_PIE'} height={300} width={300} title="Occupancy" hasLegend={true}
-            query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formattedTimestamp} ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+              <div className='parkadeWindow'>
+                <div className='occupancy-chart'>
+                  <Diagram className = 'occupancy-pie' type={'OCCUPANCY_PIE'} height={300} width={300} title="Occupancy" hasLegend={true}
+                  query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formattedTimestamp} ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
 
-            <div className='last-update' style={{padding: '10px'} }>
+                  <div className='last-update' style={{padding: '10px'} }></div>
+                </div>
 
-            </div>
-            </div>
-            <div className='compliance-chart'>
-              <Diagram className = 'compliance-pie' type={'COMPLIANCE_PIE'} height={150} width={150} title="Compliance" hasLegend={true}
-              query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formattedTimestamp} ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-              </div></div>
+                <div className='compliance-chart'>
+                <Diagram className = 'compliance-pie' type={'COMPLIANCE_PIE'} height={150} width={150} title="Compliance" hasLegend={true}
+                query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formattedTimestamp} ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
+                </div>
+              </div>
+              }
+              {
+                (iconImage === 'accessibility') &&  <h3 > {vacant ? `Last occupied : ${payload_timestamp}` : `Occupied since : ${payload_timestamp}`}</h3>
               }
             </div>
           </div>
