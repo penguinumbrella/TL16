@@ -5,6 +5,8 @@ import mapMarkers from './coordinates.json';
 import initialMarkerData from '../../../markerData.json';
 import './map.css'; // Add a CSS file to handle the styling
 
+
+
 import mapStyleDark from './mapStyleDark.json'
 
 const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccupancyStatus}) => { // Accept setActiveIndex as a prop

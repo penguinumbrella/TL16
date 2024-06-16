@@ -123,7 +123,7 @@ const TimeSlider = ({ onTimeChange }) => {
   // Set the min, max, and step values for the slider
   const minSliderValue = 0;
   const maxSliderValue = hoursDifference;
-  const sliderStep = daysDifference > 2 ? 24 : 1; // Use 1 day step if difference is more than 2 days, otherwise 1 hour
+  const sliderStep = 1; // Use 1 day step if difference is more than 2 days, otherwise 1 hour
 
   const calculateBubblePosition = () => {
     if (sliderRef.current) {
