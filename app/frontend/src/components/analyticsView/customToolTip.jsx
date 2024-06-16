@@ -4,7 +4,7 @@ const CustomTooltip = ({ active, payload,  label }) => {
             {payload.map((ele, index) => {
                 return <>
                  <p>{`Time: ${ele.payload.name}`}</p>
-                 <p>{`Vehicles: ${ele.payload.value}`}</p>
+                 <p>{`Vehicles: ${ele.payload['Vehicles']}`}</p>
                 </>
             })}
         </div>;

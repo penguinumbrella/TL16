@@ -57,7 +57,7 @@ const menuItems = (data, value, setValue=()=>{}, hideSelected=false, selected) =
 }
 
 const renderForm = (data, value, setValue, width="300px") => (
-  <FormControl sx={{ width: width, backgroundColor: "#323551", color: "#9C9FBB", margin: "10px 0", borderRadius: "5px"}}>
+  <FormControl sx={{ width: width, height: '40px', backgroundColor: "#323551", color: "#9C9FBB", margin: "5px 0", borderRadius: "5px"}}>
     <Select sx={{ color: "#9C9FBB" }}
       size="small"
       value={value}
@@ -108,7 +108,7 @@ const renderSelectedParkades = (selectedParkades, setSelectedParkades, setChecke
 const renderParkadeSelection = (data, label, selectedParkades, setSelectedParkades, setChecked) => (
   <div style={{display:'flex', alignItems:'flex-start', flexWrap: 'wrap'}}>
     {renderSelectedParkades(selectedParkades, setSelectedParkades, setChecked)}
-    <FormControl sx={{ width: "120px", backgroundColor: "#323551", color: "#9C9FBB", margin: "10px 0", borderRadius: "5px"}}>
+    <FormControl sx={{ width: "120px", height: '40px', backgroundColor: "#323551", color: "#9C9FBB", margin: "5px 0", borderRadius: "5px"}}>
       <InputLabel>{'+ Select'}</InputLabel>
       <Select sx={{ color: "#9C9FBB" }} displayEmpty
         size="small"
@@ -181,7 +181,7 @@ const AnalyticsView = () => {
       data.forEach((dataPoint) => {
         result.push({
           'name': formatUnixTimestamp(dataPoint['TimestampUnix']),
-          'value': dataPoint['Vehicles']
+          'Vehicles': dataPoint['Vehicles']
         });
       })
       resultsLocal[parkade] = result;
@@ -189,7 +189,7 @@ const AnalyticsView = () => {
     await Promise.all(promises);
     return Object.keys(resultsLocal).map((parkade) => {
       return (
-        <Diagram className='queryResultDiagram' type={'LINE'} height={'40%'} width={'90%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>}/>
+        <Diagram className='queryResultDiagram' type={'LINE'} height={'40%'} width={'90%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles"/>
       )
     });
   }
@@ -316,13 +316,14 @@ const AnalyticsView = () => {
       </div>
       <div className='generate-container'>
 
-    <div className='generate-checkbox-div' style={{width: "15%", display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-      <Checkbox style={{color: '#323551'}} checked={generateChecked} onChange={handleGenerateChange}></Checkbox>
-      <h4>Generate CSV</h4>
-    </div>
     <Button variant="contained" color="primary" onClick={handleGenerateClick} style={{width: "150px"}}>
     {loading ? 'Generating...' : 'Generate!'}
     </Button>
+
+    <div className='generate-checkbox-div' style={{width: "40%", display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '10px'}}>
+      <Checkbox style={{color: '#323551'}} checked={generateChecked} onChange={handleGenerateChange}></Checkbox>
+      <h4>Generate CSV</h4>
+    </div>
 
     </div>
       </div> 
