@@ -14,7 +14,7 @@ export const getQueries = (dataCategory, visualizationFormat, periodicity, avgPe
         const startUnix = Math.floor(startTime.getTime() / 1000);
         const endUnix = Math.floor(endTime.getTime() / 1000);
         // % url encoded
-        const query = `SELECT Vehicles, TimestampUnix from ${tableName}_Occupancy WHERE TimestampUnix >= ${startUnix} and TimestampUnix <= ${endUnix} and TimestampUnix %25 3600 = 0`
+        const query = `SELECT Vehicles, TimestampUnix from ${tableName}_Occupancy WHERE TimestampUnix >= ${startUnix} and TimestampUnix <= ${endUnix} and TimestampUnix %25 3600 = 0 ORDER BY TimestampUnix`
         queries[parkade] = query;
     });
     return queries;
