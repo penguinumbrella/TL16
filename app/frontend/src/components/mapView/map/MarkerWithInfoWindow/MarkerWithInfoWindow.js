@@ -117,6 +117,10 @@ const MarkerWithInfoWindow = ({
     >
       {infoWindowShown && (
         <InfoWindowF
+        options={{
+          backgroundColor : '#123674',
+          // pixelOffset: new window.google.maps.Size(0, -30), // Adjust vertical offset as needed
+        }}
           onCloseClick={() => {
             exit();
             // Ensure mapCenter remains unchanged when the InfoWindow is closed
