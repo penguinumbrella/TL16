@@ -13,19 +13,25 @@ import 'react-clock/dist/Clock.css';
 
 const TimeSlider = ({ onTimeChange }) => {
 
-  const currentDate = new Date();
+  //const currentDate = new Date();
+  let currentDate = new Date(2024, 4, 15, 12, 0, 0, 0);
+  console.log(currentDate);
+
   currentDate.setHours(0, 0, 0, 0); // Set time to 12:00 AM
 
-  const actualCurrentDate = new Date();
+  //const actualCurrentDate = new Date();
+  const actualCurrentDate = new Date(2024, 4, 15, 12, 0, 0, 0);
 
   // Calculate the hour difference rounded down from the time at 12:00 AM
   const startingHourDifference = Math.floor((actualCurrentDate - currentDate) / (1000 * 60 * 60));
 
-  const nextDay = new Date();
+  //const nextDay = new Date();
+  const nextDay = new Date(2024, 4, 15, 12, 0, 0, 0);
   nextDay.setDate(nextDay.getDate() + 1); // Get the next day
   nextDay.setHours(0, 0, 0, 0); // Set time to 12:00 AM
 
-  const roundedDate = new Date();
+  const roundedDate = new Date(2024, 4, 15, 12, 0, 0, 0);
+  //const roundedDate = new Date();
   roundedDate.setMinutes(0, 0, 0); // Set minutes, seconds, and milliseconds to 0
 
   const [currentTime, setCurrentTime] = useState(roundedDate);
@@ -37,7 +43,8 @@ const TimeSlider = ({ onTimeChange }) => {
   const [showCalendarLeft, setShowCalendarLeft] = useState(false);
   const [showCalendarRight, setShowCalendarRight] = useState(false);
 
-  const actualTime = new Date();
+  const actualTime = new Date(2024, 4, 15, 12, 0, 0, 0);
+  //const actualTime = new Date();
 
   const sliderRef = useRef(null);
   const [step, setStep] = useState(0);
