@@ -3,6 +3,7 @@ import {MarkerF , InfoWindowF} from '@react-google-maps/api';
 import { useState } from 'react';
 import Diagram from '../../../diagrams/Diagram'
 import './MarkerWithInfoWindow.css'
+import './extraStyling.css'
 
 import FutureDiagram from '../../../diagrams/FutureDiagram';
 
@@ -118,7 +119,7 @@ const MarkerWithInfoWindow = ({
       {infoWindowShown && (
         <InfoWindowF
         options={{
-          backgroundColor : '#123674',
+          disableAutoPan: true
           // pixelOffset: new window.google.maps.Size(0, -30), // Adjust vertical offset as needed
         }}
           onCloseClick={() => {
