@@ -65,7 +65,7 @@ ssh -i ~/.ssh/$KEY_NAME.pem $USER@$PUBLIC_DNS << EOF
   git checkout $GH_BRANCH
 
   sed -i 's/SERVER_PLACEHOLDER/$PUBLIC_DNS/g' nginx.txt
-  cat nginx.txt >> /etc/nginx/sites-available/default
+  sudo cat nginx.txt | sudo tee /etc/nginx/sites-available/default > /dev/null
 
   sudo nginx -t
   sudo systemctl restart nginx
@@ -73,8 +73,9 @@ ssh -i ~/.ssh/$KEY_NAME.pem $USER@$PUBLIC_DNS << EOF
   cd app
   npm install
   npm run build  
-  nohup npm run start  
+  nohup npm run start > server.log 2>&1 & 
   echo "Done with the remote commands."
 EOF
 
 echo "Script completed successfully."
+echo "App running at http://$PUBLIC_DNS"
