@@ -51,6 +51,10 @@ PUBLIC_DNS=$(aws ec2 describe-instances \
 
 echo "Instance Public DNS: $PUBLIC_DNS"
 
+# send .env over to the EC2
+scp -i ~/.ssh/$KEY_NAME.pem ./app/.env $USER@$PUBLIC_DNS:~/
+
+
 # SSH into the EC2 instance and run commands
 ssh -i ~/.ssh/$KEY_NAME.pem $USER@$PUBLIC_DNS << EOF
   sudo apt update
@@ -71,6 +75,7 @@ ssh -i ~/.ssh/$KEY_NAME.pem $USER@$PUBLIC_DNS << EOF
   sudo systemctl restart nginx
 
   cd app
+  mv ~/.env ./
   npm install
   npm run build  
   nohup npm run start > server.log 2>&1 & 
