@@ -1,19 +1,23 @@
 import React from 'react';
 import { Divider, Icon } from '@chakra-ui/react';
-import { FaHome, FaMap, FaChartPie, FaChartLine, FaCog, FaUserCircle } from 'react-icons/fa';
+import { FaHome, FaMap, FaChartPie, FaChartLine, FaCog, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import './searchBar.css';
+import { signOut } from 'aws-amplify/auth';
 
 const SearchBar = ({ activeView, onIconClick }) => {
   const handleIconClick = (view, event) => {
     onIconClick(view);
   };
+  
+  const handleLogout = async (event) => {
+    console.log('Signing out!')
+    await signOut();
+  }
 
   const isIconActive = (icon) => activeView === icon; // Function to check if the icon is active
 
   return (
     <div className='searchBar'>
-      <div className='blurredCircle1'></div> {/* Blurred Circle */}
-      <div className='blurredCircle2'></div> {/* Blurred Circle */}
       {/* Your other content here */}
 
       <div className='topIcon'>
@@ -67,6 +71,7 @@ const SearchBar = ({ activeView, onIconClick }) => {
       <div className='bottomIcons'>
         <Icon as={FaCog} />
         <Icon as={FaUserCircle} />
+        <Icon as={FaSignOutAlt} onClick={handleLogout}></Icon>
       </div>
     </div>
   );

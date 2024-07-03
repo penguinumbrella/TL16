@@ -4,6 +4,9 @@ const sql = require("mssql");
 const dotenv = require('dotenv');
 dotenv.config();
 const cors = require("cors");
+const jwt = require('jsonwebtoken');
+const jwks = require('jwks-rsa');
+const { expressjwt: jwtMiddleware } = require('express-jwt');
 
 //const timeSlider = require("routes")
 const fs = require('fs');
@@ -21,7 +24,10 @@ const config = {
   "database": process.env.DB_NAME, // Database name
   "options": {
     trustServerCertificate: true
-  }
+  },
+  // Your Cognito User Pool ID and Region
+  "cognitoPoolId": process.env.USER_POOL_ID,
+  "region": process.env.REGION
 }
 
 const executeQuery = async (query) => {
@@ -42,7 +48,36 @@ app.use(cors());
 app.use(express.static(path.resolve(__dirname, './frontend/build')));
 // app.use(express.static(path.resolve(__dirname, './frontend/public')));
 
+// Configure JWKs Client
+const client = jwks({
+  jwksUri: `https://cognito-idp.${config['region']}.amazonaws.com/${config['cognitoPoolId']}/.well-known/jwks.json`
+});
 
+// Middleware to verify JWT
+const verifyJwt = jwtMiddleware({
+  secret: (req, payload, done) => {
+    client.getSigningKey(payload.header.kid, (err, key) => {
+      if (err) {
+        done(err);
+      }
+      const signingKey = key.getPublicKey();
+      done(null, signingKey);
+    });
+  },
+  algorithms: ['RS256']
+});
+
+app.use(verifyJwt);
+
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).send('Unauthorized');
+  } else {
+    next(err);
+  }
+});
 
 app.get("/api", (req, res) => {
     res.json({ message: "Hello from server!" });

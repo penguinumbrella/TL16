@@ -51,8 +51,11 @@ PUBLIC_DNS=$(aws ec2 describe-instances \
 
 echo "Instance Public DNS: $PUBLIC_DNS"
 
+# Create a separate folder for the frontend .env file
+ssh -i ~/.ssh/$KEY_NAME.pem $USER@$PUBLIC_DNS "mkdir ~/frontendEnv/" 
 # send .env over to the EC2
 scp -i ~/.ssh/$KEY_NAME.pem ./app/.env $USER@$PUBLIC_DNS:~/
+scp -i ~/.ssh/$KEY_NAME.pem ./app/frontend/.env $USER@$PUBLIC_DNS:~/frontendEnv/
 
 
 # SSH into the EC2 instance and run commands
@@ -76,6 +79,7 @@ ssh -i ~/.ssh/$KEY_NAME.pem $USER@$PUBLIC_DNS << EOF
 
   cd app
   mv ~/.env ./
+  mv ~/frontendEnv/.env ./frontend/
   npm install
   npm run build  
   nohup npm run start > server.log 2>&1 & 
