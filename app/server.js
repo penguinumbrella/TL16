@@ -2,11 +2,9 @@ const express = require("express");
 const path = require("path");
 const sql = require("mssql");
 const dotenv = require('dotenv');
+const axios = require("axios");
 dotenv.config();
 const cors = require("cors");
-const jwt = require('jsonwebtoken');
-const jwks = require('jwks-rsa');
-const { expressjwt: jwtMiddleware } = require('express-jwt');
 
 //const timeSlider = require("routes")
 const fs = require('fs');
@@ -48,36 +46,36 @@ app.use(cors());
 app.use(express.static(path.resolve(__dirname, './frontend/build')));
 // app.use(express.static(path.resolve(__dirname, './frontend/public')));
 
-// Configure JWKs Client
-const client = jwks({
-  jwksUri: `https://cognito-idp.${config['region']}.amazonaws.com/${config['cognitoPoolId']}/.well-known/jwks.json`
-});
+const COGNITO_URL = `https://cognito-idp.${config['region']}.amazonaws.com/${config['cognitoPoolId']}`;
 
-// Middleware to verify JWT
-const verifyJwt = jwtMiddleware({
-  secret: (req, payload, done) => {
-    client.getSigningKey(payload.header.kid, (err, key) => {
-      if (err) {
-        done(err);
-      }
-      const signingKey = key.getPublicKey();
-      done(null, signingKey);
-    });
-  },
-  algorithms: ['RS256']
-});
+const authentication = async (req, res, next) => {
+  try {
+      const accessToken = req.headers.authorization.split(" ")[1];
 
-app.use(verifyJwt);
+      const { data } = await axios.post(
+          COGNITO_URL,
+          {
+              AccessToken: accessToken
+          },
+          {
+              headers: {
+                  "Content-Type": "application/x-amz-json-1.1",
+                  "X-Amz-Target": "AWSCognitoIdentityProviderService.GetUser"
+              }
+          }
+      )
 
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  if (err.name === 'UnauthorizedError') {
-    res.status(401).send('Unauthorized');
-  } else {
-    next(err);
+      req.user = data;
+      next();
+  } catch (error) {
+      console.log(error);
+      return res.status(401).json({
+          message: 'Unauthorized'
+      });
   }
-});
+};
+
+app.use(authentication);
 
 app.get("/api", (req, res) => {
     res.json({ message: "Hello from server!" });

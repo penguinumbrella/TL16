@@ -11,6 +11,7 @@ import { ReactComponent as DataOutageOccupancy } from '../../icons/data-outage-o
 import Diagram from '../diagrams/Diagram';
 import axios from 'axios';
 import { formatUnixTimestamp } from '../../time';
+import { getAuthToken } from '../../getAuthToken';
 
 const TABLES = {
   'Fraser Parkade': 'FraserParkade',
@@ -62,7 +63,11 @@ const LiveView = () => {
 
   useEffect(() => {
     const getLastUpdated = async (parkadeName) => {
-      const response = await axios.get(`executeQuery?query=SELECT top 1 TimestampUnix FROM ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`);
+      const response = await axios.get(`executeQuery?query=SELECT top 1 TimestampUnix FROM ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`, {
+        headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+      });
       const data = response.data;
       stateMap[parkadeName][1](data[0]['TimestampUnix'])
     };

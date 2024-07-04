@@ -23,6 +23,7 @@ import CustomTooltip from "./customToolTip";
 import Tabs from '../tabComponent/Tabs.js';
 import ForcastComponent from "../forcastComponent/ForcastComponent.js";
 import LoadingAnimationComp from "../loading_Animation/LoadingAnimationComp.js";
+import { getAuthToken } from "../../getAuthToken.js";
 
 
 const DATA_CATEGORY_OPTIONS = [
@@ -314,7 +315,11 @@ const AnalyticsView = () => {
   const renderResults = async (queries) => {
     const resultsLocal = {};
     const promises = Object.keys(queries).map(async (parkade) => {
-      const response = await axios.get(`/executeQuery?query=${queries[parkade]}`);
+      const response = await axios.get(`/executeQuery?query=${queries[parkade]}`, {
+        headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+      });
       const data = response.data;
       const result = [];
       data.forEach((dataPoint) => {

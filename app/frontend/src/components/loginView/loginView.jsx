@@ -63,16 +63,16 @@ const LoginView = () => {
 
     return (loginState == 'login' ? <div className="loginView">
         <h1>Login</h1>
-        <TextField id="email" placeholder="Email" variant="outlined" style={{backgroundColor: '#323551', width: "70%"}}  inputProps={{ style: { color: "#9C9FBB" } }} onChange={textStateUpdate}></TextField>
-        <TextField id="password" placeholder="Password" variant="outlined" type='password' style={{backgroundColor: '#323551', width: "70%"}} inputProps={{ style: { color: "#9C9FBB" } }} onChange={textStateUpdate}></TextField>
+        <TextField id="email" placeholder="Email" variant="outlined" value={email} style={{backgroundColor: '#323551', width: "70%"}}  inputProps={{ style: { color: "#9C9FBB" } }} onChange={textStateUpdate}></TextField>
+        <TextField id="password" placeholder="Password" variant="outlined" value={password} type='password' style={{backgroundColor: '#323551', width: "70%"}} inputProps={{ style: { color: "#9C9FBB" } }} onChange={textStateUpdate}></TextField>
         <Button variant="contained" color="primary" onClick={login} style={{width: "150px"}}>
               Log In
         </Button>
     </div> : <div className='loginView'>
             <h1>First Login</h1>
-            <TextField id="name" placeholder="Enter name" variant="outlined" style={{backgroundColor: '#323551', width: "70%"}} inputProps={{ style: { color: "#9C9FBB" } }} onChange={textStateUpdate}></TextField>
-            <TextField id="newPassword1" placeholder="Enter new password" variant="outlined" type='password' style={{backgroundColor: '#323551', width: "70%"}} inputProps={{ style: { color: "#9C9FBB" } }} onChange={textStateUpdate}></TextField>
-            <TextField id="newPassword2" placeholder="Re-enter new password" variant="outlined" type='password' style={{backgroundColor: '#323551', width: "70%"}} inputProps={{ style: { color: "#9C9FBB" } }} onChange={textStateUpdate}></TextField>
+            <TextField id="name" placeholder="Enter name" variant="outlined" value={name} style={{backgroundColor: '#323551', width: "70%"}} inputProps={{ style: { color: "#9C9FBB" } }} onChange={textStateUpdate}></TextField>
+            <TextField id="newPassword1" placeholder="Enter new password" value={newPassword1} variant="outlined" type='password' style={{backgroundColor: '#323551', width: "70%"}} inputProps={{ style: { color: "#9C9FBB" } }} onChange={textStateUpdate}></TextField>
+            <TextField id="newPassword2" placeholder="Re-enter new password" value={newPassword2} variant="outlined" type='password' style={{backgroundColor: '#323551', width: "70%"}} inputProps={{ style: { color: "#9C9FBB" } }} onChange={textStateUpdate}></TextField>
             <Button variant="contained" color="primary" onClick={changePassword} style={{width: "150px"}}>
               Login
             </Button>

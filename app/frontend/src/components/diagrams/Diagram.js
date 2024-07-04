@@ -3,6 +3,7 @@ import PieChartComponent from './PieChart/PieChartComponent'
 import LineGraphComponent from './LineGraph/LineGraphComponent';
 import BarGraphComponent from './BarGraph/BarGraphComponent';
 import axios from 'axios';
+import { getAuthToken } from '../../getAuthToken';
 
 const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value"}) => {
 
@@ -29,7 +30,11 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
   const COLORS = ['#787878', '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#0FA122']; // TBD
 
   const getData = (query) => {
-    const data = axios.get(`/executeQuery?query=${query}`);
+    const data = axios.get(`/executeQuery?query=${query}`, {
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`
+      }
+    });
     console.log(query);
     return DATA;
   }
@@ -38,7 +43,11 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
   useEffect(() => {
     const getData = async () => {
       
-      const data = (await axios.get(`/executeQuery?query=${query}`)).data;
+      const data = (await axios.get(`/executeQuery?query=${query}`, {
+        headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+      })).data;
       console.log(data[0]['Capacity'])
       // Calculate capacity and occupied values
       const capacity = data[0]['Capacity'];

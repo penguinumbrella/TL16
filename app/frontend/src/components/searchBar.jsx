@@ -3,6 +3,7 @@ import { Divider, Icon } from '@chakra-ui/react';
 import { FaHome, FaMap, FaChartPie, FaChartLine, FaCog, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import './searchBar.css';
 import { signOut } from 'aws-amplify/auth';
+import { getAuthToken } from '../getAuthToken';
 
 const SearchBar = ({ activeView, onIconClick }) => {
   const handleIconClick = (view, event) => {
@@ -70,7 +71,7 @@ const SearchBar = ({ activeView, onIconClick }) => {
 
       <div className='bottomIcons'>
         <Icon as={FaCog} />
-        <Icon as={FaUserCircle} />
+        <Icon as={FaUserCircle} onClick={async () => console.log(await getAuthToken())}/>
         <Icon as={FaSignOutAlt} onClick={handleLogout}></Icon>
       </div>
     </div>

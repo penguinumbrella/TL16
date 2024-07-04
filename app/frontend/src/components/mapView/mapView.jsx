@@ -13,6 +13,7 @@ import loadingZoneIcon from './../../assets/loadingZoneIcon.png';
 import loadingZoneIconPicked from './../../assets/loadingZoneIconPicked.png';
 
 import axios from 'axios';
+import { getAuthToken } from '../../getAuthToken.js';
 
 const MapView = () => {
   const PORT = 8080;
@@ -43,7 +44,11 @@ const MapView = () => {
 
   const fetchWeatherData = async (time) => {
     try {
-      const response = await axios.get(`/weather?time=${time.toISOString()}`);
+      const response = await axios.get(`/weather?time=${time.toISOString()}`, {
+        headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+      });
       setWeatherData(response.data);
     } catch (error) {
       console.error("Error fetching weather data:", error);
