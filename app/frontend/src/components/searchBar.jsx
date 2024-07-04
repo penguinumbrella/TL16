@@ -71,7 +71,7 @@ const SearchBar = ({ activeView, onIconClick }) => {
 
       <div className='bottomIcons'>
         <Icon as={FaCog} />
-        <Icon as={FaUserCircle} onClick={async () => console.log(await getAuthToken())}/>
+        <Icon as={FaUserCircle}/>
         <Icon as={FaSignOutAlt} onClick={handleLogout}></Icon>
       </div>
     </div>
