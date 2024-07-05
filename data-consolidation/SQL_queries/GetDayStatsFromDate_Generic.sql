@@ -1,32 +1,33 @@
--- Create a temporary table to hold the data for the earliest day
-WITH earliest_day_data AS (
-    SELECT
+DECLARE @GivenDate DATETIME = '2018-09-05'; -- Replace with your desired date
+
+-- Step 1: Get all data later than the given date
+WITH filtered_data AS (
+    SELECT 
         zone_id,
-        DATEADD(SECOND, TimestampUnix, '1970-01-01') AS date,
         Vehicles,
 		Capacity,
-        TimestampUnix
+        TimestampUnix,
+        DATEADD(SECOND, TimestampUnix, '1970-01-01') AS date
     FROM 
-        [Parking].[dbo].[RoseGardenParkade_Occupancy]
-    WHERE
-        CAST(DATEADD(SECOND, TimestampUnix, '1970-01-01') AS DATE) = (
-            SELECT MIN(CAST(DATEADD(SECOND, TimestampUnix, '1970-01-01') AS DATE))
-            FROM [Parking].[dbo].[RoseGardenParkade_Occupancy]
-        )
+        [Parking].[dbo].[WestParkade_Occupancy]
+    WHERE 
+        DATEADD(SECOND, TimestampUnix, '1970-01-01') > @GivenDate
 ),
--- Subquery to calculate average values
+
+-- Step 2: Calculate average values
 average_data AS (
     SELECT
         CAST(date AS DATE) AS date,
         zone_id,
         AVG(Vehicles) AS average_value
     FROM
-        earliest_day_data
+        filtered_data
     GROUP BY
         CAST(date AS DATE),
         zone_id
 ),
--- Subquery to find peak values and their corresponding timestamps
+
+-- Step 3: Find peak values and their corresponding timestamps
 peak_data AS (
     SELECT
         CAST(date AS DATE) AS date,
@@ -36,9 +37,10 @@ peak_data AS (
 		Capacity AS Capacity,
         ROW_NUMBER() OVER (PARTITION BY zone_id, CAST(date AS DATE) ORDER BY Vehicles DESC, TimestampUnix ASC) AS rn
     FROM
-        earliest_day_data
+        filtered_data
 )
--- Insert the aggregated data into 'Daily_Occupancy_Stats' table
+
+-- Step 4: Insert the aggregated data into 'Daily_Occupancy_Stats' table
 INSERT INTO [Parking].[dbo].[Daily_Occupancy_Stats] (date, zone_id, average_occupancy, peak_occupancy, peak_occupancy_time, Capacity)
 SELECT 
     a.date,
