@@ -74,7 +74,7 @@ ssh -i ~/.ssh/$KEY_NAME.pem $USER@$PUBLIC_DNS << EOF
 
   git checkout $GH_BRANCH
 
-  pip install -r ./requirements.txt
+  pip install -r ./requirements.txt --break-system-packages
 
   sed -i 's/SERVER_PLACEHOLDER/$PUBLIC_DNS/g' nginx.txt
   sudo cat nginx.txt | sudo tee /etc/nginx/sites-available/default > /dev/null
