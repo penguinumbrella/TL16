@@ -180,8 +180,11 @@ const AnalyticsView = () => {
   };
 
 
-  const onClickLGBM =(queryParams)=>{
-    fetch(`/api/LGBM_short?${queryParams}`)
+  const onClickLGBM = (queryParams) => {
+    const headers = new Headers();
+    headers.append('Authorization', `Bearer ${getAuthToken()}`)
+
+    fetch(`/api/LGBM_short?${queryParams}`, {headers: headers})
       .then(response => response.json())
       .then(data => {
         // Handle response data
@@ -224,7 +227,9 @@ const AnalyticsView = () => {
 
   const onClickLongForecast = (queryParams) =>{
     // console.log(queryParams);
-    fetch(`/api/baseline_predict?${queryParams}`)
+    const headers = new Headers();
+    headers.append('Authorization', `Bearer ${getAuthToken()}`)
+    fetch(`/api/baseline_predict?${queryParams}`, { headers: headers })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');

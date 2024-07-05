@@ -63,6 +63,9 @@ ssh -i ~/.ssh/$KEY_NAME.pem $USER@$PUBLIC_DNS << EOF
   sudo apt update
   sudo apt install npm -y
   sudo apt install nginx -y
+  sudo apt install python-is-python3 -y
+  sudo apt install python3-pip -y
+
 
   git clone https://$GH_USERNAME:$GH_PAT@github.com/penguinumbrella/TL16
 
@@ -70,6 +73,8 @@ ssh -i ~/.ssh/$KEY_NAME.pem $USER@$PUBLIC_DNS << EOF
   cd TL16
 
   git checkout $GH_BRANCH
+
+  pip install -r ./requirements.txt
 
   sed -i 's/SERVER_PLACEHOLDER/$PUBLIC_DNS/g' nginx.txt
   sudo cat nginx.txt | sudo tee /etc/nginx/sites-available/default > /dev/null
