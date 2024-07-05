@@ -27,6 +27,7 @@ INSTANCE_ID=$(aws ec2 run-instances \
   --key-name $KEY_NAME \
   --security-groups $SECURITY_GROUP \
   --region $REGION \
+  --block-device-mappings '[{"DeviceName":"/dev/sda1","Ebs":{"VolumeSize":30,"VolumeType":"gp3"}}]' \
   --query "Instances[0].InstanceId" \
   --output text)
 
