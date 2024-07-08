@@ -15,7 +15,22 @@ export const getQueries = (dataCategory, visualizationFormat, periodicity, avgPe
         const endUnix = Math.floor(endTime.getTime() / 1000);
         // % url encoded
         const query = `SELECT Vehicles, TimestampUnix from ${tableName}_Occupancy WHERE TimestampUnix >= ${startUnix} and TimestampUnix <= ${endUnix} and TimestampUnix %25 3600 = 0 ORDER BY TimestampUnix`
-        queries[parkade] = query;
+        queries[parkade] = {
+            'query': query,
+            'startTime': startUnix,
+            'endTime': endUnix,
+            'periodicity': periodicity
+        };
     });
     return queries;
 }
+
+export const PERIODICITY_STEP = {
+    'Hourly': 3600,
+    'Daily': 3600*24,
+    'Weekly': 3600*24*7
+}
+
+const getTimeSlotByPeriodicity = (startTime, endTime) => {
+    
+} 

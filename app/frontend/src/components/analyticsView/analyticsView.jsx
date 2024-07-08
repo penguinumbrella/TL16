@@ -15,7 +15,7 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import axios from 'axios';
-import { getQueries } from "./queryHelper";
+import { getQueries, PERIODICITY_STEP } from "./queryHelper";
 import Diagram from '../diagrams/Diagram';
 import { formatUnixTimestamp } from "../../time";
 import CustomTooltip from "./customToolTip";
@@ -314,16 +314,21 @@ const AnalyticsView = () => {
   const renderResults = async (queries) => {
     const resultsLocal = {};
     const promises = Object.keys(queries).map(async (parkade) => {
-      const response = await axios.get(`/executeQuery?query=${queries[parkade]}`);
+      const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
       const data = response.data;
-      const result = [];
-      data.forEach((dataPoint) => {
-        result.push({
-          'name': formatUnixTimestamp(dataPoint['TimestampUnix']),
-          'Vehicles': dataPoint['Vehicles']
+      const periodicity = queries[parkade]['periodicity']
+      const cleanData = []
+      const step = PERIODICITY_STEP[periodicity];
+      for (var i = queries[parkade]['startTime']; i<=queries[parkade]['endTime']; i += step)
+        cleanData.push({
+          'name': formatUnixTimestamp(i),
+          'vehicles': null
         });
-      })
-      resultsLocal[parkade] = result;
+      data.forEach((dataPoint) => {
+        const item = cleanData.find(obj => obj['name'] == formatUnixTimestamp(dataPoint['TimestampUnix']))
+        item['Vehicles'] = dataPoint['Vehicles']
+      });
+      resultsLocal[parkade] = cleanData;
     });
     await Promise.all(promises);
     return Object.keys(resultsLocal).map((parkade) => {
