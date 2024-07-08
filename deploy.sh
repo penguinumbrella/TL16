@@ -17,6 +17,8 @@ REGION="ca-central-1"
 AMI_ID="ami-0c4596ce1e7ae3e68"  # Ubuntu
 INSTANCE_NAME="UBCParkingReact"
 USER="ubuntu"
+# DOMAIN_NAME="ubcparking.ca"
+# HOSTED_ZONE_ID=""
 
 
 # Create EC2 instance
@@ -51,6 +53,31 @@ PUBLIC_DNS=$(aws ec2 describe-instances \
   --output text)
 
 echo "Instance Public DNS: $PUBLIC_DNS"
+
+: <<'END_COMMENT'
+# Get the public IP of the instance
+PUBLIC_IP=$(aws ec2 describe-instances \
+  --instance-ids $INSTANCE_ID \
+  --region $REGION \
+  --query "Reservations[0].Instances[0].PublicIpAddress" \
+  --output text)
+
+echo "Instance Public IP: $PUBLIC_IP"
+
+# Update Route 53 record
+echo "Updating Route 53 DNS record..."
+CHANGE_BATCH=$(jq -n \
+  --arg domain_name "$DOMAIN_NAME" \
+  --arg public_ip "$PUBLIC_IP" \
+  '{ "Comment": "Update record to reflect new EC2 instance", "Changes": [{ "Action": "UPSERT", "ResourceRecordSet": { "Name": $domain_name, "Type": "A", "TTL": 60, "ResourceRecords": [{ "Value": $public_ip }] } }] }')
+
+aws route53 change-resource-record-sets \
+  --hosted-zone-id $HOSTED_ZONE_ID \
+  --change-batch "$CHANGE_BATCH"
+END_COMMENT
+
+# Wait 60 seconds to be safe (sometimes ssh fails)
+sleep 60s
 
 # Create a separate folder for the frontend .env file
 ssh -i ~/.ssh/$KEY_NAME.pem $USER@$PUBLIC_DNS "mkdir ~/frontendEnv/" 
