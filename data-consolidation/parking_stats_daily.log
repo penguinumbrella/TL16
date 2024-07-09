@@ -1,107 +1,669 @@
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Current FME version: FME 2022.2.0.0 (20221103 - Build 22765 - WIN64)
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME_HOME is 'C:\Program Files\FME\'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Desktop ESRI Edition (floating)
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Permanent License.
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Machine host name is: PASS-CDW-245
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|OS Locale Name     : en_US
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|OS Locale Encoding : UTF-8
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Process Encoding   : UTF-8
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME API version: '4.0 20220615'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: FME_BASE is 'no'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: FME_MF_DIR is 'C:\!Capstone\repo\TL16\data-consolidation/'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: FME_MF_NAME is 'parking_stats_daily.fmw'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: FME_PRODUCT_NAME is 'FME(R) 2022.2.0.0'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Operating System: Microsoft Windows 10 64-bit  (Build 19045)
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Platform: WIN64
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|System Status: 4.40 GB of disk space available in the FME temporary folder (C:\Users\mauer4.stu\AppData\Local\Temp\wbrun_1720205204589_18136\fmetmp_37)
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|System Status: 15.87 GB of physical memory available
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|System Status: 63.49 GB of virtual memory available
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|START - ProcessID: 8976, peak process memory usage: 49024 kB, current process memory usage: 49024 kB
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: Command line arguments are `C:\Program Files\FME\fme.exe' `C:/!Capstone/repo/TL16/data-consolidation\wb-xlate-1720220283826_18136' `LOG_STANDARDOUT' `YES' `LOG_TIMINGS' `YES' `LogCountServerName' `62744' `LOG_STANDARDOUT' `No' `WORKBENCH_LOG_SERVER' `59255'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: Connection Storage: 'C:\Users\mauer4.stu\AppData\Roaming\Safe Software\FME\'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Shared folders for formats are : C:\Program Files\FME\datasources;C:\Users\mauer4.stu\Documents\FME\Formats
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Shared folders for transformers are : C:\Users\mauer4.stu\AppData\Roaming\Safe Software\FME\Packages\22765-win64\transformers;C:\Program Files\FME\transformers;C:\Users\mauer4.stu\AppData\Roaming\Safe Software\FME\FME Store\Transformers
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Shared folders for coordinate systems are : C:\Users\mauer4.stu\Documents\FME\CoordinateSystems
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Shared folders for coordinate system exceptions are : C:\Users\mauer4.stu\Documents\FME\CoordinateSystemExceptions
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Shared folders for coordinate system grid overrides are : C:\Users\mauer4.stu\Documents\FME\CoordinateSystemGridOverrides
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Shared folders for CS-MAP transformation exceptions are : C:\Users\mauer4.stu\Documents\FME\CsmapTransformationExceptions
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Shared folders for transformer categories are : C:\Users\mauer4.stu\Documents\FME\TransformerCategories
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: Reader Keyword is `MULTI_READER'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: Writer Keyword is `NULL_DEST'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: Writer Group Definition Keyword is `NULL_DEST_DEF'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: Reader type is `MULTI_READER'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: Writer type is `NULL'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: No destination coordinate system set
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: Current working folder is `C:\!Capstone\repo\TL16\data-consolidation'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: Temporary folder is `C:\Users\mauer4.stu\AppData\Local\Temp\wbrun_1720205204589_18136\fmetmp_37', set from environment variable `FME_TEMP'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: Cache folder is 'C:\Users\mauer4.stu\AppData\Local\Temp'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: FME_HOME is `C:\Program Files\FME\'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: Start freeing memory when the process exceeds 47.62 GB
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME Configuration: Stop freeing memory when the process is below 35.72 GB
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Creating writer for format: NULL (Nothing)
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Trying to find a DYNAMIC plugin for writer named `NULL'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Loaded module 'NULL' from file 'C:\Program Files\FME\plugins/NULL.dll'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME API version of module 'NULL' matches current internal version (4.0 20220615)
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Creating reader for format: 
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|MULTI_READER(MULTI_READER): Will fail with first member reader failure
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Using Multi Reader with keyword `MULTI_READER' to read multiple datasets
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Loaded module 'LogCount_func' from file 'C:\Program Files\FME\plugins/LogCount_func.dll'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME API version of module 'LogCount_func' matches current internal version (4.0 20220615)
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Loaded module 'QueryFactory' from file 'C:\Program Files\FME\plugins/QueryFactory.dll'
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|FME API version of module 'QueryFactory' matches current internal version (4.0 20220615)
-2024-07-05 15:58:05|   0.0|  0.0|INFORM|Emptying factory pipeline
-2024-07-05 15:58:05|   0.0|  0.0|STATS |Restoring 1 feature(s) from FME feature store file `C:\Users\mauer4.stu\AppData\Local\Temp\wb-cache--XyCCGU\Main_CreateSQL -1 14 fo 0 OUTPUT  0  e9beadf2eae04103990e9266a9a94b7574f3e29e.ffs'
-2024-07-05 15:58:05|   0.1|  0.1|INFORM|FME Configuration: Using connection values from 'AWS_UBCParking' for R_1
-2024-07-05 15:58:05|   0.1|  0.0|INFORM|Creating reader for format: Microsoft SQL Server Non-Spatial (JDBC)
-2024-07-05 15:58:05|   0.1|  0.0|INFORM|Trying to find a JAVA plugin for reader named `MSSQL_JDBC_NONSPATIAL_2'
-2024-07-05 15:58:05|   0.1|  0.0|INFORM|Attempting to load Java Virtual Machine from C:\Program Files\FME\jre\bin\server
-2024-07-05 15:58:06|   0.7|  0.6|INFORM|Performing query against MSSQL_JDBC_NONSPATIAL_2 dataset `AWS_UBCParking'
-2024-07-05 15:58:06|   0.7|  0.0|INFORM|Using Java Reader Interface Version 2.0 (Oct 31, 2000) with module MSSQL_JDBC_NONSPATIAL_2 to read data
-2024-07-05 15:58:06|   0.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Preloading JDBC Driver Class 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
-2024-07-05 15:58:06|   1.2|  0.5|INFORM|MS SQL Server (JDBC) Reader: Creating connection using connection string 'jdbc:sqlserver://testdb.cdq6s8s6klpd.ca-central-1.rds.amazonaws.com' and properties '{statementPoolingCacheSize=10, disableStatementPooling=false, user=admin, encrypt=false, multiSubnetFailover=false, trustServerCertificate=true, applicationName=Safe Software FME, database=Parking, password=************, applicationIntent=ReadWrite}'
-2024-07-05 15:58:06|   1.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Driver class 'com.microsoft.sqlserver.jdbc.SQLServerDriver' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
-2024-07-05 15:58:07|   2.2|  1.0|INFORM|MS SQL Server (JDBC) Reader: Connection class 'com.microsoft.sqlserver.jdbc.SQLServerConnection' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
-2024-07-05 15:58:07|   2.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connected to 'Microsoft SQL Server' version '15.00.4365' using driver 'Microsoft JDBC Driver 9.2 for SQL Server' version '9.2.0.0' built against JDBC version '4.2'
-2024-07-05 15:58:07|   2.2|  0.0|INFORM|MSSQL_JDBC_NONSPATIAL_2 reader: Creating bulk features from individual features
-2024-07-05 15:58:07|   2.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Executing SQL: INSERT INTO [dbo].[Daily_Occupancy_Stats] (
-        date,
-        zone_id,
-        average_occupancy,
-        peak_occupancy,
-        peak_occupancy_time,
-        Capacity)
-VALUES 
-    ('2024-07-04','E10D7DB4-C792-42AC-BAE8-969FA63F198D',237,523,1720127400,1232);
-2024-07-05 15:58:07|   2.2|  0.0|INFORM|Getting schema from query 'INSERT INTO [dbo].[Daily_Occupancy_Stats] (
-        date,
-        zone_id,
-        average_occupancy,
-        peak_occupancy,
-        peak_occupancy_time,
-        Capacity)
-VALUES 
-    ('2024-07-04','E10D7DB4-C792-42AC-BAE8-969FA63F198D',237,523,1720127400,1232);'. If query has no schema, there may be warnings in the log below that can be safely ignored
-2024-07-05 15:58:07|   2.2|  0.0|STATS |Destination Feature Type Routing Correlator (RoutingFactory): Tested 0 input feature(s), wrote 0 output feature(s): 0 matched merge filters, 0 were routed to output, 0 could not be routed.
-2024-07-05 15:58:07|   2.2|  0.0|STATS |Final Output Nuker (TeeFactory): Cloned 0 input feature(s) into 0 output feature(s)
-2024-07-05 15:58:07|   2.2|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2024-07-05 15:58:07|   2.2|  0.0|STATS |                            Features Read Summary
-2024-07-05 15:58:07|   2.2|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2024-07-05 15:58:07|   2.2|  0.0|STATS |==============================================================================
-2024-07-05 15:58:07|   2.2|  0.0|STATS |Total Features Read                                                          0
-2024-07-05 15:58:07|   2.2|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2024-07-05 15:58:07|   2.2|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2024-07-05 15:58:07|   2.2|  0.0|STATS |                           Features Written Summary
-2024-07-05 15:58:07|   2.2|  0.0|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2024-07-05 15:58:07|   2.2|  0.0|STATS |==============================================================================
-2024-07-05 15:58:07|   2.2|  0.0|STATS |Total Features Written                                                       0
-2024-07-05 15:58:07|   2.3|  0.1|STATS |=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-2024-07-05 15:58:07|   2.3|  0.0|WARN  |-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-
-2024-07-05 15:58:07|   2.3|  0.0|WARN  |-~                                                                             ~-
-2024-07-05 15:58:07|   2.3|  0.0|WARN  |-~    Feature caches have been recorded at every stage of the translation.     ~-
-2024-07-05 15:58:07|   2.3|  0.0|WARN  |-~                      To inspect the recorded features,                      ~-
-2024-07-05 15:58:07|   2.3|  0.0|WARN  |-~              click the feature cache icons next to the ports.               ~-
-2024-07-05 15:58:07|   2.3|  0.0|WARN  |-~                                                                             ~-
-2024-07-05 15:58:07|   2.3|  0.0|WARN  |-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-
-2024-07-05 15:58:07|   2.3|  0.0|INFORM|Translation was SUCCESSFUL with 7 warning(s) (0 feature(s) output)
-2024-07-05 15:58:07|   2.3|  0.0|INFORM|FME Session Duration: 2.3 seconds. (CPU: 1.5s user, 0.8s system)
-2024-07-05 15:58:07|   2.3|  0.0|INFORM|END - ProcessID: 8976, peak process memory usage: 539444 kB, current process memory usage: 539444 kB
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Current FME version: FME 2022.2.0.0 (20221103 - Build 22765 - WIN64)
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME_HOME is 'C:\Program Files\FME\'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Desktop ESRI Edition (floating)
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Permanent License.
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Machine host name is: PASS-CDW-245
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|OS Locale Name     : en_US
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|OS Locale Encoding : UTF-8
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Process Encoding   : UTF-8
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME API version: '4.0 20220615'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: FME_BASE is 'no'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: FME_MF_DIR is 'C:\!Capstone\repo\TL16\data-consolidation/'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: FME_MF_NAME is 'parking_stats_daily.fmw'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: FME_PRODUCT_NAME is 'FME(R) 2022.2.0.0'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Operating System: Microsoft Windows 10 64-bit  (Build 19045)
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Platform: WIN64
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|System Status: 5.12 GB of disk space available in the FME temporary folder (C:\Users\mauer4.stu\AppData\Local\Temp\wbrun_1720550004168_11520\fmetmp_29)
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|System Status: 15.87 GB of physical memory available
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|System Status: 63.49 GB of virtual memory available
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|START - ProcessID: 18908, peak process memory usage: 50400 kB, current process memory usage: 50400 kB
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: Command line arguments are `C:\Program Files\FME\fme.exe' `C:/!Capstone/repo/TL16/data-consolidation\wb-xlate-1720561033739_11520' `LOG_STANDARDOUT' `YES' `LOG_TIMINGS' `YES' `LogCountServerName' `50361' `LOG_STANDARDOUT' `No' `WORKBENCH_LOG_SERVER' `49763'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: Connection Storage: 'C:\Users\mauer4.stu\AppData\Roaming\Safe Software\FME\'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Shared folders for formats are : C:\Program Files\FME\datasources;C:\Users\mauer4.stu\Documents\FME\Formats
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Shared folders for transformers are : C:\Users\mauer4.stu\AppData\Roaming\Safe Software\FME\Packages\22765-win64\transformers;C:\Program Files\FME\transformers;C:\Users\mauer4.stu\AppData\Roaming\Safe Software\FME\FME Store\Transformers
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Shared folders for coordinate systems are : C:\Users\mauer4.stu\Documents\FME\CoordinateSystems
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Shared folders for coordinate system exceptions are : C:\Users\mauer4.stu\Documents\FME\CoordinateSystemExceptions
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Shared folders for coordinate system grid overrides are : C:\Users\mauer4.stu\Documents\FME\CoordinateSystemGridOverrides
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Shared folders for CS-MAP transformation exceptions are : C:\Users\mauer4.stu\Documents\FME\CsmapTransformationExceptions
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Shared folders for transformer categories are : C:\Users\mauer4.stu\Documents\FME\TransformerCategories
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: Reader Keyword is `MULTI_READER'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: Writer Keyword is `NULL_DEST'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: Writer Group Definition Keyword is `NULL_DEST_DEF'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: Reader type is `MULTI_READER'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: Writer type is `NULL'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: No destination coordinate system set
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: Current working folder is `C:\!Capstone\repo\TL16\data-consolidation'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: Temporary folder is `C:\Users\mauer4.stu\AppData\Local\Temp\wbrun_1720550004168_11520\fmetmp_29', set from environment variable `FME_TEMP'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: Cache folder is 'C:\Users\mauer4.stu\AppData\Local\Temp'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: FME_HOME is `C:\Program Files\FME\'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: Start freeing memory when the process exceeds 47.62 GB
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME Configuration: Stop freeing memory when the process is below 35.72 GB
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Creating writer for format: NULL (Nothing)
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Trying to find a DYNAMIC plugin for writer named `NULL'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Loaded module 'NULL' from file 'C:\Program Files\FME\plugins/NULL.dll'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME API version of module 'NULL' matches current internal version (4.0 20220615)
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Creating reader for format: 
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|MULTI_READER(MULTI_READER): Will fail with first member reader failure
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Using Multi Reader with keyword `MULTI_READER' to read multiple datasets
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Loaded module 'LogCount_func' from file 'C:\Program Files\FME\plugins/LogCount_func.dll'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME API version of module 'LogCount_func' matches current internal version (4.0 20220615)
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Loaded module 'QueryFactory' from file 'C:\Program Files\FME\plugins/QueryFactory.dll'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME API version of module 'QueryFactory' matches current internal version (4.0 20220615)
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Loaded module 'PythonFactory' from file 'C:\Program Files\FME\plugins/PythonFactory.dll'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|FME API version of module 'PythonFactory' matches current internal version (4.0 20220615)
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Using Python interpreter from `C:\Program Files\FME\fmepython310\python310.dll' with PYTHONHOME `C:\Program Files\FME\fmepython310'
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Python version 3.10 loaded successfully
+2024-07-09 14:37:15|   0.0|  0.0|INFORM|Adding folder `C:\!Capstone\repo\TL16\data-consolidation\' to the python path
+2024-07-09 14:37:15|   0.2|  0.2|INFORM|... Last line repeated 27 times ...
+2024-07-09 14:37:15|   0.2|  0.0|INFORM|Emptying factory pipeline
+2024-07-09 14:37:15|   0.2|  0.0|STATS |Restoring 1 feature(s) from FME feature store file `C:\Users\mauer4.stu\AppData\Local\Temp\wb-cache-parking_stats_daily-NASAwg\Main_Creator -1 3 fo 0 CREATED  0  3902d54854280f3545ff73811083898f952c0466.ffs'
+2024-07-09 14:37:15|   0.2|  0.0|INFORM|FME Configuration: Using connection values from 'AWS_UBCParking' for R_1
+2024-07-09 14:37:15|   0.2|  0.0|INFORM|Creating reader for format: Microsoft SQL Server Non-Spatial (JDBC)
+2024-07-09 14:37:15|   0.2|  0.0|INFORM|Trying to find a JAVA plugin for reader named `MSSQL_JDBC_NONSPATIAL_2'
+2024-07-09 14:37:15|   0.2|  0.0|INFORM|Attempting to load Java Virtual Machine from C:\Program Files\FME\jre\bin\server
+2024-07-09 14:37:16|   0.9|  0.7|INFORM|Performing query against MSSQL_JDBC_NONSPATIAL_2 dataset `AWS_UBCParking'
+2024-07-09 14:37:16|   0.9|  0.0|INFORM|Using Java Reader Interface Version 2.0 (Oct 31, 2000) with module MSSQL_JDBC_NONSPATIAL_2 to read data
+2024-07-09 14:37:16|   0.9|  0.0|INFORM|MS SQL Server (JDBC) Reader: Preloading JDBC Driver Class 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+2024-07-09 14:37:16|   1.5|  0.6|INFORM|MS SQL Server (JDBC) Reader: Creating connection using connection string 'jdbc:sqlserver://testdb.cdq6s8s6klpd.ca-central-1.rds.amazonaws.com' and properties '{statementPoolingCacheSize=10, disableStatementPooling=false, user=admin, encrypt=false, multiSubnetFailover=false, trustServerCertificate=true, applicationName=Safe Software FME, database=Parking, password=************, applicationIntent=ReadWrite}'
+2024-07-09 14:37:16|   1.5|  0.0|INFORM|MS SQL Server (JDBC) Reader: Driver class 'com.microsoft.sqlserver.jdbc.SQLServerDriver' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:17|   2.5|  1.0|INFORM|MS SQL Server (JDBC) Reader: Connection class 'com.microsoft.sqlserver.jdbc.SQLServerConnection' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:17|   2.5|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connected to 'Microsoft SQL Server' version '15.00.4365' using driver 'Microsoft JDBC Driver 9.2 for SQL Server' version '9.2.0.0' built against JDBC version '4.2'
+2024-07-09 14:37:17|   2.5|  0.0|INFORM|MSSQL_JDBC_NONSPATIAL_2 reader: Creating bulk features from individual features
+2024-07-09 14:37:17|   2.5|  0.0|INFORM|MS SQL Server (JDBC) Reader: Executing SQL: SELECT TOP 1 *
+FROM [Parking].[dbo].[Daily_Occupancy_Stats]
+WHERE zone_id = 'E10D7DB4-C792-42AC-BAE8-969FA63F198D'
+ORDER BY date DESC;
+2024-07-09 14:37:17|   2.6|  0.1|INFORM|GetLatestDayStatsWestParkade: Splitting bulk features into individual features
+2024-07-09 14:37:17|   2.6|  0.0|INFORM|Date: 20240708 -> UNIX Timestamp: 1720422000
+2024-07-09 14:37:17|   2.7|  0.1|INFORM|FME Configuration: Using connection values from 'AWS_UBCParking' for R_2
+2024-07-09 14:37:17|   2.7|  0.0|INFORM|Creating reader for format: Microsoft SQL Server Non-Spatial (JDBC)
+2024-07-09 14:37:17|   2.7|  0.0|INFORM|Trying to find a JAVA plugin for reader named `MSSQL_JDBC_NONSPATIAL_2'
+2024-07-09 14:37:17|   2.7|  0.0|INFORM|Performing query against MSSQL_JDBC_NONSPATIAL_2 dataset `AWS_UBCParking'
+2024-07-09 14:37:17|   2.7|  0.0|INFORM|Using Java Reader Interface Version 2.0 (Oct 31, 2000) with module MSSQL_JDBC_NONSPATIAL_2 to read data
+2024-07-09 14:37:17|   2.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Preloading JDBC Driver Class 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+2024-07-09 14:37:17|   2.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Creating connection using connection string 'jdbc:sqlserver://testdb.cdq6s8s6klpd.ca-central-1.rds.amazonaws.com' and properties '{statementPoolingCacheSize=10, disableStatementPooling=false, user=admin, encrypt=false, multiSubnetFailover=false, trustServerCertificate=true, applicationName=Safe Software FME, database=Parking, password=************, applicationIntent=ReadWrite}'
+2024-07-09 14:37:17|   2.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Driver class 'com.microsoft.sqlserver.jdbc.SQLServerDriver' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:18|   2.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connection class 'com.microsoft.sqlserver.jdbc.SQLServerConnection' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:18|   2.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connected to 'Microsoft SQL Server' version '15.00.4365' using driver 'Microsoft JDBC Driver 9.2 for SQL Server' version '9.2.0.0' built against JDBC version '4.2'
+2024-07-09 14:37:18|   2.7|  0.0|INFORM|MSSQL_JDBC_NONSPATIAL_2 reader: Creating bulk features from individual features
+2024-07-09 14:37:18|   2.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Executing SQL: SELECT DISTINCT *
+FROM [dbo].[WestParkade_Occupancy]
+WHERE TimestampUnix > 1720422000
+2024-07-09 14:37:18|   3.3|  0.6|INFORM|FFS writer: Writing 2161 feature(s) to file 'C:\Users\mauer4.stu\AppData\Local\Temp\wb-cache-parking_stats_daily-NASAwg\Main_GetAllDataFromLatestDayWestParka -1 5 fo 1 RESULT  0  658ae283c797b621f459ff9f9b33fb0cc9566546.fts'
+2024-07-09 14:37:18|   3.3|  0.0|INFORM|Spatial Index: Adding 2161 features
+2024-07-09 14:37:18|   3.3|  0.0|INFORM|AddDayHour (PythonFactory): Splitting bulk features into individual features
+2024-07-09 14:37:18|   3.5|  0.2|INFORM|Getting schema from query 'SELECT DISTINCT *
+FROM [dbo].[WestParkade_Occupancy]
+WHERE TimestampUnix > 1720422000'. If query has no schema, there may be warnings in the log below that can be safely ignored
+2024-07-09 14:37:18|   3.5|  0.0|INFORM|Getting schema from query 'SELECT TOP 1 *
+FROM [Parking].[dbo].[Daily_Occupancy_Stats]
+WHERE zone_id = 'E10D7DB4-C792-42AC-BAE8-969FA63F198D'
+ORDER BY date DESC;'. If query has no schema, there may be warnings in the log below that can be safely ignored
+2024-07-09 14:37:19|   3.7|  0.2|INFORM|FME Configuration: Using connection values from 'AWS_UBCParking' for R_3
+2024-07-09 14:37:19|   3.7|  0.0|INFORM|Creating reader for format: Microsoft SQL Server Non-Spatial (JDBC)
+2024-07-09 14:37:19|   3.7|  0.0|INFORM|Trying to find a JAVA plugin for reader named `MSSQL_JDBC_NONSPATIAL_2'
+2024-07-09 14:37:19|   3.7|  0.0|INFORM|Performing query against MSSQL_JDBC_NONSPATIAL_2 dataset `AWS_UBCParking'
+2024-07-09 14:37:19|   3.7|  0.0|INFORM|Using Java Reader Interface Version 2.0 (Oct 31, 2000) with module MSSQL_JDBC_NONSPATIAL_2 to read data
+2024-07-09 14:37:19|   3.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Preloading JDBC Driver Class 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+2024-07-09 14:37:19|   3.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Creating connection using connection string 'jdbc:sqlserver://testdb.cdq6s8s6klpd.ca-central-1.rds.amazonaws.com' and properties '{statementPoolingCacheSize=10, disableStatementPooling=false, user=admin, encrypt=false, multiSubnetFailover=false, trustServerCertificate=true, applicationName=Safe Software FME, database=Parking, password=************, applicationIntent=ReadWrite}'
+2024-07-09 14:37:19|   3.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Driver class 'com.microsoft.sqlserver.jdbc.SQLServerDriver' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:19|   3.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connection class 'com.microsoft.sqlserver.jdbc.SQLServerConnection' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:19|   3.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connected to 'Microsoft SQL Server' version '15.00.4365' using driver 'Microsoft JDBC Driver 9.2 for SQL Server' version '9.2.0.0' built against JDBC version '4.2'
+2024-07-09 14:37:19|   3.7|  0.0|INFORM|MSSQL_JDBC_NONSPATIAL_2 reader: Creating bulk features from individual features
+2024-07-09 14:37:19|   3.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Executing SQL: ;WITH UniqueSource AS (
+    SELECT   date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity
+    FROM (
+        SELECT 
+             date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity,
+            ROW_NUMBER() OVER (PARTITION BY date, zone_id ORDER BY peak_occupancy) AS row_num
+        FROM (VALUES
+            ('2024-07-08','E10D7DB4-C792-42AC-BAE8-969FA63F198D',195,524,1720463820,1232)
+        ) AS source( date, 
+                     zone_id, 
+                     average_occupancy, 
+                     peak_occupancy, 
+                     peak_occupancy_time, 
+                     Capacity)
+    ) AS ranked
+    WHERE row_num = 1
+)
+
+
+MERGE INTO [dbo].[Daily_Occupancy_Stats] AS target
+USING UniqueSource AS source
+ON (target.date = source.date AND target.zone_id = source.zone_id)
+WHEN MATCHED THEN
+    UPDATE SET
+        target.average_occupancy = source.average_occupancy,
+        target.peak_occupancy = source.peak_occupancy,
+        target.peak_occupancy_time = source.peak_occupancy_time
+WHEN NOT MATCHED THEN
+    INSERT ( date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity )
+    VALUES ( source.date, 
+             source.zone_id, 
+             source.average_occupancy, 
+             source.peak_occupancy, 
+             source.peak_occupancy_time, 
+             source.Capacity);
+2024-07-09 14:37:19|   3.7|  0.0|INFORM|Getting schema from query ';WITH UniqueSource AS (
+    SELECT   date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity
+    FROM (
+        SELECT 
+             date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity,
+            ROW_NUMBER() OVER (PARTITION BY date, zone_id ORDER BY peak_occupancy) AS row_num
+        FROM (VALUES
+            ('2024-07-08','E10D7DB4-C792-42AC-BAE8-969FA63F198D',195,524,1720463820,1232)
+        ) AS source( date, 
+                     zone_id, 
+                     average_occupancy, 
+                     peak_occupancy, 
+                     peak_occupancy_time, 
+                     Capacity)
+    ) AS ranked
+    WHERE row_num = 1
+)
+
+
+MERGE INTO [dbo].[Daily_Occupancy_Stats] AS target
+USING UniqueSource AS source
+ON (target.date = source.date AND target.zone_id = source.zone_id)
+WHEN MATCHED THEN
+    UPDATE SET
+        target.average_occupancy = source.average_occupancy,
+        target.peak_occupancy = source.peak_occupancy,
+        target.peak_occupancy_time = source.peak_occupancy_time
+WHEN NOT MATCHED THEN
+    INSERT ( date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity )
+    VALUES ( source.date, 
+             source.zone_id, 
+             source.average_occupancy, 
+             source.peak_occupancy, 
+             source.peak_occupancy_time, 
+             source.Capacity);'. If query has no schema, there may be warnings in the log below that can be safely ignored
+2024-07-09 14:37:20|   3.8|  0.1|STATS |Restoring 1 feature(s) from FME feature store file `C:\Users\mauer4.stu\AppData\Local\Temp\wb-cache-parking_stats_daily-NASAwg\Main_Creator -1 3 fo 0 CREATED  0  3902d54854280f3545ff73811083898f952c0466.ffs'
+2024-07-09 14:37:20|   3.8|  0.0|INFORM|FME Configuration: Using connection values from 'AWS_UBCParking' for R_4
+2024-07-09 14:37:20|   3.8|  0.0|INFORM|Creating reader for format: Microsoft SQL Server Non-Spatial (JDBC)
+2024-07-09 14:37:20|   3.8|  0.0|INFORM|Trying to find a JAVA plugin for reader named `MSSQL_JDBC_NONSPATIAL_2'
+2024-07-09 14:37:20|   3.8|  0.0|INFORM|Performing query against MSSQL_JDBC_NONSPATIAL_2 dataset `AWS_UBCParking'
+2024-07-09 14:37:20|   3.8|  0.0|INFORM|Using Java Reader Interface Version 2.0 (Oct 31, 2000) with module MSSQL_JDBC_NONSPATIAL_2 to read data
+2024-07-09 14:37:20|   3.8|  0.0|INFORM|MS SQL Server (JDBC) Reader: Preloading JDBC Driver Class 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+2024-07-09 14:37:20|   3.8|  0.0|INFORM|MS SQL Server (JDBC) Reader: Creating connection using connection string 'jdbc:sqlserver://testdb.cdq6s8s6klpd.ca-central-1.rds.amazonaws.com' and properties '{statementPoolingCacheSize=10, disableStatementPooling=false, user=admin, encrypt=false, multiSubnetFailover=false, trustServerCertificate=true, applicationName=Safe Software FME, database=Parking, password=************, applicationIntent=ReadWrite}'
+2024-07-09 14:37:20|   3.8|  0.0|INFORM|MS SQL Server (JDBC) Reader: Driver class 'com.microsoft.sqlserver.jdbc.SQLServerDriver' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:20|   3.8|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connection class 'com.microsoft.sqlserver.jdbc.SQLServerConnection' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:20|   3.8|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connected to 'Microsoft SQL Server' version '15.00.4365' using driver 'Microsoft JDBC Driver 9.2 for SQL Server' version '9.2.0.0' built against JDBC version '4.2'
+2024-07-09 14:37:20|   3.8|  0.0|INFORM|MSSQL_JDBC_NONSPATIAL_2 reader: Creating bulk features from individual features
+2024-07-09 14:37:20|   3.8|  0.0|INFORM|MS SQL Server (JDBC) Reader: Executing SQL: SELECT TOP 1 *
+FROM [Parking].[dbo].[Daily_Occupancy_Stats]
+WHERE zone_id = '1B3D7D69-A1D0-4B8B-B86A-D31F8CFF2B2E'
+ORDER BY date DESC;
+2024-07-09 14:37:20|   3.9|  0.1|INFORM|GetLatestDayStatsUnivWstBlvd: Splitting bulk features into individual features
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|Date: 20240708 -> UNIX Timestamp: 1720422000
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|FME Configuration: Using connection values from 'AWS_UBCParking' for R_5
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|Creating reader for format: Microsoft SQL Server Non-Spatial (JDBC)
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|Trying to find a JAVA plugin for reader named `MSSQL_JDBC_NONSPATIAL_2'
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|Performing query against MSSQL_JDBC_NONSPATIAL_2 dataset `AWS_UBCParking'
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|Using Java Reader Interface Version 2.0 (Oct 31, 2000) with module MSSQL_JDBC_NONSPATIAL_2 to read data
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|MS SQL Server (JDBC) Reader: Preloading JDBC Driver Class 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|MS SQL Server (JDBC) Reader: Creating connection using connection string 'jdbc:sqlserver://testdb.cdq6s8s6klpd.ca-central-1.rds.amazonaws.com' and properties '{statementPoolingCacheSize=10, disableStatementPooling=false, user=admin, encrypt=false, multiSubnetFailover=false, trustServerCertificate=true, applicationName=Safe Software FME, database=Parking, password=************, applicationIntent=ReadWrite}'
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|MS SQL Server (JDBC) Reader: Driver class 'com.microsoft.sqlserver.jdbc.SQLServerDriver' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connection class 'com.microsoft.sqlserver.jdbc.SQLServerConnection' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connected to 'Microsoft SQL Server' version '15.00.4365' using driver 'Microsoft JDBC Driver 9.2 for SQL Server' version '9.2.0.0' built against JDBC version '4.2'
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|MSSQL_JDBC_NONSPATIAL_2 reader: Creating bulk features from individual features
+2024-07-09 14:37:20|   3.9|  0.0|INFORM|MS SQL Server (JDBC) Reader: Executing SQL: SELECT DISTINCT *
+FROM [dbo].[UnivWstBlvdParkade_Occupancy]
+WHERE TimestampUnix > 1720422000
+2024-07-09 14:37:21|   4.1|  0.2|INFORM|FFS writer: Writing 2163 feature(s) to file 'C:\Users\mauer4.stu\AppData\Local\Temp\wb-cache-parking_stats_daily-NASAwg\Main_GetAllDataFromLatestDayUnivWstBl -1 18 fo 1 RESULT  0  b255a5baefc2a4faa630e848f6f5d5d7f04cbbec.fts'
+2024-07-09 14:37:21|   4.1|  0.0|INFORM|Spatial Index: Adding 2163 features
+2024-07-09 14:37:21|   4.1|  0.0|INFORM|AddDayHour_2 (PythonFactory): Splitting bulk features into individual features
+2024-07-09 14:37:21|   4.3|  0.2|INFORM|Getting schema from query 'SELECT DISTINCT *
+FROM [dbo].[UnivWstBlvdParkade_Occupancy]
+WHERE TimestampUnix > 1720422000'. If query has no schema, there may be warnings in the log below that can be safely ignored
+2024-07-09 14:37:21|   4.4|  0.1|INFORM|Getting schema from query 'SELECT TOP 1 *
+FROM [Parking].[dbo].[Daily_Occupancy_Stats]
+WHERE zone_id = '1B3D7D69-A1D0-4B8B-B86A-D31F8CFF2B2E'
+ORDER BY date DESC;'. If query has no schema, there may be warnings in the log below that can be safely ignored
+2024-07-09 14:37:22|   4.5|  0.1|INFORM|FME Configuration: Using connection values from 'AWS_UBCParking' for R_6
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|Creating reader for format: Microsoft SQL Server Non-Spatial (JDBC)
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|Trying to find a JAVA plugin for reader named `MSSQL_JDBC_NONSPATIAL_2'
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|Performing query against MSSQL_JDBC_NONSPATIAL_2 dataset `AWS_UBCParking'
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|Using Java Reader Interface Version 2.0 (Oct 31, 2000) with module MSSQL_JDBC_NONSPATIAL_2 to read data
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|MS SQL Server (JDBC) Reader: Preloading JDBC Driver Class 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|MS SQL Server (JDBC) Reader: Creating connection using connection string 'jdbc:sqlserver://testdb.cdq6s8s6klpd.ca-central-1.rds.amazonaws.com' and properties '{statementPoolingCacheSize=10, disableStatementPooling=false, user=admin, encrypt=false, multiSubnetFailover=false, trustServerCertificate=true, applicationName=Safe Software FME, database=Parking, password=************, applicationIntent=ReadWrite}'
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|MS SQL Server (JDBC) Reader: Driver class 'com.microsoft.sqlserver.jdbc.SQLServerDriver' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connection class 'com.microsoft.sqlserver.jdbc.SQLServerConnection' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connected to 'Microsoft SQL Server' version '15.00.4365' using driver 'Microsoft JDBC Driver 9.2 for SQL Server' version '9.2.0.0' built against JDBC version '4.2'
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|MSSQL_JDBC_NONSPATIAL_2 reader: Creating bulk features from individual features
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|MS SQL Server (JDBC) Reader: Executing SQL: ;WITH UniqueSource AS (
+    SELECT   date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity
+    FROM (
+        SELECT 
+             date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity,
+            ROW_NUMBER() OVER (PARTITION BY date, zone_id ORDER BY peak_occupancy) AS row_num
+        FROM (VALUES
+            ('2024-07-08','1B3D7D69-A1D0-4B8B-B86A-D31F8CFF2B2E',30,74,1720464720,216)
+        ) AS source( date, 
+                     zone_id, 
+                     average_occupancy, 
+                     peak_occupancy, 
+                     peak_occupancy_time, 
+                     Capacity)
+    ) AS ranked
+    WHERE row_num = 1
+)
+
+
+MERGE INTO [dbo].[Daily_Occupancy_Stats] AS target
+USING UniqueSource AS source
+ON (target.date = source.date AND target.zone_id = source.zone_id)
+WHEN MATCHED THEN
+    UPDATE SET
+        target.average_occupancy = source.average_occupancy,
+        target.peak_occupancy = source.peak_occupancy,
+        target.peak_occupancy_time = source.peak_occupancy_time
+WHEN NOT MATCHED THEN
+    INSERT ( date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity )
+    VALUES ( source.date, 
+             source.zone_id, 
+             source.average_occupancy, 
+             source.peak_occupancy, 
+             source.peak_occupancy_time, 
+             source.Capacity);
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|Getting schema from query ';WITH UniqueSource AS (
+    SELECT   date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity
+    FROM (
+        SELECT 
+             date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity,
+            ROW_NUMBER() OVER (PARTITION BY date, zone_id ORDER BY peak_occupancy) AS row_num
+        FROM (VALUES
+            ('2024-07-08','1B3D7D69-A1D0-4B8B-B86A-D31F8CFF2B2E',30,74,1720464720,216)
+        ) AS source( date, 
+                     zone_id, 
+                     average_occupancy, 
+                     peak_occupancy, 
+                     peak_occupancy_time, 
+                     Capacity)
+    ) AS ranked
+    WHERE row_num = 1
+)
+
+
+MERGE INTO [dbo].[Daily_Occupancy_Stats] AS target
+USING UniqueSource AS source
+ON (target.date = source.date AND target.zone_id = source.zone_id)
+WHEN MATCHED THEN
+    UPDATE SET
+        target.average_occupancy = source.average_occupancy,
+        target.peak_occupancy = source.peak_occupancy,
+        target.peak_occupancy_time = source.peak_occupancy_time
+WHEN NOT MATCHED THEN
+    INSERT ( date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity )
+    VALUES ( source.date, 
+             source.zone_id, 
+             source.average_occupancy, 
+             source.peak_occupancy, 
+             source.peak_occupancy_time, 
+             source.Capacity);'. If query has no schema, there may be warnings in the log below that can be safely ignored
+2024-07-09 14:37:22|   4.5|  0.0|STATS |Restoring 1 feature(s) from FME feature store file `C:\Users\mauer4.stu\AppData\Local\Temp\wb-cache-parking_stats_daily-NASAwg\Main_Creator -1 3 fo 0 CREATED  0  3902d54854280f3545ff73811083898f952c0466.ffs'
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|FME Configuration: Using connection values from 'AWS_UBCParking' for R_7
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|Creating reader for format: Microsoft SQL Server Non-Spatial (JDBC)
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|Trying to find a JAVA plugin for reader named `MSSQL_JDBC_NONSPATIAL_2'
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|Performing query against MSSQL_JDBC_NONSPATIAL_2 dataset `AWS_UBCParking'
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|Using Java Reader Interface Version 2.0 (Oct 31, 2000) with module MSSQL_JDBC_NONSPATIAL_2 to read data
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|MS SQL Server (JDBC) Reader: Preloading JDBC Driver Class 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|MS SQL Server (JDBC) Reader: Creating connection using connection string 'jdbc:sqlserver://testdb.cdq6s8s6klpd.ca-central-1.rds.amazonaws.com' and properties '{statementPoolingCacheSize=10, disableStatementPooling=false, user=admin, encrypt=false, multiSubnetFailover=false, trustServerCertificate=true, applicationName=Safe Software FME, database=Parking, password=************, applicationIntent=ReadWrite}'
+2024-07-09 14:37:22|   4.5|  0.0|INFORM|MS SQL Server (JDBC) Reader: Driver class 'com.microsoft.sqlserver.jdbc.SQLServerDriver' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:23|   4.7|  0.2|INFORM|MS SQL Server (JDBC) Reader: Connection class 'com.microsoft.sqlserver.jdbc.SQLServerConnection' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connected to 'Microsoft SQL Server' version '15.00.4365' using driver 'Microsoft JDBC Driver 9.2 for SQL Server' version '9.2.0.0' built against JDBC version '4.2'
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|MSSQL_JDBC_NONSPATIAL_2 reader: Creating bulk features from individual features
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Executing SQL: SELECT TOP 1 *
+FROM [Parking].[dbo].[Daily_Occupancy_Stats]
+WHERE zone_id = '7A5B3916-AD6C-445E-A6C5-BC582EB20530'
+ORDER BY date DESC;
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|GetLatestDayStatsThunderbird: Splitting bulk features into individual features
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|Date: 20240708 -> UNIX Timestamp: 1720422000
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|FME Configuration: Using connection values from 'AWS_UBCParking' for R_8
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|Creating reader for format: Microsoft SQL Server Non-Spatial (JDBC)
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|Trying to find a JAVA plugin for reader named `MSSQL_JDBC_NONSPATIAL_2'
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|Performing query against MSSQL_JDBC_NONSPATIAL_2 dataset `AWS_UBCParking'
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|Using Java Reader Interface Version 2.0 (Oct 31, 2000) with module MSSQL_JDBC_NONSPATIAL_2 to read data
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Preloading JDBC Driver Class 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Creating connection using connection string 'jdbc:sqlserver://testdb.cdq6s8s6klpd.ca-central-1.rds.amazonaws.com' and properties '{statementPoolingCacheSize=10, disableStatementPooling=false, user=admin, encrypt=false, multiSubnetFailover=false, trustServerCertificate=true, applicationName=Safe Software FME, database=Parking, password=************, applicationIntent=ReadWrite}'
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Driver class 'com.microsoft.sqlserver.jdbc.SQLServerDriver' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connection class 'com.microsoft.sqlserver.jdbc.SQLServerConnection' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connected to 'Microsoft SQL Server' version '15.00.4365' using driver 'Microsoft JDBC Driver 9.2 for SQL Server' version '9.2.0.0' built against JDBC version '4.2'
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|MSSQL_JDBC_NONSPATIAL_2 reader: Creating bulk features from individual features
+2024-07-09 14:37:23|   4.7|  0.0|INFORM|MS SQL Server (JDBC) Reader: Executing SQL: SELECT DISTINCT *
+FROM [dbo].[ThunderbirdParkade_Occupancy]
+WHERE TimestampUnix > 1720422000
+2024-07-09 14:37:24|   4.8|  0.1|INFORM|FFS writer: Writing 2162 feature(s) to file 'C:\Users\mauer4.stu\AppData\Local\Temp\wb-cache-parking_stats_daily-NASAwg\Main_GetAllDataFromLatestDayThunderbi -1 32 fo 1 RESULT  0  765cff6ddcb534d2a9127b4adb3f12674d68e51f.fts'
+2024-07-09 14:37:24|   4.8|  0.0|INFORM|Spatial Index: Adding 2162 features
+2024-07-09 14:37:24|   4.8|  0.0|INFORM|AddDayHour_3 (PythonFactory): Splitting bulk features into individual features
+2024-07-09 14:37:24|   5.0|  0.2|INFORM|Getting schema from query 'SELECT DISTINCT *
+FROM [dbo].[ThunderbirdParkade_Occupancy]
+WHERE TimestampUnix > 1720422000'. If query has no schema, there may be warnings in the log below that can be safely ignored
+2024-07-09 14:37:24|   5.0|  0.0|INFORM|Getting schema from query 'SELECT TOP 1 *
+FROM [Parking].[dbo].[Daily_Occupancy_Stats]
+WHERE zone_id = '7A5B3916-AD6C-445E-A6C5-BC582EB20530'
+ORDER BY date DESC;'. If query has no schema, there may be warnings in the log below that can be safely ignored
+2024-07-09 14:37:24|   5.2|  0.2|INFORM|FME Configuration: Using connection values from 'AWS_UBCParking' for R_9
+2024-07-09 14:37:24|   5.2|  0.0|INFORM|Creating reader for format: Microsoft SQL Server Non-Spatial (JDBC)
+2024-07-09 14:37:24|   5.2|  0.0|INFORM|Trying to find a JAVA plugin for reader named `MSSQL_JDBC_NONSPATIAL_2'
+2024-07-09 14:37:24|   5.2|  0.0|INFORM|Performing query against MSSQL_JDBC_NONSPATIAL_2 dataset `AWS_UBCParking'
+2024-07-09 14:37:24|   5.2|  0.0|INFORM|Using Java Reader Interface Version 2.0 (Oct 31, 2000) with module MSSQL_JDBC_NONSPATIAL_2 to read data
+2024-07-09 14:37:24|   5.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Preloading JDBC Driver Class 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+2024-07-09 14:37:24|   5.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Creating connection using connection string 'jdbc:sqlserver://testdb.cdq6s8s6klpd.ca-central-1.rds.amazonaws.com' and properties '{statementPoolingCacheSize=10, disableStatementPooling=false, user=admin, encrypt=false, multiSubnetFailover=false, trustServerCertificate=true, applicationName=Safe Software FME, database=Parking, password=************, applicationIntent=ReadWrite}'
+2024-07-09 14:37:24|   5.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Driver class 'com.microsoft.sqlserver.jdbc.SQLServerDriver' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connection class 'com.microsoft.sqlserver.jdbc.SQLServerConnection' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connected to 'Microsoft SQL Server' version '15.00.4365' using driver 'Microsoft JDBC Driver 9.2 for SQL Server' version '9.2.0.0' built against JDBC version '4.2'
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|MSSQL_JDBC_NONSPATIAL_2 reader: Creating bulk features from individual features
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Executing SQL: ;WITH UniqueSource AS (
+    SELECT   date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity
+    FROM (
+        SELECT 
+             date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity,
+            ROW_NUMBER() OVER (PARTITION BY date, zone_id ORDER BY peak_occupancy) AS row_num
+        FROM (VALUES
+            ('2024-07-08','7A5B3916-AD6C-445E-A6C5-BC582EB20530',253,633,1720497900,1100)
+        ) AS source( date, 
+                     zone_id, 
+                     average_occupancy, 
+                     peak_occupancy, 
+                     peak_occupancy_time, 
+                     Capacity)
+    ) AS ranked
+    WHERE row_num = 1
+)
+
+
+MERGE INTO [dbo].[Daily_Occupancy_Stats] AS target
+USING UniqueSource AS source
+ON (target.date = source.date AND target.zone_id = source.zone_id)
+WHEN MATCHED THEN
+    UPDATE SET
+        target.average_occupancy = source.average_occupancy,
+        target.peak_occupancy = source.peak_occupancy,
+        target.peak_occupancy_time = source.peak_occupancy_time
+WHEN NOT MATCHED THEN
+    INSERT ( date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity )
+    VALUES ( source.date, 
+             source.zone_id, 
+             source.average_occupancy, 
+             source.peak_occupancy, 
+             source.peak_occupancy_time, 
+             source.Capacity);
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|Getting schema from query ';WITH UniqueSource AS (
+    SELECT   date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity
+    FROM (
+        SELECT 
+             date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity,
+            ROW_NUMBER() OVER (PARTITION BY date, zone_id ORDER BY peak_occupancy) AS row_num
+        FROM (VALUES
+            ('2024-07-08','7A5B3916-AD6C-445E-A6C5-BC582EB20530',253,633,1720497900,1100)
+        ) AS source( date, 
+                     zone_id, 
+                     average_occupancy, 
+                     peak_occupancy, 
+                     peak_occupancy_time, 
+                     Capacity)
+    ) AS ranked
+    WHERE row_num = 1
+)
+
+
+MERGE INTO [dbo].[Daily_Occupancy_Stats] AS target
+USING UniqueSource AS source
+ON (target.date = source.date AND target.zone_id = source.zone_id)
+WHEN MATCHED THEN
+    UPDATE SET
+        target.average_occupancy = source.average_occupancy,
+        target.peak_occupancy = source.peak_occupancy,
+        target.peak_occupancy_time = source.peak_occupancy_time
+WHEN NOT MATCHED THEN
+    INSERT ( date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity )
+    VALUES ( source.date, 
+             source.zone_id, 
+             source.average_occupancy, 
+             source.peak_occupancy, 
+             source.peak_occupancy_time, 
+             source.Capacity);'. If query has no schema, there may be warnings in the log below that can be safely ignored
+2024-07-09 14:37:25|   5.2|  0.0|STATS |Restoring 1 feature(s) from FME feature store file `C:\Users\mauer4.stu\AppData\Local\Temp\wb-cache-parking_stats_daily-NASAwg\Main_Creator -1 3 fo 0 CREATED  0  3902d54854280f3545ff73811083898f952c0466.ffs'
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|FME Configuration: Using connection values from 'AWS_UBCParking' for R_10
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|Creating reader for format: Microsoft SQL Server Non-Spatial (JDBC)
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|Trying to find a JAVA plugin for reader named `MSSQL_JDBC_NONSPATIAL_2'
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|Performing query against MSSQL_JDBC_NONSPATIAL_2 dataset `AWS_UBCParking'
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|Using Java Reader Interface Version 2.0 (Oct 31, 2000) with module MSSQL_JDBC_NONSPATIAL_2 to read data
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Preloading JDBC Driver Class 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Creating connection using connection string 'jdbc:sqlserver://testdb.cdq6s8s6klpd.ca-central-1.rds.amazonaws.com' and properties '{statementPoolingCacheSize=10, disableStatementPooling=false, user=admin, encrypt=false, multiSubnetFailover=false, trustServerCertificate=true, applicationName=Safe Software FME, database=Parking, password=************, applicationIntent=ReadWrite}'
+2024-07-09 14:37:25|   5.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Driver class 'com.microsoft.sqlserver.jdbc.SQLServerDriver' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:26|   5.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connection class 'com.microsoft.sqlserver.jdbc.SQLServerConnection' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:26|   5.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connected to 'Microsoft SQL Server' version '15.00.4365' using driver 'Microsoft JDBC Driver 9.2 for SQL Server' version '9.2.0.0' built against JDBC version '4.2'
+2024-07-09 14:37:26|   5.2|  0.0|INFORM|MSSQL_JDBC_NONSPATIAL_2 reader: Creating bulk features from individual features
+2024-07-09 14:37:26|   5.2|  0.0|INFORM|MS SQL Server (JDBC) Reader: Executing SQL: SELECT TOP 1 *
+FROM [Parking].[dbo].[Daily_Occupancy_Stats]
+WHERE zone_id = '33B31206-E1F8-44CE-87A5-318C6D198417'
+ORDER BY date DESC;
+2024-07-09 14:37:26|   5.2|  0.0|INFORM|Getting schema from query 'SELECT TOP 1 *
+FROM [Parking].[dbo].[Daily_Occupancy_Stats]
+WHERE zone_id = '33B31206-E1F8-44CE-87A5-318C6D198417'
+ORDER BY date DESC;'. If query has no schema, there may be warnings in the log below that can be safely ignored
+2024-07-09 14:37:26|   5.2|  0.0|INFORM|FME Configuration: Using connection values from 'AWS_UBCParking' for R_11
+2024-07-09 14:37:26|   5.2|  0.0|INFORM|Creating reader for format: Microsoft SQL Server Non-Spatial (JDBC)
+2024-07-09 14:37:26|   5.2|  0.0|INFORM|Trying to find a JAVA plugin for reader named `MSSQL_JDBC_NONSPATIAL_2'
+2024-07-09 14:37:26|   5.2|  0.0|INFORM|Performing query against MSSQL_JDBC_NONSPATIAL_2 dataset `AWS_UBCParking'
+2024-07-09 14:37:26|   5.3|  0.1|INFORM|Using Java Reader Interface Version 2.0 (Oct 31, 2000) with module MSSQL_JDBC_NONSPATIAL_2 to read data
+2024-07-09 14:37:26|   5.3|  0.0|INFORM|MS SQL Server (JDBC) Reader: Preloading JDBC Driver Class 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+2024-07-09 14:37:26|   5.3|  0.0|INFORM|MS SQL Server (JDBC) Reader: Creating connection using connection string 'jdbc:sqlserver://testdb.cdq6s8s6klpd.ca-central-1.rds.amazonaws.com' and properties '{statementPoolingCacheSize=10, disableStatementPooling=false, user=admin, encrypt=false, multiSubnetFailover=false, trustServerCertificate=true, applicationName=Safe Software FME, database=Parking, password=************, applicationIntent=ReadWrite}'
+2024-07-09 14:37:26|   5.3|  0.0|INFORM|MS SQL Server (JDBC) Reader: Driver class 'com.microsoft.sqlserver.jdbc.SQLServerDriver' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:26|   5.3|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connection class 'com.microsoft.sqlserver.jdbc.SQLServerConnection' is being loaded from '/C:/Program Files/FME/plugins/mssql-jdbc-9.2.0.jre8.jar'
+2024-07-09 14:37:26|   5.3|  0.0|INFORM|MS SQL Server (JDBC) Reader: Connected to 'Microsoft SQL Server' version '15.00.4365' using driver 'Microsoft JDBC Driver 9.2 for SQL Server' version '9.2.0.0' built against JDBC version '4.2'
+2024-07-09 14:37:26|   5.3|  0.0|INFORM|MSSQL_JDBC_NONSPATIAL_2 reader: Creating bulk features from individual features
+2024-07-09 14:37:26|   5.3|  0.0|INFORM|MS SQL Server (JDBC) Reader: Executing SQL: ;WITH UniqueSource AS (
+    SELECT   date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity
+    FROM (
+        SELECT 
+             date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity,
+            ROW_NUMBER() OVER (PARTITION BY date, zone_id ORDER BY peak_occupancy) AS row_num
+        FROM (VALUES
+            
+        ) AS source( date, 
+                     zone_id, 
+                     average_occupancy, 
+                     peak_occupancy, 
+                     peak_occupancy_time, 
+                     Capacity)
+    ) AS ranked
+    WHERE row_num = 1
+)
+
+
+MERGE INTO [dbo].[Daily_Occupancy_Stats] AS target
+USING UniqueSource AS source
+ON (target.date = source.date AND target.zone_id = source.zone_id)
+WHEN MATCHED THEN
+    UPDATE SET
+        target.average_occupancy = source.average_occupancy,
+        target.peak_occupancy = source.peak_occupancy,
+        target.peak_occupancy_time = source.peak_occupancy_time
+WHEN NOT MATCHED THEN
+    INSERT ( date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity )
+    VALUES ( source.date, 
+             source.zone_id, 
+             source.average_occupancy, 
+             source.peak_occupancy, 
+             source.peak_occupancy_time, 
+             source.Capacity);
+2024-07-09 14:37:26|   5.3|  0.0|ERROR |com.microsoft.sqlserver.jdbc.SQLServerException: Incorrect syntax near ')'.
+2024-07-09 14:37:26|   5.3|  0.0|ERROR |An error has occurred. Check the logfile above for details
+2024-07-09 14:37:26|   5.3|  0.0|WARN  |Delimiter token must be declared at beginning of file. Ignoring delimiter and continuing. SQL is: ';WITH UniqueSource AS (
+    SELECT   date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity
+    FROM (
+        SELECT 
+             date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity,
+            ROW_NUMBER() OVER (PARTITION BY date, zone_id ORDER BY peak_occupancy) AS row_num
+        FROM (VALUES
+            
+        ) AS source( date, 
+                     zone_id, 
+                     average_occupancy, 
+                     peak_occupancy, 
+                     peak_occupancy_time, 
+                     Capacity)
+    ) AS ranked
+    WHERE row_num = 1
+)
+
+
+MERGE INTO [dbo].[Daily_Occupancy_Stats] AS target
+USING UniqueSource AS source
+ON (target.date = source.date AND target.zone_id = source.zone_id)
+WHEN MATCHED THEN
+    UPDATE SET
+        target.average_occupancy = source.average_occupancy,
+        target.peak_occupancy = source.peak_occupancy,
+        target.peak_occupancy_time = source.peak_occupancy_time
+WHEN NOT MATCHED THEN
+    INSERT ( date, 
+             zone_id, 
+             average_occupancy, 
+             peak_occupancy, 
+             peak_occupancy_time, 
+             Capacity )
+    VALUES ( source.date, 
+             source.zone_id, 
+             source.average_occupancy, 
+             source.peak_occupancy, 
+             source.peak_occupancy_time, 
+             source.Capacity);'
+2024-07-09 14:37:27|   5.3|  0.0|FATAL |The below feature caused the translation to be terminated
+2024-07-09 14:37:27|   5.3|  0.0|STATS |Storing feature(s) to FME feature store file `C:\!Capstone\repo\TL16\data-consolidation\parking_stats_daily_log.ffs'
+2024-07-09 14:37:27|   5.3|  0.0|INFORM|+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2024-07-09 14:37:27|   5.3|  0.0|INFORM|Feature Type: `FEATURE_TYPE'
+2024-07-09 14:37:27|   5.3|  0.0|INFORM|Attribute(string: UTF-8): `_reader_error' has value `An error has occurred. Check the logfile above for details'
+2024-07-09 14:37:27|   5.3|  0.0|INFORM|Attribute(string: UTF-8): `accumulated_data' has value `'
+2024-07-09 14:37:27|   5.3|  0.0|INFORM|Coordinate System: `'
+2024-07-09 14:37:27|   5.3|  0.0|INFORM|Geometry Type: IFMENull
+2024-07-09 14:37:27|   5.3|  0.0|INFORM|Coordinate Dimension: 2
+2024-07-09 14:37:27|   5.3|  0.0|INFORM|===========================================================================
+2024-07-09 14:37:27|   5.3|  0.0|ERROR |WriteNewStats_RoseGarden_<Rejected> (TeeFactory): WriteNewStats_RoseGarden_<Rejected>: Termination Message: 'WriteNewStats_RoseGarden output a <Rejected> feature.  To continue translation when features are rejected, change 'Workspace Parameters' > Translation > 'Rejected Feature Handling' to 'Continue Translation''
+2024-07-09 14:37:27|   5.3|  0.0|FATAL |PythonFactory output feature was rejected downstream. Check the logfile above for details
+2024-07-09 14:37:27|   5.3|  0.0|ERROR |An error has occurred. Check the logfile above for details
+2024-07-09 14:37:27|   5.3|  0.0|FATAL |CreateSQL_RoseGarden (PythonFactory): PythonFactory failed to close properly
+2024-07-09 14:37:27|   5.3|  0.0|INFORM|Translation FAILED with 7 error(s) and 1 warning(s) (0 feature(s) output)
+2024-07-09 14:37:27|   5.3|  0.0|STATS |Stored 1 feature(s) to FME feature store file `C:\!Capstone\repo\TL16\data-consolidation\parking_stats_daily_log.ffs'
+2024-07-09 14:37:27|   5.3|  0.0|INFORM|FME Session Duration: 12.1 seconds. (CPU: 4.2s user, 1.1s system)
+2024-07-09 14:37:27|   5.3|  0.0|INFORM|END - ProcessID: 18908, peak process memory usage: 595452 kB, current process memory usage: 562072 kB
