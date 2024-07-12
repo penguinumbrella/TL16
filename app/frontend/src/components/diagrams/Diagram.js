@@ -4,7 +4,7 @@ import LineGraphComponent from './LineGraph/LineGraphComponent';
 import BarGraphComponent from './BarGraph/BarGraphComponent';
 import axios from 'axios';
 
-const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value"}) => {
+const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity}) => {
 
   const [diagData, setDiagData] = useState([]);
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
@@ -144,7 +144,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
         break;
     case 'LINE':
         toRender = <>
-          <LineGraphComponent data={dataOverride.length != 0 ? dataOverride : diagData} height={height} width={width} title={title} customToolTip={customToolTip} dataKeyY={dataKeyY}></LineGraphComponent>
+          <LineGraphComponent data={dataOverride.length != 0 ? dataOverride : diagData} height={height} width={width} title={title} customToolTip={customToolTip} dataKeyY={dataKeyY} capacity={capacity}></LineGraphComponent>
         </>
         break;
     case 'BAR':

@@ -5,11 +5,14 @@ const CustomTooltip = ({ active, payload,  label }) => {
                 return <>
                  <p>{`Time: ${ele.payload.name}`}</p>
                  <p>{`Vehicles: ${ele.payload['Vehicles']}`}</p>
+                 {Object.keys(ele.payload).map((key) => (
+                    key !== 'name' && key !== 'Vehicles' ? (
+                        <p key={key}>{`${key}: ${ele.payload[key]}`}</p>
+                    ) : null
+                ))}
                 </>
             })}
         </div>;
-
-        console.log(toReturn);
         return toReturn;
     }
     return null;

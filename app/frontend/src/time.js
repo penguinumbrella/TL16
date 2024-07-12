@@ -23,3 +23,25 @@ export function formatUnixTimestamp(unixTimestamp) {
   
     return formattedDate;
   }
+
+export const formatDateString = (dateString) => {
+    const date = new Date(dateString);
+  
+    // Get the day
+    const day = date.getDate();
+  
+    // Get the month name
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const month = monthNames[date.getMonth()];
+  
+    // Get the full year
+    const year = date.getFullYear();
+
+    // Format the date and time string
+    const formattedDate = `${day} ${month}, ${year}`;
+  
+    return formattedDate;
+}

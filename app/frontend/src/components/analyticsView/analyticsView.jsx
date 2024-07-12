@@ -17,7 +17,7 @@ import 'react-clock/dist/Clock.css';
 import axios from 'axios';
 import { getQueries, PERIODICITY_STEP } from "./queryHelper";
 import Diagram from '../diagrams/Diagram';
-import { formatUnixTimestamp } from "../../time";
+import { formatUnixTimestamp, formatDateString } from "../../time";
 import CustomTooltip from "./customToolTip";
 
 import Tabs from '../tabComponent/Tabs.js';
@@ -34,7 +34,7 @@ const VISUALIZATION_OPTIONS = [
 ];
 
 const PERIODICITY_OPTIONS = [
-  'Hourly', 'Daily', 'Weekly', 'Monthly', 'Yearly' 
+  'Hourly', 'Daily', 'Weekly', 'Monthly' 
 ];
 
 const AVG_PEAK = [
@@ -318,22 +318,45 @@ const AnalyticsView = () => {
       const data = response.data;
       const periodicity = queries[parkade]['periodicity']
       const cleanData = []
-      const step = PERIODICITY_STEP[periodicity];
-      for (var i = queries[parkade]['startTime']; i<=queries[parkade]['endTime']; i += step)
-        cleanData.push({
-          'name': formatUnixTimestamp(i),
-          'vehicles': null
+      if (periodicity == 'Hourly') {
+        const step = PERIODICITY_STEP[periodicity];
+        for (var i = queries[parkade]['startTime']; i<=queries[parkade]['endTime']; i += step)
+          cleanData.push({
+            'name': formatUnixTimestamp(i),
+            'Vehicles': null
+          });
+        data.forEach((dataPoint) => {
+          const item = cleanData.find(obj => obj['name'] == formatUnixTimestamp(dataPoint['TimestampUnix']))
+          item['Vehicles'] = dataPoint['Vehicles']
         });
-      data.forEach((dataPoint) => {
-        const item = cleanData.find(obj => obj['name'] == formatUnixTimestamp(dataPoint['TimestampUnix']))
-        item['Vehicles'] = dataPoint['Vehicles']
-      });
-      resultsLocal[parkade] = cleanData;
+        resultsLocal[parkade] = cleanData;
+      } else if (periodicity == 'Daily') {
+        const startDate = queries[parkade]['startTime'];
+        const endDate = queries[parkade]['endTime'];
+        const currentDate = new Date(startDate);
+        while (currentDate <= new Date(endDate)){
+          cleanData.push({
+            'name': formatDateString(currentDate.toISOString().split('T')[0]),
+            'Vehicles': null
+          });
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+        // fix data.date to match cleanData's objects format
+        data.forEach((dataPoint) => {
+          const item = cleanData.find(obj => obj['name'] == formatDateString(dataPoint.date.split('T')[0]))
+          item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
+          item['Period Average'] = dataPoint.average_occupancy;
+          item['Period Peak'] = dataPoint.peak_occupancy;
+          item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
+          item['Capacity'] = dataPoint.Capacity; 
+        });
+        resultsLocal[parkade] = cleanData;
+      }
     });
     await Promise.all(promises);
     return Object.keys(resultsLocal).map((parkade) => {
       return (
-        <Diagram className='queryResultDiagram' type={'LINE'} height={'40%'} width={'90%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles"/>
+        <Diagram className='queryResultDiagram' type={'LINE'} height={'40%'} width={'90%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles" capacity={resultsLocal[parkade][0]['Capacity']}/>
       )
     });
   }
@@ -387,8 +410,6 @@ const AnalyticsView = () => {
     const fetchResults = async () => {
       const renderedResults = await renderResults(queries);
       setResults(renderedResults);
-      console.log('Rendered results');
-      console.log(renderedResults);
     };
 
     fetchResults();
