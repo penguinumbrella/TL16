@@ -149,7 +149,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
         break;
     case 'BAR':
       toRender = <>
-          <BarGraphComponent data={BAR_DATA} height={height} width={width} title={title}></BarGraphComponent>
+          <BarGraphComponent data={dataOverride.length != 0 ? dataOverride : diagData} height={height} width={width} title={title} customToolTip={customToolTip} dataKeyY={dataKeyY} capacity={capacity}></BarGraphComponent>
         </>
         break;
         

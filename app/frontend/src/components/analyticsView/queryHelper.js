@@ -30,28 +30,42 @@ export const getQueries = (dataCategory, visualizationFormat, periodicity, avgPe
 
         if (periodicity == 'Hourly'){
           // % url encoded
-          const query = `SELECT Vehicles, TimestampUnix from ${tableName}_Occupancy WHERE TimestampUnix >= ${timeSlot.modifiedStartTime} and TimestampUnix <= ${timeSlot.modifiedEndTime} and TimestampUnix %25 3600 = 0 ORDER BY TimestampUnix`
+          const query = `SELECT Vehicles, TimestampUnix, Capacity from ${tableName}_Occupancy WHERE TimestampUnix >= ${timeSlot.modifiedStartTime} and TimestampUnix <= ${timeSlot.modifiedEndTime} and TimestampUnix %25 3600 = 0 ORDER BY TimestampUnix`
           queries[parkade] = {
               'query': query,
               'startTime': timeSlot.modifiedStartTime,
               'endTime': timeSlot.modifiedEndTime,
               'periodicity': periodicity,
-              'avgPeak': avgPeak
+              'avgPeak': avgPeak,
+              'diagType': visualizationFormat
           };
         } else if (periodicity == 'Daily'){
           const startDate = convertUnixToDate(timeSlot.modifiedStartTime);
           const endDate = convertUnixToDate(timeSlot.modifiedEndTime);
-          console.log(startDate);
-          const query = `SELECT date, average_occupancy, peak_occupancy, peak_occupancy_time, Capacity from Daily_Occupancy_Stats WHERE date >= '${startDate}' and date <= '${endDate}' and zone_id = (SELECT zone_id from Parkade_management where parkade_name = '${PARKADE_NAMES[parkade]}')`
+          const query = `SELECT date, average_occupancy, peak_occupancy, peak_occupancy_time, Capacity from Daily_Occupancy_Stats WHERE date >= '${startDate}' and date <= '${endDate}' and zone_id = (SELECT zone_id from Parkade_management where parkade_name = '${PARKADE_NAMES[parkade]}')`;
           queries[parkade] = {
             'query': query,
             'startTime': startDate,
             'endTime': endDate,
             'periodicity': periodicity,
-            'avgPeak': avgPeak
+            'avgPeak': avgPeak,
+            'diagType': visualizationFormat
           }
+        } else if (periodicity == 'Weekly') {
+          const startDate = convertUnixToDate(timeSlot.modifiedStartTime);
+          const endDate = convertUnixToDate(timeSlot.modifiedEndTime);  
+          const query = `SELECT week_start_date, week_end_date, average_occupancy, peak_occupancy, peak_occupancy_time, Capacity from Weekly_Occupancy_Stats WHERE week_start_date >= '${startDate}' and week_end_date <= '${endDate}' and zone_id = (SELECT zone_id from Parkade_management where parkade_name = '${PARKADE_NAMES[parkade]}')`;
+          queries[parkade] = {
+            'query': query,
+            'startTime': startDate,
+            'endTime': endDate,
+            'periodicity': periodicity,
+            'avgPeak': avgPeak,
+            'diagType': visualizationFormat
+          }
+        } else if (periodicity == 'Monthly') {
+          // TODO
         }
-        
     });
     return queries;
 }

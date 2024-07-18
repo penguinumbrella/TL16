@@ -327,7 +327,10 @@ const AnalyticsView = () => {
           });
         data.forEach((dataPoint) => {
           const item = cleanData.find(obj => obj['name'] == formatUnixTimestamp(dataPoint['TimestampUnix']))
-          item['Vehicles'] = dataPoint['Vehicles']
+          if (item) {
+            item['Vehicles'] = dataPoint['Vehicles']
+            item['Capacity'] = dataPoint['Capacity']
+          }
         });
         resultsLocal[parkade] = cleanData;
       } else if (periodicity == 'Daily') {
@@ -344,19 +347,50 @@ const AnalyticsView = () => {
         // fix data.date to match cleanData's objects format
         data.forEach((dataPoint) => {
           const item = cleanData.find(obj => obj['name'] == formatDateString(dataPoint.date.split('T')[0]))
-          item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
-          item['Period Average'] = dataPoint.average_occupancy;
-          item['Period Peak'] = dataPoint.peak_occupancy;
-          item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
-          item['Capacity'] = dataPoint.Capacity; 
+          if (item) {
+            item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
+            item['Period Average'] = dataPoint.average_occupancy;
+            item['Period Peak'] = dataPoint.peak_occupancy;
+            item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
+            item['Capacity'] = dataPoint.Capacity
+          } 
         });
         resultsLocal[parkade] = cleanData;
+      } else if (periodicity == 'Weekly') {
+        const startDate = queries[parkade]['startTime'];
+        const endDate = queries[parkade]['endTime'];
+        const currentDate = new Date(startDate);
+        while (currentDate <= new Date(endDate)){
+          const from = currentDate;
+          const to = new Date(from);
+          to.setDate(to.getDate() + 6);
+          cleanData.push({
+            'name': `${formatDateString(from.toISOString().split('T')[0])} - ${formatDateString(to.toISOString().split('T')[0])}`,
+            'Vehicles': null
+          });
+          currentDate.setDate(currentDate.getDate() + 7);
+        }
+        console.log(cleanData);
+        data.forEach((dataPoint) => {
+          console.log(`To find: ${formatDateString(dataPoint.week_start_date.split('T')[0])} - ${formatDateString(dataPoint.week_end_date.split('T')[0])}`)
+          const item = cleanData.find(obj => obj['name'] == `${formatDateString(dataPoint.week_start_date.split('T')[0])} - ${formatDateString(dataPoint.week_end_date.split('T')[0])}`)
+          if (item) {
+            item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
+            item['Period Average'] = dataPoint.average_occupancy;
+            item['Period Peak'] = dataPoint.peak_occupancy;
+            item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
+            item['Capacity'] = dataPoint.Capacity;
+          } 
+        });
+        resultsLocal[parkade] = cleanData;
+      } else if (periodicity == 'Monthly') {
+        // TODO
       }
     });
     await Promise.all(promises);
     return Object.keys(resultsLocal).map((parkade) => {
       return (
-        <Diagram className='queryResultDiagram' type={'LINE'} height={'40%'} width={'90%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles" capacity={resultsLocal[parkade][0]['Capacity']}/>
+        <Diagram className='queryResultDiagram' type={queries[parkade]['diagType'] == 'Line Graph' ? 'LINE' : 'BAR'} height={'40%'} width={'95%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles" capacity={resultsLocal[parkade][0]['Capacity']}/>
       )
     });
   }
@@ -466,10 +500,12 @@ const AnalyticsView = () => {
                 <h4>PERIODICITY</h4>
                 {renderForm(PERIODICITY_OPTIONS, periodicity, setPeriodicity, '150px')}
               </div>
-              <div>
-                <h4>Average/Peak</h4>
-                {renderForm(AVG_PEAK, avgPeak, setAvgPeak, '150px')}
-              </div>
+              { periodicity != 'Hourly' ?
+                <div>
+                  <h4>Average/Peak</h4>
+                  {renderForm(AVG_PEAK, avgPeak, setAvgPeak, '150px')}
+                </div> : null
+              }
             </div>
           </div>
           <div className='analytics-options-div'>

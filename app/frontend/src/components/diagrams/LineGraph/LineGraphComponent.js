@@ -5,7 +5,7 @@ const LineGraphComponent = ({ data, width, height, title='', customToolTip, data
   console.log(capacity);
   return (
     <ResponsiveContainer width={width} height={height} style={{display: 'flex', flexDirection: 'column',
-      marginBottom: '20px'
+      margin: '20px 0 50px 0'
     }}>
         <LineChart data={data}>
             <XAxis dataKey={"name"} tick={{ fill: 'white' }} style={{fontSize: "10px"}}/>
