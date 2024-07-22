@@ -11,7 +11,7 @@
   background-color: rgba(2, 2, 6, 0.25);
   border-radius: 10px;
   overflow: hidden; /* Ensure circle stays inside the rectangle */
-  color: #9C9FBB;
+  color: #e0e1eb;
 }
 
 .headerContainer {

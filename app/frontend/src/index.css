@@ -1,4 +1,3 @@
-/* Import Outfit font in the HTML file */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap');
 
 body {
@@ -23,4 +22,6 @@ body {
   background-repeat: no-repeat; /* Prevent background image from repeating */
   display: flex;
   font-family: 'Outfit', sans-serif; /* Change font to Outfit */
+  color: white;
+  font-weight: bold;
 }

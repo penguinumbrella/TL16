@@ -1,9 +1,10 @@
 import React from 'react';
+import ThemeSwitcher from './ThemeSwitcher';
 import { Divider, Icon } from '@chakra-ui/react';
 import { FaHome, FaMap, FaChartPie, FaChartLine, FaCog, FaUserCircle } from 'react-icons/fa';
 import './searchBar.css';
 
-const SearchBar = ({ activeView, onIconClick }) => {
+const SearchBar = ({ activeView, onIconClick, setNewTheme }) => {
   const handleIconClick = (view, event) => {
     onIconClick(view);
   };
@@ -19,8 +20,6 @@ const SearchBar = ({ activeView, onIconClick }) => {
       <div className='topIcon'>
         <img src="./ubcdark.png" alt="" />
       </div>
-
-      <Divider className='separator' />
 
       <div className='navIcons'>
         <div className='navicon-container'>
@@ -64,9 +63,13 @@ const SearchBar = ({ activeView, onIconClick }) => {
         </div>
       </div>
 
+      <Divider className='separator' />
+
       <div className='bottomIcons'>
-        <Icon as={FaCog} />
-        <Icon as={FaUserCircle} />
+        <span className='light-label' onClick={() => setNewTheme('light')}>Light</span>
+        <span className='dark-label' onClick={() => setNewTheme('dark')}>Dark</span>
+        <Icon as={FaCog} className='chakra-icon' />
+        <Icon as={FaUserCircle} className='chakra-icon' />
       </div>
     </div>
   );
