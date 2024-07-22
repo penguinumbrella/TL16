@@ -1,0 +1,8 @@
+model,parkade,MAE,MSE,RMSE,R2
+Baseline,North,51.8425,6119.9286,78.23,0.8068
+Baseline,West,68.5377,12295.8339,110.8866,0.7651
+Baseline,Rose,50.8215,7257.599,85.1915,0.733
+Baseline,Health Sciences,5.4467,10329.3842,101.6336,0.8673
+Baseline,Fraser,41.826,4266.1831,65.316,0.7457
+Baseline,Thunderbird,95.0953,37123.0788,192.6735,0.6638
+Baseline,University Lot Blvd,19.261,863.8785,29.3918,0.26
