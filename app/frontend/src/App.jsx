@@ -7,6 +7,10 @@ import LiveView from './components/liveView/liveView';
 import AnalyticsView from './components/analyticsView/analyticsView';
 
 function App() {
+  // Ensure the default theme is 'dark'
+  const initialTheme = localStorage.getItem('theme') || 'dark';
+  const [theme, setTheme] = useState(initialTheme);
+
   // State to track the active view
   const [activeView, setActiveView] = useState('dashboard'); // 'dashboard' is the default view
 
@@ -16,21 +20,19 @@ function App() {
   };
 
   const [map_key, setMap_key] = useState('');
+
   useEffect(() => {
     fetch('/api/maps_key')
       .then(response => response.json())
       .then(data => {
-        // map_key = data.map_key;
-        setMap_key(data.map_key)
+        setMap_key(data.map_key);
       })
-      .catch(error => console.error('!!Key prolem:', error));
-      document.body.className = theme;
+      .catch(error => console.error('!!Key problem:', error));
+  }, []);
+
+  useEffect(() => {
+    document.body.className = theme;
   }, [theme]);
-
-
-  // Ensure the default theme is 'dark'
-  const initialTheme = localStorage.getItem('theme') || 'dark';
-  const [theme, setTheme] = useState(initialTheme);
 
   const setNewTheme = (newTheme) => {
     console.log(`Setting new theme: ${newTheme}`);
@@ -39,13 +41,13 @@ function App() {
   };
 
   return (
-    <div className="container ${theme}">
-      <SearchBar activeView={activeView} onIconClick={handleIconClick}  theme={theme} setNewTheme={setNewTheme} />
+    <div className={`container ${theme}`}>
+      <SearchBar activeView={activeView} onIconClick={handleIconClick} theme={theme} setNewTheme={setNewTheme} />
       {/* Render appropriate view based on activeView state */}
-      {activeView === 'map' ? <MapView theme={theme} map_key={map_key}/> : 
+      {activeView === 'map' ? <MapView theme={theme} map_key={map_key} /> : 
       activeView === 'dashboard' ? <DashboardView onIconClick={handleIconClick} theme={theme} /> :
-      activeView === 'live' ? <LiveView theme={theme}/> :
-      <AnalyticsView theme={theme}/>}
+      activeView === 'live' ? <LiveView theme={theme} /> :
+      <AnalyticsView theme={theme} />}
     </div>
   );
 }
