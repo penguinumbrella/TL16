@@ -1160,11 +1160,10 @@ for time_duration in range(0, 5):
         # Store actual and predicted values along with their datetime index in the DataFrame
         actual_vs_pred_df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred}, index=test.index)
 
-        print(actual_vs_pred_df.head)
-        # In[143]:
-                
-        import os
-        import pandas as pd
+        actual_vs_pred_df_fixed = actual_vs_pred_df.copy()
+        actual_vs_pred_df_fixed.reset_index(inplace=True)
+        print(actual_vs_pred_df_fixed.head)
+
 
         def update_predicted_occupancy(csv_file_path, new_data, parking_lot_column):
             """
@@ -1177,12 +1176,17 @@ for time_duration in range(0, 5):
             """
             timestamp_column = 'date'  # Define the timestamp column name
             
+            # Ensure 'date' column is in the DataFrame by resetting the index
+            new_data.reset_index(inplace=True)
+            print("New data:", new_data)  # Debug: Print new data
+            
             file_exists = os.path.isfile(csv_file_path)
             file_empty = os.path.getsize(csv_file_path) == 0 if file_exists else False
 
             if file_exists and not file_empty:
                 # If the file exists and is not empty, read the existing data
                 existing_df = pd.read_csv(csv_file_path)
+                print("Existing data:", existing_df)  # Debug: Print existing data
                 
                 # Check if the timestamp column exists in the existing data
                 if timestamp_column not in existing_df.columns:
@@ -1200,7 +1204,18 @@ for time_duration in range(0, 5):
             else:
                 # If the file does not exist or is empty, rename the "Predicted" column to the parking lot column
                 new_data = new_data.rename(columns={'Predicted': parking_lot_column})
+                
+                # Reset the index to convert it back to a column
+                new_data.reset_index(inplace=True)
                 updated_df = new_data
+            
+            # Conditionally drop columns if they exist
+            columns_to_drop = ['index', 'Actual']
+            for column in columns_to_drop:
+                if column in updated_df.columns:
+                    updated_df.drop(columns=[column], inplace=True)
+            
+            print("Updated data:", updated_df)  # Debug: Print updated data
             
             # Save the combined DataFrame to the CSV file
             updated_df.to_csv(csv_file_path, index=False)
@@ -1208,16 +1223,10 @@ for time_duration in range(0, 5):
 
         # Example usage
         # Define the CSV file path and the column name for the parking lot
-        csv_file_path = f'lgb_reports/lgb_{time_duration_str}.csv'
-
-
-        parking_lot_to_predict = 'North'
+        csv_file_path = f'lgb_reports_unnormalized/lgb_{time_duration_str}_data.csv'
 
         # Update the predicted occupancy data for the specified parking lot
-        update_predicted_occupancy(csv_file_path, actual_vs_pred_df, parking_lot_to_predict)
-
-        #actual_vs_pred_df.to_csv(f'lgb_{parking_lot_to_predict}_{time_duration_str}_actual_vs_predicted.csv', index=True)
-
+        update_predicted_occupancy(csv_file_path, actual_vs_pred_df_fixed, parking_lot_to_predict)
 
         # In[144]:
 
@@ -1305,7 +1314,74 @@ for time_duration in range(0, 5):
         plt.savefig(f'lgb_graphs/{parking_lot_to_predict}/{parking_lot_to_predict}_{time_duration_str}_actual_vs_pred.png')
 
         # Show plot
-        #plt.show()
+        #plt.show()import pandas as pd
+        import matplotlib.pyplot as plt
+        import os
+
+        print("Columns in actual_vs_pred_df:", actual_vs_pred_df.columns)
+
+        def plot_comparison_with_baseline(actual_vs_pred_df, baseline_df, parking_lot_name, output_dir):
+            """
+            Plot baseline, actual, and LightGBM predictions over a two-week period.
+
+            Parameters:
+            actual_vs_pred_df (pd.DataFrame): DataFrame with 'date', 'Actual', and 'Predicted' columns.
+            baseline_df (pd.DataFrame): DataFrame with 'Timestamp' and parking lot columns.
+            parking_lot_name (str): The name of the parking lot to plot.
+            output_dir (str): Directory to save the plot.
+            """
+            #actual_vs_pred_df.set_index('date', inplace=True)
+            baseline_df['Timestamp'] = pd.to_datetime(baseline_df['Timestamp'])
+            
+            print(baseline_df.head)
+            baseline_df.set_index('Timestamp', inplace=True)
+
+            # Filter data for February 2024
+            start_date = '2024-02-01'
+            end_date = '2024-02-15'
+            filtered_actual_vs_pred = actual_vs_pred_df[(actual_vs_pred_df.index >= start_date) & (actual_vs_pred_df.index <= end_date)]
+            filtered_baseline = baseline_df[(baseline_df.index >= start_date) & (baseline_df.index <= end_date)]
+
+            # Ensure the parking lot column exists in the baseline data
+            if parking_lot_name not in filtered_baseline.columns:
+                raise KeyError(f"'{parking_lot_name}' is not found in the baseline data columns.")
+
+            # Create figure
+            plt.figure(figsize=(15, 10))
+
+            # Plot actual, predicted, and baseline results
+            plt.plot(filtered_actual_vs_pred.index, filtered_actual_vs_pred['Actual'], label='Actual', linewidth=1)
+            plt.plot(filtered_actual_vs_pred.index, filtered_actual_vs_pred['Predicted'], label='LightGBM', linestyle='-.')
+            plt.plot(filtered_baseline.index, filtered_baseline[parking_lot_name], label='Baseline', linestyle='--')
+
+            # Plot labels and title
+            plt.xlabel('Date')
+            plt.ylabel('Occupancy')
+            plt.title(f'Comparison of Baseline, Actual, and LightGBM Predictions for {parking_lot_name} for {title_str} ahead (Feb 2024)\n 2 Week Window')
+            
+            # Show legend
+            plt.legend()
+
+            # Ensure output directory exists
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
+
+            # Save the plot
+            plt.savefig(f'{output_dir}/{parking_lot_name}_{title_str}_comparison_february_2024.png')
+            #plt.show()
+
+        # Example usage
+        # Define the path to the baseline data CSV file
+        baseline_csv_path = 'baseline_results.csv'
+
+        # Read baseline data
+        baseline_df = pd.read_csv(baseline_csv_path)
+
+        # Define the directory to save the plot
+        output_dir = f'lgb_graphs_2weeks/{parking_lot_to_predict}'
+
+        # Call the function with your DataFrames and parameters
+        plot_comparison_with_baseline(actual_vs_pred_df, baseline_df, parking_lot_to_predict, output_dir)
 
 
         # In[147]:
@@ -2086,7 +2162,7 @@ for time_duration in range(0, 5):
         csv_file_path = f'LGBM_{parking_lot_to_predict}_longterm_future_predictions.csv'
 
         # Export to CSV
-        future_export.to_csv(csv_file_path, index=False)
+        #future_export.to_csv(csv_file_path, index=False)
 
-        print(f"Future predictions have been exported to {csv_file_path}")
+        #print(f"Future predictions have been exported to {csv_file_path}")
 
