@@ -14,7 +14,7 @@ import loadingZoneIconPicked from './../../assets/loadingZoneIconPicked.png';
 
 import axios from 'axios';
 
-const MapView = () => {
+const MapView = ({map_key}) => {
   const PORT = 8080;
 
   const [iconsVisible, setIconsVisible] = useState(true);
@@ -33,7 +33,7 @@ const MapView = () => {
     const fetchData = async () => {
       try {
         const res = await fetch('/api');
-        console.log(await res.json());
+        // console.log(await res.json());
       } catch (err) {
         console.log("Frontend Only");
       }
@@ -62,7 +62,7 @@ const MapView = () => {
         setSelectedOption(event.target.value);
         setActiveIndex(''); // Reset the active index
         setAccOccupancyStatus(data);
-        console.log(data);
+        // console.log(data);
       })
       .catch(error => {
         console.error('Error in onClickLGBM:', error);
@@ -146,7 +146,8 @@ const MapView = () => {
         
         )}
 
-        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} zoom={zoom} center={defaultCenter} timestamp={currentTime} accOccupancyStatus={accOccupancyStatus}/>
+        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} zoom={zoom} center={defaultCenter} timestamp={currentTime} accOccupancyStatus={accOccupancyStatus}
+        map_key = {map_key}/>
       </div>
     </div>
   );

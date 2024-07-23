@@ -24,6 +24,8 @@ const config = {
   }
 }
 
+const x_11_key = process.env.X_11_KEY;
+
 const executeQuery = async (query) => {
   const result = await sql.query(query);
   return result.recordsets[0]; 
@@ -265,19 +267,23 @@ app.get('/api/baseline_predict', (req, res) => {
 
   }
 });
+//---------------------------------------------
+
+
+app.get('/api/maps_key', (req, res) => {
+
+  res.json({map_key :  process.env.REACT_APP_MAPS_KEY})
+});
 
 //---------------------------------------------
 
 // This is for getting the accessibility stalls' status and time stamp
-// from eleven-x although currently it is from a csv file
-// later it will run the python script and make the necessary API calls
-// to get up to date data
 app.get('/api/elevenX',  async (req, res) => {
   try{
     const getCSVData = async ()=>{
       return new Promise((resolve,reject) =>{
       
-        filePath = `./tempCSV/stall_current_status_unique.csv`;
+        filePath = `./x_11/stalls_data.csv`;
 
         // Temporary array to hold the data
         let streamData = []
@@ -320,6 +326,31 @@ app.get('/api/elevenX',  async (req, res) => {
   
 });
 
+//-------------------------------------------------------------------------------
+
+const get_elevenX = ()=>{
+  try{
+    // Run the elevenX script which will update the csv file
+    const pythonProcess = spawn('python', [`x_11/get_stalls_data.py`, x_11_key], {
+      stdio: ['ignore', 'inherit', 'inherit'] // Ignore stdin, inherit stdout and stderr
+    });
+    pythonProcess.on('exit', () => {
+      try{
+        console.log("Stalls data updataed")
+
+      }catch(e){
+        console.error(`Error executing Python get_stalls_data.py`);
+        console.log(e);
+      }
+      
+    });
+
+  }catch(e){
+    console.log(e)
+    
+  }
+}
+
 
 //-------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------
@@ -327,4 +358,7 @@ app.get('/api/elevenX',  async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
+
+  // Update the accessibilty data every 10 minutes
+  setInterval(get_elevenX, 1000 * 60 * 10);
 });

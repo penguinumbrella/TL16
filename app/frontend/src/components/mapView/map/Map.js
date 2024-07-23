@@ -9,17 +9,18 @@ import './map.css'; // Add a CSS file to handle the styling
 
 import mapStyleDark from './mapStyleDark.json'
 
-const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccupancyStatus}) => { // Accept setActiveIndex as a prop
+const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccupancyStatus, map_key}) => { // Accept setActiveIndex as a prop
   const [activeIndex, setActiveIndexState] = useState('');
   const [markerData, setMarkerDataData] = useState(initialMarkerData);
 
 
-  const { isLoaded } = useJsApiLoader({
+  var { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: process.env.REACT_APP_MAPS_KEY,
+    googleMapsApiKey: map_key,
     libraries: ['geometry', 'drawing'],
   });
 
+  
   const mapOptions = {
     // center: mapCenter,
     // zoom: zoom,
