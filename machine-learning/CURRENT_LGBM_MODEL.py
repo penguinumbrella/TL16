@@ -1251,7 +1251,7 @@ for time_duration in range(0, 5):
         # Show legend
         plt.legend()
 
-        plt.savefig(f'lgb_graphs/{parking_lot_to_predict}/{parking_lot_to_predict}_{time_duration_str}__actual_vs_pred.png')
+        plt.savefig(f'lgb_graphs/{parking_lot_to_predict}/{parking_lot_to_predict}_{time_duration_str}_actual_vs_pred.png')
 
         # Show plot
         #plt.show()
@@ -1301,7 +1301,39 @@ for time_duration in range(0, 5):
         error_df = pd.DataFrame(error_data)
 
         # Define the CSV file path
-        csv_file_path = "lgb_" + time_duration_str + "_metric.csv"
+        csv_file_path = "lgb_errors_unnormalized/lgb_" + time_duration_str + "_metric.csv"
+
+        # Check if the CSV file exists
+        if os.path.isfile(csv_file_path):
+            # If the file exists, read the existing data
+            existing_df = pd.read_csv(csv_file_path)
+            # Set "Metric" as the index for both DataFrames
+            existing_df.set_index("Metric", inplace=True)
+            error_df.set_index("Metric", inplace=True)
+            # Combine the DataFrames along the columns
+            combined_df = existing_df.combine_first(error_df).reset_index()
+            # Save the combined DataFrame to the CSV file
+            combined_df.to_csv(csv_file_path, index=False)
+        else:
+            # If the file does not exist, write the new data
+            error_df.to_csv(csv_file_path, index=False)
+
+        print(f"Metrics saved to {csv_file_path}")
+
+        mae = mae/capacity_dict[parking_lot_to_predict]
+        mse = mse/(capacity_dict[parking_lot_to_predict] * capacity_dict[parking_lot_to_predict])
+        rmse = rmse/capacity_dict[parking_lot_to_predict]
+        # Create a dictionary with your data
+        error_data = {
+            "Metric": ["MAE", "MSE", "RMSE", "R-squared"],
+            parking_lot_to_predict: [mae, mse, rmse, r2]
+        }
+
+        # Create a DataFrame
+        error_df = pd.DataFrame(error_data)
+
+        # Define the CSV file path
+        csv_file_path = "lgb_errors_normalized/lgb_" + time_duration_str + "_metric.csv"
 
         # Check if the CSV file exists
         if os.path.isfile(csv_file_path):
@@ -1462,7 +1494,7 @@ for time_duration in range(0, 5):
         # Plot labels and title
         plt.xlabel('Date')
         plt.ylabel('Occupancy')
-        plt.title(f'Actual vs. Predicted Occupancy for {parking_lot_to_predict}\n'
+        plt.title(f'Actual vs. Predicted Occupancy for {parking_lot_to_predict}\nTest Data vs Predicted Occupancy'
                 f'RMSE: {rmse:.2f}, MAE: {mae:.2f}, MSE: {mse:.2f}, R²: {r2:.2f}')
 
         # Show legend
@@ -1867,7 +1899,7 @@ for time_duration in range(0, 5):
         plt.tight_layout()  # Adjust layout to prevent labels from overlapping
         #plt.show()
 
-        plt.savefig(f'lgbm_charts/{time_duration_str}_{parking_lot_to_predict}_feature_importance.png')
+        plt.savefig(f'lgb_feature_importance/{parking_lot_to_predict}/{time_duration_str}_{parking_lot_to_predict}_feature_importance.png')
 
 
         # In[166]:
