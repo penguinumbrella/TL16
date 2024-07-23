@@ -30,7 +30,7 @@ const transformData = (data) => {
 }
 
 
-const LiveView = () => {
+const LiveView = ( theme ) => {
   // Define the initial data status for each parkade
   const [dataStatus, setDataStatus] = useState({
     northParkade: false,

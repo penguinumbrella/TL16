@@ -11,6 +11,14 @@
   background-color: rgba(2, 2, 6, 0.25);
   border-radius: 10px;
   overflow: hidden; /* Ensure circle stays inside the rectangle */
+  font-weight: bold;
+}
+
+.light .dashboardView {
+  color: #000034;
+}
+
+.dark .dashboardView {
   color: #e0e1eb;
 }
 

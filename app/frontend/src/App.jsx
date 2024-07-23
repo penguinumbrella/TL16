@@ -30,13 +30,13 @@ function App() {
   }, [theme]);
 
   return (
-    <div className="container">
-      <SearchBar activeView={activeView} onIconClick={handleIconClick} setNewTheme={setNewTheme} />
+    <div className="container ${theme}">
+      <SearchBar activeView={activeView} onIconClick={handleIconClick}  theme={theme} setNewTheme={setNewTheme} />
       {/* Render appropriate view based on activeView state */}
-      {activeView === 'map' ? <MapView /> : 
-      activeView === 'dashboard' ? <DashboardView onIconClick={handleIconClick}/> :
-      activeView === 'live' ? <LiveView /> :
-      <AnalyticsView />}
+      {activeView === 'map' ? <MapView theme={theme}/> : 
+      activeView === 'dashboard' ? <DashboardView onIconClick={handleIconClick} theme={theme} /> :
+      activeView === 'live' ? <LiveView theme={theme}/> :
+      <AnalyticsView theme={theme}/>}
     </div>
   );
 }
