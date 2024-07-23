@@ -104,15 +104,17 @@ export const getTimeSlotByPeriodicity = (startTime, endTime, periodicity) => {
       const startDay = startDate.getDay();
       const endDay = endDate.getDay();
   
-      const daysToAddStart = (7 - startDay) % 7;
+      const daysToAddStart = (8 - startDay) % 7;
       startDate.setDate(startDate.getDate() + daysToAddStart);
       startDate.setHours(0, 0, 0, 0);
       modifiedStartTime = startDate.getTime() / 1000;
   
-      const daysToSubtractEnd = (endDay + 1) % 7; // Closest Saturday before endTime
+      const daysToSubtractEnd = (endDay) % 7; // Closest Saturday before endTime
       endDate.setDate(endDate.getDate() - daysToSubtractEnd);
       endDate.setHours(0, 0, 0, 0);
       modifiedEndTime = endDate.getTime() / 1000;
+      console.log(modifiedStartTime)
+      console.log(modifiedEndTime)
     } else if (periodicity === 'Monthly') {
       // Monthly: 12 am 1st of month after startTime, 12 am last day of month before endTime
       startDate.setMonth(startDate.getMonth() + 1, 1);

@@ -23,6 +23,8 @@ import CustomTooltip from "./customToolTip";
 import Tabs from '../tabComponent/Tabs.js';
 import ForcastComponent from "../forcastComponent/ForcastComponent.js";
 import LoadingAnimationComp from "../loading_Animation/LoadingAnimationComp.js";
+import { addDays, addWeeks } from "date-fns";
+import { getTimezoneOffset } from 'date-fns-tz'
 
 
 const DATA_CATEGORY_OPTIONS = [
@@ -44,6 +46,8 @@ const AVG_PEAK = [
 const PARKADE_OPTIONS = [
   'Thunderbird', 'North', 'West', 'Health Sciences', 'Fraser River', 'Rose Garden', 'University West Blvd'
 ];
+
+const RESULT_LIMIT = 24*21;
 
 const menuItems = (data, value, setValue=()=>{}, hideSelected=false, selected) => {
   if (hideSelected) {
@@ -311,11 +315,24 @@ const AnalyticsView = () => {
     }
   };
 
+  const createDate = (dateString) => {
+    const timeZone = 'America/Vancouver';
+    const date = new Date(dateString);
+    const offset = getTimezoneOffset(timeZone, date);
+    const adjustedDate = new Date(date.getTime() - offset);
+    console.log('Date: ', date)
+    console.log('Adjusted: ', adjustedDate);
+    return adjustedDate;
+  }
+
+  const getLocalDate = (date) => {
+    const [ dd, mm, yyyy ] = date.toLocaleDateString().split('/');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
   const renderResults = async (queries) => {
     const resultsLocal = {};
     const promises = Object.keys(queries).map(async (parkade) => {
-      const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
-      const data = response.data;
       const periodicity = queries[parkade]['periodicity']
       const cleanData = []
       if (periodicity == 'Hourly') {
@@ -325,64 +342,85 @@ const AnalyticsView = () => {
             'name': formatUnixTimestamp(i),
             'Vehicles': null
           });
-        data.forEach((dataPoint) => {
-          const item = cleanData.find(obj => obj['name'] == formatUnixTimestamp(dataPoint['TimestampUnix']))
-          if (item) {
-            item['Vehicles'] = dataPoint['Vehicles']
-            item['Capacity'] = dataPoint['Capacity']
-          }
-        });
-        resultsLocal[parkade] = cleanData;
+        if (cleanData.length > RESULT_LIMIT){
+          alert('Time window too big, try reducing the windo size or changing the periodicity');
+          return;
+        }
+        else {
+          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+          const data = response.data;
+          data.forEach((dataPoint) => {
+            const item = cleanData.find(obj => obj['name'] == formatUnixTimestamp(dataPoint['TimestampUnix']))
+            if (item) {
+              item['Vehicles'] = dataPoint['Vehicles']
+              item['Capacity'] = dataPoint['Capacity']
+            }
+          });
+          resultsLocal[parkade] = cleanData;
+        }
       } else if (periodicity == 'Daily') {
         const startDate = queries[parkade]['startTime'];
         const endDate = queries[parkade]['endTime'];
-        const currentDate = new Date(startDate);
-        while (currentDate <= new Date(endDate)){
+        let currentDate = createDate(startDate);
+        while (currentDate <= createDate(endDate)){
           cleanData.push({
-            'name': formatDateString(currentDate.toISOString().split('T')[0]),
+            'name': formatDateString(getLocalDate(currentDate)),
             'Vehicles': null
           });
-          currentDate.setDate(currentDate.getDate() + 1);
+          currentDate = addDays(currentDate, 1);
         }
-        // fix data.date to match cleanData's objects format
-        data.forEach((dataPoint) => {
-          const item = cleanData.find(obj => obj['name'] == formatDateString(dataPoint.date.split('T')[0]))
-          if (item) {
-            item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
-            item['Period Average'] = dataPoint.average_occupancy;
-            item['Period Peak'] = dataPoint.peak_occupancy;
-            item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
-            item['Capacity'] = dataPoint.Capacity
-          } 
-        });
-        resultsLocal[parkade] = cleanData;
+        if (cleanData.length > RESULT_LIMIT){
+          alert('Time window too big, try reducing the windo size or changing the periodicity');
+          return;
+        }
+        else {
+          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+          const data = response.data;
+          // fix data.date to match cleanData's objects format
+          data.forEach((dataPoint) => {
+            const item = cleanData.find(obj => obj['name'] == formatDateString(dataPoint.date.split('T')[0]))
+            if (item) {
+              item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
+              item['Period Average'] = dataPoint.average_occupancy;
+              item['Period Peak'] = dataPoint.peak_occupancy;
+              item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
+              item['Capacity'] = dataPoint.Capacity
+            } 
+          });
+          resultsLocal[parkade] = cleanData;
+        }
       } else if (periodicity == 'Weekly') {
         const startDate = queries[parkade]['startTime'];
         const endDate = queries[parkade]['endTime'];
-        const currentDate = new Date(startDate);
-        while (currentDate <= new Date(endDate)){
+        let currentDate = createDate(startDate);
+        while (currentDate <= createDate(endDate)){
           const from = currentDate;
-          const to = new Date(from);
-          to.setDate(to.getDate() + 6);
+          const to = addDays(from, 6)
           cleanData.push({
-            'name': `${formatDateString(from.toISOString().split('T')[0])} - ${formatDateString(to.toISOString().split('T')[0])}`,
+            'name': `${formatDateString(getLocalDate(from))} - ${formatDateString(getLocalDate(to))}`,
             'Vehicles': null
           });
-          currentDate.setDate(currentDate.getDate() + 7);
+          currentDate = addWeeks(currentDate, 1);
         }
-        console.log(cleanData);
-        data.forEach((dataPoint) => {
-          console.log(`To find: ${formatDateString(dataPoint.week_start_date.split('T')[0])} - ${formatDateString(dataPoint.week_end_date.split('T')[0])}`)
-          const item = cleanData.find(obj => obj['name'] == `${formatDateString(dataPoint.week_start_date.split('T')[0])} - ${formatDateString(dataPoint.week_end_date.split('T')[0])}`)
-          if (item) {
-            item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
-            item['Period Average'] = dataPoint.average_occupancy;
-            item['Period Peak'] = dataPoint.peak_occupancy;
-            item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
-            item['Capacity'] = dataPoint.Capacity;
-          } 
-        });
-        resultsLocal[parkade] = cleanData;
+        if (cleanData.length > RESULT_LIMIT){
+          alert('Time window too big, try reducing the windo size or changing the periodicity');
+          return;
+        }
+        else {
+          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+          const data = response.data;
+          data.forEach((dataPoint) => {
+            const item = cleanData.find(obj => obj['name'] == `${formatDateString(dataPoint.week_start_date.split('T')[0])} - ${formatDateString(dataPoint.week_end_date.split('T')[0])}`)
+            if (item) {
+              item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
+              item['Period Average'] = dataPoint.average_occupancy;
+              item['Period Peak'] = dataPoint.peak_occupancy;
+              item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
+              item['Capacity'] = dataPoint.Capacity;
+            } 
+          });
+          resultsLocal[parkade] = cleanData;
+        }
       } else if (periodicity == 'Monthly') {
         // TODO
       }
