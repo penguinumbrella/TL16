@@ -15,14 +15,16 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import axios from 'axios';
-import { getQueries } from "./queryHelper";
+import { getQueries, PERIODICITY_STEP } from "./queryHelper";
 import Diagram from '../diagrams/Diagram';
-import { formatUnixTimestamp } from "../../time";
+import { formatUnixTimestamp, formatDateString } from "../../time";
 import CustomTooltip from "./customToolTip";
 
 import Tabs from '../tabComponent/Tabs.js';
 import ForcastComponent from "../forcastComponent/ForcastComponent.js";
 import LoadingAnimationComp from "../loading_Animation/LoadingAnimationComp.js";
+import { addDays, addWeeks } from "date-fns";
+import { getTimezoneOffset } from 'date-fns-tz'
 
 
 const DATA_CATEGORY_OPTIONS = [
@@ -34,7 +36,7 @@ const VISUALIZATION_OPTIONS = [
 ];
 
 const PERIODICITY_OPTIONS = [
-  'Hourly', 'Daily', 'Weekly', 'Monthly', 'Yearly' 
+  'Hourly', 'Daily', 'Weekly', 'Monthly' 
 ];
 
 const AVG_PEAK = [
@@ -44,6 +46,8 @@ const AVG_PEAK = [
 const PARKADE_OPTIONS = [
   'Thunderbird', 'North', 'West', 'Health Sciences', 'Fraser River', 'Rose Garden', 'University West Blvd'
 ];
+
+const RESULT_LIMIT = 24*21;
 
 const menuItems = (data, value, setValue=()=>{}, hideSelected=false, selected) => {
   if (hideSelected) {
@@ -311,24 +315,120 @@ const AnalyticsView = () => {
     }
   };
 
+  const createDate = (dateString) => {
+    const timeZone = 'America/Vancouver';
+    const date = new Date(dateString);
+    const offset = getTimezoneOffset(timeZone, date);
+    const adjustedDate = new Date(date.getTime() - offset);
+    console.log('Date: ', date)
+    console.log('Adjusted: ', adjustedDate);
+    return adjustedDate;
+  }
+
+  const getLocalDate = (date) => {
+    const [ dd, mm, yyyy ] = date.toLocaleDateString().split('/');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
   const renderResults = async (queries) => {
     const resultsLocal = {};
     const promises = Object.keys(queries).map(async (parkade) => {
-      const response = await axios.get(`/executeQuery?query=${queries[parkade]}`);
-      const data = response.data;
-      const result = [];
-      data.forEach((dataPoint) => {
-        result.push({
-          'name': formatUnixTimestamp(dataPoint['TimestampUnix']),
-          'Vehicles': dataPoint['Vehicles']
-        });
-      })
-      resultsLocal[parkade] = result;
+      const periodicity = queries[parkade]['periodicity']
+      const cleanData = []
+      if (periodicity == 'Hourly') {
+        const step = PERIODICITY_STEP[periodicity];
+        for (var i = queries[parkade]['startTime']; i<=queries[parkade]['endTime']; i += step)
+          cleanData.push({
+            'name': formatUnixTimestamp(i),
+            'Vehicles': null
+          });
+        if (cleanData.length > RESULT_LIMIT){
+          alert('Time window too big, try reducing the windo size or changing the periodicity');
+          return;
+        }
+        else {
+          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+          const data = response.data;
+          data.forEach((dataPoint) => {
+            const item = cleanData.find(obj => obj['name'] == formatUnixTimestamp(dataPoint['TimestampUnix']))
+            if (item) {
+              item['Vehicles'] = dataPoint['Vehicles']
+              item['Capacity'] = dataPoint['Capacity']
+            }
+          });
+          resultsLocal[parkade] = cleanData;
+        }
+      } else if (periodicity == 'Daily') {
+        const startDate = queries[parkade]['startTime'];
+        const endDate = queries[parkade]['endTime'];
+        let currentDate = createDate(startDate);
+        while (currentDate <= createDate(endDate)){
+          cleanData.push({
+            'name': formatDateString(getLocalDate(currentDate)),
+            'Vehicles': null
+          });
+          currentDate = addDays(currentDate, 1);
+        }
+        if (cleanData.length > RESULT_LIMIT){
+          alert('Time window too big, try reducing the windo size or changing the periodicity');
+          return;
+        }
+        else {
+          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+          const data = response.data;
+          // fix data.date to match cleanData's objects format
+          data.forEach((dataPoint) => {
+            const item = cleanData.find(obj => obj['name'] == formatDateString(dataPoint.date.split('T')[0]))
+            if (item) {
+              item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
+              item['Period Average'] = dataPoint.average_occupancy;
+              item['Period Peak'] = dataPoint.peak_occupancy;
+              item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
+              item['Capacity'] = dataPoint.Capacity
+            } 
+          });
+          resultsLocal[parkade] = cleanData;
+        }
+      } else if (periodicity == 'Weekly') {
+        const startDate = queries[parkade]['startTime'];
+        const endDate = queries[parkade]['endTime'];
+        let currentDate = createDate(startDate);
+        while (currentDate <= createDate(endDate)){
+          const from = currentDate;
+          const to = addDays(from, 6)
+          cleanData.push({
+            'name': `${formatDateString(getLocalDate(from))} - ${formatDateString(getLocalDate(to))}`,
+            'Vehicles': null
+          });
+          currentDate = addWeeks(currentDate, 1);
+        }
+        if (cleanData.length > RESULT_LIMIT){
+          alert('Time window too big, try reducing the windo size or changing the periodicity');
+          return;
+        }
+        else {
+          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+          const data = response.data;
+          data.forEach((dataPoint) => {
+            const item = cleanData.find(obj => obj['name'] == `${formatDateString(dataPoint.week_start_date.split('T')[0])} - ${formatDateString(dataPoint.week_end_date.split('T')[0])}`)
+            if (item) {
+              item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
+              item['Period Average'] = dataPoint.average_occupancy;
+              item['Period Peak'] = dataPoint.peak_occupancy;
+              item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
+              item['Capacity'] = dataPoint.Capacity;
+            } 
+          });
+          resultsLocal[parkade] = cleanData;
+        }
+      } else if (periodicity == 'Monthly') {
+        // TODO
+      }
     });
     await Promise.all(promises);
     return Object.keys(resultsLocal).map((parkade) => {
       return (
-        <Diagram className='queryResultDiagram' type={'LINE'} height={'40%'} width={'90%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles"/>
+        <Diagram className='queryResultDiagram' type={queries[parkade]['diagType'] == 'Line Graph' ? 'LINE' : 'BAR'} height={'40%'} width={'95%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles" capacity={resultsLocal[parkade][0]['Capacity']}/>
       )
     });
   }
@@ -382,8 +482,6 @@ const AnalyticsView = () => {
     const fetchResults = async () => {
       const renderedResults = await renderResults(queries);
       setResults(renderedResults);
-      console.log('Rendered results');
-      console.log(renderedResults);
     };
 
     fetchResults();
@@ -440,10 +538,12 @@ const AnalyticsView = () => {
                 <h4>PERIODICITY</h4>
                 {renderForm(PERIODICITY_OPTIONS, periodicity, setPeriodicity, '150px')}
               </div>
-              <div>
-                <h4>Average/Peak</h4>
-                {renderForm(AVG_PEAK, avgPeak, setAvgPeak, '150px')}
-              </div>
+              { periodicity != 'Hourly' ?
+                <div>
+                  <h4>Average/Peak</h4>
+                  {renderForm(AVG_PEAK, avgPeak, setAvgPeak, '150px')}
+                </div> : null
+              }
             </div>
           </div>
           <div className='analytics-options-div'>
