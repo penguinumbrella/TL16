@@ -1160,12 +1160,63 @@ for time_duration in range(0, 5):
         # Store actual and predicted values along with their datetime index in the DataFrame
         actual_vs_pred_df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred}, index=test.index)
 
-
+        print(actual_vs_pred_df.head)
         # In[143]:
+                
+        import os
+        import pandas as pd
 
-        
+        def update_predicted_occupancy(csv_file_path, new_data, parking_lot_column):
+            """
+            Update the predicted occupancy CSV file with new data for a specific parking lot.
+            
+            Parameters:
+            csv_file_path (str): Path to the CSV file.
+            new_data (pd.DataFrame): New data to be added to the CSV file.
+            parking_lot_column (str): Column name for the parking lot to update.
+            """
+            timestamp_column = 'date'  # Define the timestamp column name
+            
+            file_exists = os.path.isfile(csv_file_path)
+            file_empty = os.path.getsize(csv_file_path) == 0 if file_exists else False
 
-        actual_vs_pred_df.to_csv(f'lgb_{parking_lot_to_predict}_{time_duration_str}_actual_vs_predicted.csv', index=True)
+            if file_exists and not file_empty:
+                # If the file exists and is not empty, read the existing data
+                existing_df = pd.read_csv(csv_file_path)
+                
+                # Check if the timestamp column exists in the existing data
+                if timestamp_column not in existing_df.columns:
+                    raise KeyError(f"'{timestamp_column}' is not found in the existing CSV columns.")
+                
+                # Set the timestamp column as the index for both DataFrames
+                existing_df.set_index(timestamp_column, inplace=True)
+                new_data.set_index(timestamp_column, inplace=True)
+                
+                # Add the new predicted values for the specific parking lot
+                existing_df[parking_lot_column] = new_data['Predicted']
+                
+                # Reset the index to convert it back to a column
+                updated_df = existing_df.reset_index()
+            else:
+                # If the file does not exist or is empty, rename the "Predicted" column to the parking lot column
+                new_data = new_data.rename(columns={'Predicted': parking_lot_column})
+                updated_df = new_data
+            
+            # Save the combined DataFrame to the CSV file
+            updated_df.to_csv(csv_file_path, index=False)
+            print(f"Metrics saved to {csv_file_path}")
+
+        # Example usage
+        # Define the CSV file path and the column name for the parking lot
+        csv_file_path = f'lgb_reports/lgb_{time_duration_str}.csv'
+
+
+        parking_lot_to_predict = 'North'
+
+        # Update the predicted occupancy data for the specified parking lot
+        update_predicted_occupancy(csv_file_path, actual_vs_pred_df, parking_lot_to_predict)
+
+        #actual_vs_pred_df.to_csv(f'lgb_{parking_lot_to_predict}_{time_duration_str}_actual_vs_predicted.csv', index=True)
 
 
         # In[144]:
@@ -1246,7 +1297,7 @@ for time_duration in range(0, 5):
             title_str = "4 hours"
 
 
-        plt.title(f'LightGBM - {parking_lot_to_predict} Predicting ' + title_str)
+        plt.title(f'LightGBM - {parking_lot_to_predict} Predicting - ' + title_str + " ahead\n Test Data vs Predicted Occupancy")
 
         # Show legend
         plt.legend()
