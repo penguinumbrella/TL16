@@ -39,7 +39,9 @@ start_time = time.time()
 import os
 
 # Change the current working directory
-os.chdir('C:\\cpen491\\TL16\\machine-learning')
+os.chdir('C:\\cpen491\\TL16-2\\TL16\\machine-learning')
+
+print(os.listdir)
 
 # Verify the current working directory
 print(os.getcwd())
@@ -109,33 +111,35 @@ capacity_dict = {
 }
 
 
-for time_duration in range(4, 5):
+for time_duration in range(0, 5):
     time_duration_str = str(time_duration)
     if time_duration == 0:
         short_term_1_week = True
         short_term_1_day = False
         short_term_4_hours = False
-        time_duration_str = "1_week"
+        time_duration_str = "1week"
     elif time_duration == 1:
         short_term_1_week = False
         short_term_1_day = True
         short_term_4_hours = False
-        time_duration_str = "1_day"
+        time_duration_str = "1day"
     elif time_duration == 2:
         short_term_1_week = False
         short_term_1_day = False
         short_term_4_hours = True
-        time_duration_str = "1_hour"
+        time_duration_str = "4hour"
     else:
         short_term_1_week = False
         short_term_1_day = False
         short_term_4_hours = False
-        time_duration_str = "1_longterm"
+        time_duration_str = "longterm"
 
     for parking_lot_to_predict in og_parking_lots:
         parking_lots = og_parking_lots.copy()
 
         print("NOW PREDICTING: ", parking_lot_to_predict)
+
+        print(os.getcwd())
 
             
         filepath = 'sample-data/term_dates_parking.csv' # change as needed
@@ -163,8 +167,10 @@ for time_duration in range(4, 5):
 
         print(df.head())
 
+        """
         capacity = capacity_dict[parking_lot_to_predict]
         df['Occupancy'] = np.minimum(df['Occupancy'] / capacity, 1)
+        """
 
 
 
@@ -529,6 +535,10 @@ for time_duration in range(4, 5):
 
         print(FEATURES)
 
+        top_level = {
+            'longterm'
+        }
+
         # Define the parameters for each parkade
         university_lot_blvd_params = {
             'bagging_fraction': 1.0,
@@ -632,6 +642,355 @@ for time_duration in range(4, 5):
             'Thunderbird': thunderbird_params,
             'University Lot Blvd': university_lot_blvd_params
         }
+
+        # Define the nested dictionary for each duration and parkade
+        parameters = {
+            'longterm': {
+                'North': {
+                    'bagging_fraction': 0.5,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 5.0,
+                    'lambda_l2': 3.0,
+                    'max_depth': 9,
+                    'min_child_weight': 7.39595634952731,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 45,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'West': {
+                    'bagging_fraction': 1.0,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 3.06316093516092,
+                    'lambda_l2': 3.0,
+                    'max_depth': 9,
+                    'min_child_weight': 8.38670870432,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 39,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'Rose': {
+                    'bagging_fraction': 0.7419965,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 0.63322,
+                    'lambda_l2': 3.0,
+                    'max_depth': 8,
+                    'min_child_weight': 9.4359169,
+                    'min_split_gain': 0.0499782,
+                    'num_leaves': 43,
+                    'min_child_samples': 8,
+                    'subsample_freq': 8
+                },
+                'Health Sciences': {
+                    'bagging_fraction': 0.5,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 0.0,
+                    'lambda_l2': 3.0,
+                    'max_depth': 9,
+                    'min_child_weight': 19.80539219,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 45,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'Fraser': {
+                    'bagging_fraction': 0.5,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 2.98723774,
+                    'lambda_l2': 3.0,
+                    'max_depth': 9,
+                    'min_child_weight': 11.14998107,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 43,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'Thunderbird': {
+                    'bagging_fraction': 0.5,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 4.046214,
+                    'lambda_l2': 0,
+                    'max_depth': 9,
+                    'min_child_weight': 42.642473,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 44,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'University Lot Blvd': {
+                    'bagging_fraction': 1.0,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 5.0,
+                    'lambda_l2': 3.0,
+                    'max_depth': 9,
+                    'min_child_weight': 16.585377994424345,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 43,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                }
+            },
+            '1week': {
+                'North': {
+                    'bagging_fraction': 1.0,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 2.1609478091615633,
+                    'lambda_l2': 3.0,
+                    'max_depth': 9,
+                    'min_child_weight': 16.589656818797167,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 43,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'West': {
+                    'bagging_fraction': 1.0,
+                    'feature_fraction': 0.3668869433508153,
+                    'lambda_l1': 0.0,
+                    'lambda_l2': 3.0,
+                    'max_depth': 7,
+                    'min_child_weight': 19.15560901376687,
+                    'min_split_gain': 0.09749979969197688,
+                    'num_leaves': 44,
+                    'min_child_samples': 7,
+                    'subsample_freq': 7
+                },
+                'Rose': {
+                    'bagging_fraction': 0.5,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 2.68731480826832,
+                    'lambda_l2': 3.0,
+                    'max_depth': 9,
+                    'min_child_weight': 17.275038815765992,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 43,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'Health Sciences': {
+                    'bagging_fraction': 0.5,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 0.5189252264189748,
+                    'lambda_l2': 0.07159030691818608,
+                    'max_depth': 9,
+                    'min_child_weight': 7.111831984335503,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 45,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'Fraser': {
+                    'bagging_fraction': 1.0,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 2.324831244200636,
+                    'lambda_l2': 3.0,
+                    'max_depth': 9,
+                    'min_child_weight': 14.895379289134722,
+                    'min_split_gain': 0.1,
+                    'num_leaves': 42,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'Thunderbird': {
+                    'bagging_fraction': 0.5,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 5.0,
+                    'lambda_l2': 3.0,
+                    'max_depth': 9,
+                    'min_child_weight': 5.0,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 44,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'University Lot Blvd': {
+                    'bagging_fraction': 0.5,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 0.0,
+                    'lambda_l2': 0.0,
+                    'max_depth': 9,
+                    'min_child_weight': 15.779395782542414,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 41,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                }
+            },
+            '1day': {
+                'North': {
+                    'bagging_fraction': 1.0,
+                    'feature_fraction': 0.377694183698331,
+                    'lambda_l1': 1.9224695797320757,
+                    'lambda_l2': 2.761162875026437,
+                    'max_depth': 7,
+                    'min_child_weight': 19.061558904031436,
+                    'min_split_gain': 0.002180071874936299,
+                    'num_leaves': 44,
+                    'min_child_samples': 7,
+                    'subsample_freq': 7
+                },
+                'West': {
+                    'bagging_fraction': 0.5,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 0.5428602219591488,
+                    'lambda_l2': 3.0,
+                    'max_depth': 9,
+                    'min_child_weight': 8.665192811669447,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 43,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'Rose': {
+                    'bagging_fraction': 0.5668639452774469,
+                    'feature_fraction': 0.6599364893246572,
+                    'lambda_l1': 0.7001733735304905,
+                    'lambda_l2': 3.0,
+                    'max_depth': 9,
+                    'min_child_weight': 33.84573622823115,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 44,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'Health Sciences': {
+                    'bagging_fraction': 0.8671439846514323,
+                    'feature_fraction': 0.5453275927028712,
+                    'lambda_l1': 0.6366989811638976,
+                    'lambda_l2': 2.885520016159323,
+                    'max_depth': 7,
+                    'min_child_weight': 16.944864825874788,
+                    'min_split_gain': 0.1,
+                    'num_leaves': 45,
+                    'min_child_samples': 7,
+                    'subsample_freq': 7
+                },
+                'Fraser': {
+                    'bagging_fraction': 0.5294512446897803,
+                    'feature_fraction': 0.3255278033057069,
+                    'lambda_l1': 1.433838523463828,
+                    'lambda_l2': 3.0,
+                    'max_depth': 8,
+                    'min_child_weight': 17.095778578107165,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 44,
+                    'min_child_samples': 8,
+                    'subsample_freq': 8
+                },
+                'Thunderbird': {
+                    'bagging_fraction': 0.7866003011434974,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 3.325522302518627,
+                    'lambda_l2': 2.8730779365443944,
+                    'max_depth': 9,
+                    'min_child_weight': 15.462261513517651,
+                    'min_split_gain': 0.04696357127084615,
+                    'num_leaves': 41,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'University Lot Blvd': {
+                    'bagging_fraction': 0.887165520617803,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 1.21917251556156,
+                    'lambda_l2': 3.0,
+                    'max_depth': 9,
+                    'min_child_weight': 5.338710844918132,
+                    'min_split_gain': 0.06133438292748035,
+                    'num_leaves': 42,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                }
+            },
+            '4hour': {
+                'North': {
+                    'bagging_fraction': 0.5,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 0.0,
+                    'lambda_l2': 0.0,
+                    'max_depth': 9,
+                    'min_child_weight': 16.170285421422587,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 44,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'West': {
+                    'bagging_fraction': 1.0,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 4.868492077321441,
+                    'lambda_l2': 0.0,
+                    'max_depth': 9,
+                    'min_child_weight': 6.880889895572711,
+                    'min_split_gain': 0.1,
+                    'num_leaves': 43,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'Rose': {
+                    'bagging_fraction': 1.0,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 4.610939466926319,
+                    'lambda_l2': 0.43360872434329073,
+                    'max_depth': 9,
+                    'min_child_weight': 19.654773555871994,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 36,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'Health Sciences': {
+                    'bagging_fraction': 0.8545658753905836,
+                    'feature_fraction': 0.5327494834420226,
+                    'lambda_l1': 0.6241208719030489,
+                    'lambda_l2': 2.8729418864090053,
+                    'max_depth': 7,
+                    'min_child_weight': 16.932313817795805,
+                    'min_split_gain': 0.07201030879887863,
+                    'num_leaves': 45,
+                    'min_child_samples': 7,
+                    'subsample_freq': 7
+                },
+                'Fraser': {
+                    'bagging_fraction': 0.9374876580499288,
+                    'feature_fraction': 0.9,
+                    'lambda_l1': 4.331748034046271,
+                    'lambda_l2': 0.20458111508326898,
+                    'max_depth': 9,
+                    'min_child_weight': 19.924596834609602,
+                    'min_split_gain': 0.001,
+                    'num_leaves': 35,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                },
+                'Thunderbird': {
+                    'bagging_fraction': 1.0,
+                    'feature_fraction': 0.5281100906478273,
+                    'lambda_l1': 0.5246961891587462,
+                    'lambda_l2': 2.976819232273048,
+                    'max_depth': 7,
+                    'min_child_weight': 16.76633082277225,
+                    'min_split_gain': 0.1,
+                    'num_leaves': 45,
+                    'min_child_samples': 7,
+                    'subsample_freq': 7
+                },
+                'University Lot Blvd': {
+                    'bagging_fraction': 0.9863887102925906,
+                    'feature_fraction': 0.6107010716526956,
+                    'lambda_l1': 3.3514902603708787,
+                    'lambda_l2': 1.5107218234197408,
+                    'max_depth': 9,
+                    'min_child_weight': 19.727868112851244,
+                    'min_split_gain': 0.004848995254588181,
+                    'num_leaves': 36,
+                    'min_child_samples': 9,
+                    'subsample_freq': 9
+                }
+            }
+        }
+
 
 
         # In[142]:
@@ -779,7 +1138,7 @@ for time_duration in range(4, 5):
                             reg_alpha=0.0,  # L1 regularization
                             )
         
-        reg.set_params(**parkades_params[parking_lot_to_predict])
+        reg.set_params(**parameters[time_duration_str][parking_lot_to_predict])
         #reg.set_params(**params)
 
 
@@ -801,12 +1160,63 @@ for time_duration in range(4, 5):
         # Store actual and predicted values along with their datetime index in the DataFrame
         actual_vs_pred_df = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred}, index=test.index)
 
-
+        print(actual_vs_pred_df.head)
         # In[143]:
+                
+        import os
+        import pandas as pd
 
-        
+        def update_predicted_occupancy(csv_file_path, new_data, parking_lot_column):
+            """
+            Update the predicted occupancy CSV file with new data for a specific parking lot.
+            
+            Parameters:
+            csv_file_path (str): Path to the CSV file.
+            new_data (pd.DataFrame): New data to be added to the CSV file.
+            parking_lot_column (str): Column name for the parking lot to update.
+            """
+            timestamp_column = 'date'  # Define the timestamp column name
+            
+            file_exists = os.path.isfile(csv_file_path)
+            file_empty = os.path.getsize(csv_file_path) == 0 if file_exists else False
 
-        actual_vs_pred_df.to_csv(f'lgb_{parking_lot_to_predict}_{time_duration_str}_actual_vs_predicted.csv', index=True)
+            if file_exists and not file_empty:
+                # If the file exists and is not empty, read the existing data
+                existing_df = pd.read_csv(csv_file_path)
+                
+                # Check if the timestamp column exists in the existing data
+                if timestamp_column not in existing_df.columns:
+                    raise KeyError(f"'{timestamp_column}' is not found in the existing CSV columns.")
+                
+                # Set the timestamp column as the index for both DataFrames
+                existing_df.set_index(timestamp_column, inplace=True)
+                new_data.set_index(timestamp_column, inplace=True)
+                
+                # Add the new predicted values for the specific parking lot
+                existing_df[parking_lot_column] = new_data['Predicted']
+                
+                # Reset the index to convert it back to a column
+                updated_df = existing_df.reset_index()
+            else:
+                # If the file does not exist or is empty, rename the "Predicted" column to the parking lot column
+                new_data = new_data.rename(columns={'Predicted': parking_lot_column})
+                updated_df = new_data
+            
+            # Save the combined DataFrame to the CSV file
+            updated_df.to_csv(csv_file_path, index=False)
+            print(f"Metrics saved to {csv_file_path}")
+
+        # Example usage
+        # Define the CSV file path and the column name for the parking lot
+        csv_file_path = f'lgb_reports/lgb_{time_duration_str}.csv'
+
+
+        parking_lot_to_predict = 'North'
+
+        # Update the predicted occupancy data for the specified parking lot
+        update_predicted_occupancy(csv_file_path, actual_vs_pred_df, parking_lot_to_predict)
+
+        #actual_vs_pred_df.to_csv(f'lgb_{parking_lot_to_predict}_{time_duration_str}_actual_vs_predicted.csv', index=True)
 
 
         # In[144]:
@@ -874,12 +1284,25 @@ for time_duration in range(4, 5):
         # Plot labels and title
         plt.xlabel('Date')
         plt.ylabel('Occupancy')
-        plt.title(f'Testing Actual vs. Predicted Occupancy for {parking_lot_to_predict}')
+        #plt.title(f'Testing Actual vs. Predicted Occupancy for {parking_lot_to_predict}')
+
+        title_str = ""
+        if time_duration_str == "longterm":
+            title_str = "Long Term"
+        elif time_duration_str == "1week":
+            title_str = "1 week"
+        elif time_duration_str == "1day":
+            title_str = "1 day"
+        else:
+            title_str = "4 hours"
+
+
+        plt.title(f'LightGBM - {parking_lot_to_predict} Predicting - ' + title_str + " ahead\n Test Data vs Predicted Occupancy")
 
         # Show legend
         plt.legend()
 
-        plt.savefig(f'lgbm_charts/{time_duration_str}_{parking_lot_to_predict}_actual_vs_pred.png')
+        plt.savefig(f'lgb_graphs/{parking_lot_to_predict}/{parking_lot_to_predict}_{time_duration_str}_actual_vs_pred.png')
 
         # Show plot
         #plt.show()
@@ -929,7 +1352,39 @@ for time_duration in range(4, 5):
         error_df = pd.DataFrame(error_data)
 
         # Define the CSV file path
-        csv_file_path = time_duration_str + "parking_lot_metrics.csv"
+        csv_file_path = "lgb_errors_unnormalized/lgb_" + time_duration_str + "_metric.csv"
+
+        # Check if the CSV file exists
+        if os.path.isfile(csv_file_path):
+            # If the file exists, read the existing data
+            existing_df = pd.read_csv(csv_file_path)
+            # Set "Metric" as the index for both DataFrames
+            existing_df.set_index("Metric", inplace=True)
+            error_df.set_index("Metric", inplace=True)
+            # Combine the DataFrames along the columns
+            combined_df = existing_df.combine_first(error_df).reset_index()
+            # Save the combined DataFrame to the CSV file
+            combined_df.to_csv(csv_file_path, index=False)
+        else:
+            # If the file does not exist, write the new data
+            error_df.to_csv(csv_file_path, index=False)
+
+        print(f"Metrics saved to {csv_file_path}")
+
+        mae = mae/capacity_dict[parking_lot_to_predict]
+        mse = mse/(capacity_dict[parking_lot_to_predict] * capacity_dict[parking_lot_to_predict])
+        rmse = rmse/capacity_dict[parking_lot_to_predict]
+        # Create a dictionary with your data
+        error_data = {
+            "Metric": ["MAE", "MSE", "RMSE", "R-squared"],
+            parking_lot_to_predict: [mae, mse, rmse, r2]
+        }
+
+        # Create a DataFrame
+        error_df = pd.DataFrame(error_data)
+
+        # Define the CSV file path
+        csv_file_path = "lgb_errors_normalized/lgb_" + time_duration_str + "_metric.csv"
 
         # Check if the CSV file exists
         if os.path.isfile(csv_file_path):
@@ -1090,7 +1545,7 @@ for time_duration in range(4, 5):
         # Plot labels and title
         plt.xlabel('Date')
         plt.ylabel('Occupancy')
-        plt.title(f'Actual vs. Predicted Occupancy for {parking_lot_to_predict}\n'
+        plt.title(f'Actual vs. Predicted Occupancy for {parking_lot_to_predict}\nTest Data vs Predicted Occupancy'
                 f'RMSE: {rmse:.2f}, MAE: {mae:.2f}, MSE: {mse:.2f}, R²: {r2:.2f}')
 
         # Show legend
@@ -1495,7 +1950,7 @@ for time_duration in range(4, 5):
         plt.tight_layout()  # Adjust layout to prevent labels from overlapping
         #plt.show()
 
-        plt.savefig(f'lgbm_charts/{time_duration_str}_{parking_lot_to_predict}_feature_importance.png')
+        plt.savefig(f'lgb_feature_importance/{parking_lot_to_predict}/{time_duration_str}_{parking_lot_to_predict}_feature_importance.png')
 
 
         # In[166]:
