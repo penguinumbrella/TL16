@@ -219,6 +219,7 @@
 
 .dark .theme-label-dark {
   color: #fff;
+  font-size: 1em + 8;
 }
 
 .light .theme-label-dark {
@@ -227,6 +228,7 @@
 
 .light .theme-label-light {
   color: #333;
+  font-size: 1em + 8;
 }
 
 .dark .theme-label-light {
