@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Legend, Label } from 'recharts';
 
-const PieChartComponent = ({data, colors, width, height, title='', innerRadius, outerRadius , percentageCenter, startAngle, endAngle, base_font_size}) => {
+const PieChartComponent = ({ data, colors, width, height, title='', innerRadius, outerRadius , percentageCenter, startAngle, endAngle, base_font_size, theme }) => {
 
   const [ activeIndex, setActiveIndex ] = useState(-1);
 
@@ -34,8 +34,6 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
     toDisplayName = data[index].name;
     toDisplayValue = `${percent.toFixed(1)*100}%`;
 
-    
-
     return (
       <g>
         <path 
@@ -51,7 +49,6 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
     );
   };
 
-  // https://recharts.org/en-US/examples/CustomActiveShapePieChart
   const renderActiveShape = (props) => {
     const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent, value } = props;
     
@@ -78,18 +75,6 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
           stroke="#fff" // Add stroke to maintain white border
           strokeWidth={1}
         />
-        {/* <path 
-          d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} 
-          stroke={fill} 
-          fill="none" 
-        /> */}
-        {/* <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-        <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">
-          {'text'}
-        </text>
-        <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-          {`(${(percent * 100).toFixed(1)}%)`}
-        </text> */}
       </g>
     );
   };
@@ -103,7 +88,7 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
   };
 
   return (
-    <ResponsiveContainer width={width} height={height} style={{display: 'flex', flexDirection: 'column'}}>
+    <ResponsiveContainer width="100%" height="100%" style={{display: 'flex', flexDirection: 'column'}}>
       <PieChart width={'100%'} height={'100%'}>
         <Pie 
           data={data} 
@@ -124,10 +109,10 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
           ))}
         </Pie>
         <text 
-          x={width / 2} 
-          y={height / 2 - 10} 
+          x={'50%'} 
+          y={'40%'}  // Adjusted to place the title above the percentage
           textAnchor="middle" 
-          fill="#888" 
+          fill="#AFF"  // Use textColor based on theme
           style={{ textAlign: 'center' }} 
           className='chart-title'
           fontSize={base_font_size}
@@ -136,11 +121,11 @@ const PieChartComponent = ({data, colors, width, height, title='', innerRadius, 
         </text>
         {/* Percentage Occupancy */}
         <text
-          x={width / 2} 
-          y={height / 2 + base_font_size - 5} 
+          x={'50%'} 
+          y={'55%'}  // Adjusted to place the percentage below the title
           dy={8} 
           textAnchor="middle" 
-          fill="#FFF" 
+          fill="#FFF"  // Use textColor based on theme
           style={{ textAlign: 'center'}} 
           className='percentage-center'
           fontSize={base_font_size + 10}

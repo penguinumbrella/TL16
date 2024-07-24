@@ -12,15 +12,31 @@
   font-size: 16px;
   margin-right: 10px;
   border-bottom: 2px solid transparent;
+  
+}
+
+.light .tab-buttons button {
+  color: #414040;
+}
+
+.dark .tab-buttons button {
   color: aliceblue;
 }
 
-.tab-buttons button:hover {
+.dark .tab-buttons button:hover {
   border-bottom-color: #dddcdc;
 }
 
-.tab-buttons button.active {
+.dark .tab-buttons button.active {
   border-bottom-color: #a3a3a3;
+}
+
+.light .tab-buttons button:hover {
+  border-bottom-color: #414040;
+}
+
+.light .tab-buttons button.active {
+  border-bottom-color: #414040;
 }
 
 .tab-content {

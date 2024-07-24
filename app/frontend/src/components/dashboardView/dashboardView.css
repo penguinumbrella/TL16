@@ -86,8 +86,12 @@
   }
 }
 
-.firstview:hover, .secondview:hover, .thirdview:hover {
+.light .firstview:hover, .secondview:hover, .thirdview:hover {
   background-color: rgba(2, 2, 6, 0.5); /* Change background color on hover */
+}
+
+.dark .firstview:hover, .secondview:hover, .thirdview:hover {
+  background-color: rgba(115, 115, 118, 0.5); /* Change background color on hover */
 }
 
 /* Rest of your CSS */

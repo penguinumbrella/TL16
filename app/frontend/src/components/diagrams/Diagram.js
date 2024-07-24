@@ -4,7 +4,7 @@ import LineGraphComponent from './LineGraph/LineGraphComponent';
 import BarGraphComponent from './BarGraph/BarGraphComponent';
 import axios from 'axios';
 
-const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity}) => {
+const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme}) => {
 
   const [diagData, setDiagData] = useState([]);
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
@@ -78,13 +78,14 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               height={height} 
               width={width} 
               title={title} 
-              innerRadius={50}
-              outerRadius={55}
+              innerRadius="90%"
+              outerRadius="95%"
               percentageCenter={0}
               startAngle={90}
               endAngle={450}
               startColor="#888"
-              className='pie-chart'>
+              className='pie-chart'
+              theme={theme}>
             </PieChartComponent>
             </>
         break;
@@ -96,12 +97,13 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               height={height} 
               width={width} 
               title={title} 
-              innerRadius={35}
-              outerRadius={40}
+              innerRadius="90%"
+              outerRadius="95%"
               percentageCenter={0}
               startAngle={90}
               endAngle={450}
-              startColor="#888">
+              startColor="#888"
+              theme={theme}>
             </PieChartComponent>
             </>
         break;
@@ -113,14 +115,15 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               height={height} 
               width={width} 
               title={title} 
-              innerRadius={85}
-              outerRadius={90}
+              innerRadius="90%"
+              outerRadius="95%"
               percentageCenter={occupancyPercentage}
               startAngle={90}
               endAngle={450}
               startColor="#888"
               base_font_size={25}
-              className='pie-chart'>
+              className='pie-chart'
+              theme={theme}>
             </PieChartComponent>
             </>
         break;
@@ -132,13 +135,14 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               height={height} 
               width={width} 
               title={title} 
-              innerRadius={50}
-              outerRadius={55}
+              innerRadius="90%"
+              outerRadius="95%"
               percentageCenter={occupancyPercentage}
               startAngle={90}
               endAngle={450}
               base_font_size={15}
-              startColor="#888">
+              startColor="#888"
+              theme={theme}>
             </PieChartComponent>
             </>
         break;

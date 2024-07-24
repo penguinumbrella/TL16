@@ -13,6 +13,14 @@
   overflow: hidden;
 }
 
+.dark .mapView{
+  color: #f7f6fa;
+}
+
+.light .mapView{
+  color: #020202;
+}
+
 .queryItems{
   padding: 20px;
 }
