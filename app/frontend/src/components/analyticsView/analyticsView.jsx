@@ -332,6 +332,7 @@ const AnalyticsView = () => {
 
   const renderResults = async (queries) => {
     const resultsLocal = {};
+    let windowTooLarge = false;
     const promises = Object.keys(queries).map(async (parkade) => {
       const periodicity = queries[parkade]['periodicity']
       const cleanData = []
@@ -343,7 +344,7 @@ const AnalyticsView = () => {
             'Vehicles': null
           });
         if (cleanData.length > RESULT_LIMIT){
-          alert('Time window too big, try reducing the windo size or changing the periodicity');
+          windowTooLarge = true;
           return;
         }
         else {
@@ -370,7 +371,7 @@ const AnalyticsView = () => {
           currentDate = addDays(currentDate, 1);
         }
         if (cleanData.length > RESULT_LIMIT){
-          alert('Time window too big, try reducing the windo size or changing the periodicity');
+          windowTooLarge = true;
           return;
         }
         else {
@@ -403,7 +404,7 @@ const AnalyticsView = () => {
           currentDate = addWeeks(currentDate, 1);
         }
         if (cleanData.length > RESULT_LIMIT){
-          alert('Time window too big, try reducing the windo size or changing the periodicity');
+          windowTooLarge = true;
           return;
         }
         else {
@@ -426,7 +427,11 @@ const AnalyticsView = () => {
       }
     });
     await Promise.all(promises);
-    return Object.keys(resultsLocal).map((parkade) => {
+    if (windowTooLarge) {
+      alert('Time window too big, try reducing the window size or changing the periodicity');
+      return null;
+    }
+    return Object.keys(resultsLocal).sort().map((parkade) => {
       return (
         <Diagram className='queryResultDiagram' type={queries[parkade]['diagType'] == 'Line Graph' ? 'LINE' : 'BAR'} height={'40%'} width={'95%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles" capacity={resultsLocal[parkade][0]['Capacity']}/>
       )
@@ -515,7 +520,7 @@ const AnalyticsView = () => {
                     }}}
                     value={startTime}
                     minDate={new Date('01-01-2018')}
-                    maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())  
+                    maxDate={new Date()  
                     }
                 />
                 <Typography style={{ color: '#9C9FBB' }}>To</Typography>
@@ -528,7 +533,7 @@ const AnalyticsView = () => {
                   }}}
                   value={endTime}
                   minDate={new Date('01-01-2018')}
-                  maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
+                  maxDate={new Date()}
                 />
             </div>
           </div>
