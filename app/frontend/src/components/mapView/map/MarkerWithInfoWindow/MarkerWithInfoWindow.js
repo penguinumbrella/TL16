@@ -60,6 +60,7 @@ const MarkerWithInfoWindow = ({
   timestamp,
   vacant,
   payload_timestamp
+  
 }) => {
 
     // Define icon sizes
@@ -83,7 +84,7 @@ const MarkerWithInfoWindow = ({
     const formatTimestampToUnix = (date) => {
       // Convert the date to Unix timestamp in seconds
       const unixTimestamp = Math.floor(date.getTime() / 1000);
-      console.log(unixTimestamp);
+      // console.log(unixTimestamp);
       return unixTimestamp;
     };
 
@@ -119,7 +120,7 @@ const MarkerWithInfoWindow = ({
           else 
             setCurrentParkadeIcon(parkadeIcon);
 
-          console.log(`${content} : ${occupancyPercentage}`);
+          // console.log(`${content} : ${occupancyPercentage}`);
         
         
         }
@@ -196,7 +197,7 @@ const MarkerWithInfoWindow = ({
             <div className="info-window-diagrams">
               {selectedOption === "parkades" &&
 
-              <div className='parkadeWindow'>
+              <div className='parkadeWindow' >
                  {!isTimestampPastThreshold ? (
                     <>
                       <div className='occupancy-chart'>

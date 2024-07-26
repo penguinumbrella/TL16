@@ -72,7 +72,7 @@ const LiveView = () => {
   }, [])
 
   const generateChartBox = (parkadeName, dataStatus, lastUpdate) => {
-    console.log(lastUpdate[parkadeName]);
+    // console.log(lastUpdate[parkadeName]);
     return (
       <div className='chart-box'>
         <div className='chart-header'>

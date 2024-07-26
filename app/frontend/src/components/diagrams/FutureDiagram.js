@@ -36,12 +36,12 @@ const FutureDiagram = ({ type, timestamp, parkade, width, height, title = '', ha
           const data = results.data;
 
           const targetTimestamp = new Date(timestamp).getTime();
-          console.log('Target Timestamp:', targetTimestamp, 'Formatted:', new Date(targetTimestamp));
+          // console.log('Target Timestamp:', targetTimestamp, 'Formatted:', new Date(targetTimestamp));
 
           const matchingData = data.find(entry => {
             const entryTimestamp = new Date(entry.Timestamp.replace(' ', 'T')).getTime();
-            console.log('Entry Timestamp:', entryTimestamp, 'Formatted:', new Date(entryTimestamp));
-            console.log('Target Timestamp:', targetTimestamp, 'Formatted:', new Date(targetTimestamp));
+            // console.log('Entry Timestamp:', entryTimestamp, 'Formatted:', new Date(entryTimestamp));
+            // console.log('Target Timestamp:', targetTimestamp, 'Formatted:', new Date(targetTimestamp));
             return entryTimestamp === targetTimestamp;
           });
 
@@ -56,7 +56,7 @@ const FutureDiagram = ({ type, timestamp, parkade, width, height, title = '', ha
           const capacity = TABLES[parkade];
           const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
 
-          console.log(matchingData);
+          // console.log(matchingData);
 
           setDiagData([
             { name: 'Available', value: capacity - occupied },
@@ -83,7 +83,7 @@ const FutureDiagram = ({ type, timestamp, parkade, width, height, title = '', ha
 
   // Effect to log diagData changes
   useEffect(() => {
-    console.log("diagData", diagData);
+    // console.log("diagData", diagData);
   }, [diagData]);
 
   const options = {

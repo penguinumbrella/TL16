@@ -30,7 +30,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
 
   const getData = (query) => {
     const data = axios.get(`/executeQuery?query=${query}`);
-    console.log(query);
+    // console.log(query);
     return DATA;
   }
 
@@ -39,7 +39,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
     const getData = async () => {
       
       const data = (await axios.get(`/executeQuery?query=${query}`)).data;
-      console.log(data[0]['Capacity'])
+      // console.log(data[0]['Capacity'])
       // Calculate capacity and occupied values
       const capacity = data[0]['Capacity'];
       const occupied = data[0]['Vehicles'];

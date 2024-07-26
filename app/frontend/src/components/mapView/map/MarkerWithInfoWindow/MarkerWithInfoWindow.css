@@ -18,17 +18,7 @@
     
   }
   
-/* .info-window-contents {
-    color: #9C9FBB;
-    background-color: rgba(1, 1, 1, 0.8);
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    width: fit-content;
-    height: fit-content;
-    padding-bottom: 20px;
-    
-} */
+
 
 .info-window-diagrams {
   display: flex;

@@ -12,6 +12,7 @@ import mapStyleDark from './mapStyleDark.json'
 const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccupancyStatus, map_key}) => { // Accept setActiveIndex as a prop
   const [activeIndex, setActiveIndexState] = useState('');
   const [markerData, setMarkerDataData] = useState(initialMarkerData);
+  // const [mapCenter, setMapCenter] =  useState(center);
 
 
   var { isLoaded } = useJsApiLoader({
