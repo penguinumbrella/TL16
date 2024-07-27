@@ -57,19 +57,22 @@ const MarkerWithInfoWindow = ({
   // mapCenter, // New prop to pass the map's center
   // setMapCenter, // Function to update the map's center
   clusterer,
+  setMarkerPosition,
   timestamp,
   vacant,
   payload_timestamp
   
 }) => {
+    
+
 
     // Define icon sizes
     const smallIconSize = new window.google.maps.Size(20, 20);
     const largeIconSize = new window.google.maps.Size(25, 25);
 
     // const [occupancyPercentage, setOccupancyPercentage] = useState(0);
-
-    
+   
+   
 
     const TABLES = {
       'Fraser River': 'FraserParkade',
@@ -130,9 +133,16 @@ const MarkerWithInfoWindow = ({
       if(timestamp){
         printOccupancy();
       }
+
+      if(infoWindowShown){
+        // console.log("infoWindowShown changed")
+        if(infoWindowShown === true)
+          setMarkerPosition(position)
+      }
+        
        
     
-    }, [timestamp]);
+    }, [timestamp, infoWindowShown]);
 
 
 

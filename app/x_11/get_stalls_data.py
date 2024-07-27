@@ -22,7 +22,7 @@ def main():
         # Read JSON file
         with open(output_file, 'r') as json_file:
             data = json.load(json_file)
-            
+            print(len(data))
 
             # Prepare a csv file to write the data to 
 

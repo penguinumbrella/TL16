@@ -95,6 +95,7 @@ const MapView = ({map_key}) => {
               description={weatherData.weather_desc}
             />
             <TimeSlider onTimeChange={handleTimeChange} />
+            {/* <div class="currentTimesTampBox"> {currentTime} </div> */}
           </>
         )}
 
@@ -149,6 +150,7 @@ const MapView = ({map_key}) => {
         <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} zoom={zoom} center={defaultCenter} timestamp={currentTime} accOccupancyStatus={accOccupancyStatus}
         map_key = {map_key}/>
       </div>
+      
     </div>
   );
 };
