@@ -95,7 +95,7 @@ const MapView = ({map_key}) => {
               description={weatherData.weather_desc}
             />
             <TimeSlider onTimeChange={handleTimeChange} />
-            {/* <div class="currentTimesTampBox"> {currentTime} </div> */}
+            <div class="currentTimesTampBox"> {currentTime.toLocaleString()} </div>
           </>
         )}
 

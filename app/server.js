@@ -396,6 +396,7 @@ app.get('/api/update_acc_stalls',  async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
   
+  
   // Update the accessibilty data every 10 minutes
   setInterval(get_elevenX, 1000 * 60 * 10);
 });
