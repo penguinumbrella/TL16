@@ -60,7 +60,7 @@ const LiveView = ({ theme }) => {
   };
 
   const generateChartBox = (parkadeName, lastUpdate) => {
-    const showWarning = !isRecentUpdate(lastUpdate);
+    const showWarning = false; // changed for video
 
     return (
       <div className='chart-box'>

@@ -144,8 +144,8 @@ const AnalyticsView = () => {
   const [selectedParkades, setSelectedParkades] = useState([]);
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [generateChecked, setGenerateChecked] = useState(false);
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+  const [startTime, setStartTime] = useState(new Date('05/01/2024')); // changed for video
+  const [endTime, setEndTime] = useState(new Date('05/14/2024')); // changed for video
   const [loading, setLoading] = useState(false);
   const [queries, setQueries] = useState({});
   const [results, setResults] = useState("");
@@ -163,7 +163,7 @@ const AnalyticsView = () => {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   };
 
-  const [selectedParkadesForcast, setSelectedParkadesForcast] = useState([]);
+  const [selectedParkadesForcast, setSelectedParkadesForcast] = useState(["Thunderbird"]); // changed for video
   const [selectAllCheckedForcast, setSelectAllCheckedForcast] = useState(false);
   const [forcastResults, setForcastResults] = useState("");
 
