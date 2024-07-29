@@ -4,7 +4,7 @@ import LineGraphComponent from './LineGraph/LineGraphComponent';
 import BarGraphComponent from './BarGraph/BarGraphComponent';
 import axios from 'axios';
 
-const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme}) => {
+const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme, mapView}) => {
 
   const [diagData, setDiagData] = useState([]);
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
@@ -70,46 +70,11 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
   let toRender;
 
   switch(type) {
-    case 'PH_OCCUPANCY_PIE': 
-        toRender = <>
-            <PieChartComponent 
-              data={dataOverride} 
-              colors={COLORS} 
-              height={height} 
-              width={width} 
-              title={title} 
-              innerRadius="90%"
-              outerRadius="95%"
-              percentageCenter={0}
-              startAngle={90}
-              endAngle={450}
-              startColor="#888"
-              className='pie-chart'
-              theme={theme}>
-            </PieChartComponent>
-            </>
-        break;
-    case 'PH_COMPLIANCE_PIE': 
-        toRender = <>
-            <PieChartComponent 
-              data={dataOverride} 
-              colors={COLORS} 
-              height={height} 
-              width={width} 
-              title={title} 
-              innerRadius="90%"
-              outerRadius="95%"
-              percentageCenter={0}
-              startAngle={90}
-              endAngle={450}
-              startColor="#888"
-              theme={theme}>
-            </PieChartComponent>
-            </>
-        break;
       case 'OCCUPANCY_PIE': 
         toRender = <>
             <PieChartComponent 
+              mapView = {mapView}
+              base_font_size={25}
               data={dataOverride.length != 0 ? dataOverride : diagData}
               colors={COLORS} 
               height={height} 
@@ -129,6 +94,8 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
       case 'COMPLIANCE_PIE': 
         toRender = <>
             <PieChartComponent 
+              mapView = {mapView}
+              base_font_size={15}
               data={dataOverride.length != 0 ? dataOverride : diagData} 
               colors={COLORS} 
               height={height} 

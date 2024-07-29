@@ -212,6 +212,7 @@ const MarkerWithInfoWindow = ({
                     <>
                       <div className='occupancy-chart'>
                         <Diagram
+                          mapView={true}
                           className='occupancy-pie'
                           
                           type={'OCCUPANCY_PIE'}
@@ -225,6 +226,7 @@ const MarkerWithInfoWindow = ({
                       </div>
                       <div className='compliance-chart'>
                         <Diagram
+                          mapView={true}
                           className='compliance-pie'
                           
                           type={'COMPLIANCE_PIE'}
@@ -241,6 +243,7 @@ const MarkerWithInfoWindow = ({
                     <>
                       <div className='occupancy-chart'>
                         <FutureDiagram
+                          mapView={true}
                           className='occupancy-pie'
                           timestamp={timestamp}
                           parkade={content}
@@ -255,6 +258,7 @@ const MarkerWithInfoWindow = ({
                       </div>
                       <div className='compliance-chart'>
                         <FutureDiagram
+                          mapView={true}
                           className='compliance-pie'
                           timestamp={timestamp}
                           parkade={content}

@@ -4,7 +4,8 @@ import LineGraphComponent from './LineGraph/LineGraphComponent';
 import BarGraphComponent from './BarGraph/BarGraphComponent';
 import Papa from 'papaparse';
 
-const FutureDiagram = ({ type, timestamp, parkade, width, height, title = '', hasLegend, dataTransformer = () => [], dataOverride = [], customToolTip }) => {
+const FutureDiagram = ({ type, timestamp, parkade, width, height, title = '', hasLegend, dataTransformer = () => [], dataOverride = [], 
+  customToolTip, mapView }) => {
   const [diagData, setDiagData] = useState([]);
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
   const [compliancePercentage, setCompliancePercentage] = useState('');
@@ -97,44 +98,10 @@ const FutureDiagram = ({ type, timestamp, parkade, width, height, title = '', ha
   let toRender;
 
   switch (type) {
-    case 'PH_OCCUPANCY_PIE':
-      toRender = (
-        <PieChartComponent
-          data={dataOverride}
-          colors={COLORS}
-          height={height}
-          width={width}
-          title={title}
-          innerRadius={50}
-          outerRadius={55}
-          percentageCenter={0}
-          startAngle={90}
-          endAngle={450}
-          startColor="#888"
-          className="pie-chart"
-        />
-      );
-      break;
-    case 'PH_COMPLIANCE_PIE':
-      toRender = (
-        <PieChartComponent
-          data={dataOverride}
-          colors={COLORS}
-          height={height}
-          width={width}
-          title={title}
-          innerRadius={35}
-          outerRadius={40}
-          percentageCenter={0}
-          startAngle={90}
-          endAngle={450}
-          startColor="#888"
-        />
-      );
-      break;
     case 'OCCUPANCY_PIE':
       toRender = (
         <PieChartComponent
+          mapView={mapView}
           data={dataOverride.length !== 0 ? dataOverride : diagData}
           colors={COLORS}
           height={height}
@@ -154,6 +121,8 @@ const FutureDiagram = ({ type, timestamp, parkade, width, height, title = '', ha
     case 'COMPLIANCE_PIE':
       toRender = (
         <PieChartComponent
+          mapView={mapView}
+          
           data={dataOverride.length !== 0 ? dataOverride : diagData}
           colors={COLORS}
           height={height}

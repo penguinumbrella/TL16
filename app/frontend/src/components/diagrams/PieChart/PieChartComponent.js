@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Legend, Label } from 'recharts';
 
-const PieChartComponent = ({ data, colors, width, height, title='', innerRadius, outerRadius , percentageCenter, startAngle, endAngle, theme }) => {
+const PieChartComponent = ({ data, colors, width, height, 
+  title='', innerRadius, outerRadius , percentageCenter, 
+  startAngle, endAngle, theme, mapView, base_font_size }) => {
 
   const [ activeIndex, setActiveIndex ] = useState(-1);
 
@@ -87,8 +89,47 @@ const PieChartComponent = ({ data, colors, width, height, title='', innerRadius,
     },
   };
 
+
+
+  const ResponsiveContainer_width = {
+    true : width,
+    false : '100%'
+  }
+  const ResponsiveContainer_height = {
+    true : height,
+    false : '100%'
+  }
+
+  const text_x = {
+    true : width / 2,
+    false : '50%'
+  }
+
+  const text_y_1 = {
+    true : height / 2 - 10,
+    false : '40%'
+  }
+
+  const text_y_2 = {
+    true : height / 2 + base_font_size - 5,
+    false : '55%'
+  }
+
+  const text_fontsize_1 =  {
+    true :  base_font_size,
+    false: '100%'
+  }
+
+  const text_fontsize_2 =  {
+    true :  base_font_size + 10,
+    false: '100%'
+  }
+
+
+
+
   return (
-    <ResponsiveContainer width="100%" height="100%" style={{display: 'flex', flexDirection: 'column'}}>
+    <ResponsiveContainer width={ResponsiveContainer_width[mapView]} height={ResponsiveContainer_height[mapView]} style={{display: 'flex', flexDirection: 'column'}}>
       <PieChart width={'100%'} height={'100%'}>
         <Pie 
           data={data} 
@@ -109,26 +150,26 @@ const PieChartComponent = ({ data, colors, width, height, title='', innerRadius,
           ))}
         </Pie>
         <text 
-          x={'50%'} 
-          y={'40%'}  // Adjusted to place the title above the percentage
+          x={text_x[mapView]} 
+          y={text_y_1[mapView]}  // Adjusted to place the title above the percentage
           textAnchor="middle" 
           fill="#AFF"  // Use textColor based on theme
           style={{ textAlign: 'center' }} 
           className='chart-title'
-          fontSize={'100%'}
+          fontSize={text_fontsize_1[mapView]}
         >
           {title}
         </text>
         {/* Percentage Occupancy */}
         <text
-          x={'50%'} 
-          y={'55%'}  // Adjusted to place the percentage below the title
+          x={ text_x[mapView]} 
+          y={text_y_2[mapView]}  // Adjusted to place the percentage below the title
           dy={8} 
           textAnchor="middle" 
           fill="#FFF"  // Use textColor based on theme
           style={{ textAlign: 'center'}} 
           className='percentage-center'
-          fontSize={'100%'}
+          fontSize={text_fontsize_2[mapView]}
         >
           {percentageCenter}
         </text>
