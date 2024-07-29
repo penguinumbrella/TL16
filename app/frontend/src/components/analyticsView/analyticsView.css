@@ -58,12 +58,8 @@
   overflow-y:scroll;
 }
 
-.dark .analyticsView{
+.analyticsView{
   color: white;
-}
-
-.light .analyticsView{
-    color: #050505;
 }
 
 .queryItems {
@@ -88,11 +84,7 @@
     overflow: hidden;
   }
 
-  .dark .visualizationView{
-    color: white;
-  }
-  
-  .light .visualizationView{
+  .visualizationView{
       color: #050505;
   }
 

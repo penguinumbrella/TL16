@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Legend, Label } from 'recharts';
 
-const PieChartComponent = ({ data, colors, width, height, title='', innerRadius, outerRadius , percentageCenter, startAngle, endAngle, base_font_size, theme }) => {
+const PieChartComponent = ({ data, colors, width, height, title='', innerRadius, outerRadius , percentageCenter, startAngle, endAngle, theme }) => {
 
   const [ activeIndex, setActiveIndex ] = useState(-1);
 
@@ -42,7 +42,7 @@ const PieChartComponent = ({ data, colors, width, height, title='', innerRadius,
           fill="none" 
         />
         <circle cx={ex} cy={ey} r={2} fill={colors[index % colors.length]} stroke="none" />
-        <text x={ex + (cos >= 0 ? 1 : -1) * 4} y={ey} dy={5} textAnchor={textAnchor} fill="#999" fontSize={base_font_size + 5}>
+        <text x={ex + (cos >= 0 ? 1 : -1) * 4} y={ey} dy={5} textAnchor={textAnchor} fill="#999" fontSize='1em'>
         {`${toDisplayValue}`}
         </text>
       </g>
@@ -115,7 +115,7 @@ const PieChartComponent = ({ data, colors, width, height, title='', innerRadius,
           fill="#AFF"  // Use textColor based on theme
           style={{ textAlign: 'center' }} 
           className='chart-title'
-          fontSize={base_font_size}
+          fontSize={'100%'}
         >
           {title}
         </text>
@@ -128,7 +128,7 @@ const PieChartComponent = ({ data, colors, width, height, title='', innerRadius,
           fill="#FFF"  // Use textColor based on theme
           style={{ textAlign: 'center'}} 
           className='percentage-center'
-          fontSize={base_font_size + 10}
+          fontSize={'100%'}
         >
           {percentageCenter}
         </text>

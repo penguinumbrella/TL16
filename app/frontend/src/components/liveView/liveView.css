@@ -14,11 +14,7 @@
 }
 
 /* Add these classes for text color changes in the keys */
-.light .liveView {
-  color: #000034;
-}
-
-.dark .liveView {
+.liveView {
   color: #e0e1eb;
 }
 
@@ -80,6 +76,8 @@
   width: 65%; /* Adjust width to fit in the box */
   height: 65%; /* Adjust height to fit in the box */
   position: relative;
+  display: flex;
+  flex-direction: row;
   z-index: 1;
 }
 
@@ -160,11 +158,7 @@
 }
 
 /* Add these classes for text color changes in the keys */
-.light .key-description {
-  color: #000034;
-}
-
-.dark .key-description {
+.key-description {
   color: #e0e1eb;
 }
 

@@ -15,28 +15,16 @@
   
 }
 
-.light .tab-buttons button {
-  color: #414040;
-}
-
-.dark .tab-buttons button {
+.tab-buttons button {
   color: aliceblue;
 }
 
-.dark .tab-buttons button:hover {
+.tab-buttons button:hover {
   border-bottom-color: #dddcdc;
 }
 
-.dark .tab-buttons button.active {
+.tab-buttons button.active {
   border-bottom-color: #a3a3a3;
-}
-
-.light .tab-buttons button:hover {
-  border-bottom-color: #414040;
-}
-
-.light .tab-buttons button.active {
-  border-bottom-color: #414040;
 }
 
 .tab-content {

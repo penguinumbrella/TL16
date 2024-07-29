@@ -26,7 +26,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
       { name: 'Group E', value_1: 1000, value_2: 200, value_3: 300}
   ] // sample
 
-  const COLORS = ['#787878', '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#0FA122']; // TBD
+  const COLORS = ['#787878', '#007ae6', '#00b392', '#e69d00', '#ff661a', '#0FA122']; // TBD
 
   const getData = (query) => {
     const data = axios.get(`/executeQuery?query=${query}`);
@@ -115,13 +115,12 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               height={height} 
               width={width} 
               title={title} 
-              innerRadius="90%"
+              innerRadius="85%"
               outerRadius="95%"
               percentageCenter={occupancyPercentage}
               startAngle={90}
               endAngle={450}
               startColor="#888"
-              base_font_size={25}
               className='pie-chart'
               theme={theme}>
             </PieChartComponent>
@@ -135,12 +134,11 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               height={height} 
               width={width} 
               title={title} 
-              innerRadius="90%"
+              innerRadius="85%"
               outerRadius="95%"
               percentageCenter={occupancyPercentage}
               startAngle={90}
               endAngle={450}
-              base_font_size={15}
               startColor="#888"
               theme={theme}>
             </PieChartComponent>

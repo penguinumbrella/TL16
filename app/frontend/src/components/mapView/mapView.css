@@ -96,6 +96,7 @@
 
   backdrop-filter: blur(3px); /* Adjust the blur radius as needed */
   -webkit-backdrop-filter: blur(3px); /* For Safari */
+  color: #f7f6fa;
 }
 
 .form-group {
