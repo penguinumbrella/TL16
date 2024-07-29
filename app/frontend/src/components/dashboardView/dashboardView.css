@@ -11,7 +11,15 @@
   background-color: rgba(2, 2, 6, 0.25);
   border-radius: 10px;
   overflow: hidden; /* Ensure circle stays inside the rectangle */
-  color: #9C9FBB;
+  font-weight: bold;
+}
+
+.light .dashboardView {
+  color: #000034;
+}
+
+.dark .dashboardView {
+  color: #e0e1eb;
 }
 
 .headerContainer {
@@ -78,8 +86,12 @@
   }
 }
 
-.firstview:hover, .secondview:hover, .thirdview:hover {
+.light .firstview:hover, .secondview:hover, .thirdview:hover {
   background-color: rgba(2, 2, 6, 0.5); /* Change background color on hover */
+}
+
+.dark .firstview:hover, .secondview:hover, .thirdview:hover {
+  background-color: rgba(115, 115, 118, 0.5); /* Change background color on hover */
 }
 
 /* Rest of your CSS */

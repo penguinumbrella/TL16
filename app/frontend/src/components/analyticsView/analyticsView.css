@@ -36,7 +36,7 @@
   width: 170vh;
   height: 85%;
   padding-left: 30px;
-  background-color: #100D1D;
+  background-color: rgba(7, 8, 17, 0.5);
   border-radius: 10px;
   overflow: auto;
   overflow-y:scroll;
@@ -52,15 +52,19 @@
   width: 170vh;
   height: 85%;
   padding-left: 10px;
-  background-color: #100D1D;
+  background-color: rgba(7, 8, 17, 0.5);
   border-radius: 10px;
   overflow: hidden;
   overflow-y:scroll;
 }
 
+.analyticsView{
+  color: white;
+}
+
 .queryItems {
   padding: 20px;
-  width: 40%;
+  width: 55%;
 }
 
 
@@ -78,6 +82,10 @@
     background-color: #100D1D;
     border-radius: 10px;
     overflow: hidden;
+  }
+
+  .visualizationView{
+      color: #050505;
   }
 
 .analytics-options-div {

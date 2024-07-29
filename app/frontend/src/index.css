@@ -1,4 +1,3 @@
-/* Import Outfit font in the HTML file */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap');
 
 body {
@@ -6,21 +5,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Ensure body takes up full viewport height */
-  color: white;
-  font-family: 'Outfit', sans-serif; /* Change font to Outfit */
+  height: 100vh;
+  font-family: 'Outfit', sans-serif;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.container {
-  position: fixed; /* Fixed positioning to cover the whole screen */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("../public/bgdark.png"); /* Add background image */
-  background-size: cover; /* Ensure the background image covers the entire container */
-  background-position: center; /* Center the background image */
-  background-repeat: no-repeat; /* Prevent background image from repeating */
-  display: flex;
-  font-family: 'Outfit', sans-serif; /* Change font to Outfit */
+body.dark {
+  background-color: #282c34;
+  color: white;
+}
+
+body.light {
+  background-color: #f0f0f0;
+  color: #0e0e0e;
 }
