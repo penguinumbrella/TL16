@@ -5,6 +5,8 @@ const PieChartComponent = ({ data, colors, width, height,
   title='', innerRadius, outerRadius , percentageCenter, 
   startAngle, endAngle, theme, mapView, base_font_size }) => {
 
+
+
   const [ activeIndex, setActiveIndex ] = useState(-1);
 
   const RADIAN = Math.PI / 180;
@@ -106,12 +108,12 @@ const PieChartComponent = ({ data, colors, width, height,
   }
 
   const text_y_1 = {
-    true : height / 2 - 10,
+    true : (height / 2) - 10,
     false : '40%'
   }
 
   const text_y_2 = {
-    true : height / 2 + base_font_size - 5,
+    true : (height / 2) + base_font_size - 5,
     false : '55%'
   }
 
@@ -162,7 +164,7 @@ const PieChartComponent = ({ data, colors, width, height,
         </text>
         {/* Percentage Occupancy */}
         <text
-          x={ text_x[mapView]} 
+          x={text_x[mapView]} 
           y={text_y_2[mapView]}  // Adjusted to place the percentage below the title
           dy={8} 
           textAnchor="middle" 

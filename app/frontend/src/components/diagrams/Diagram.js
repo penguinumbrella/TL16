@@ -69,6 +69,13 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
   
   let toRender;
 
+
+  let innerRadius_1 = mapView ? 85 : "85%";
+  let innerRadius_2 = mapView ? 50 : "85%";
+  let outerRadius_1 = mapView ? 90 : "95%";
+  let outerRadius_2 = mapView ? 55 : "95%";
+
+
   switch(type) {
       case 'OCCUPANCY_PIE': 
         toRender = <>
@@ -80,8 +87,8 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               height={height} 
               width={width} 
               title={title} 
-              innerRadius="85%"
-              outerRadius="95%"
+              innerRadius={innerRadius_1}
+              outerRadius={outerRadius_1}
               percentageCenter={occupancyPercentage}
               startAngle={90}
               endAngle={450}
@@ -101,8 +108,8 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               height={height} 
               width={width} 
               title={title} 
-              innerRadius="85%"
-              outerRadius="95%"
+              innerRadius={innerRadius_2}
+              outerRadius={outerRadius_2}
               percentageCenter={occupancyPercentage}
               startAngle={90}
               endAngle={450}

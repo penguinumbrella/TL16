@@ -5,17 +5,12 @@ import TimeSlider from './timeSlider/timeSlider';
 import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import Map from './map/Map.js';
 
-import parkadeIcon from "./../../assets/parkadeIcon.png";
-import parkadeIconPicked from './../../assets/parkadeIconPicked.png';
-import accessibilityIcon from './../../assets/accessibilityIcon.png';
-import accessibilityIconPicked from './../../assets/accessibilityIconPicked.png';
-import loadingZoneIcon from './../../assets/loadingZoneIcon.png';
-import loadingZoneIconPicked from './../../assets/loadingZoneIconPicked.png';
 
 import axios from 'axios';
 
-const MapView = ({map_key}) => {
+const MapView = ({map_key, theme}) => {
   const PORT = 8080;
+
 
   const [iconsVisible, setIconsVisible] = useState(true);
   const [weatherData, setWeatherData] = useState(null);
@@ -26,6 +21,7 @@ const MapView = ({map_key}) => {
   const [accOccupancyStatus, setAccOccupancyStatus] = useState('');
 
   const toggleIconsVisibility = () => {
+    console.log(selectedOption)
     setIconsVisible(!iconsVisible);
   };
 
@@ -62,10 +58,9 @@ const MapView = ({map_key}) => {
         setSelectedOption(event.target.value);
         setActiveIndex(''); // Reset the active index
         setAccOccupancyStatus(data);
-        // console.log(data);
       })
       .catch(error => {
-        console.error('Error in onClickLGBM:', error);
+        console.error('Error in api/elevenX:', error);
       });
       
     } else{
@@ -112,7 +107,7 @@ const MapView = ({map_key}) => {
                id="parkades"
                name="options"
                value="parkades"
-               defaultChecked
+               checked={"parkades" === selectedOption} 
                onChange={handleOptionChange}
              />
              <label htmlFor="parkades" style={{ color: 'red' }}>Parkades</label>
@@ -123,6 +118,7 @@ const MapView = ({map_key}) => {
                id="loading_zones"
                name="options"
                value="loading_zones"
+               checked={"loading_zones" === selectedOption}
                onChange={handleOptionChange}
              />
              <label htmlFor="loading_zones">Loading Zones</label>
@@ -133,6 +129,7 @@ const MapView = ({map_key}) => {
                id="accessibility"
                name="options"
                value="accessibility"
+               checked={"accessibility" === selectedOption}
                onChange={handleOptionChange}
              />
              <label htmlFor="accessibility">Accessibility</label>
