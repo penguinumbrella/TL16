@@ -11,7 +11,7 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 
-const TimeSlider = ({ onTimeChange }) => {
+const TimeSlider = ({ onTimeChange, onSliderRelease }) => {
 
   //const currentDate = new Date();
   let currentDate = new Date(2024, 5, 0, 12, 0, 0, 0);
@@ -58,6 +58,17 @@ const TimeSlider = ({ onTimeChange }) => {
     setSliderValue(value);
 
     onTimeChange(newTime);
+  };
+
+  const handleSliderRelease = (event) => {
+    const value = parseFloat(event.target.value);
+    const newTime = new Date(startDateLeft);
+
+    newTime.setHours(newTime.getHours() + value); // Adjust hours based on slider value
+    setCurrentTime(newTime);
+    setSliderValue(value);
+
+    onSliderRelease(newTime);
   };
 
   const getRange = (ev) => {
@@ -226,6 +237,7 @@ const TimeSlider = ({ onTimeChange }) => {
           onMouseLeave={handleThumbLeave}
           onTouchStart={handleThumbHover}
           onTouchEnd={handleThumbLeave}
+          onMouseUp={handleSliderRelease}
           className='customSlider'
           style={{ background: calculateGradient() }}
           ref={sliderRef}
@@ -246,8 +258,8 @@ const TimeSlider = ({ onTimeChange }) => {
           className='marker'
           style={{
             position: 'absolute',
-            top: '-10px',
-            height: '20px',
+            top: '0px',
+            height: '4px',
             width: '2px',
             background: 'black',
             border: '1px dashed #000',

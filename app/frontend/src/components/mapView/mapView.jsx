@@ -94,7 +94,7 @@ const MapView = ({map_key}) => {
               condition={weatherData.weather_main}
               description={weatherData.weather_desc}
             />
-            <TimeSlider onTimeChange={handleTimeChange} />
+            <TimeSlider onTimeChange={handleTimeChange} onSliderRelease={handleTimeChange}/>
           </>
         )}
 
