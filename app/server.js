@@ -398,5 +398,6 @@ app.listen(PORT, () => {
   
   
   // Update the accessibilty data every 10 minutes
+  get_elevenX();
   setInterval(get_elevenX, 1000 * 60 * 10);
 });
