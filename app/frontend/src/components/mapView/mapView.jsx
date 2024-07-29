@@ -21,7 +21,7 @@ const MapView = ({map_key}) => {
   const [weatherData, setWeatherData] = useState(null);
   const [selectedOption, setSelectedOption] = useState('parkades');
   const [activeIndex, setActiveIndex] = useState('');
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState(new Date(2024, 5, 0, 12, 0, 0, 0)); // Changed for video
 
   const [accOccupancyStatus, setAccOccupancyStatus] = useState('');
 
