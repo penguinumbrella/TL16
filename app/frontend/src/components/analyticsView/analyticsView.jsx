@@ -74,6 +74,7 @@ const renderParkadeSelection = (data, label, selectedParkades, setSelectedParkad
   </div>
 );
 
+
 const AnalyticsView = () => {  
   const tabs = [
     {

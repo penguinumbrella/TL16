@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 stall_id,stall_name,status,payload_timestamp
 418,FP-01,vacant,2024-07-29 15:27:41
 419,FP-02,occupied,2024-07-29 15:06:16
@@ -228,3 +229,5 @@ stall_id,stall_name,status,payload_timestamp
 5116,OL-06,vacant,2024-07-29 15:55:45
 5117,OL-07,vacant,2024-07-29 15:57:40
 5118,OL-08,vacant,2024-07-29 16:03:38
+=======
+>>>>>>> origin/m3-test
