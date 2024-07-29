@@ -16,9 +16,13 @@ const TABLES = {
 };
 
 const transformData = (data) => {
+  const available = data[0]['Capacity'] - data[0]['Vehicles'] 
+  const occupied = Math.ceil(0.5 * data[0]['Vehicles'])
+  const undergraduate = Math.floor(0.5 * occupied)
+
   return [
-    { name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles'] },
-    { name: 'Occupied', value: data[0]['Vehicles'] }
+    { name: 'Available', value: available},
+    { name: 'Occupied', value: occupied},
   ];
 };
 
@@ -60,7 +64,7 @@ const LiveView = ({ theme }) => {
   };
 
   const generateChartBox = (parkadeName, lastUpdate) => {
-    const showWarning = !isRecentUpdate(lastUpdate);
+    const showWarning = false; // changed for video
 
     return (
       <div className='chart-box'>
