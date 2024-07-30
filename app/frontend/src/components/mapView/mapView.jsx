@@ -63,16 +63,6 @@ const MapView = ({ map_key , activeView}) => {
       });
       
     } else{
-        .then(response => response.json())
-        .then(data => {
-          setSelectedOption(event.target.value);
-          setActiveIndex(''); // Reset the active index
-          setAccOccupancyStatus(data);
-        })
-        .catch(error => {
-          console.error('Error in onClickLGBM:', error);
-        });
-    } else {
       setSelectedOption(event.target.value);
       setActiveIndex(''); // Reset the active index
     }
@@ -110,46 +100,49 @@ const MapView = ({ map_key , activeView}) => {
         </button>
 
         {iconsVisible && (
-          <div className="form-container">
-            <form className="map-form">
-              <div className="form-group">
-                <input
-                  type="radio"
-                  id="parkades"
-                  name="options"
-                  value="parkades"
-                  defaultChecked
-                  onChange={handleOptionChange}
-                />
-                <label htmlFor="parkades" style={{ color: 'red' }}>Parkades</label>
-              </div>
-              <div className="form-group">
-                <input
-                  type="radio"
-                  id="loading_zones"
-                  name="options"
-                  value="loading_zones"
-                  onChange={handleOptionChange}
-                />
-                <label htmlFor="loading_zones">Loading Zones</label>
-              </div>
-              <div className="form-group">
-                <input
-                  type="radio"
-                  id="accessibility"
-                  name="options"
-                  value="accessibility"
-                  onChange={handleOptionChange}
-                />
-                <label htmlFor="accessibility">Accessibility</label>
-              </div>
-            </form>
-            <div className="labels">
-              <div className="label-item">Parking</div>
-              <div className="label-item">Loading Zones</div>
-              <div className="label-item">Accessibility Stalls</div>
-            </div>
-          </div>
+         <div className="form-container">
+         <form className="map-form">
+           <div className="form-group">
+             <input
+               type="radio"
+               id="parkades"
+               name="options"
+               value="parkades"
+               checked={"parkades" === selectedOption} 
+               onChange={handleOptionChange}
+             />
+             <label htmlFor="parkades" style={{ color: 'red' }}>Parkades</label>
+           </div>
+           <div className="form-group">
+             <input
+               type="radio"
+               id="loading_zones"
+               name="options"
+               value="loading_zones"
+               checked={"loading_zones" === selectedOption}
+               onChange={handleOptionChange}
+             />
+             <label htmlFor="loading_zones">Loading Zones</label>
+           </div>
+           <div className="form-group">
+             <input
+               type="radio"
+               id="accessibility"
+               name="options"
+               value="accessibility"
+               checked={"accessibility" === selectedOption}
+               onChange={handleOptionChange}
+             />
+             <label htmlFor="accessibility">Accessibility</label>
+           </div>
+         </form>
+         <div className="labels">
+           <div className="label-item">Parking</div>
+           <div className="label-item">Loading Zones</div>
+           <div className="label-item">Accessibility Stalls</div>
+         </div>
+       </div>
+        
         )}
 
         <Map
