@@ -306,14 +306,8 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
     fetchResults();
   }, [queries]);
 
-    return (
-        <div className='analyticsView' style={{display: 'flex', alignItems: 'center'}}>
-        <div className="queryItems">
-          <div className='analytics-options-div'>
-            <h4>DATA CATEGORY</h4>
-            {renderForm(DATA_CATEGORY_OPTIONS, dataCategory, setDataCategory)}
-          </div>
-          <div className='analytics-options-div'>
+  const renderParkadeOccupancyOptions = () => {
+     return <><div className='analytics-options-div'>
             <h4>VISUALIZATION FORMAT</h4>
             {renderForm(VISUALIZATION_OPTIONS, visualizationFormat, setVisualizationFormat)}
           </div>
@@ -368,7 +362,17 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
               <h4>Select All</h4>
             </div>
             {renderParkadeSelection(PARKADE_OPTIONS, '+ Select', selectedParkades, setSelectedParkades, setSelectAllChecked)}
+          </div></>
+  }
+
+    return (
+        <div className='analyticsView' style={{display: 'flex', alignItems: 'center'}}>
+        <div className="queryItems">
+          <div className='analytics-options-div'>
+            <h4>DATA CATEGORY</h4>
+            {renderForm(DATA_CATEGORY_OPTIONS, dataCategory, setDataCategory)}
           </div>
+          {dataCategory == 'Parkade Occupancy' ? renderParkadeOccupancyOptions() : null}
           <div className='generate-container'>
           <Button variant="contained" color="primary" onClick={handleGenerateClick} style={{width: "150px"}}>
               {loading ? 'Generating...' : 'Generate!'}
