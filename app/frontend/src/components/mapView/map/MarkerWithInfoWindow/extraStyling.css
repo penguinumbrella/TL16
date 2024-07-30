@@ -8,7 +8,8 @@
 
 .gm-style .gm-style-iw-c {
   /* Change the border colour of the infowindow */
-  background-color: BLACK;
+  /* background-color: BLACK; */
+  background-color: #8d8e9e;
   max-height: 420px;
 
   position: absolute;
@@ -37,7 +38,8 @@
 
 .gm-style .gm-style-iw-tc::after {
   /* Change the arrow colour to black */
-  background:black;
+  /* background:black; */
+  background: #8d8e9e;
 
 
   -webkit-clip-path:polygon(0 0,50% 100%,100% 0);

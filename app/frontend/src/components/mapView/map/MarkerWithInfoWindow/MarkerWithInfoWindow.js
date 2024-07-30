@@ -27,6 +27,13 @@ import parkadeIcon_50 from './../../../../assets/parkadeIcon_50.png'
 import parkadeIcon_75 from './../../../../assets/parkadeIcon_75.png'
 import parkadeIcon_100 from './../../../../assets/parkadeIcon_100.png'
 
+function updateCSSVariables(primaryColor, backgroundColor) {
+  document.documentElement.style.setProperty('--primary-color', primaryColor);
+  document.documentElement.style.setProperty('--background-color', backgroundColor);
+}
+
+// Example usage
+updateCSSVariables('red', 'lightgray');
 
 /*
 position: object with lat and lng values e.g. { "lat": 49.26927494156756, "lng": -123.25087736976562 }

@@ -145,7 +145,7 @@ const MapView = ({map_key, theme}) => {
         )}
 
         <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} zoom={zoom} center={defaultCenter} timestamp={currentTime} accOccupancyStatus={accOccupancyStatus}
-        map_key = {map_key}/>
+        map_key = {map_key} theme={theme}/>
       </div>
       
     </div>
