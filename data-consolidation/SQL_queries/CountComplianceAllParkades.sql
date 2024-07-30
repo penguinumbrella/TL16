@@ -8,7 +8,7 @@ WITH FilteredPlates AS (
     FROM
         [LPRManager].[dbo].[Reads]
     WHERE 
-        CONVERT(DATE, TimestampLocal) = '2024-07-29'
+        TimestampLocal >= '2024-07-29 03:00:00'
 ),
 LatestPlates AS (
     SELECT
@@ -82,7 +82,7 @@ ClassifiedPlates AS (
         CASE 
             WHEN z.ZoneName IS NULL THEN 'Violation'
             WHEN z.ZoneName LIKE 'T2Systems%' THEN 'Permit'
-            WHEN z.ZoneName LIKE 'DigitalPayment Technologies%' THEN SUBSTRING(z.ZoneName, LEN('DigitalPayment Technologies ') + 1, LEN(z.ZoneName))
+            WHEN z.ZoneName LIKE 'DigitalPayment%' THEN 'PayStation'
             WHEN z.ZoneName LIKE 'GenericRESTService-%' THEN 'Honk App'
             ELSE 'Unknown'
         END AS ParkingMethod
@@ -96,7 +96,7 @@ ClassifiedPlates AS (
 SELECT
     COALESCE(ParkadeName, 'Total') AS ParkadeName,
     COUNT(CASE WHEN ParkingMethod = 'Permit' THEN 1 END) AS Permit,
-    COUNT(CASE WHEN ParkingMethod = 'Pay Station' THEN 1 END) AS PayStation,
+    COUNT(CASE WHEN ParkingMethod = 'PayStation' THEN 1 END) AS PayStation,
     COUNT(CASE WHEN ParkingMethod = 'Honk App' THEN 1 END) AS HonkApp,
     COUNT(CASE WHEN ParkingMethod = 'Violation' THEN 1 END) AS Violation,
     COUNT(*) AS TotalPlates

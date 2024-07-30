@@ -7,7 +7,7 @@ WITH FilteredPlates AS (
     FROM
         [LPRManager].[dbo].[Reads]
     WHERE 
-        CONVERT(DATE, TimestampLocal) = '2024-07-29'
+        CONVERT(DATE, TimestampLocal) = '2024-07-30' AND CONVERT(TIME, TimestampLocal) >= '03:00:00'
 ),
 LatestPlates AS (
     SELECT

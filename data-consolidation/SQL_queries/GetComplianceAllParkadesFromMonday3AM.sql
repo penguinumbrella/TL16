@@ -1,3 +1,43 @@
+WITH LatestOccupancies AS (
+    SELECT
+        ZoneId,
+        TimestampUtc,
+        Timestamp,
+        TimeZoneId,
+        Capacity,
+        Vehicles,
+        Violations,
+        ViolationsEnforced,
+        ROW_NUMBER() OVER (PARTITION BY ZoneId ORDER BY Timestamp DESC) AS rn
+    FROM
+        [LPRManager].[dbo].[ParkingOccupancies]
+)
+SELECT
+    ZoneId,
+    TimestampUtc,
+    Timestamp,
+    TimeZoneId,
+    Capacity,
+    Vehicles,
+    Violations,
+    ViolationsEnforced,
+    CASE 
+        WHEN ZoneId = 'E10D7DB4-C792-42AC-BAE8-969FA63F198D' THEN 'West Parkade'
+        WHEN ZoneId = '33B31206-E1F8-44CE-87A5-318C6D198416' THEN 'Rose Garden Parkade'
+        WHEN ZoneId = '859835AD-E855-4DBF-83ED-419DEF40537C' THEN 'Health Sciences Parkade'
+        WHEN ZoneId = '3B3F3EC1-5D84-4C80-9CAD-2CCC9A9268A4' THEN 'Fraser Parkade'
+        WHEN ZoneId = '7A5B3916-AD6C-445E-A6C5-BC582EB20530' THEN 'Thunderbird Parkade'
+        WHEN ZoneId = 'ACF9CF85-6991-42B9-9467-6094008D1094' THEN 'North Parkade'
+        WHEN ZoneId = '1B3D7D69-A1D0-4B8B-B86A-D31F8CFF2B2E' THEN 'University West Boulevard'
+        ELSE 'Unknown Parkade'
+    END AS ParkadeName
+FROM
+    LatestOccupancies
+WHERE
+    rn = 1;
+
+
+
 WITH FilteredPlates AS (
     SELECT
         Plate,
@@ -7,7 +47,7 @@ WITH FilteredPlates AS (
     FROM
         [LPRManager].[dbo].[Reads]
     WHERE 
-        CONVERT(DATE, TimestampLocal) = '2024-07-29'
+        TimestampUtc >= '2024-07-29 03:00:00'
 ),
 LatestPlates AS (
     SELECT
@@ -65,15 +105,11 @@ ActivePlates AS (
         [PaybyPlateSync].[dbo].[ActivePlates]
 )
 SELECT
-    flp.Plate,
-    flp.TimestampLocal,
-    flp.DeviceId,
     flp.ParkadeName,
-    ap.ZoneId,
-    ap.PermitId,
-    ap.EffectiveDate,
-    ap.ExpiryDate
+    COUNT(*) AS PlateCount
 FROM
     FilteredLatestPlates flp
 LEFT JOIN
-    ActivePlates ap ON flp.Plate = ap.Plate AND ap.rn = 1;
+    ActivePlates ap ON flp.Plate = ap.Plate AND ap.rn = 1
+GROUP BY
+    flp.ParkadeName;
