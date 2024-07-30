@@ -247,7 +247,6 @@ app.post('/api/LGBM_longterm_predict', (req, res) => {
 
   console.log(`Running command: ${command}`);
   exec(command, (error, stdout, stderr) => {
-    {/*
     if (error) {
         console.log("error1")
         console.error(`exec error: ${error}`);
@@ -261,7 +260,6 @@ app.post('/api/LGBM_longterm_predict', (req, res) => {
     }
     console.log('error3')
     console.log(`stdout: ${stdout}`);
-    */}
     res.json({ message: 'Prediction done successfully!'});
 });_
 
@@ -393,52 +391,13 @@ const get_elevenX = ()=>{
 }
 
 
-
-
-
-const elevenX_update_acc_stalls = ()=>{
-  try{
-    // Run the elevenX script which will update the csv file
-    const pythonProcess = spawn('python', [`x_11/elevenX_update_acc_stalls.py`, x_11_key], {
-      stdio: ['ignore', 'ignore', 'inherit'] // Ignore stdin, inherit stdout and stderr
-    });
-    pythonProcess.on('exit', () => {
-      try{
-        console.log("---nice---")
-
-      }catch(e){
-        console.error(`Error executing Python startup.py`);
-        console.log(e);
-      }
-      
-    });
-
-  }catch(e){
-    console.log(e)
-    
-  }
-}
-
-
-app.get('/api/update_acc_stalls',  async (req, res) => {
-  try{
-    elevenX_update_acc_stalls();
-  }catch(e){
-    console.log("Error in update_acc_stalls")
-    console.log(e)
-    
-  }
-})
-
 //-------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------
 
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
-  
-  
+
   // Update the accessibilty data every 10 minutes
-  get_elevenX();
   setInterval(get_elevenX, 1000 * 60 * 10);
 });
