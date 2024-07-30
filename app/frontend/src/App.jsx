@@ -44,7 +44,7 @@ function App() {
     <div className={`container ${theme}`}>
       <SearchBar activeView={activeView} onIconClick={handleIconClick} theme={theme} setNewTheme={setNewTheme} />
       {/* Render appropriate view based on activeView state */}
-      {activeView === 'map' ? <MapView theme={theme} map_key={map_key} /> : 
+      {activeView === 'map' ? <MapView theme={theme} map_key={map_key} activeView={activeView} /> : 
       activeView === 'dashboard' ? <DashboardView onIconClick={handleIconClick} theme={theme} /> :
       activeView === 'live' ? <LiveView theme={theme} /> :
       <AnalyticsView theme={theme} />}
