@@ -11,7 +11,7 @@ import mapStyleLight from './mapStyleLight.json'
 
 
 
-const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccupancyStatus, map_key, theme}) => { // Accept setActiveIndex as a prop
+const Map = ({ selectedOption, setActiveIndex, zoom, center, timestamp, accOccupancyStatus, map_key, theme, setMapCenter}) => { // Accept setActiveIndex as a prop
   const [activeIndex, setActiveIndexState] = useState('');
   const [markerData, setMarkerDataData] = useState(initialMarkerData);
   const [markerPosition, setMarkerPosition] =  useState(center);
@@ -21,6 +21,13 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccu
   const onMapLoad = useCallback((mapInstance) => {
     setMap(mapInstance);
   }, []);
+
+  useEffect(() => {
+    if(theme && isLoaded){
+      setMapCenter(map.getCenter().toJSON());
+    }
+    
+  }, [theme]);
 
 
 

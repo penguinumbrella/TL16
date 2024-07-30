@@ -52,6 +52,7 @@
 :root {
   --info-window-contents_background-color: #000;
   --info-window-contents_h2_color: #fff;
+  --info-window-diagrams_h3: #9c9fbb;
 }
 
 
@@ -70,4 +71,8 @@
   /* color: #000; */
   color : var(--info-window-contents_h2_color);
   
+}
+
+.info-window-diagrams h3{
+  color :  var(--info-window-diagrams_h3);
 }

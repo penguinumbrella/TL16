@@ -10,6 +10,7 @@ function App() {
   // Ensure the default theme is 'dark'
   const initialTheme = localStorage.getItem('theme') || 'dark';
   const [theme, setTheme] = useState(initialTheme);
+  console.log(theme)
 
   // State to track the active view
   const [activeView, setActiveView] = useState('dashboard'); // 'dashboard' is the default view

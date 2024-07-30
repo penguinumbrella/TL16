@@ -108,6 +108,23 @@ const MarkerWithInfoWindow = ({
       'University West Blvd': 'UnivWstBlvdParkade',
       'Rose Garden': 'RoseGardenParkade'
     }
+
+    const theme_vars =[
+      '--info-window-contents_h2_color',
+      '--info-window-contents_background-color',
+      '--gm-style_gm-style-iw-c_background-color',
+      '--gm-style_gm-style-iw-tc__after_background',
+      '--info-window-diagrams_h3'
+    ]
+
+    const theme_colors ={
+      'dark' : ['#fff','#000','#000','#000', '#9c9fbb'],
+      'light': ['#000','#8d8e9e','#8d8e9e','#8d8e9e', '#fff'],
+    }
+
+
+
+
   
     const formatTimestampToUnix = (date) => {
       // Convert the date to Unix timestamp in seconds
@@ -166,21 +183,10 @@ const MarkerWithInfoWindow = ({
       }
       
       if(theme){
-        if(theme === 'dark'){
-          updateCSSVariables('--info-window-contents_h2_color','#fff');
-          updateCSSVariables('--info-window-contents_background-color','#000');
-          updateCSSVariables('--gm-style_gm-style-iw-c_background-color','#000');
-          updateCSSVariables('--gm-style_gm-style-iw-tc__after_background','#000');
-        }else{
-          updateCSSVariables('--info-window-contents_h2_color','#000');
-          updateCSSVariables('--info-window-contents_background-color','#8d8e9e');
-          updateCSSVariables('--gm-style_gm-style-iw-c_background-color','#8d8e9e');
-          updateCSSVariables('--gm-style_gm-style-iw-tc__after_background','#8d8e9e');
-        }
+          for(let i = 0; i<5; i++)
+            updateCSSVariables(theme_vars[i],theme_colors[theme][i]);
       }
       
-        
-       
     
     }, [timestamp, infoWindowShown, theme]);
 
