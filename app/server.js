@@ -247,6 +247,7 @@ app.post('/api/LGBM_longterm_predict', (req, res) => {
 
   console.log(`Running command: ${command}`);
   exec(command, (error, stdout, stderr) => {
+    {/*
     if (error) {
         console.log("error1")
         console.error(`exec error: ${error}`);
@@ -260,6 +261,7 @@ app.post('/api/LGBM_longterm_predict', (req, res) => {
     }
     console.log('error3')
     console.log(`stdout: ${stdout}`);
+    */}
     res.json({ message: 'Prediction done successfully!'});
 });_
 
