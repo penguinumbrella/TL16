@@ -3,8 +3,8 @@
 -- DROP COLUMN unittimestamp;
 
 -- Change the data type of column 'b' from INT to NVARCHAR(50)
---ALTER TABLE [Parking].[dbo].[Daily_Occupancy_Stats]
--- ADD peak_occupancy_time BIGINT;
+-- ALTER TABLE [Parking].[dbo].[CamerasList]
+-- ADD ParkadeName NVARCHAR(255);
 
 -- ALTER TABLE [Parking].[dbo].[Daily_Occupancy_Stats]
 -- ALTER COLUMN zone_id NVARCHAR(50);
@@ -15,3 +15,7 @@
 
 -- Remove all rows from the table
 -- TRUNCATE TABLE [Parking].[dbo].[Weekly_Occupancy_Stats];
+
+UPDATE [Parking].[dbo].[CamerasList]
+SET ParkadeName = 'UnivWstBlvd'
+WHERE ParkadeName = 'UBRDLot';
