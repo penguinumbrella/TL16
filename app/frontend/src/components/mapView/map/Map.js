@@ -112,6 +112,7 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccu
                       data={getMarkerData(selectedOption, item.name)}
                       clusterer={clusterer}
                       setMarkerPosition ={setMarkerPosition}
+                      theme = {theme}
 
                       // Right now there are stalls missing so they are undefined
                       // for these stalls they are set to occupied and right now a string that says [stall data is missing]
@@ -139,6 +140,7 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccu
                     data={getMarkerData(selectedOption, item.name)}
                     timestamp = {timestamp}
                     setMarkerPosition ={setMarkerPosition}
+                    theme = {theme}
                   />)}))
                 }
         </GoogleMap>}

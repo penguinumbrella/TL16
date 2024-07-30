@@ -59,12 +59,15 @@
 
 .info-window-contents{
   /* background-color: 000; */
-  background-color: #8d8e9e;
-  /* background-color :var(--info-window-contents_background-color); */
+  /* background-color: #8d8e9e; */
+  background-color :var(--info-window-contents_background-color);
 }
+
+
 
 .info-window-contents h2{
   /* color: #fff; */
-  color: #000;
+  /* color: #000; */
+  color : var(--info-window-contents_h2_color);
   
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import {MarkerF , InfoWindowF} from '@react-google-maps/api';
 import { useState, useEffect } from 'react';
 import Diagram from '../../../diagrams/Diagram'
-import './MarkerWithInfoWindow.css'
+import styles from './MarkerWithInfoWindow.css'
 import './extraStyling.css'
 
 import FutureDiagram from '../../../diagrams/FutureDiagram';
@@ -27,13 +27,12 @@ import parkadeIcon_50 from './../../../../assets/parkadeIcon_50.png'
 import parkadeIcon_75 from './../../../../assets/parkadeIcon_75.png'
 import parkadeIcon_100 from './../../../../assets/parkadeIcon_100.png'
 
-function updateCSSVariables(primaryColor, backgroundColor) {
-  document.documentElement.style.setProperty('--primary-color', primaryColor);
-  document.documentElement.style.setProperty('--background-color', backgroundColor);
+function updateCSSVariables(varName, primaryColor) {
+  document.documentElement.style.setProperty(varName, primaryColor);
 }
 
 // Example usage
-updateCSSVariables('red', 'lightgray');
+
 
 /*
 position: object with lat and lng values e.g. { "lat": 49.26927494156756, "lng": -123.25087736976562 }
@@ -67,7 +66,8 @@ const MarkerWithInfoWindow = ({
   setMarkerPosition,
   timestamp,
   vacant,
-  payload_timestamp
+  payload_timestamp,
+  theme
   
 }) => {
     
@@ -79,7 +79,25 @@ const MarkerWithInfoWindow = ({
 
     // const [occupancyPercentage, setOccupancyPercentage] = useState(0);
    
-   
+    // let i = 0;
+    // setInterval(()=>{
+    //   if (i === 0){
+    //     updateCSSVariables('--info-window-contents_h2_color','#000');
+    //     updateCSSVariables('--info-window-contents_background-color','#8d8e9e');
+    //     updateCSSVariables('--gm-style_gm-style-iw-c_background-color','#8d8e9e');
+    //     updateCSSVariables('--gm-style_gm-style-iw-tc__after_background','#8d8e9e');
+    //     i = 1;
+    //   }else{
+    //     updateCSSVariables('--info-window-contents_h2_color','#fff');
+    //     updateCSSVariables('--info-window-contents_background-color','#000');
+    //     updateCSSVariables('--gm-style_gm-style-iw-c_background-color','#000');
+    //     updateCSSVariables('--gm-style_gm-style-iw-tc__after_background','#000');
+    //     i = 0;
+    //   }
+
+      
+      
+    // }, 100); 
 
     const TABLES = {
       'Fraser River': 'FraserParkade',
@@ -146,10 +164,25 @@ const MarkerWithInfoWindow = ({
         if(infoWindowShown === true)
           setMarkerPosition(position)
       }
+      
+      if(theme){
+        if(theme === 'dark'){
+          updateCSSVariables('--info-window-contents_h2_color','#fff');
+          updateCSSVariables('--info-window-contents_background-color','#000');
+          updateCSSVariables('--gm-style_gm-style-iw-c_background-color','#000');
+          updateCSSVariables('--gm-style_gm-style-iw-tc__after_background','#000');
+        }else{
+          updateCSSVariables('--info-window-contents_h2_color','#000');
+          updateCSSVariables('--info-window-contents_background-color','#8d8e9e');
+          updateCSSVariables('--gm-style_gm-style-iw-c_background-color','#8d8e9e');
+          updateCSSVariables('--gm-style_gm-style-iw-tc__after_background','#8d8e9e');
+        }
+      }
+      
         
        
     
-    }, [timestamp, infoWindowShown]);
+    }, [timestamp, infoWindowShown, theme]);
 
 
 

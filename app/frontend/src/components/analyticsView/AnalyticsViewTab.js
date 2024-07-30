@@ -298,9 +298,7 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
       return value;
     }
 
-    function convertToCSV(dataArray,parkade, first) {
-      //35
-      //Timestamp,Parkade,Capacity,Vehicles\n => 36 characters
+    function convertToCSV(dataArray,parkade, first) {      
       const csvColumns =  [ 'Timestamp', 'Parkade', 'Capacity','Vehicles'];
 
         const csvRows = [
@@ -327,8 +325,7 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
 
     async function nextFunc(response){
       if (generateChecked) {
-        console.log('Rendered results 2');
-        console.log(response);
+        const cutOff = ('Timestamp,Parkade,Capacity,Vehicles\n').length;
 
         let fullCSVFile = '';
 
@@ -340,7 +337,7 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
           if(i===0)
             fullCSVFile =  CSVfile;
           else
-            fullCSVFile = fullCSVFile + '\n' + CSVfile.substring(36);
+            fullCSVFile = fullCSVFile + '\n' + CSVfile.substring(cutOff);
         }
         
                 

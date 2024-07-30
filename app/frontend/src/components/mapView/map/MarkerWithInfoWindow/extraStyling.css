@@ -1,3 +1,9 @@
+:root {
+  --gm-style_gm-style-iw-c_background-color: #000;
+  --gm-style_gm-style-iw-tc__after_background: #fff;
+}
+
+
 /* Remove the extra box at the bottom nd disable scrolling*/
 .gm-style .gm-style-iw-d {
   -webkit-box-sizing: border-box;
@@ -9,7 +15,7 @@
 .gm-style .gm-style-iw-c {
   /* Change the border colour of the infowindow */
   /* background-color: BLACK; */
-  background-color: #8d8e9e;
+  background-color: var(--gm-style_gm-style-iw-c_background-color);
   max-height: 420px;
 
   position: absolute;
@@ -39,7 +45,7 @@
 .gm-style .gm-style-iw-tc::after {
   /* Change the arrow colour to black */
   /* background:black; */
-  background: #8d8e9e;
+  background: var(--gm-style_gm-style-iw-tc__after_background);
 
 
   -webkit-clip-path:polygon(0 0,50% 100%,100% 0);
