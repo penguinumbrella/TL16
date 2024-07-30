@@ -9,10 +9,12 @@ const cors = require("cors");
 const fs = require('fs');
 const csv = require('csv-parser');
 const { spawn } = require('child_process');
+const { exec } = require('child_process');
 
 const PORT = 8080;
 
 const app = express();
+app.use(express.json());
 
 const config = {
   "user": process.env.DB_USERNAME, // Database username
@@ -227,6 +229,43 @@ app.get('/api/LGBM_short',  async (req, res) => {
   
 });
 
+app.post('/api/LGBM_longterm_predict', (req, res) => {
+  const { startDate, endDate, parkade } = req.body;
+
+  if (!startDate || !endDate || !parkade) {
+      return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  // Construct the command to run the Python script
+  const scriptPath = path.join(__dirname, 'LightGBM/longterm/predict.py');
+  const command = `python "${scriptPath}" "${startDate}" "${endDate}" "${parkade}"`;
+
+  // console.log(`Running command: ${command}`);
+  //const newScriptPath = path.join(__dirname, 'test.py');
+
+  //const newCommand = `python "${newScriptPath}"`; // Adjust the path
+
+  console.log(`Running command: ${command}`);
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+        console.log("error1")
+        console.error(`exec error: ${error}`);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    if (stderr) {
+        console.log("error2")
+        console.error(`stderr: ${stderr}`);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    console.log('error3')
+    console.log(`stdout: ${stdout}`);
+    res.json({ message: 'Prediction done successfully!'});
+});_
+
+});
+
+
 //---------------------------------------------
 
 // Prediction for the long term because there were some missing dates in the lgbm file
@@ -352,52 +391,13 @@ const get_elevenX = ()=>{
 }
 
 
-
-
-
-const elevenX_update_acc_stalls = ()=>{
-  try{
-    // Run the elevenX script which will update the csv file
-    const pythonProcess = spawn('python', [`x_11/elevenX_update_acc_stalls.py`, x_11_key], {
-      stdio: ['ignore', 'ignore', 'inherit'] // Ignore stdin, inherit stdout and stderr
-    });
-    pythonProcess.on('exit', () => {
-      try{
-        console.log("---nice---")
-
-      }catch(e){
-        console.error(`Error executing Python startup.py`);
-        console.log(e);
-      }
-      
-    });
-
-  }catch(e){
-    console.log(e)
-    
-  }
-}
-
-
-app.get('/api/update_acc_stalls',  async (req, res) => {
-  try{
-    elevenX_update_acc_stalls();
-  }catch(e){
-    console.log("Error in update_acc_stalls")
-    console.log(e)
-    
-  }
-})
-
 //-------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------
 
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
-  
-  
+
   // Update the accessibilty data every 10 minutes
-  get_elevenX();
   setInterval(get_elevenX, 1000 * 60 * 10);
 });

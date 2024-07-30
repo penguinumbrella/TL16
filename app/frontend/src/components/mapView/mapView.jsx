@@ -4,38 +4,21 @@ import WeatherIcon from './weatherIcon/weatherIcon/weatherIcon';
 import TimeSlider from './timeSlider/timeSlider';
 import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import Map from './map/Map.js';
-
-
 import axios from 'axios';
 
-const MapView = ({map_key, theme}) => {
-  const PORT = 8080;
-
-
+const MapView = ({ map_key , activeView, theme}) => {
   const [iconsVisible, setIconsVisible] = useState(true);
   const [weatherData, setWeatherData] = useState(null);
   const [selectedOption, setSelectedOption] = useState('parkades');
   const [activeIndex, setActiveIndex] = useState('');
-  const [currentTime, setCurrentTime] = useState(new Date(2024, 5, 0, 12, 0, 0, 0)); // Changed for video
-
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [sliderEndTime, setSliderEndTime] = useState(new Date());
   const [accOccupancyStatus, setAccOccupancyStatus] = useState('');
 
   const toggleIconsVisibility = () => {
     console.log(selectedOption)
     setIconsVisible(!iconsVisible);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch('/api');
-        // console.log(await res.json());
-      } catch (err) {
-        console.log("Frontend Only");
-      }
-    };
-    fetchData();
-  }, []);
 
   const fetchWeatherData = async (time) => {
     try {
@@ -47,11 +30,27 @@ const MapView = ({map_key, theme}) => {
   };
 
   useEffect(() => {
-    fetchWeatherData(currentTime);
-  }, [currentTime]);
+    console.log("CHANGED ACTIVEVIEW")
+    if (activeView === 'map') {
+      console.log("ACTIVE VIEW IS MAP")
+      // Function to fetch weather data
+      //const newDate = new Date();
+      //newDate.setMinutes(0,0,0);
+      //console.log(newDate);
+      const newDate = new Date(2024, 5, 0, 12, 0, 0, 0);
+
+      // Fetch weather data when component mounts
+      fetchWeatherData(newDate);
+    }
+  }, [activeView]);
+
+  useEffect(() => {
+    // Fetch weather data whenever the sliderEndTime changes
+    fetchWeatherData(sliderEndTime);
+  }, [sliderEndTime]); // Dependency on sliderEndTime
 
   const handleOptionChange = (event) => {
-    if(event.target.value === 'accessibility'){
+    if (event.target.value === 'accessibility') {
       fetch(`/api/elevenX`)
       .then(response => response.json())
       .then(data => {
@@ -66,14 +65,17 @@ const MapView = ({map_key, theme}) => {
     } else{
       setSelectedOption(event.target.value);
       setActiveIndex(''); // Reset the active index
-
     }
   };
 
   const handleTimeChange = (newTime) => {
     setCurrentTime(newTime);
   };
-  
+
+  const handleEndTimeChange = (newTime) => {
+    setSliderEndTime(newTime);
+  };
+
   const defaultCenter = { lat: 49.262141, lng: -123.247360 };
   const zoom = 15;
 
@@ -89,8 +91,7 @@ const MapView = ({map_key, theme}) => {
               condition={weatherData.weather_main}
               description={weatherData.weather_desc}
             />
-            <TimeSlider onTimeChange={handleTimeChange} />
-            <div class="currentTimesTampBox"> {currentTime.toLocaleString()} </div>
+            <TimeSlider onTimeChange={handleTimeChange} onSliderRelease={handleEndTimeChange} />
           </>
         )}
 
@@ -144,8 +145,16 @@ const MapView = ({map_key, theme}) => {
         
         )}
 
-        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} zoom={zoom} center={defaultCenter} timestamp={currentTime} accOccupancyStatus={accOccupancyStatus}
-        map_key = {map_key} theme={theme}/>
+        <Map
+          selectedOption={selectedOption}
+          setActiveIndex={setActiveIndex}
+          zoom={zoom}
+          center={defaultCenter}
+          timestamp={sliderEndTime}
+          accOccupancyStatus={accOccupancyStatus}
+          map_key={map_key}
+          theme ={theme}
+        />
       </div>
       
     </div>

@@ -11,7 +11,7 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 
-const TimeSlider = ({ onTimeChange }) => {
+const TimeSlider = ({ onTimeChange, onSliderRelease }) => {
 
   //const currentDate = new Date();
   let currentDate = new Date(2024, 5, 0, 12, 0, 0, 0);
@@ -58,6 +58,17 @@ const TimeSlider = ({ onTimeChange }) => {
     setSliderValue(value);
 
     onTimeChange(newTime);
+  };
+
+  const handleSliderRelease = (event) => {
+    const value = parseFloat(event.target.value);
+    const newTime = new Date(startDateLeft);
+
+    newTime.setHours(newTime.getHours() + value); // Adjust hours based on slider value
+    setCurrentTime(newTime);
+    setSliderValue(value);
+
+    onSliderRelease(newTime);
   };
 
   const getRange = (ev) => {
@@ -153,6 +164,13 @@ const TimeSlider = ({ onTimeChange }) => {
   };
 
   const calculateMarkerPosition = () => {
+    {/*
+    return {
+      left: `${99.4}%`,
+      display: 'block'
+    };
+    */}
+
     if (actualTime >= startDateLeft && actualTime <= startDateRight && sliderRef.current) {
       const sliderWidth = sliderRef.current.offsetWidth;
       const sliderMax = sliderRef.current.max;
@@ -160,7 +178,7 @@ const TimeSlider = ({ onTimeChange }) => {
       const markerPosition = (actualTimeDifference / hoursDifference) * sliderWidth;
 
       return {
-        left: `${(markerPosition / sliderWidth) * 100}%`,
+        left: `${(markerPosition / sliderWidth) * 99.4}%`,
         display: 'block'
       };
     }
@@ -211,49 +229,55 @@ const TimeSlider = ({ onTimeChange }) => {
       </div>
 
       <div className='sliderContainer'>
+        {/*
         <div className='clock'>
           <Icon as={ClockHistoryIcon} boxSize={20} />
         </div>
-        <input
-          type="range"
-          id="range"
-          min='0'
-          max={hoursDifference}
-          step={sliderStep}
-          value={sliderValue}
-          onChange={handleCombinedChange}
-          onMouseEnter={handleThumbHover}
-          onMouseLeave={handleThumbLeave}
-          onTouchStart={handleThumbHover}
-          onTouchEnd={handleThumbLeave}
-          className='customSlider'
-          style={{ background: calculateGradient() }}
-          ref={sliderRef}
-        />
-        <label
-          htmlFor="range"
-          className="slider-label"
-          style={{
-            ...calculateBubblePosition(),
-          }}
-        >
-          <span>{currentTime.toLocaleTimeString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
-          <div className='windowContainer'>
-            <PopupWindow />
-          </div>
-        </label>
-        <div
-          className='marker'
-          style={{
-            position: 'absolute',
-            top: '-10px',
-            height: '20px',
-            width: '2px',
-            background: 'black',
-            border: '1px dashed #000',
-            ...calculateMarkerPosition(),
-          }}
-        />
+        */}
+        <div className='sliderOnly'>
+          <input
+            type="range"
+            id="range"
+            min='0'
+            max={hoursDifference}
+            step={sliderStep}
+            value={sliderValue}
+            onChange={handleCombinedChange}
+            onMouseEnter={handleThumbHover}
+            onMouseLeave={handleThumbLeave}
+            onTouchStart={handleThumbHover}
+            onTouchEnd={handleThumbLeave}
+            onMouseUp={handleSliderRelease}
+            className='customSlider'
+            style={{ background: calculateGradient() }}
+            ref={sliderRef}
+          />
+          <label
+            htmlFor="range"
+            className="slider-label"
+            style={{
+              ...calculateBubblePosition(),
+            }}
+          >
+            <span>{currentTime.toLocaleTimeString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+            <div className='windowContainer'>
+              <PopupWindow />
+            </div>
+          </label>
+          <div
+            className='marker'
+            style={{
+              position: 'absolute',
+              top: '0px',
+              height: '20px',
+              width: '2px',
+              background: 'white',
+              border: '1px solid #000',
+              ...calculateMarkerPosition(),
+            }}
+          />
+        </div>
+        
       </div>
     </div>
   );

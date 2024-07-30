@@ -90,10 +90,17 @@ const WeatherIcon = ({ currTime, temperature, condition, description }) => {
       <div className='iconContainer'>
         {iconComponent}
       </div>
-      <div className='temperature'>{(temperature - 273.15).toFixed(1)}&deg;C</div>
-      <div className='condition'>{description}</div>
+      <div className='temperature'>
+        {temperature == null || isNaN(temperature)
+          ? "No data"
+          : `${(temperature - 273.15).toFixed(1)}°C`}
+      </div>
+      <div className='condition'>
+        {temperature == null || isNaN(temperature) ? "No data" : description}
+      </div>
     </div>
   );
+   
 }
 
 export default WeatherIcon;

@@ -36,58 +36,9 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
 
 
   useEffect(() => {
-    // ONLY FOR VIDEO
-    function getRandomNumber(n) {
-      return Math.floor(Math.random() * (n + 1));
-    }
-  
     const getData = async () => {
       
-      const data = (await axios.get(`/executeQuery?query=${query}`)).data;
-      if (type == 'OCCUPANCY_PIE') {
-        // Calculate capacity and occupied values
-        const capacity = data[0]['Capacity'];
-        const occupied = data[0]['Vehicles'];
-        let graduate, undergraduate, faculty, transient;
-        undergraduate = getRandomNumber(occupied)
-        let total = occupied;
-        total -= undergraduate;
-        total > 0 ? graduate = getRandomNumber(total) : graduate = 0
-        total -= graduate;
-        total > 0 ? faculty = getRandomNumber(total) : faculty = 0
-        total -= faculty;
-        transient = total;
-        // Calculate occupancy percentage
-        const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
-        setDiagData([
-          // {name: 'Occupied', value: data[0]['Vehicles'] - undergraduate},
-          {name: 'Undergraduate', value: undergraduate},
-          {name: 'Graduate', value: graduate},
-          {name: 'Faculty', value: faculty},
-          {name: 'Transient', value: transient},
-          {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']}
-        ]);
-        // Update state with occupancy percentage
-        setOccupancyPercentage(`${occupancyPercentage}%`);
-      } else if (type == 'COMPLIANCE_PIE') {
-        // Calculate capacity and occupied values
-        const capacity = data[0]['Capacity'];
-        const occupied = data[0]['Vehicles'];
-        const honk = getRandomNumber(capacity);
-        const payStation = getRandomNumber(capacity-honk);
-        const violations = capacity-honk-payStation;
-        // Calculate occupancy percentage
-        const _compliancePercentage = ((1 - violations / capacity) * 100).toFixed(0);
-        setDiagData([
-          // {name: 'Occupied', value: data[0]['Vehicles'] - undergraduate},
-          {name: 'Pay station', value: payStation},
-          {name: 'Honk', value: honk},
-          {name: 'Violations', value: violations},
-        ]);
-        // Update state with occupancy percentage
-        setOccupancyPercentage(`${_compliancePercentage}%`);
-      }
-      else {
+        const data = (await axios.get(`/executeQuery?query=${query}`)).data;
         // Calculate capacity and occupied values
         const capacity = data[0]['Capacity'];
         const occupied = data[0]['Vehicles'];
@@ -95,16 +46,15 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
         // Calculate occupancy percentage
         const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
         setDiagData([
-          {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
-          {name: 'Occupied', value: data[0]['Vehicles']}
+            {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
+            {name: 'Occupied', value: data[0]['Vehicles']}
         ]);
         // Update state with occupancy percentage
         setOccupancyPercentage(`${occupancyPercentage}%`);
+        setCompliancePercentage(`87%`);
       }
-    }
     if (dataOverride.length == 0)
       getData();
-  
   }, []);
 
   const options = {
@@ -131,7 +81,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               mapView = {mapView}
               base_font_size={25}
               data={dataOverride.length != 0 ? dataOverride : diagData}
-              colors={['#E697FF', '#76A5FF', '#FFA5CB', '#82F0FF', '#323551']} 
+              colors={COLORS} 
               height={height} 
               width={width} 
               title={title} 
@@ -152,7 +102,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               mapView = {mapView}
               base_font_size={15}
               data={dataOverride.length != 0 ? dataOverride : diagData} 
-              colors={['#FFD583', '#BAEFFF', '#F765A3']} 
+              colors={COLORS} 
               height={height} 
               width={width} 
               title={title} 
