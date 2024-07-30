@@ -92,6 +92,15 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
         startTime,
         endTime
       };
+
+      console.log(dataCategory)
+      console.log(periodicity)
+      console.log(avgPeak)
+      console.log(selectedParkades)
+      console.log(startTime)
+      console.log(endTime)
+
+      // console.log(queryFeatures)
       
     }
   };
@@ -263,29 +272,9 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
   
       // Make the request to the backend to fetch the CSV data
       const queries = getQueries(dataCategory, visualizationFormat, periodicity, avgPeak, selectedParkades, startTime, endTime)
-      const response = []
       setQueries(queries);
 
-      if (generateChecked) {
-      const csvData = response.data;
-  
-      const blob = new Blob([csvData], { type: 'text/csv' });
-  
-      const url = window.URL.createObjectURL(blob);
-  
-      // Create a link element to trigger the download
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'parking_data.csv');
-  
-      // Simulate a click on the link to initiate the download
-      document.body.appendChild(link);
-      link.click();
-  
-      // Clean up by removing the temporary URL and link element
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(link);
-      }
+
 
     } catch (error) {
       console.error('Error generating report:', error);
@@ -299,11 +288,85 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
     const fetchResults = async () => {
       const renderedResults = await renderResults(queries);
       setResults(renderedResults);
-      console.log('Rendered results');
-      console.log(renderedResults);
+      return new Promise(resolve => {
+        resolve(renderedResults)
+      });
     };
 
-    fetchResults();
+    function replacer(key, value) {
+      if (value === null) return '';
+      return value;
+    }
+
+    function convertToCSV(dataArray,parkade, first) {
+      //35
+      //Timestamp,Parkade,Capacity,Vehicles\n => 36 characters
+      const csvColumns =  [ 'Timestamp', 'Parkade', 'Capacity','Vehicles'];
+
+        const csvRows = [
+          csvColumns.join(','), // Headers row
+          ...dataArray.map(row => {
+            return csvColumns.map(fieldName => {
+
+              if (fieldName === 'Parkade') {
+                return JSON.stringify(parkade, replacer);
+              }
+
+              if(fieldName === 'Timestamp'){
+                return JSON.stringify(row['name'], replacer);
+              }
+
+              return JSON.stringify(row[fieldName], replacer);
+            }).join(',');
+          })
+        ];
+
+        return csvRows.join('\n');
+    }
+
+
+    async function nextFunc(response){
+      if (generateChecked) {
+        console.log('Rendered results 2');
+        console.log(response);
+
+        let fullCSVFile = '';
+
+        for (let i = 0; i < response.length; i++){
+          const csvData = response[i].props.dataOverride;
+          const parkade = response[i].props.title;
+          const CSVfile = convertToCSV(csvData, parkade, i===0);
+
+          if(i===0)
+            fullCSVFile =  CSVfile;
+          else
+            fullCSVFile = fullCSVFile + '\n' + CSVfile.substring(36);
+        }
+        
+                
+        const blob = new Blob([fullCSVFile], { type: 'text/csv' });
+    
+        const url = window.URL.createObjectURL(blob);
+    
+        // // Create a link element to trigger the download
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'parking_data.csv');
+    
+        // // Simulate a click on the link to initiate the download
+        document.body.appendChild(link);
+        link.click();
+    
+        // // Clean up by removing the temporary URL and link element
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+      }
+    }
+
+    fetchResults().then((data)=>nextFunc(data));
+
+    
+
   }, [queries]);
 
     return (
