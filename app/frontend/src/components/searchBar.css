@@ -141,14 +141,9 @@
   opacity: 1;
 }
 
-.blurredCircle1, .blurredCircle2 {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  filter: blur(30px);
-  z-index: 1;
-  transition: background-color 0.3s;
+
+.searchBar {
+  position: relative;
 }
 
 .blurredCircle1 {

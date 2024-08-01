@@ -3,6 +3,7 @@ import PieChartComponent from './PieChart/PieChartComponent'
 import LineGraphComponent from './LineGraph/LineGraphComponent';
 import BarGraphComponent from './BarGraph/BarGraphComponent';
 import axios from 'axios';
+import { getAuthToken } from '../../getAuthToken';
 
 const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme, mapView}) => {
 
@@ -29,8 +30,12 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
   const COLORS = ['#787878', '#007ae6', '#00b392', '#e69d00', '#ff661a', '#0FA122']; // TBD
 
   const getData = (query) => {
-    const data = axios.get(`/executeQuery?query=${query}`);
-    // console.log(query);
+
+    const data = axios.get(`/executeQuery?query=${query}`, {
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`
+      }
+    });
     return DATA;
   }
 
@@ -38,21 +43,26 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
   useEffect(() => {
     const getData = async () => {
       
-        const data = (await axios.get(`/executeQuery?query=${query}`)).data;
-        // Calculate capacity and occupied values
-        const capacity = data[0]['Capacity'];
-        const occupied = data[0]['Vehicles'];
-   
-        // Calculate occupancy percentage
-        const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
-        setDiagData([
-            {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
-            {name: 'Occupied', value: data[0]['Vehicles']}
-        ]);
-        // Update state with occupancy percentage
-        setOccupancyPercentage(`${occupancyPercentage}%`);
-        setCompliancePercentage(`87%`);
-      }
+      const data = (await axios.get(`/executeQuery?query=${query}`, {
+        headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+      })).data;
+      console.log(data[0]['Capacity'])
+      // Calculate capacity and occupied values
+      const capacity = data[0]['Capacity'];
+      const occupied = data[0]['Vehicles'];
+    
+      // Calculate occupancy percentage
+      const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
+      setDiagData([
+        {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
+        {name: 'Occupied', value: data[0]['Vehicles']}
+      ]);
+      // Update state with occupancy percentage
+      setOccupancyPercentage(`${occupancyPercentage}%`);
+      setCompliancePercentage(`87%`);
+    }
     if (dataOverride.length == 0)
       getData();
   }, []);

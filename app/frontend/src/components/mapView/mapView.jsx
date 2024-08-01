@@ -5,6 +5,7 @@ import TimeSlider from './timeSlider/timeSlider';
 import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import Map from './map/Map.js';
 import axios from 'axios';
+import { getAuthToken } from '../../getAuthToken.js';
 
 const MapView = ({ map_key , activeView, theme}) => {
   const defaultCenter = { lat: 49.262141, lng: -123.247360 };
@@ -26,7 +27,11 @@ const MapView = ({ map_key , activeView, theme}) => {
 
   const fetchWeatherData = async (time) => {
     try {
-      const response = await axios.get(`/weather?time=${time.toISOString()}`);
+      const response = await axios.get(`/weather?time=${time.toISOString()}`, {
+        headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+      });
       setWeatherData(response.data);
     } catch (error) {
       console.error("Error fetching weather data:", error);
