@@ -57,15 +57,6 @@ function App() {
     setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
   };
-
-  return (
-    <div className={`container ${theme}`}>
-      <SearchBar activeView={activeView} onIconClick={handleIconClick} theme={theme} setNewTheme={setNewTheme} />
-      {/* Render appropriate view based on activeView state */}
-      {activeView === 'map' ? <MapView theme={theme} map_key={map_key} activeView={activeView} /> : 
-      activeView === 'dashboard' ? <DashboardView onIconClick={handleIconClick} theme={theme} /> :
-      activeView === 'live' ? <LiveView theme={theme} /> :
-      <AnalyticsView theme={theme} />}
       
   // Event listener for auth
   Hub.listen('auth', ({ payload }) => {
@@ -93,12 +84,12 @@ function App() {
 
   return ( isSignedIn ?
     <div className="container">
-      <SearchBar activeView={activeView} onIconClick={handleIconClick} />
+      <SearchBar activeView={activeView} theme={theme} onIconClick={handleIconClick} />
       {/* Render appropriate view based on activeView state */}
-      {activeView === 'map' ? <MapView /> : 
-       activeView === 'dashboard' ? <DashboardView onIconClick={handleIconClick}/> :
-       activeView === 'live' ? <LiveView /> :
-       <AnalyticsView />}
+      {activeView === 'map' ? <MapView  theme={theme} map_key={map_key} activeView={activeView}/> : 
+       activeView === 'dashboard' ? <DashboardView onIconClick={handleIconClick} theme={theme}/> :
+       activeView === 'live' ? <LiveView theme={theme}/> :
+       <AnalyticsView theme={theme}/>}
     </div> : 
     <div className='container-login'>
         <LoginView></LoginView>

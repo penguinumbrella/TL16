@@ -22,6 +22,7 @@ import CustomTooltip from "./customToolTip";
 
 import { addDays, addWeeks } from "date-fns";
 import { getTimezoneOffset } from 'date-fns-tz'
+import { getAuthToken } from "../../getAuthToken";
 
 
 
@@ -169,7 +170,11 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
           return;
         }
         else {
-          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`, {
+            headers: {
+              'Authorization': `Bearer ${getAuthToken()}`
+            }
+          });
           const data = response.data;
           data.forEach((dataPoint) => {
             const item = cleanData.find(obj => obj['name'] == formatUnixTimestamp(dataPoint['TimestampUnix']))
@@ -196,7 +201,11 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
           return;
         }
         else {
-          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`, {
+            headers: {
+              'Authorization': `Bearer ${getAuthToken()}`
+            }
+          });
           const data = response.data;
           // fix data.date to match cleanData's objects format
           data.forEach((dataPoint) => {
@@ -229,7 +238,11 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
           return;
         }
         else {
-          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`, {
+            headers: {
+              'Authorization': `Bearer ${getAuthToken()}`
+            }
+          });
           const data = response.data;
           data.forEach((dataPoint) => {
             const item = cleanData.find(obj => obj['name'] == `${formatDateString(dataPoint.week_start_date.split('T')[0])} - ${formatDateString(dataPoint.week_end_date.split('T')[0])}`)
