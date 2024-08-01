@@ -4,43 +4,26 @@ import WeatherIcon from './weatherIcon/weatherIcon/weatherIcon';
 import TimeSlider from './timeSlider/timeSlider';
 import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import Map from './map/Map.js';
-
-import parkadeIcon from "./../../assets/parkadeIcon.png";
-import parkadeIconPicked from './../../assets/parkadeIconPicked.png';
-import accessibilityIcon from './../../assets/accessibilityIcon.png';
-import accessibilityIconPicked from './../../assets/accessibilityIconPicked.png';
-import loadingZoneIcon from './../../assets/loadingZoneIcon.png';
-import loadingZoneIconPicked from './../../assets/loadingZoneIconPicked.png';
-
 import axios from 'axios';
 import { getAuthToken } from '../../getAuthToken.js';
 
-const MapView = () => {
-  const PORT = 8080;
+const MapView = ({ map_key , activeView, theme}) => {
+  const defaultCenter = { lat: 49.262141, lng: -123.247360 };
+  const zoom = 15;
 
   const [iconsVisible, setIconsVisible] = useState(true);
   const [weatherData, setWeatherData] = useState(null);
   const [selectedOption, setSelectedOption] = useState('parkades');
   const [activeIndex, setActiveIndex] = useState('');
   const [currentTime, setCurrentTime] = useState(new Date());
-
+  const [sliderEndTime, setSliderEndTime] = useState(new Date());
   const [accOccupancyStatus, setAccOccupancyStatus] = useState('');
+  const [mapCenter, setMapCenter] = useState(defaultCenter);
 
   const toggleIconsVisibility = () => {
+    console.log(selectedOption)
     setIconsVisible(!iconsVisible);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch('/api');
-        console.log(await res.json());
-      } catch (err) {
-        console.log("Frontend Only");
-      }
-    };
-    fetchData();
-  }, []);
 
   const fetchWeatherData = async (time) => {
     try {
@@ -56,36 +39,55 @@ const MapView = () => {
   };
 
   useEffect(() => {
-    fetchWeatherData(currentTime);
-  }, [currentTime]);
+    console.log("CHANGED ACTIVEVIEW")
+    if (activeView === 'map') {
+      console.log("ACTIVE VIEW IS MAP")
+      // Function to fetch weather data
+      //const newDate = new Date();
+      //newDate.setMinutes(0,0,0);
+      //console.log(newDate);
+      const newDate = new Date(2024, 5, 0, 12, 0, 0, 0);
+
+      // Fetch weather data when component mounts
+      fetchWeatherData(newDate);
+    }
+  }, [activeView]);
+
+  useEffect(() => {
+    // Fetch weather data whenever the sliderEndTime changes
+    fetchWeatherData(sliderEndTime);
+  }, [sliderEndTime]); // Dependency on sliderEndTime
 
   const handleOptionChange = (event) => {
-    if(event.target.value === 'accessibility'){
+    if (event.target.value === 'accessibility') {
       fetch(`/api/elevenX`)
       .then(response => response.json())
       .then(data => {
         setSelectedOption(event.target.value);
         setActiveIndex(''); // Reset the active index
         setAccOccupancyStatus(data);
-        console.log(data);
       })
       .catch(error => {
-        console.error('Error in onClickLGBM:', error);
+        console.error('Error in api/elevenX:', error);
       });
       
     } else{
       setSelectedOption(event.target.value);
       setActiveIndex(''); // Reset the active index
-
     }
   };
 
   const handleTimeChange = (newTime) => {
     setCurrentTime(newTime);
   };
+
+  const handleEndTimeChange = (newTime) => {
+    setSliderEndTime(newTime);
+  };
+
   
-  const defaultCenter = { lat: 49.262141, lng: -123.247360 };
-  const zoom = 15;
+
+
 
   return (
     <div className='mapView'>
@@ -99,7 +101,8 @@ const MapView = () => {
               condition={weatherData.weather_main}
               description={weatherData.weather_desc}
             />
-            <TimeSlider onTimeChange={handleTimeChange} />
+            <TimeSlider onTimeChange={handleTimeChange} onSliderRelease={handleEndTimeChange} />
+            <div class="currentTimesTampBox"> {currentTime.toLocaleString()} </div>
           </>
         )}
 
@@ -116,7 +119,7 @@ const MapView = () => {
                id="parkades"
                name="options"
                value="parkades"
-               defaultChecked
+               checked={"parkades" === selectedOption} 
                onChange={handleOptionChange}
              />
              <label htmlFor="parkades" style={{ color: 'red' }}>Parkades</label>
@@ -127,6 +130,7 @@ const MapView = () => {
                id="loading_zones"
                name="options"
                value="loading_zones"
+               checked={"loading_zones" === selectedOption}
                onChange={handleOptionChange}
              />
              <label htmlFor="loading_zones">Loading Zones</label>
@@ -137,6 +141,7 @@ const MapView = () => {
                id="accessibility"
                name="options"
                value="accessibility"
+               checked={"accessibility" === selectedOption}
                onChange={handleOptionChange}
              />
              <label htmlFor="accessibility">Accessibility</label>
@@ -151,8 +156,19 @@ const MapView = () => {
         
         )}
 
-        <Map selectedOption={selectedOption} setActiveIndex={setActiveIndex} zoom={zoom} center={defaultCenter} timestamp={currentTime} accOccupancyStatus={accOccupancyStatus}/>
+        <Map
+          selectedOption={selectedOption}
+          setActiveIndex={setActiveIndex}
+          zoom={zoom}
+          center={mapCenter}
+          timestamp={sliderEndTime}
+          accOccupancyStatus={accOccupancyStatus}
+          map_key={map_key}
+          theme ={theme}
+          setMapCenter = {setMapCenter}
+        />
       </div>
+      
     </div>
   );
 };

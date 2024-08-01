@@ -1,11 +1,12 @@
 import React from 'react';
 import {MarkerF , InfoWindowF} from '@react-google-maps/api';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Diagram from '../../../diagrams/Diagram'
-import './MarkerWithInfoWindow.css'
+import styles from './MarkerWithInfoWindow.css'
 import './extraStyling.css'
 
 import FutureDiagram from '../../../diagrams/FutureDiagram';
+import axios from 'axios';
 
 
 // This does not work consistantly 
@@ -21,6 +22,16 @@ import accessibilityIconOccupied from './../../../../assets/accessibilityIconOcc
 import loadingZoneIcon from './../../../../assets/loadingZoneIcon.png'
 import loadingZoneIconPicked from './../../../../assets/loadingZoneIconPicked.png'
 
+import parkadeIcon_25 from './../../../../assets/parkadeIcon_25.png'
+import parkadeIcon_50 from './../../../../assets/parkadeIcon_50.png'
+import parkadeIcon_75 from './../../../../assets/parkadeIcon_75.png'
+import parkadeIcon_100 from './../../../../assets/parkadeIcon_100.png'
+
+function updateCSSVariables(varName, primaryColor) {
+  document.documentElement.style.setProperty(varName, primaryColor);
+}
+
+// Example usage
 
 
 /*
@@ -52,13 +63,139 @@ const MarkerWithInfoWindow = ({
   // mapCenter, // New prop to pass the map's center
   // setMapCenter, // Function to update the map's center
   clusterer,
+  setMarkerPosition,
   timestamp,
   vacant,
-  payload_timestamp
+  payload_timestamp,
+  theme
+  
 }) => {
+    
+
+
+    // Define icon sizes
+    const smallIconSize = new window.google.maps.Size(20, 20);
+    const largeIconSize = new window.google.maps.Size(25, 25);
+
+    // const [occupancyPercentage, setOccupancyPercentage] = useState(0);
+   
+    // let i = 0;
+    // setInterval(()=>{
+    //   if (i === 0){
+    //     updateCSSVariables('--info-window-contents_h2_color','#000');
+    //     updateCSSVariables('--info-window-contents_background-color','#8d8e9e');
+    //     updateCSSVariables('--gm-style_gm-style-iw-c_background-color','#8d8e9e');
+    //     updateCSSVariables('--gm-style_gm-style-iw-tc__after_background','#8d8e9e');
+    //     i = 1;
+    //   }else{
+    //     updateCSSVariables('--info-window-contents_h2_color','#fff');
+    //     updateCSSVariables('--info-window-contents_background-color','#000');
+    //     updateCSSVariables('--gm-style_gm-style-iw-c_background-color','#000');
+    //     updateCSSVariables('--gm-style_gm-style-iw-tc__after_background','#000');
+    //     i = 0;
+    //   }
+
+      
+      
+    // }, 100); 
+
+    const TABLES = {
+      'Fraser River': 'FraserParkade',
+      'North': 'NorthParkade',
+      'West': 'WestParkade',
+      'Health Sciences': 'HealthSciencesParkade',
+      'Thunderbird': 'ThunderbirdParkade',
+      'University West Blvd': 'UnivWstBlvdParkade',
+      'Rose Garden': 'RoseGardenParkade'
+    }
+
+    const theme_vars =[
+      '--info-window-contents_h2_color',
+      '--info-window-contents_background-color',
+      '--gm-style_gm-style-iw-c_background-color',
+      '--gm-style_gm-style-iw-tc__after_background',
+      '--info-window-diagrams_h3'
+    ]
+
+    const theme_colors ={
+      'dark' : ['#fff','#000','#000','#000', '#9c9fbb'],
+      'light': ['#000','#8d8e9e','#8d8e9e','#8d8e9e', '#fff'],
+    }
+
+
+
+
+  
+    const formatTimestampToUnix = (date) => {
+      // Convert the date to Unix timestamp in seconds
+      const unixTimestamp = Math.floor(date.getTime() / 1000);
+      // console.log(unixTimestamp);
+      return unixTimestamp;
+    };
+
+
+    // We want to change the parakde icon based on the current occupancy green -> yellow -> orange -> red
+    // where each colour is 25%
+    const [currentParkadeIcon, setCurrentParkadeIcon] = useState(parkadeIcon);
+
+    useEffect(() => {
+      const printOccupancy = async ()=>{
+
+        if(iconImage == 'parkades'){
+          // Get the current occupancy and max capacity of the current parkade
+          let query=`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`
+          let data = (await axios.get(`/executeQuery?query=${query}`)).data;
+          let capacity = data[0]['Capacity'];
+          let occupied = data[0]['Vehicles'];
+
+          let occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
+
+          if(occupancyPercentage <= 25)
+            setCurrentParkadeIcon(parkadeIcon_25);
+
+          else if(occupancyPercentage <= 50)
+            setCurrentParkadeIcon(parkadeIcon_50);
+
+          else if(occupancyPercentage <= 75)
+            setCurrentParkadeIcon(parkadeIcon_75);
+
+          else if(occupancyPercentage <= 100)
+            setCurrentParkadeIcon(parkadeIcon_100);
+
+          else 
+            setCurrentParkadeIcon(parkadeIcon);
+
+          // console.log(`${content} : ${occupancyPercentage}`);
+        
+        
+        }
+      }
+      // Whenever the user changes the timestamp using the time slider 
+      // update the occupancy
+      if(timestamp){
+        printOccupancy();
+      }
+
+      if(infoWindowShown){
+        // console.log("infoWindowShown changed")
+        if(infoWindowShown === true)
+          setMarkerPosition(position)
+      }
+      
+      if(theme){
+          for(let i = 0; i<5; i++)
+            updateCSSVariables(theme_vars[i],theme_colors[theme][i]);
+      }
+      
+    
+    }, [timestamp, infoWindowShown, theme]);
+
+
+
+
   // Define icon paths
   const iconPaths = {
-    parkades: { icon: parkadeIcon, pickedIcon: parkadeIconPicked },
+    parkades: { icon: currentParkadeIcon, pickedIcon: parkadeIconPicked },
     accessibility: { icon: (vacant ? accessibilityIcon : accessibilityIconOccupied), pickedIcon: accessibilityIconPicked },
     loading_zones: { icon: loadingZoneIcon, pickedIcon: loadingZoneIconPicked },
   };
@@ -66,26 +203,7 @@ const MarkerWithInfoWindow = ({
   // Select icon based on iconImage
   const { icon, pickedIcon } = iconPaths[iconImage] || iconPaths.parkades;
 
-  // Define icon sizes
-  const smallIconSize = new window.google.maps.Size(20, 20);
-  const largeIconSize = new window.google.maps.Size(25, 25);
 
-  const TABLES = {
-    'Fraser River': 'FraserParkade',
-    'North': 'NorthParkade',
-    'West': 'WestParkade',
-    'Health Sciences': 'HealthSciencesParkade',
-    'Thunderbird': 'ThunderbirdParkade',
-    'University West Blvd': 'UnivWstBlvdParkade',
-    'Rose Garden': 'RoseGardenParkade'
-  }
-
-  const formatTimestampToUnix = (date) => {
-    // Convert the date to Unix timestamp in seconds
-    const unixTimestamp = Math.floor(date.getTime() / 1000);
-    console.log(unixTimestamp);
-    return unixTimestamp;
-  };
   
   let formattedTimestamp;
   // Usage
@@ -108,7 +226,7 @@ const MarkerWithInfoWindow = ({
   return (
     <MarkerF
       icon={{
-        url: infoWindowShown ? pickedIcon : icon,
+        url: infoWindowShown ? pickedIcon : icon, 
         scaledSize: infoWindowShown ? largeIconSize : smallIconSize,
       }}
       //animation={infoWindowShown ? window.google.maps.Animation.BOUNCE : null}
@@ -135,11 +253,12 @@ const MarkerWithInfoWindow = ({
             <div className="info-window-diagrams">
               {selectedOption === "parkades" &&
 
-              <div className='parkadeWindow'>
+              <div className='parkadeWindow' >
                  {!isTimestampPastThreshold ? (
                     <>
                       <div className='occupancy-chart'>
                         <Diagram
+                          mapView={true}
                           className='occupancy-pie'
                           
                           type={'OCCUPANCY_PIE'}
@@ -153,6 +272,7 @@ const MarkerWithInfoWindow = ({
                       </div>
                       <div className='compliance-chart'>
                         <Diagram
+                          mapView={true}
                           className='compliance-pie'
                           
                           type={'COMPLIANCE_PIE'}
@@ -169,6 +289,7 @@ const MarkerWithInfoWindow = ({
                     <>
                       <div className='occupancy-chart'>
                         <FutureDiagram
+                          mapView={true}
                           className='occupancy-pie'
                           timestamp={timestamp}
                           parkade={content}
@@ -183,6 +304,7 @@ const MarkerWithInfoWindow = ({
                       </div>
                       <div className='compliance-chart'>
                         <FutureDiagram
+                          mapView={true}
                           className='compliance-pie'
                           timestamp={timestamp}
                           parkade={content}
@@ -197,6 +319,7 @@ const MarkerWithInfoWindow = ({
                       </div>
                     </>
                   )}
+
               </div>
               }
               {

@@ -5,7 +5,7 @@ import BarGraphComponent from './BarGraph/BarGraphComponent';
 import axios from 'axios';
 import { getAuthToken } from '../../getAuthToken';
 
-const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value"}) => {
+const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme, mapView}) => {
 
   const [diagData, setDiagData] = useState([]);
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
@@ -27,15 +27,15 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
       { name: 'Group E', value_1: 1000, value_2: 200, value_3: 300}
   ] // sample
 
-  const COLORS = ['#787878', '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#0FA122']; // TBD
+  const COLORS = ['#787878', '#007ae6', '#00b392', '#e69d00', '#ff661a', '#0FA122']; // TBD
 
   const getData = (query) => {
+
     const data = axios.get(`/executeQuery?query=${query}`, {
       headers: {
         'Authorization': `Bearer ${getAuthToken()}`
       }
     });
-    console.log(query);
     return DATA;
   }
 
@@ -65,7 +65,6 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
     }
     if (dataOverride.length == 0)
       getData();
-  
   }, []);
 
   const options = {
@@ -78,87 +77,63 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
   
   let toRender;
 
+
+  let innerRadius_1 = mapView ? 85 : "85%";
+  let innerRadius_2 = mapView ? 50 : "85%";
+  let outerRadius_1 = mapView ? 90 : "95%";
+  let outerRadius_2 = mapView ? 55 : "95%";
+
+
   switch(type) {
-    case 'PH_OCCUPANCY_PIE': 
-        toRender = <>
-            <PieChartComponent 
-              data={dataOverride} 
-              colors={COLORS} 
-              height={height} 
-              width={width} 
-              title={title} 
-              innerRadius={50}
-              outerRadius={55}
-              percentageCenter={0}
-              startAngle={90}
-              endAngle={450}
-              startColor="#888"
-              className='pie-chart'>
-            </PieChartComponent>
-            </>
-        break;
-    case 'PH_COMPLIANCE_PIE': 
-        toRender = <>
-            <PieChartComponent 
-              data={dataOverride} 
-              colors={COLORS} 
-              height={height} 
-              width={width} 
-              title={title} 
-              innerRadius={35}
-              outerRadius={40}
-              percentageCenter={0}
-              startAngle={90}
-              endAngle={450}
-              startColor="#888">
-            </PieChartComponent>
-            </>
-        break;
       case 'OCCUPANCY_PIE': 
         toRender = <>
             <PieChartComponent 
+              mapView = {mapView}
+              base_font_size={25}
               data={dataOverride.length != 0 ? dataOverride : diagData}
               colors={COLORS} 
               height={height} 
               width={width} 
               title={title} 
-              innerRadius={85}
-              outerRadius={90}
+              innerRadius={innerRadius_1}
+              outerRadius={outerRadius_1}
               percentageCenter={occupancyPercentage}
               startAngle={90}
               endAngle={450}
               startColor="#888"
-              base_font_size={25}
-              className='pie-chart'>
+              className='pie-chart'
+              theme={theme}>
             </PieChartComponent>
             </>
         break;
       case 'COMPLIANCE_PIE': 
         toRender = <>
             <PieChartComponent 
+              mapView = {mapView}
+              base_font_size={15}
               data={dataOverride.length != 0 ? dataOverride : diagData} 
               colors={COLORS} 
               height={height} 
               width={width} 
               title={title} 
-              innerRadius={50}
-              outerRadius={55}
+              innerRadius={innerRadius_2}
+              outerRadius={outerRadius_2}
               percentageCenter={occupancyPercentage}
               startAngle={90}
               endAngle={450}
-              base_font_size={15}
-              startColor="#888">
+              startColor="#888"
+              theme={theme}>
             </PieChartComponent>
             </>
         break;
     case 'LINE':
         toRender = <>
-          <LineGraphComponent data={dataOverride.length != 0 ? dataOverride : diagData} height={height} width={width} title={title} customToolTip={customToolTip} dataKeyY={dataKeyY}></LineGraphComponent>
+          <LineGraphComponent data={dataOverride.length != 0 ? dataOverride : diagData} height={height} width={width} title={title} customToolTip={customToolTip} dataKeyY={dataKeyY} capacity={capacity}></LineGraphComponent>
         </>
         break;
     case 'BAR':
       toRender = <>
-          <BarGraphComponent data={BAR_DATA} height={height} width={width} title={title}></BarGraphComponent>
+          <BarGraphComponent data={dataOverride.length != 0 ? dataOverride : diagData} height={height} width={width} title={title} customToolTip={customToolTip} dataKeyY={dataKeyY} capacity={capacity}></BarGraphComponent>
         </>
         break;
         

@@ -1,35 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { GoogleMap, useJsApiLoader, MarkerClusterer } from '@react-google-maps/api';
 import MarkerWithInfoWindow from './MarkerWithInfoWindow/MarkerWithInfoWindow';
 import mapMarkers from './coordinates.json';
 import initialMarkerData from '../../../markerData.json';
 import './map.css'; // Add a CSS file to handle the styling
 
-
-
+import checkIsOutOfBounds from './outOfBounds.js'
 import mapStyleDark from './mapStyleDark.json'
+import mapStyleLight from './mapStyleLight.json'
 
-const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccupancyStatus}) => { // Accept setActiveIndex as a prop
+
+
+const Map = ({ selectedOption, setActiveIndex, zoom, center, timestamp, accOccupancyStatus, map_key, theme, setMapCenter}) => { // Accept setActiveIndex as a prop
   const [activeIndex, setActiveIndexState] = useState('');
   const [markerData, setMarkerDataData] = useState(initialMarkerData);
+  const [markerPosition, setMarkerPosition] =  useState(center);
+  const [map, setMap] = useState(null);
+
+  // Callback to handle map center changes
+  const onMapLoad = useCallback((mapInstance) => {
+    setMap(mapInstance);
+  }, []);
+
+  useEffect(() => {
+    if(theme && isLoaded){
+      setMapCenter(map.getCenter().toJSON());
+    }
+    
+  }, [theme]);
 
 
-  const { isLoaded } = useJsApiLoader({
+
+  if(activeIndex){
+    setTimeout(() =>{
+      const newPosition = checkIsOutOfBounds(map.getCenter().toJSON(),  map.getZoom());
+      
+      map.panTo(newPosition)
+         
+    }, 500);
+    
+  }
+
+  var { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: process.env.REACT_APP_MAPS_KEY,
+    googleMapsApiKey: map_key,
     libraries: ['geometry', 'drawing'],
   });
 
-  const mapOptions = {
-    // center: mapCenter,
-    // zoom: zoom,
+  let mapOptions = {
     draggable: true,
     zoomControl: false,
     disableDoubleClickZoom: true,
     disableDefaultUI: true,
     scrollwheel: true,
     streetViewControl: false,
-    styles: mapStyleDark // doesnt seem to work with free api key
+    styles : (theme === 'dark') ? mapStyleDark : mapStyleLight
   };
 
   // Get the accessibilty stalls information
@@ -65,18 +90,10 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccu
     setActiveIndex(''); // Reset parent state when selectedOption changes
   }, [selectedOption, setActiveIndex]);
 
-  const TABLES = {
-    'Fraser Parkade': 'FraserParkade',
-    'North Parkade': 'NorthParkade',
-    'West Parkade': 'WestParkade',
-    'Health Sciences Parkade': 'HealthSciencesParkade',
-    'Thunderbird Parkade': 'ThunderbirdParkade',
-    'University West Blvd': 'UnivWstBlvdParkade',
-    'Rose Garden Parkade': 'RoseGardenParkade'
-  }
+
   return (
       <div className="map-container">
-        {isLoaded && <GoogleMap mapContainerStyle={{position: 'fixed', top: 0, right: 0, width: '100%', height: '100%' }} options={mapOptions} center={center} zoom={zoom} >
+        {isLoaded && <GoogleMap mapContainerStyle={{position: 'fixed', top: 0, right: 0, width: '100%', height: '100%' }} options={mapOptions} center={center} zoom={zoom} onLoad={onMapLoad} >
         {((selectedOption === 'accessibility'  )  && <MarkerClusterer
                   gridSize={50}
                   maxZoom={17}
@@ -100,9 +117,9 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccu
                       exit={() => setActiveIndexState('')}
                       iconImage={selectedOption}
                       data={getMarkerData(selectedOption, item.name)}
-                      // mapCenter={mapCenter}
-                      // setMapCenter={setMapCenter} // Ensure setMapCenter is passed
                       clusterer={clusterer}
+                      setMarkerPosition ={setMarkerPosition}
+                      theme = {theme}
 
                       // Right now there are stalls missing so they are undefined
                       // for these stalls they are set to occupied and right now a string that says [stall data is missing]
@@ -129,8 +146,8 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccu
                     iconImage={selectedOption}
                     data={getMarkerData(selectedOption, item.name)}
                     timestamp = {timestamp}
-                    // mapCenter={mapCenter}
-                    // setMapCenter={setMapCenter} // Ensure setMapCenter is passed
+                    setMarkerPosition ={setMarkerPosition}
+                    theme = {theme}
                   />)}))
                 }
         </GoogleMap>}
@@ -139,3 +156,6 @@ const Map = ({ selectedOption, setActiveIndex , zoom, center, timestamp, accOccu
 };
 
 export default Map;
+
+
+//gm-style-iw-chr

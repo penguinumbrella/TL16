@@ -10,10 +10,12 @@ const cors = require("cors");
 const fs = require('fs');
 const csv = require('csv-parser');
 const { spawn } = require('child_process');
+const { exec } = require('child_process');
 
 const PORT = 8080;
 
 const app = express();
+app.use(express.json());
 
 const config = {
   "user": process.env.DB_USERNAME, // Database username
@@ -27,6 +29,8 @@ const config = {
   "cognitoPoolId": process.env.USER_POOL_ID,
   "region": process.env.REGION
 }
+
+const x_11_key = process.env.X_11_KEY;
 
 const executeQuery = async (query) => {
   const result = await sql.query(query);
@@ -258,6 +262,43 @@ app.get('/api/LGBM_short',  async (req, res) => {
   
 });
 
+app.post('/api/LGBM_longterm_predict', (req, res) => {
+  const { startDate, endDate, parkade } = req.body;
+
+  if (!startDate || !endDate || !parkade) {
+      return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  // Construct the command to run the Python script
+  const scriptPath = path.join(__dirname, 'LightGBM/longterm/predict.py');
+  const command = `python "${scriptPath}" "${startDate}" "${endDate}" "${parkade}"`;
+
+  // console.log(`Running command: ${command}`);
+  //const newScriptPath = path.join(__dirname, 'test.py');
+
+  //const newCommand = `python "${newScriptPath}"`; // Adjust the path
+
+  console.log(`Running command: ${command}`);
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+        console.log("error1")
+        console.error(`exec error: ${error}`);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+
+    if (stderr) {
+        console.log("error2")
+        console.error(`stderr: ${stderr}`);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+    console.log('error3')
+    console.log(`stdout: ${stdout}`);
+    res.json({ message: 'Prediction done successfully!'});
+});_
+
+});
+
+
 //---------------------------------------------
 
 // Prediction for the long term because there were some missing dates in the lgbm file
@@ -298,19 +339,23 @@ app.get('/api/baseline_predict', (req, res) => {
 
   }
 });
+//---------------------------------------------
+
+
+app.get('/api/maps_key', (req, res) => {
+
+  res.json({map_key :  process.env.REACT_APP_MAPS_KEY})
+});
 
 //---------------------------------------------
 
 // This is for getting the accessibility stalls' status and time stamp
-// from eleven-x although currently it is from a csv file
-// later it will run the python script and make the necessary API calls
-// to get up to date data
 app.get('/api/elevenX',  async (req, res) => {
   try{
     const getCSVData = async ()=>{
       return new Promise((resolve,reject) =>{
       
-        filePath = `./tempCSV/stall_current_status_unique.csv`;
+        filePath = `./x_11/stalls_data.csv`;
 
         // Temporary array to hold the data
         let streamData = []
@@ -353,6 +398,31 @@ app.get('/api/elevenX',  async (req, res) => {
   
 });
 
+//-------------------------------------------------------------------------------
+
+const get_elevenX = ()=>{
+  try{
+    // Run the elevenX script which will update the csv file
+    const pythonProcess = spawn('python', [`x_11/get_stalls_data.py`, x_11_key], {
+      stdio: ['ignore', 'inherit', 'inherit'] // Ignore stdin, inherit stdout and stderr
+    });
+    pythonProcess.on('exit', () => {
+      try{
+        console.log("Stalls data updataed")
+
+      }catch(e){
+        console.error(`Error executing Python get_stalls_data.py`);
+        console.log(e);
+      }
+      
+    });
+
+  }catch(e){
+    console.log(e)
+    
+  }
+}
+
 
 //-------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------
@@ -360,4 +430,7 @@ app.get('/api/elevenX',  async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
+
+  // Update the accessibilty data every 10 minutes
+  setInterval(get_elevenX, 1000 * 60 * 10);
 });

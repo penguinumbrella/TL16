@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Tabs.css';
 
-const Tabs = ({ tabs }) => {
+const Tabs = ({ tabs, theme }) => {
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabClick = (index) => {

@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './liveView.css';
 import { WarningTwoIcon } from '@chakra-ui/icons';
-
-import { ReactComponent as PhGraphOccupancy } from '../../icons/placeholder-occ.svg';
-import { ReactComponent as PhGraphCompliance } from '../../icons/placeholder-com.svg';
-
-import { ReactComponent as DataOutageCompliance } from '../../icons/data-outage-com.svg';
-import { ReactComponent as DataOutageOccupancy } from '../../icons/data-outage-occ.svg';
-
 import Diagram from '../diagrams/Diagram';
 import axios from 'axios';
 import { formatUnixTimestamp } from '../../time';
@@ -21,35 +14,26 @@ const TABLES = {
   'Thunderbird Parkade': 'ThunderbirdParkade',
   'University West Blvd': 'UnivWstBlvdParkade',
   'Rose Garden Parkade': 'RoseGardenParkade'
-}
+};
 
 const transformData = (data) => {
+  const available = data[0]['Capacity'] - data[0]['Vehicles'] 
+  const occupied = Math.ceil(0.5 * data[0]['Vehicles'])
+
   return [
-    {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
-    {name: 'Occupied', value: data[0]['Vehicles']}
+    { name: 'Available', value: available},
+    { name: 'Occupied', value: occupied},
   ];
-}
+};
 
-
-const LiveView = () => {
-  // Define the initial data status for each parkade
-  const [dataStatus, setDataStatus] = useState({
-    northParkade: false,
-    westParkade: true,
-    roseParkade: false,
-    healthParkade: false,
-    fraserParkade: false,
-    thunderbirdParkade: false,
-    universityWestBlvd: false
-  });
-
-  const [lastUpdateNorth, setLastUpdateNorth] = useState('')
-  const [lastUpdateWest, setLastUpdateWest] = useState('')
-  const [lastUpdateThunderbird, setLastUpdateThunderbird] = useState('')
-  const [lastUpdateFraser, setLastUpdateFraser] = useState('')
-  const [lastUpdateHealth, setLastUpdateHealth] = useState('')
-  const [lastUpdateUnivWst, setLastUpdateUnivWst] = useState('')
-  const [lastUpdateRose, setLastUpdateRose] = useState('')
+const LiveView = ({ theme }) => {
+  const [lastUpdateNorth, setLastUpdateNorth] = useState('');
+  const [lastUpdateWest, setLastUpdateWest] = useState('');
+  const [lastUpdateThunderbird, setLastUpdateThunderbird] = useState('');
+  const [lastUpdateFraser, setLastUpdateFraser] = useState('');
+  const [lastUpdateHealth, setLastUpdateHealth] = useState('');
+  const [lastUpdateUnivWst, setLastUpdateUnivWst] = useState('');
+  const [lastUpdateRose, setLastUpdateRose] = useState('');
 
   const stateMap = {
     'Fraser Parkade': [lastUpdateFraser, setLastUpdateFraser],
@@ -59,7 +43,7 @@ const LiveView = () => {
     'Thunderbird Parkade': [lastUpdateThunderbird, setLastUpdateThunderbird],
     'University West Blvd': [lastUpdateUnivWst, setLastUpdateUnivWst],
     'Rose Garden Parkade': [lastUpdateRose, setLastUpdateRose]
-  }
+  };
 
   useEffect(() => {
     const getLastUpdated = async (parkadeName) => {
@@ -69,20 +53,28 @@ const LiveView = () => {
         }
       });
       const data = response.data;
-      stateMap[parkadeName][1](data[0]['TimestampUnix'])
+      stateMap[parkadeName][1](data[0]['TimestampUnix']);
     };
     Object.keys(stateMap).forEach((parkade) => {
       getLastUpdated(parkade);
-    })
-  }, [])
+    });
+  }, []);
 
-  const generateChartBox = (parkadeName, dataStatus, lastUpdate) => {
-    console.log(lastUpdate[parkadeName]);
+  const isRecentUpdate = (timestamp) => {
+    const currentTime = Date.now();
+    const updateTime = timestamp * 1000;
+    const timeDifference = currentTime - updateTime;
+    return timeDifference < 15 * 60 * 1000;
+  };
+
+  const generateChartBox = (parkadeName, lastUpdate) => {
+    const showWarning = !isRecentUpdate(lastUpdate);
+
     return (
       <div className='chart-box'>
         <div className='chart-header'>
           <span className='parkade-name'>{parkadeName}</span>
-          {dataStatus && (
+          {showWarning && (
             <div className='warning-sign'>
               <WarningTwoIcon color='#FFD583' boxSize={30} />
               <div className='warning-tooltip'>{`Not updated for more than 15 minutes, since: ${formatUnixTimestamp(lastUpdate)}`}</div>
@@ -90,54 +82,17 @@ const LiveView = () => {
           )}
         </div>
         <div className='chart-content'>
-          {dataStatus ? (
-            <>
-                <div className='occupancy-chart'>
-                <Diagram className = 'occupancy-pie' type={'OCCUPANCY_PIE'} height={300} width={300} title="Occupancy" hasLegend={false}
-                query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-
-                               
-                  <div className='last-update' style={{padding: '10px'} }>
-                    <span style={{ fontSize: '15px' }}>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
-                  </div>
-                </div>
-
-                
-            
-                
-              
-              <div className='compliance-chart'>
-                <Diagram className = 'compliance-pie' type={'COMPLIANCE_PIE'} height={150} width={150} title="Compliance" hasLegend={false}
-                query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-
-
-              </div>
-                
-              {/*<div className='large-placeholder'><PhGraphOccupancy /></div>*/}
-              {/*<div className='small-placeholder'><PhGraphCompliance /></div>*/}
-            </>
-          ) : (
-            <>
-            
-                <div className='occupancy-chart'>
-                <Diagram className = 'occupancy-pie' type={'OCCUPANCY_PIE'} height={300} width={300} title="Occupancy" hasLegend={false}
-                query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-
-<div className='last-update' style={{padding: '10px'} }>
-<span style={{ fontSize: '15px' }}>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
-
-</div>
-                </div>
-
-                <div className='compliance-chart'>
-                <Diagram className = 'compliance-pie' type={'COMPLIANCE_PIE'} height={150} width={150} title="Compliance" hasLegend={false}
-                query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData}/>
-              </div>
-              
-              {/*<div className='large-placeholder'><PhGraphOccupancy /></div>*/}
-              {/*<div className='small-placeholder'><PhGraphCompliance /></div>*/}
-            </>
-          )}
+          <div className='occupancy-chart'>
+            <Diagram className='occupancy-pie' type={'OCCUPANCY_PIE'} height="100%" width="100%" title="Occupancy" hasLegend={false}
+              query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData} mapView={false}/>
+          </div>
+          <div className='compliance-chart'>
+            <Diagram className='compliance-pie' type={'COMPLIANCE_PIE'} height="100%" width="100%" title="Compliance" hasLegend={false}
+              query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData} mapView={false}/>
+          </div>
+        </div>
+        <div className='last-update'>
+          <span style={{ fontSize: '15px' }}>{`Last Updated: ${formatUnixTimestamp(lastUpdate)}`}</span>
         </div>
       </div>
     );
@@ -146,13 +101,13 @@ const LiveView = () => {
   return (
     <div className='liveView'>
       <div className='charts'>
-        {generateChartBox('North Parkade', dataStatus.northParkade, stateMap['North Parkade'][0])}
-        {generateChartBox('West Parkade', dataStatus.westParkade, stateMap['West Parkade'][0])}
-        {generateChartBox('Rose Garden Parkade', dataStatus.roseParkade, stateMap['Rose Garden Parkade'][0])}
-        {generateChartBox('Health Sciences Parkade', dataStatus.healthParkade, stateMap['Health Sciences Parkade'][0])}
-        {generateChartBox('Fraser Parkade', dataStatus.fraserParkade, stateMap['Fraser Parkade'][0])}
-        {generateChartBox('Thunderbird Parkade', dataStatus.thunderbirdParkade, stateMap['Thunderbird Parkade'][0])}
-        {generateChartBox('University West Blvd', dataStatus.universityWestBlvd, stateMap['University West Blvd'][0])}
+        {generateChartBox('North Parkade', lastUpdateNorth)}
+        {generateChartBox('West Parkade', lastUpdateWest)}
+        {generateChartBox('Rose Garden Parkade', lastUpdateRose)}
+        {generateChartBox('Health Sciences Parkade', lastUpdateHealth)}
+        {generateChartBox('Fraser Parkade', lastUpdateFraser)}
+        {generateChartBox('Thunderbird Parkade', lastUpdateThunderbird)}
+        {generateChartBox('University West Blvd', lastUpdateUnivWst)}
       </div>
       <div className='keys'>
         <div className='key'>
@@ -185,21 +140,19 @@ const LiveView = () => {
           <span className='key-label'>Compliance:</span>
           <div className='key-list'>
             <div className='key-item'>
-                <span className='key-circle' style={{ backgroundColor: '#FFD583' }}></span>
-                <span className='key-description'>pay station</span>
-              </div>
-              <div className='key-item'>
-                <span className='key-circle' style={{ backgroundColor: '#BAEFFF' }}></span>
-                <span className='key-description'>honk</span>
-              </div>
-              <div className='key-item'>
-                <span className='key-circle' style={{ backgroundColor: '#F765A3' }}></span>
-                <span className='key-description'>violation</span>
-              </div>
-
+              <span className='key-circle' style={{ backgroundColor: '#FFD583' }}></span>
+              <span className='key-description'>pay station</span>
+            </div>
+            <div className='key-item'>
+              <span className='key-circle' style={{ backgroundColor: '#BAEFFF' }}></span>
+              <span className='key-description'>honk</span>
+            </div>
+            <div className='key-item'>
+              <span className='key-circle' style={{ backgroundColor: '#F765A3' }}></span>
+              <span className='key-description'>violation</span>
+            </div>
           </div>
         </div>
-        
       </div>
     </div>
   );

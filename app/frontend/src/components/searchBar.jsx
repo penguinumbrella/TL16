@@ -5,7 +5,7 @@ import './searchBar.css';
 import { signOut } from 'aws-amplify/auth';
 import { getAuthToken } from '../getAuthToken';
 
-const SearchBar = ({ activeView, onIconClick }) => {
+const SearchBar = ({ activeView, onIconClick, theme, setNewTheme }) => {
   const handleIconClick = (view, event) => {
     onIconClick(view);
   };
@@ -15,49 +15,51 @@ const SearchBar = ({ activeView, onIconClick }) => {
     await signOut();
   }
 
-  const isIconActive = (icon) => activeView === icon; // Function to check if the icon is active
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setNewTheme(newTheme);
+  };
+
+  const isIconActive = (icon) => activeView === icon;
+
+  const logoSrc = theme === 'light' ? './ubclight.png' : './ubcdark.png';
 
   return (
-    <div className='searchBar'>
-      {/* Your other content here */}
-
+    <div className={`searchBar ${theme}`}>
+      <div className='blurredCircle1'></div>
+      <div className='blurredCircle2'></div>
       <div className='topIcon'>
-        <img src="./ubcdark.png" alt="" />
+        <img src={logoSrc} alt="UBC logo" />
       </div>
-
-      <Divider className='separator' />
 
       <div className='navIcons'>
         <div className='navicon-container'>
           <Icon
             as={FaHome}
             onClick={(event) => handleIconClick('dashboard', event)}
-            color={isIconActive('dashboard') ? 'black' : '#9C9FBB'} // Change color based on active state
+            color={isIconActive('dashboard') ? 'black' : '#9C9FBB'}
             className={isIconActive('dashboard') ? 'icon' : ''}
           />
           <div className="circle" style={isIconActive('dashboard') ? {} : { display: 'none' }}></div>
         </div>
-        
         <div className='navicon-container'>
           <Icon
             as={FaMap}
             onClick={(event) => handleIconClick('map', event)}
-            color={isIconActive('map') ? 'black' : '#9C9FBB'} // Change color based on active state
+            color={isIconActive('map') ? 'black' : '#9C9FBB'}
             className={isIconActive('map') ? 'icon' : ''}
           />
           <div className="circle" style={isIconActive('map') ? {} : { display: 'none' }}></div>
         </div>
-        
         <div className='navicon-container'>
           <Icon
             as={FaChartPie}
             onClick={(event) => handleIconClick('live', event)}
-            color={isIconActive('live') ? 'black' : '#9C9FBB'} // Change color based on active state
+            color={isIconActive('live') ? 'black' : '#9C9FBB'}
             className={isIconActive('live') ? 'icon' : ''}
           />
           <div className="circle" style={isIconActive('live') ? {} : { display: 'none' }}></div>
         </div>
-        
         <div className='navicon-container'>
           <Icon
             as={FaChartLine}
@@ -69,9 +71,15 @@ const SearchBar = ({ activeView, onIconClick }) => {
         </div>
       </div>
 
+      <Divider className='separator' />
+
       <div className='bottomIcons'>
-        <Icon as={FaCog} />
-        <Icon as={FaUserCircle}/>
+        <div className="theme-toggle" onClick={toggleTheme}>
+          <span className={`theme-label theme-label-dark ${theme === 'dark' ? 'active' : ''}`}>Dark</span>
+          <span className={`theme-label theme-label-light ${theme === 'light' ? 'active' : ''}`}>Light</span>
+        </div>
+        <Icon as={FaCog} className='chakra-icon' />
+        <Icon as={FaUserCircle} className='chakra-icon' />
         <Icon as={FaSignOutAlt} onClick={handleLogout}></Icon>
       </div>
     </div>

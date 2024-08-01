@@ -1,4 +1,3 @@
-// App.js
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import SearchBar from './components/searchBar';
@@ -23,6 +22,11 @@ Amplify.configure({
 });
 
 function App() {
+  // Ensure the default theme is 'dark'
+  const initialTheme = localStorage.getItem('theme') || 'dark';
+  const [theme, setTheme] = useState(initialTheme);
+  console.log(theme)
+
   // State to track the active view
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [activeView, setActiveView] = useState('dashboard'); // 'map' is the default view
@@ -32,6 +36,37 @@ function App() {
     setActiveView(view); // Set the active view to the clicked view
   };
 
+
+  const [map_key, setMap_key] = useState('');
+
+  useEffect(() => {
+    fetch('/api/maps_key')
+      .then(response => response.json())
+      .then(data => {
+        setMap_key(data.map_key);
+      })
+      .catch(error => console.error('!!Key problem:', error));
+  }, []);
+
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
+
+  const setNewTheme = (newTheme) => {
+    console.log(`Setting new theme: ${newTheme}`);
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
+  return (
+    <div className={`container ${theme}`}>
+      <SearchBar activeView={activeView} onIconClick={handleIconClick} theme={theme} setNewTheme={setNewTheme} />
+      {/* Render appropriate view based on activeView state */}
+      {activeView === 'map' ? <MapView theme={theme} map_key={map_key} activeView={activeView} /> : 
+      activeView === 'dashboard' ? <DashboardView onIconClick={handleIconClick} theme={theme} /> :
+      activeView === 'live' ? <LiveView theme={theme} /> :
+      <AnalyticsView theme={theme} />}
+      
   // Event listener for auth
   Hub.listen('auth', ({ payload }) => {
     switch(payload.event) {

@@ -94,7 +94,7 @@
     height: 40px;
     position: absolute;
     top: -45px;
-    left: 0px;
+    left: -35px;
     color: hsl(0, 0%, 0%);
     pointer-events: none;
     opacity: 0; /* Initially hide the label */

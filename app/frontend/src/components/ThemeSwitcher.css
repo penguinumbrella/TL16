@@ -1,0 +1,26 @@
+/* styles.css */
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5em;  /* Adjust gap if necessary */
+  padding: 0.25em;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: auto;
+}
+
+.theme-label {
+  font-size: 0.75em;
+  color: #9C9FBB;
+}
+
+
+/*input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(0.75em);  /* Equal to the height of the switch */
+/*}
