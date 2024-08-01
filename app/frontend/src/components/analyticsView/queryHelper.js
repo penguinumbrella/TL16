@@ -18,7 +18,12 @@ const PARKADE_NAMES = {
     'Rose Garden': 'Rose Garden Parkade'
 }
 
-export const getQueries = (dataCategory, visualizationFormat, periodicity, avgPeak, selectedParkades, startTime, endTime) => {
+export const getQueries = (dataCategory, visualizationFormat, periodicity, avgPeak, selectedParkades, startTime, endTime,
+    accessibilityMenu, selectedZones, selectedStalls, startTimeAccessibility, endTimeAccessibility, mapStallId
+) => {
+
+    if (dataCategory === 'Accessibility Occupancy')
+      return getQueriesAccessibility(accessibilityMenu, selectedZones, selectedStalls, startTimeAccessibility, endTimeAccessibility, mapStallId); 
     const queries = {};
     selectedParkades.forEach((parkade) => {
         const tableName = TABLES[parkade];
@@ -68,6 +73,34 @@ export const getQueries = (dataCategory, visualizationFormat, periodicity, avgPe
         }
     });
     return queries;
+}
+
+const getQueriesAccessibility = (accessibilityMenu, selectedZones, selectedStalls, startTimeAccessibility, endTimeAccessibility, mapStallId) => {
+  const queries = {};
+  console.log(mapStallId);
+  let query = '';
+  let clause = '';
+  if (selectedStalls[0] !== 'All Stalls') {
+      clause = ` WHERE stall_id IN (${selectedStalls.map( stall => mapStallId[stall]).join(',')})`;  
+  } else {
+    if (selectedZones[0] !== 'All Zones') {
+      clause = ` WHERE stall_id IN (SELECT stall_id from x11_management WHERE zone_display_name IN (${selectedZones.join(',')}))`; 
+    }
+  }
+  switch (accessibilityMenu) {
+    case 'Management':    query = `SELECT * FROM x11_management${clause}`;
+                          break;  
+    case 'History':       const startUnix = Math.floor(startTimeAccessibility.getTime() / 1000);
+                          const endUnix = Math.floor(endTimeAccessibility.getTime() / 1000);
+                          const timeSlot = getTimeSlotByPeriodicity(startUnix, endUnix, 'Daily');
+                          const startDate = convertUnixToDate(timeSlot.modifiedStartTime);
+                          const endDate = convertUnixToDate(timeSlot.modifiedEndTime);
+                          query = `SELECT * FROM x11_stall_histories${clause} AND date >= ${startDate} AND date <= ${endDate}`;
+                          break;
+    default:              query = `SELECT * FROM x11_stall_stats${clause}`;
+  }
+  queries['query'] = query;
+  return queries;
 }
 
 export const PERIODICITY_STEP = {

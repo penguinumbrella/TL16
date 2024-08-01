@@ -45,17 +45,15 @@ const DATA_CATEGORY_OPTIONS = [
     'Thunderbird', 'North', 'West', 'Health Sciences', 'Fraser River', 'Rose Garden', 'University West Blvd'
   ];
 
+  const ACCESSIBILITY_MENU_OPTIONS = [
+    'Management', 'History', 'Overall Statistics'
+  ]
   
-
   const RESULT_LIMIT = 24*21;
-
   
 
-  
-
-
-const AnalyticsViewTab = ({renderParkadeSelection, menuItems}) =>{
-const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
+const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelection, renderStallSelection}) =>{
+  const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
   const [visualizationFormat, setVisualizationFormat] = useState(VISUALIZATION_OPTIONS[0]);
   const [periodicity, setPeriodicity] = useState(PERIODICITY_OPTIONS[0]);
   const [avgPeak, setAvgPeak] = useState(AVG_PEAK[0]);
@@ -67,6 +65,13 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
   const [loading, setLoading] = useState(false);
   const [queries, setQueries] = useState({});
   const [results, setResults] = useState("");
+  const [accessibilityMenu, setAccessibiltyMenu] = useState(ACCESSIBILITY_MENU_OPTIONS[0]);
+  const [startTimeAccessibility, setStartTimeAccessibility] = useState(new Date());
+  const [endTimeAccessibility, setEndTimeAccessibility] = useState(new Date());
+  const [accessibilityManagementData, setAccessibiltyManagementData] = useState([]); 
+  const [selectedZones, setSelectedZones] = useState(["All Zones"]);
+  const [selectedStalls, setSelectedStalls] = useState(["All Stalls"]);
+  const [mapStallId, setMapStallId] = useState({});
 
   const handleSelectAllChange = (event) => {
     const checked = event.target.checked;
@@ -143,126 +148,141 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
   }
 
   const renderResults = async (queries) => {
-    const resultsLocal = {};
-    let windowTooLarge = false;
-    const promises = Object.keys(queries).map(async (parkade) => {
-      const periodicity = queries[parkade]['periodicity']
-      const cleanData = []
-      if (periodicity == 'Hourly') {
-        const step = PERIODICITY_STEP[periodicity];
-        for (var i = queries[parkade]['startTime']; i<=queries[parkade]['endTime']; i += step)
-          cleanData.push({
-            'name': formatUnixTimestamp(i),
-            'Vehicles': null
-          });
-        if (cleanData.length > RESULT_LIMIT){
-          windowTooLarge = true;
-          return;
+    console.log(queries);
+    if (Object.keys(queries).includes('query')) {
+      // Accessibility
+      console.log(queries['query']);
+    } else {
+      const resultsLocal = {};
+      let windowTooLarge = false;
+      const promises = Object.keys(queries).map(async (parkade) => {
+        const periodicity = queries[parkade]['periodicity']
+        const cleanData = []
+        if (periodicity == 'Hourly') {
+          const step = PERIODICITY_STEP[periodicity];
+          for (var i = queries[parkade]['startTime']; i<=queries[parkade]['endTime']; i += step)
+            cleanData.push({
+              'name': formatUnixTimestamp(i),
+              'Vehicles': null
+            });
+          if (cleanData.length > RESULT_LIMIT){
+            windowTooLarge = true;
+            return;
+          }
+          else {
+            const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+            const data = response.data;
+            data.forEach((dataPoint) => {
+              const item = cleanData.find(obj => obj['name'] == formatUnixTimestamp(dataPoint['TimestampUnix']))
+              if (item) {
+                item['Vehicles'] = dataPoint['Vehicles']
+                item['Capacity'] = dataPoint['Capacity']
+              }
+            });
+            resultsLocal[parkade] = cleanData;
+          }
+        } else if (periodicity == 'Daily') {
+          const startDate = queries[parkade]['startTime'];
+          const endDate = queries[parkade]['endTime'];
+          let currentDate = createDate(startDate);
+          while (currentDate <= createDate(endDate)){
+            cleanData.push({
+              'name': formatDateString(getLocalDate(currentDate)),
+              'Vehicles': null
+            });
+            currentDate = addDays(currentDate, 1);
+          }
+          if (cleanData.length > RESULT_LIMIT){
+            windowTooLarge = true;
+            return;
+          }
+          else {
+            const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+            const data = response.data;
+            // fix data.date to match cleanData's objects format
+            data.forEach((dataPoint) => {
+              const item = cleanData.find(obj => obj['name'] == formatDateString(dataPoint.date.split('T')[0]))
+              if (item) {
+                item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
+                item['Period Average'] = dataPoint.average_occupancy;
+                item['Period Peak'] = dataPoint.peak_occupancy;
+                item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
+                item['Capacity'] = dataPoint.Capacity
+              } 
+            });
+            resultsLocal[parkade] = cleanData;
+          }
+        } else if (periodicity == 'Weekly') {
+          const startDate = queries[parkade]['startTime'];
+          const endDate = queries[parkade]['endTime'];
+          let currentDate = createDate(startDate);
+          while (currentDate <= createDate(endDate)){
+            const from = currentDate;
+            const to = addDays(from, 6)
+            cleanData.push({
+              'name': `${formatDateString(getLocalDate(from))} - ${formatDateString(getLocalDate(to))}`,
+              'Vehicles': null
+            });
+            currentDate = addWeeks(currentDate, 1);
+          }
+          if (cleanData.length > RESULT_LIMIT){
+            windowTooLarge = true;
+            return;
+          }
+          else {
+            const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+            const data = response.data;
+            data.forEach((dataPoint) => {
+              const item = cleanData.find(obj => obj['name'] == `${formatDateString(dataPoint.week_start_date.split('T')[0])} - ${formatDateString(dataPoint.week_end_date.split('T')[0])}`)
+              if (item) {
+                item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
+                item['Period Average'] = dataPoint.average_occupancy;
+                item['Period Peak'] = dataPoint.peak_occupancy;
+                item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
+                item['Capacity'] = dataPoint.Capacity;
+              } 
+            });
+            resultsLocal[parkade] = cleanData;
+          }
+        } else if (periodicity == 'Monthly') {
+          // TODO
         }
-        else {
-          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
-          const data = response.data;
-          data.forEach((dataPoint) => {
-            const item = cleanData.find(obj => obj['name'] == formatUnixTimestamp(dataPoint['TimestampUnix']))
-            if (item) {
-              item['Vehicles'] = dataPoint['Vehicles']
-              item['Capacity'] = dataPoint['Capacity']
-            }
-          });
-          resultsLocal[parkade] = cleanData;
-        }
-      } else if (periodicity == 'Daily') {
-        const startDate = queries[parkade]['startTime'];
-        const endDate = queries[parkade]['endTime'];
-        let currentDate = createDate(startDate);
-        while (currentDate <= createDate(endDate)){
-          cleanData.push({
-            'name': formatDateString(getLocalDate(currentDate)),
-            'Vehicles': null
-          });
-          currentDate = addDays(currentDate, 1);
-        }
-        if (cleanData.length > RESULT_LIMIT){
-          windowTooLarge = true;
-          return;
-        }
-        else {
-          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
-          const data = response.data;
-          // fix data.date to match cleanData's objects format
-          data.forEach((dataPoint) => {
-            const item = cleanData.find(obj => obj['name'] == formatDateString(dataPoint.date.split('T')[0]))
-            if (item) {
-              item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
-              item['Period Average'] = dataPoint.average_occupancy;
-              item['Period Peak'] = dataPoint.peak_occupancy;
-              item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
-              item['Capacity'] = dataPoint.Capacity
-            } 
-          });
-          resultsLocal[parkade] = cleanData;
-        }
-      } else if (periodicity == 'Weekly') {
-        const startDate = queries[parkade]['startTime'];
-        const endDate = queries[parkade]['endTime'];
-        let currentDate = createDate(startDate);
-        while (currentDate <= createDate(endDate)){
-          const from = currentDate;
-          const to = addDays(from, 6)
-          cleanData.push({
-            'name': `${formatDateString(getLocalDate(from))} - ${formatDateString(getLocalDate(to))}`,
-            'Vehicles': null
-          });
-          currentDate = addWeeks(currentDate, 1);
-        }
-        if (cleanData.length > RESULT_LIMIT){
-          windowTooLarge = true;
-          return;
-        }
-        else {
-          const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
-          const data = response.data;
-          data.forEach((dataPoint) => {
-            const item = cleanData.find(obj => obj['name'] == `${formatDateString(dataPoint.week_start_date.split('T')[0])} - ${formatDateString(dataPoint.week_end_date.split('T')[0])}`)
-            if (item) {
-              item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
-              item['Period Average'] = dataPoint.average_occupancy;
-              item['Period Peak'] = dataPoint.peak_occupancy;
-              item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
-              item['Capacity'] = dataPoint.Capacity;
-            } 
-          });
-          resultsLocal[parkade] = cleanData;
-        }
-      } else if (periodicity == 'Monthly') {
-        // TODO
+      });
+      await Promise.all(promises);
+      if (windowTooLarge) {
+        alert('Time window too big, try reducing the window size or changing the periodicity');
+        return null;
       }
-    });
-    await Promise.all(promises);
-    if (windowTooLarge) {
-      alert('Time window too big, try reducing the window size or changing the periodicity');
-      return null;
+      return Object.keys(resultsLocal).sort().map((parkade) => {
+        return (
+          <Diagram className='queryResultDiagram' type={queries[parkade]['diagType'] == 'Line Graph' ? 'LINE' : 'BAR'} height={'40%'} width={'95%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles" capacity={resultsLocal[parkade][0]['Capacity']}/>
+        )
+      });
     }
-    return Object.keys(resultsLocal).sort().map((parkade) => {
-      return (
-        <Diagram className='queryResultDiagram' type={queries[parkade]['diagType'] == 'Line Graph' ? 'LINE' : 'BAR'} height={'40%'} width={'95%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles" capacity={resultsLocal[parkade][0]['Capacity']}/>
-      )
-    });
   }
 
   const handleGenerateClick = async () => {
     // Check if any required field is empty or missing
-    if (!dataCategory || !visualizationFormat || !periodicity || !avgPeak || selectedParkades.length === 0) {
-      // If any required field is missing, don't generate anything
-      alert('Please fill out all required fields');
-      return;
+    if (dataCategory === 'Parkade Occupancy') {
+      if (selectedParkades.length === 0) {
+        alert('Please fill out all required fields');
+        return;
+      }
+    } else {
+      if (selectedStalls.length === 0) {
+        alert('Please fill out all required fields');
+        return;
+      }
     }
   
     try {
       setLoading(true); // Set loading state to true
   
       // Make the request to the backend to fetch the CSV data
-      const queries = getQueries(dataCategory, visualizationFormat, periodicity, avgPeak, selectedParkades, startTime, endTime)
+      const queries = getQueries(dataCategory, visualizationFormat, periodicity,
+        avgPeak, selectedParkades, startTime, endTime, accessibilityMenu, selectedZones, selectedStalls,
+        startTimeAccessibility, endTimeAccessibility, mapStallId
+      );
       const response = []
       setQueries(queries);
 
@@ -295,6 +315,20 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
     }
   };
 
+  const getStallList = () => {
+    const stalls = [];
+    Object.keys(accessibilityManagementData.stalls).forEach(zone => {
+      if (selectedZones[0] === 'All Zones' || selectedZones.includes(zone)){
+        accessibilityManagementData.stalls[zone].forEach(stall => {
+          stalls.push(stall);
+        })
+      }
+    });
+    if (selectedZones.length != 0)
+      stalls.unshift('All Stalls');
+    return stalls;
+  }
+
   useEffect(() => {
     const fetchResults = async () => {
       const renderedResults = await renderResults(queries);
@@ -305,6 +339,50 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
 
     fetchResults();
   }, [queries]);
+
+  useEffect(() => {
+    const fetchAccessibilityManagementData = async () => {
+      const query = 'SELECT * FROM x11_management'
+      const response = await axios.get(`/executeQuery?query=${query}`);
+      const zones = [];
+      const stalls = {};
+      response.data.forEach((item) => {
+        if (!zones.includes(item.zone_display_name)){
+          zones.push(item.zone_display_name);
+          stalls[item.zone_display_name] = [];
+        }
+        stalls[item.zone_display_name].push(`${item.zone_display_name}: ${item.stall_display_name}`); 
+        const temp = mapStallId;
+        temp[`${item.zone_display_name}: ${item.stall_display_name}`] = item.stall_id;
+        setMapStallId(temp);
+      });
+      zones.unshift('All Zones');
+      setAccessibiltyManagementData({
+        data: response.data,
+        zones: zones,
+        stalls: stalls
+      });
+    }
+    fetchAccessibilityManagementData();
+  }, []);
+
+  useEffect(() => {
+    const tempStalls = []; 
+    selectedStalls.forEach((stall) => {
+      // If stall is not within the zone, remove it
+      if (selectedZones[0] === 'All Zones')
+        tempStalls.push(stall)
+      else {
+        selectedZones.forEach((zone) => {
+          if (accessibilityManagementData.stalls[zone].includes(stall)) {
+            tempStalls.push(stall);
+            return;
+          }
+        }); 
+      }
+      setSelectedStalls(tempStalls);
+    })
+  }, [selectedZones])
 
   const renderParkadeOccupancyOptions = () => {
      return <><div className='analytics-options-div'>
@@ -362,7 +440,55 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
               <h4>Select All</h4>
             </div>
             {renderParkadeSelection(PARKADE_OPTIONS, '+ Select', selectedParkades, setSelectedParkades, setSelectAllChecked)}
-          </div></>
+          </div>
+          </>
+  }
+
+  const renderAccessibilityOptions = () => {
+    return <>
+          <div className='analytics-options-div'>
+              <h4>OPTIONS</h4>
+              {renderForm(ACCESSIBILITY_MENU_OPTIONS, accessibilityMenu, setAccessibiltyMenu)}
+          </div>
+          <div className='analytics-options-div'>
+            <h4>ZONES</h4>
+            {renderZoneSelection(accessibilityManagementData.zones, 'Zones', selectedZones, setSelectedZones)}
+          </div>
+          <div className='analytics-options-div'>
+            <h4>STALLS</h4>
+            {renderStallSelection(getStallList(), 'Stalls', selectedStalls, setSelectedStalls)}
+          </div>
+          {accessibilityMenu == 'History' ? <div className='analytics-options-div'>
+            <h4>TIME FRAME</h4>
+            <div className="timeframe" style={{ display: 'flex', alignItems: 'center', gap: '10px'}}>
+              <Typography style={{ color: '#9C9FBB' }}>From</Typography>
+                <DateTimePicker
+                    onChange={(date) => {
+                    if (date < endTimeAccessibility) {
+                      setStartTimeAccessibility(date);
+                    } else {
+                      alert(`Must select a time lesser than ${endTimeAccessibility}`)
+                    }}}
+                    value={startTimeAccessibility}
+                    minDate={new Date('01-01-2018')}
+                    maxDate={new Date()  
+                    }
+                />
+                <Typography style={{ color: '#9C9FBB' }}>To</Typography>
+                <DateTimePicker
+                  onChange={(date) => {
+                  if (date > startTimeAccessibility) {
+                    setEndTimeAccessibility(date);
+                  } else {
+                    alert(`Must select a time greater than ${startTimeAccessibility}`)
+                  }}}
+                  value={endTimeAccessibility}
+                  minDate={new Date('01-01-2018')}
+                  maxDate={new Date()}
+                />
+            </div>
+          </div> : null}
+    </>
   }
 
     return (
@@ -372,7 +498,7 @@ const [dataCategory, setDataCategory] = useState(DATA_CATEGORY_OPTIONS[0]);
             <h4>DATA CATEGORY</h4>
             {renderForm(DATA_CATEGORY_OPTIONS, dataCategory, setDataCategory)}
           </div>
-          {dataCategory == 'Parkade Occupancy' ? renderParkadeOccupancyOptions() : null}
+          {dataCategory == 'Parkade Occupancy' ? renderParkadeOccupancyOptions() : renderAccessibilityOptions()}
           <div className='generate-container'>
           <Button variant="contained" color="primary" onClick={handleGenerateClick} style={{width: "150px"}}>
               {loading ? 'Generating...' : 'Generate!'}
