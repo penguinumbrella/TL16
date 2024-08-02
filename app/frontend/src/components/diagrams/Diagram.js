@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import PieChartComponent from './PieChart/PieChartComponent'
 import LineGraphComponent from './LineGraph/LineGraphComponent';
 import BarGraphComponent from './BarGraph/BarGraphComponent';
+import TableComponent from './Table/TableComponent';
 import axios from 'axios';
 
-const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme, mapView}) => {
+const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme, mapView, rows, columns}) => {
 
   const [diagData, setDiagData] = useState([]);
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
@@ -53,7 +54,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
         setOccupancyPercentage(`${occupancyPercentage}%`);
         setCompliancePercentage(`87%`);
       }
-    if (dataOverride.length == 0)
+    if (dataOverride.length == 0 && type !== 'TABLE')
       getData();
   }, []);
 
@@ -126,7 +127,11 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
           <BarGraphComponent data={dataOverride.length != 0 ? dataOverride : diagData} height={height} width={width} title={title} customToolTip={customToolTip} dataKeyY={dataKeyY} capacity={capacity}></BarGraphComponent>
         </>
         break;
-        
+    case 'TABLE':
+      toRender = <>
+          <TableComponent rows={rows} columns={columns}></TableComponent>
+        </>
+        break;    
     default:
         toRender = <>
             <h1>NOT SET</h1>
