@@ -6,7 +6,10 @@ import { HiOutlineEye, HiOutlineEyeOff } from 'react-icons/hi';
 import Map from './map/Map.js';
 import axios from 'axios';
 
-const MapView = ({ map_key , activeView}) => {
+const MapView = ({ map_key , activeView, theme}) => {
+  const defaultCenter = { lat: 49.262141, lng: -123.247360 };
+  const zoom = 15;
+
   const [iconsVisible, setIconsVisible] = useState(true);
   const [weatherData, setWeatherData] = useState(null);
   const [selectedOption, setSelectedOption] = useState('parkades');
@@ -14,6 +17,7 @@ const MapView = ({ map_key , activeView}) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [sliderEndTime, setSliderEndTime] = useState(new Date());
   const [accOccupancyStatus, setAccOccupancyStatus] = useState('');
+  const [mapCenter, setMapCenter] = useState(defaultCenter);
 
   const toggleIconsVisibility = () => {
     console.log(selectedOption)
@@ -76,8 +80,9 @@ const MapView = ({ map_key , activeView}) => {
     setSliderEndTime(newTime);
   };
 
-  const defaultCenter = { lat: 49.262141, lng: -123.247360 };
-  const zoom = 15;
+  
+
+
 
   return (
     <div className='mapView'>
@@ -92,6 +97,7 @@ const MapView = ({ map_key , activeView}) => {
               description={weatherData.weather_desc}
             />
             <TimeSlider onTimeChange={handleTimeChange} onSliderRelease={handleEndTimeChange} />
+            <div class="currentTimesTampBox"> {currentTime.toLocaleString()} </div>
           </>
         )}
 
@@ -149,10 +155,12 @@ const MapView = ({ map_key , activeView}) => {
           selectedOption={selectedOption}
           setActiveIndex={setActiveIndex}
           zoom={zoom}
-          center={defaultCenter}
+          center={mapCenter}
           timestamp={sliderEndTime}
           accOccupancyStatus={accOccupancyStatus}
           map_key={map_key}
+          theme ={theme}
+          setMapCenter = {setMapCenter}
         />
       </div>
       
