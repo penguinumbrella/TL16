@@ -148,13 +148,31 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
   }
 
   const renderResults = async (queries) => {
-    console.log(queries);
     if (Object.keys(queries).includes('query')) {
       // Accessibility
       console.log(queries['query']);
+      const results = await axios.get(`/executeQuery?query=${queries['query']}`)
+      const columns = [];
+      const response = results.data;
+      if (response.length > 0) {
+        Object.keys(response[0]).forEach((item) => {
+          columns.push({
+            field: item,
+            headerName: item.split('_').map((str) => str.charAt(0).toUpperCase() + str.slice(1)).join(' '),
+            sortable: false
+          });
+        })
+      }
+      response.forEach((item, i) => {
+        item.id = i;
+      })
+      return (
+        <Diagram type={'TABLE'} columns={columns} rows={response}></Diagram>
+      );
     } else {
       const resultsLocal = {};
       let windowTooLarge = false;
+      let windowTooSmall = false;
       const promises = Object.keys(queries).map(async (parkade) => {
         const periodicity = queries[parkade]['periodicity']
         const cleanData = []
@@ -167,6 +185,10 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
             });
           if (cleanData.length > RESULT_LIMIT){
             windowTooLarge = true;
+            return;
+          }
+          else if (cleanData.length == 0) {
+            windowTooSmall = true;
             return;
           }
           else {
@@ -194,6 +216,10 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
           }
           if (cleanData.length > RESULT_LIMIT){
             windowTooLarge = true;
+            return;
+          }
+          else if (cleanData.length == 0) {
+            windowTooSmall = true;
             return;
           }
           else {
@@ -229,6 +255,10 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
             windowTooLarge = true;
             return;
           }
+          else if (cleanData.length == 0) {
+            windowTooSmall = true;
+            return;
+          }
           else {
             const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
             const data = response.data;
@@ -253,6 +283,11 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
         alert('Time window too big, try reducing the window size or changing the periodicity');
         return null;
       }
+      if (windowTooSmall) {
+        alert('Time window has 0 data points. Try increasing the window size or changing the periodicity');
+        return null;
+      }
+      console.log(resultsLocal);
       return Object.keys(resultsLocal).sort().map((parkade) => {
         return (
           <Diagram className='queryResultDiagram' type={queries[parkade]['diagType'] == 'Line Graph' ? 'LINE' : 'BAR'} height={'40%'} width={'95%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles" capacity={resultsLocal[parkade][0]['Capacity']}/>
@@ -351,9 +386,10 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
           zones.push(item.zone_display_name);
           stalls[item.zone_display_name] = [];
         }
-        stalls[item.zone_display_name].push(`${item.zone_display_name}: ${item.stall_display_name}`); 
+        stalls[item.zone_display_name].push(`${item.zone_display_name}: ${item.stall_display_name}`);
+        // Maps stall name -> {zone id, stall_id}
         const temp = mapStallId;
-        temp[`${item.zone_display_name}: ${item.stall_display_name}`] = item.stall_id;
+        temp[`${item.zone_display_name}: ${item.stall_display_name}`] = {'zone': item.zone_id, 'stall': item.stall_id};
         setMapStallId(temp);
       });
       zones.unshift('All Zones');

@@ -77,14 +77,14 @@ export const getQueries = (dataCategory, visualizationFormat, periodicity, avgPe
 
 const getQueriesAccessibility = (accessibilityMenu, selectedZones, selectedStalls, startTimeAccessibility, endTimeAccessibility, mapStallId) => {
   const queries = {};
-  console.log(mapStallId);
   let query = '';
   let clause = '';
   if (selectedStalls[0] !== 'All Stalls') {
-      clause = ` WHERE stall_id IN (${selectedStalls.map( stall => mapStallId[stall]).join(',')})`;  
+      clause = ` WHERE stall_id IN (${selectedStalls.map( stall => mapStallId[stall]['stall']).join(',')})`;  
   } else {
+    // All stalls, but selected zones
     if (selectedZones[0] !== 'All Zones') {
-      clause = ` WHERE stall_id IN (SELECT stall_id from x11_management WHERE zone_display_name IN (${selectedZones.join(',')}))`; 
+      clause = ` WHERE stall_id IN (SELECT stall_id from x11_management WHERE zone_display_name IN (${selectedZones.map(zone => `\'${zone}\'`).join(',')}))`; 
     }
   }
   switch (accessibilityMenu) {
@@ -95,7 +95,7 @@ const getQueriesAccessibility = (accessibilityMenu, selectedZones, selectedStall
                           const timeSlot = getTimeSlotByPeriodicity(startUnix, endUnix, 'Daily');
                           const startDate = convertUnixToDate(timeSlot.modifiedStartTime);
                           const endDate = convertUnixToDate(timeSlot.modifiedEndTime);
-                          query = `SELECT * FROM x11_stall_histories${clause} AND date >= ${startDate} AND date <= ${endDate}`;
+                          query = `SELECT * FROM x11_stall_histories${clause ? clause + ' AND' : ' WHERE'} date >= ${`\'${startDate}\'`} AND date <= ${`\'${endDate}\'`}`;
                           break;
     default:              query = `SELECT * FROM x11_stall_stats${clause}`;
   }
