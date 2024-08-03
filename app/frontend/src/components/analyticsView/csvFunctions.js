@@ -1,13 +1,11 @@
-const DATA_CATEGORY_OPTIONS = [
-    'Parkade Occupancy', 'Accessibility Occupancy'
-  ];
 
-
+// Replace null values with empty strings
 function replacer(key, value) {
     if (value === null) return '';
     return value;
   }
 
+  // This is only for the parkade options
   function convertToCSV(dataArray,parkade, first) {      
     const csvColumns =  [ 'Timestamp', 'Parkade', 'Capacity','Vehicles'];
 
@@ -96,8 +94,6 @@ function generateCSV(filename, data){
 
 
   export async function genCSVhelperAccessibilty(response, accessibilityMenu){
-    // console.log(response)
-
     let csvColumns =  [];
 
     for (let col = 0; col < (response.props.columns).length; col++ ){
@@ -105,7 +101,6 @@ function generateCSV(filename, data){
     }
 
     const dataArray = response.props.rows;
-
     const csvRows = [
     csvColumns.join(','), // Headers row
     ...dataArray.map(row => {
@@ -116,24 +111,11 @@ function generateCSV(filename, data){
     })
     ];
 
-    //   return csvRows.join('\n');
     const fullCSVFile = csvRows.join('\n');
-    // console.log(csvRows.join('\n'));
-
     const Timestamp = formatDateToCustomFormat(new Date(), true);
-
     const csvFileName = `Accessibility_${accessibilityMenu}_${Timestamp}.csv`;
 
     generateCSV(csvFileName, fullCSVFile);
 
   }
 
-
-//   export async function genCSVFile(response, queryFeatures, dataCategory){
-//     if(dataCategory === DATA_CATEGORY_OPTIONS[0])
-//         genCSVhelperParkades(response, queryFeatures);
-
-//     else if (dataCategory === DATA_CATEGORY_OPTIONS[1])
-//         genCSVhelperAccessibilty(response);
-
-//   }

@@ -15,16 +15,23 @@
   
 }
 
+:root {
+  --tab-buttons_button: aliceblue;
+  --tab-buttons_button_hover: #dddcdc;
+  --tab-buttons_button_active: #a3a3a3;
+}
+
+
 .tab-buttons button {
-  color: aliceblue;
+  color: var(--tab-buttons_button);
 }
 
 .tab-buttons button:hover {
-  border-bottom-color: #dddcdc;
+  border-bottom-color: var(--tab-buttons_button_hover);
 }
 
 .tab-buttons button.active {
-  border-bottom-color: #a3a3a3;
+  border-bottom-color: var(--tab-buttons_button_active);
 }
 
 .tab-content {

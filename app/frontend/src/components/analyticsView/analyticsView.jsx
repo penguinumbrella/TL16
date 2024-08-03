@@ -179,7 +179,7 @@ const renderStallSelection = (data, label, selectedStalls, setSelectedStalls) =>
 );
 
 
-const AnalyticsView = () => {  
+const AnalyticsView = ({theme}) => {  
   const tabs = [
     {
       title: 'REAL VALUES',
@@ -194,7 +194,7 @@ const AnalyticsView = () => {
 
   return (
       <div className='fullView' >
-          <Tabs tabs={tabs} />
+          <Tabs tabs={tabs} theme = {theme} />
       </div>
     )
 }

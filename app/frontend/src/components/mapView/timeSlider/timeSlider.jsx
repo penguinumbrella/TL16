@@ -25,6 +25,8 @@ The timestamp in the slider and in the mapview are not in sync
 
 const TimeSlider = ({ onTimeChange, onSliderRelease }) => {
 
+  
+
   //const currentDate = new Date();
   let currentDate = new Date(2024, 5, 0, 12, 0, 0, 0);
   console.log(currentDate);
