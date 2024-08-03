@@ -87,10 +87,13 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
 
   const handleGenerateChange = (event) => {
     setGenerateChecked(event.target.checked);
-
-    
-    
   };
+
+  useEffect(()=>{
+    // When we change the data category uncheck the CSV box
+    if(dataCategory)
+      setGenerateChecked(false);
+  },[dataCategory]);
 
 
 
@@ -349,25 +352,22 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
 
     fetchResults().then((data)=>{
       if (generateChecked){
-        const queryFeatures = {
-          dataCategory,
-          visualizationFormat,
-          periodicity,
-          avgPeak,
-          selectedParkades,
-          startTime,
-          endTime
-        };
-  
-        // console.log(dataCategory)
-        // console.log(periodicity)
-        // console.log(avgPeak)
-        // console.log(selectedParkades)
-        // console.log(startTime)
-        // console.log(endTime)
-  
-        // console.log(queryFeatures)
-        genCSVhelperParkades(data, queryFeatures);
+        
+        if(dataCategory === DATA_CATEGORY_OPTIONS[0]){
+          const queryFeatures = {
+            dataCategory,
+            visualizationFormat,
+            periodicity,
+            avgPeak,
+            selectedParkades,
+            startTime,
+            endTime
+          };
+          genCSVhelperParkades(data, queryFeatures);
+          
+        }
+        else if (dataCategory === DATA_CATEGORY_OPTIONS[1])
+          genCSVhelperAccessibilty(data, accessibilityMenu);
       }
         
     });

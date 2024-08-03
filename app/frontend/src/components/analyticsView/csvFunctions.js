@@ -1,3 +1,7 @@
+const DATA_CATEGORY_OPTIONS = [
+    'Parkade Occupancy', 'Accessibility Occupancy'
+  ];
+
 
 function replacer(key, value) {
     if (value === null) return '';
@@ -31,12 +35,17 @@ function replacer(key, value) {
 
 
 
-  function formatDateToCustomFormat(date) {
+  function formatDateToCustomFormat(date, minutes) {
     // Extract year, month, day, and hour from the Date object
     const year = date.getFullYear().toString().slice(-2); // Last two digits of the year
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed, pad with zero
     const day = date.getDate().toString().padStart(2, '0'); // Pad with zero
     const hour = date.getHours().toString().padStart(2, '0'); // Pad with zero
+
+    if(minutes){
+        let minute = date.getMinutes().toString().padStart(2, '0'); // Pad with zero
+        return `${year}_${month}_${day}_${hour}_${minute}`;
+    }
 
     // Construct and return the formatted string
     return `${year}_${month}_${day}_${hour}`;
@@ -51,16 +60,13 @@ function generateCSV(filename, data){
     // // Create a link element to trigger the download
     const link = document.createElement('a');
     link.href = url;
-
-
     link.setAttribute('download', filename);
 
-  
-    // // Simulate a click on the link to initiate the download
+    // Simulate a click on the link to initiate the download
     document.body.appendChild(link);
     link.click();
 
-    // // Clean up by removing the temporary URL and link element
+    // Clean up by removing the temporary URL and link element
     window.URL.revokeObjectURL(url);
     document.body.removeChild(link);
 }
@@ -82,12 +88,52 @@ function generateCSV(filename, data){
             fullCSVFile = fullCSVFile + '\n' + CSVfile.substring(cutOff);
     }
     
-    const csvFileName = `${queryFeatures.dataCategory}_${queryFeatures.periodicity}_${queryFeatures.avgPeak}_${queryFeatures.selectedParkades.length}_${formatDateToCustomFormat(queryFeatures.startTime)}___${formatDateToCustomFormat(queryFeatures.endTime)}.csv`;
+    const csvFileName = `${queryFeatures.dataCategory}_${queryFeatures.periodicity}_${queryFeatures.avgPeak}_${queryFeatures.selectedParkades.length}_${formatDateToCustomFormat(queryFeatures.startTime, false)}___${formatDateToCustomFormat(queryFeatures.endTime)}.csv`;
     generateCSV(csvFileName, fullCSVFile);
 
   }
 
 
 
-  export async function genCSVhelperAccessibilty(response, queryFeatures){
+  export async function genCSVhelperAccessibilty(response, accessibilityMenu){
+    // console.log(response)
+
+    let csvColumns =  [];
+
+    for (let col = 0; col < (response.props.columns).length; col++ ){
+        csvColumns.push(response.props.columns[col].field);
+    }
+
+    const dataArray = response.props.rows;
+
+    const csvRows = [
+    csvColumns.join(','), // Headers row
+    ...dataArray.map(row => {
+        return csvColumns.map(fieldName => {
+
+            return JSON.stringify(row[fieldName], replacer);
+        }).join(',');
+    })
+    ];
+
+    //   return csvRows.join('\n');
+    const fullCSVFile = csvRows.join('\n');
+    // console.log(csvRows.join('\n'));
+
+    const Timestamp = formatDateToCustomFormat(new Date(), true);
+
+    const csvFileName = `Accessibility_${accessibilityMenu}_${Timestamp}.csv`;
+
+    generateCSV(csvFileName, fullCSVFile);
+
   }
+
+
+//   export async function genCSVFile(response, queryFeatures, dataCategory){
+//     if(dataCategory === DATA_CATEGORY_OPTIONS[0])
+//         genCSVhelperParkades(response, queryFeatures);
+
+//     else if (dataCategory === DATA_CATEGORY_OPTIONS[1])
+//         genCSVhelperAccessibilty(response);
+
+//   }
