@@ -46,6 +46,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
    
         // Calculate occupancy percentage
         const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
+        console.log(`occupancyPercentage = ${occupancyPercentage}`);
         setDiagData([
             {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
             {name: 'Occupied', value: data[0]['Vehicles']}

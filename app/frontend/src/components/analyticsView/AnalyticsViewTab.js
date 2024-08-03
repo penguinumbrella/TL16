@@ -23,6 +23,8 @@ import CustomTooltip from "./customToolTip";
 import { addDays, addWeeks } from "date-fns";
 import { getTimezoneOffset } from 'date-fns-tz'
 
+import {genCSVhelperParkades, genCSVhelperAccessibilty} from './csvFunctions';
+
 
 
 const DATA_CATEGORY_OPTIONS = [
@@ -84,30 +86,10 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
   };
 
   const handleGenerateChange = (event) => {
-    const checkedGenCSV = event.target.checked;
-    setGenerateChecked(checkedGenCSV);
-    if (checkedGenCSV) {
-      // Prepare the packet of query features
-      const queryFeatures = {
-        dataCategory,
-        visualizationFormat,
-        periodicity,
-        avgPeak,
-        selectedParkades,
-        startTime,
-        endTime
-      };
+    setGenerateChecked(event.target.checked);
 
-      console.log(dataCategory)
-      console.log(periodicity)
-      console.log(avgPeak)
-      console.log(selectedParkades)
-      console.log(startTime)
-      console.log(endTime)
-
-      // console.log(queryFeatures)
-      
-    }
+    
+    
   };
 
 
@@ -296,7 +278,7 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
         alert('Time window has 0 data points. Try increasing the window size or changing the periodicity');
         return null;
       }
-      console.log(resultsLocal);
+      // console.log(resultsLocal);
       return Object.keys(resultsLocal).sort().map((parkade) => {
         return (
           <Diagram className='queryResultDiagram' type={queries[parkade]['diagType'] == 'Line Graph' ? 'LINE' : 'BAR'} height={'40%'} width={'95%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles" capacity={resultsLocal[parkade][0]['Capacity']}/>
@@ -355,6 +337,7 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
   }
 
   useEffect(() => {
+
     const fetchResults = async () => {
       const renderedResults = await renderResults(queries);
       setResults(renderedResults);
@@ -363,77 +346,33 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
       });
     };
 
-    function replacer(key, value) {
-      if (value === null) return '';
-      return value;
-    }
 
-    function convertToCSV(dataArray,parkade, first) {      
-      const csvColumns =  [ 'Timestamp', 'Parkade', 'Capacity','Vehicles'];
-
-        const csvRows = [
-          csvColumns.join(','), // Headers row
-          ...dataArray.map(row => {
-            return csvColumns.map(fieldName => {
-
-              if (fieldName === 'Parkade') {
-                return JSON.stringify(parkade, replacer);
-              }
-
-              if(fieldName === 'Timestamp'){
-                return JSON.stringify(row['name'], replacer);
-              }
-
-              return JSON.stringify(row[fieldName], replacer);
-            }).join(',');
-          })
-        ];
-
-        return csvRows.join('\n');
-    }
-
-
-    async function nextFunc(response){
-      if (generateChecked) {
-        const cutOff = ('Timestamp,Parkade,Capacity,Vehicles\n').length;
-
-        let fullCSVFile = '';
-
-        for (let i = 0; i < response.length; i++){
-          const csvData = response[i].props.dataOverride;
-          const parkade = response[i].props.title;
-          const CSVfile = convertToCSV(csvData, parkade, i===0);
-
-          if(i===0)
-            fullCSVFile =  CSVfile;
-          else
-            fullCSVFile = fullCSVFile + '\n' + CSVfile.substring(cutOff);
-        }
-        
-                
-        const blob = new Blob([fullCSVFile], { type: 'text/csv' });
-    
-        const url = window.URL.createObjectURL(blob);
-    
-        // // Create a link element to trigger the download
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'parking_data.csv');
-    
-        // // Simulate a click on the link to initiate the download
-        document.body.appendChild(link);
-        link.click();
-    
-        // // Clean up by removing the temporary URL and link element
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(link);
+    fetchResults().then((data)=>{
+      if (generateChecked){
+        const queryFeatures = {
+          dataCategory,
+          visualizationFormat,
+          periodicity,
+          avgPeak,
+          selectedParkades,
+          startTime,
+          endTime
+        };
+  
+        // console.log(dataCategory)
+        // console.log(periodicity)
+        // console.log(avgPeak)
+        // console.log(selectedParkades)
+        // console.log(startTime)
+        // console.log(endTime)
+  
+        // console.log(queryFeatures)
+        genCSVhelperParkades(data, queryFeatures);
       }
-    }
-
-    fetchResults().then((data)=>nextFunc(data));
+        
+    });
 
     
-
   }, [queries]);
 
   useEffect(() => {
