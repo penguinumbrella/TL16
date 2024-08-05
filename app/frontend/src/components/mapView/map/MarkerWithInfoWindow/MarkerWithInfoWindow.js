@@ -248,20 +248,6 @@ const MarkerWithInfoWindow = ({
                           dataTransformer={transformData}
                         />
                       </div>
-                      <div className='compliance-chart'>
-                        <Diagram
-                          mapView={true}
-                          className='compliance-pie'
-                          
-                          type={'COMPLIANCE_PIE'}
-                          height={150}
-                          width={150}
-                          title="Compliance"
-                          hasLegend={true}
-                          query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`}
-                          dataTransformer={transformData}
-                        />
-                      </div>
                     </>
                   ) : (
                     <>
@@ -277,21 +263,6 @@ const MarkerWithInfoWindow = ({
                           title="Occupancy"
                           hasLegend={true}
                           
-                          dataTransformer={transformData}
-                        />
-                      </div>
-                      <div className='compliance-chart'>
-                        <FutureDiagram
-                          mapView={true}
-                          className='compliance-pie'
-                          timestamp={timestamp}
-                          parkade={content}
-                          type={'COMPLIANCE_PIE'}
-                          height={150}
-                          width={150}
-                          title="Compliance"
-                          hasLegend={true}
-                          query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`}
                           dataTransformer={transformData}
                         />
                       </div>

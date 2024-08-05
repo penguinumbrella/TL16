@@ -15,22 +15,40 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
 
   useEffect(() => {
     const getData = async () => {
-      
+
         const data = (await axios.get(`/executeQuery?query=${query}`)).data;
-        // Calculate capacity and occupied values
-        const capacity = data[0]['Capacity'];
-        const occupied = data[0]['Vehicles'];
+        if (type == 'COMPLIANCE_PIE') {
+          const total = data[0]['TotalPlates'];
+          const payStation = data[0]['PayStation'];
+          const honkApp = data[0]['HonkApp'];
+          const violations = data[0]['Violation'];
+          const permit = data[0]['Permit'];
+          console.log(data);
+          setDiagData([
+            {name: 'Pay station', value: payStation},
+            {name: 'Honk', value: honkApp},
+            {name: 'Permit', value: permit},
+            {name: 'Violations', value: violations}
+          ]);
+
+          const compliancePercentage = 100 - ((violations / total) * 100).toFixed(0);
+          setOccupancyPercentage(`${compliancePercentage}%`);
+        }
+        else {
+          // Calculate capacity and occupied values
+          const capacity = data[0]['Capacity'];
+          const occupied = data[0]['Vehicles'];
    
-        // Calculate occupancy percentage
-        const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
-        console.log(`occupancyPercentage = ${occupancyPercentage}`);
-        setDiagData([
-            {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
-            {name: 'Occupied', value: data[0]['Vehicles']}
-        ]);
-        // Update state with occupancy percentage
-        setOccupancyPercentage(`${occupancyPercentage}%`);
-        setCompliancePercentage(`87%`);
+          // Calculate occupancy percentage
+          const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
+          setDiagData([
+              {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
+              {name: 'Occupied', value: data[0]['Vehicles']}
+          ]);
+          // Update state with occupancy percentage
+          setOccupancyPercentage(`${occupancyPercentage}%`);
+          setCompliancePercentage(`87%`);
+        }
       }
     if (dataOverride.length == 0 && type !== 'TABLE')
       getData();
@@ -81,7 +99,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               mapView = {mapView}
               base_font_size={15}
               data={dataOverride.length != 0 ? dataOverride : diagData} 
-              colors={COLORS} 
+              colors={['#FFD583', '#BAEFFF', '#00D583', '#F765A3']} 
               height={height} 
               width={width} 
               title={title} 

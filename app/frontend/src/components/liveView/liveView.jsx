@@ -15,6 +15,16 @@ const TABLES = {
   'Rose Garden Parkade': 'RoseGardenParkade'
 };
 
+const COMPLIANCE_MAP = {
+  'Fraser Parkade': 'Fraser',
+  'North Parkade': 'North',
+  'West Parkade': 'West',
+  'Health Sciences Parkade': 'HealthSciences',
+  'Thunderbird Parkade': 'Thunderbird',
+  'University West Blvd': 'UnivWstBlvd',
+  'Rose Garden Parkade': 'Rose'
+}
+
 const transformData = (data) => {
   const available = data[0]['Capacity'] - data[0]['Vehicles'] 
   const occupied = Math.ceil(0.5 * data[0]['Vehicles'])
@@ -83,7 +93,7 @@ const LiveView = ({ theme }) => {
           </div>
           <div className='compliance-chart'>
             <Diagram className='compliance-pie' type={'COMPLIANCE_PIE'} height="100%" width="100%" title="Compliance" hasLegend={false}
-              query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData} mapView={false}/>
+              query={`select * from CurrentCompliance where ParkadeName = '${COMPLIANCE_MAP[parkadeName]}'`} dataTransformer={transformData} mapView={false}/>
           </div>
         </div>
         <div className='last-update'>
@@ -141,6 +151,10 @@ const LiveView = ({ theme }) => {
             <div className='key-item'>
               <span className='key-circle' style={{ backgroundColor: '#BAEFFF' }}></span>
               <span className='key-description'>honk</span>
+            </div>
+            <div className='key-item'>
+              <span className='key-circle' style={{ backgroundColor: '#00D583' }}></span>
+              <span className='key-description'>permit</span>
             </div>
             <div className='key-item'>
               <span className='key-circle' style={{ backgroundColor: '#F765A3' }}></span>
