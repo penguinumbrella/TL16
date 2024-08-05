@@ -31,6 +31,18 @@ function updateCSSVariables(varName, primaryColor) {
   document.documentElement.style.setProperty(varName, primaryColor);
 }
 
+    const theme_vars =[
+      '--info-window-contents_h2_color',
+      '--info-window-contents_background-color',
+      '--gm-style_gm-style-iw-c_background-color',
+      '--gm-style_gm-style-iw-tc__after_background',
+      '--info-window-diagrams_h3'
+    ]
+
+    const theme_colors ={
+      'dark' : ['#fff','#000','#000','#000', '#9c9fbb'],
+      'light': ['#000','#8d8e9e','#8d8e9e','#8d8e9e', '#fff'],
+    }
 // Example usage
 
 
@@ -74,30 +86,11 @@ const MarkerWithInfoWindow = ({
 
 
     // Define icon sizes
-    const smallIconSize = new window.google.maps.Size(20, 20);
-    const largeIconSize = new window.google.maps.Size(25, 25);
+    const smallIconSize = new window.google.maps.Size(25, 25);
+    const largeIconSize = new window.google.maps.Size(30, 30);
 
-    // const [occupancyPercentage, setOccupancyPercentage] = useState(0);
-   
-    // let i = 0;
-    // setInterval(()=>{
-    //   if (i === 0){
-    //     updateCSSVariables('--info-window-contents_h2_color','#000');
-    //     updateCSSVariables('--info-window-contents_background-color','#8d8e9e');
-    //     updateCSSVariables('--gm-style_gm-style-iw-c_background-color','#8d8e9e');
-    //     updateCSSVariables('--gm-style_gm-style-iw-tc__after_background','#8d8e9e');
-    //     i = 1;
-    //   }else{
-    //     updateCSSVariables('--info-window-contents_h2_color','#fff');
-    //     updateCSSVariables('--info-window-contents_background-color','#000');
-    //     updateCSSVariables('--gm-style_gm-style-iw-c_background-color','#000');
-    //     updateCSSVariables('--gm-style_gm-style-iw-tc__after_background','#000');
-    //     i = 0;
-    //   }
 
-      
-      
-    // }, 100); 
+    
 
     const TABLES = {
       'Fraser River': 'FraserParkade',
@@ -109,23 +102,8 @@ const MarkerWithInfoWindow = ({
       'Rose Garden': 'RoseGardenParkade'
     }
 
-    const theme_vars =[
-      '--info-window-contents_h2_color',
-      '--info-window-contents_background-color',
-      '--gm-style_gm-style-iw-c_background-color',
-      '--gm-style_gm-style-iw-tc__after_background',
-      '--info-window-diagrams_h3'
-    ]
-
-    const theme_colors ={
-      'dark' : ['#fff','#000','#000','#000', '#9c9fbb'],
-      'light': ['#000','#8d8e9e','#8d8e9e','#8d8e9e', '#fff'],
-    }
 
 
-
-
-  
     const formatTimestampToUnix = (date) => {
       // Convert the date to Unix timestamp in seconds
       const unixTimestamp = Math.floor(date.getTime() / 1000);
@@ -183,7 +161,7 @@ const MarkerWithInfoWindow = ({
       }
       
       if(theme){
-          for(let i = 0; i<5; i++)
+          for(let i = 0; i<theme_vars.length; i++)
             updateCSSVariables(theme_vars[i],theme_colors[theme][i]);
       }
       

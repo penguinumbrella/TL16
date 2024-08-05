@@ -11,30 +11,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
   const [compliancePercentage, setCompliancePercentage] = useState('');
 
-  const DATA = [
-        { name: 'Group A', value: 400 },
-        { name: 'Group B', value: 300 },
-        { name: 'Group C', value: 300 },
-        { name: 'Group D', value: 200 },
-        { name: 'Group E', value: 1000}
-    ] // sample data - to be replaced by API calls
-
-    const BAR_DATA = [
-      { name: 'Group A', value_1: 400, value_2: 300, value_3: 300},
-      { name: 'Group B', value_1: 300, value_2: 800, value_3: 300 },
-      { name: 'Group C', value_1: 300, value_2: 600, value_3: 300 },
-      { name: 'Group D', value_1: 200, value_2: 300, value_3: 300 },
-      { name: 'Group E', value_1: 1000, value_2: 200, value_3: 300}
-  ] // sample
-
   const COLORS = ['#787878', '#007ae6', '#00b392', '#e69d00', '#ff661a', '#0FA122']; // TBD
-
-  const getData = (query) => {
-    const data = axios.get(`/executeQuery?query=${query}`);
-    // console.log(query);
-    return DATA;
-  }
-
 
   useEffect(() => {
     const getData = async () => {

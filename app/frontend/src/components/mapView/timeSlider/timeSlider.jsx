@@ -11,7 +11,21 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 
+
+/*
+The timestamp in the slider and in the mapview are not in sync
+  The timestamp in the map view starts from the current time
+  here it starts from may 2024
+
+  The slider and the  map should share states for the timestamp
+
+  When the 'hide' button is checked/unchecked the timeslider resets
+
+*/
+
 const TimeSlider = ({ onTimeChange, onSliderRelease }) => {
+
+  
 
   //const currentDate = new Date();
   let currentDate = new Date(2024, 5, 0, 12, 0, 0, 0);

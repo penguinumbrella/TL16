@@ -20,7 +20,8 @@
 }
 
 .fullView{
-  width: 170vh;
+  /* width: 170vh; */
+  width: 85%;
   height: 85%;
   margin: 20px;
   margin-left: 50px;
@@ -33,7 +34,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 170vh;
+  /* width: 170vh; */
+  width: 85%;
   height: 85%;
   padding-left: 30px;
   background-color: rgba(7, 8, 17, 0.5);
@@ -49,7 +51,8 @@
   display: flex;
   justify-content: space-between; /* Items will be spread out with maximum space between them */
   align-items: center;
-  width: 170vh;
+  /* width: 170vh; */
+  width: 85%;
   height: 85%;
   padding-left: 10px;
   background-color: rgba(7, 8, 17, 0.5);
@@ -76,7 +79,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 170vh;
+    /* width: 170vh; */
+    width: 85%;
     height: 85%;
     padding: 20px;
     background-color: #100D1D;
