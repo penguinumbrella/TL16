@@ -1,71 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Icon } from '@chakra-ui/react';
+import React, {useState, useEffect, useRef } from 'react';
 import DateTimePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { ReactComponent as ClockHistoryIcon } from '../../../icons/clock-history.svg';
 import { ReactComponent as PopupWindow } from '../../../icons/slider-popup.svg';
 import './timeSlider.css';
 
-import { BsXCircleFill } from 'react-icons/bs';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 
 
-/*
-The timestamp in the slider and in the mapview are not in sync
-  The timestamp in the map view starts from the current time
-  here it starts from may 2024
 
-  The slider and the  map should share states for the timestamp
+const TimeSlider = ({ onSliderRelease, 
+  currentTime, setCurrentTime, 
+  sliderValue, setSliderValue,
+  startDateLeft, setStartDateLeft,
+  startDateRight, setStartDateRight, }) => {
 
-  When the 'hide' button is checked/unchecked the timeslider resets
 
-*/
-
-const TimeSlider = ({ onSliderRelease }) => {
-
-  let currentDate = new Date(2024, 5, 0, 12, 0, 0, 0);
-  currentDate.setHours(0, 0, 0, 0); // Set time to 12:00 AM
-
-  //const actualCurrentDate = new Date();
-  const actualCurrentDate = new Date(2024, 5, 0, 12, 0, 0, 0);
-
-  // Calculate the hour difference rounded down from the time at 12:00 AM
-  const startingHourDifference = Math.floor((actualCurrentDate - currentDate) / (1000 * 60 * 60));
-
-  //const nextDay = new Date();
-  const nextDay = new Date(2024, 5, 0, 12, 0, 0, 0);
-  nextDay.setDate(nextDay.getDate() + 1); // Get the next day
-  nextDay.setHours(0, 0, 0, 0); // Set time to 12:00 AM
-
-  const roundedDate = new Date(2024, 5, 0, 12, 0, 0, 0);
-  //const roundedDate = new Date();
-  roundedDate.setMinutes(0, 0, 0); // Set minutes, seconds, and milliseconds to 0
-
-  const [currentTime, setCurrentTime] = useState(roundedDate);
-  const [sliderValue, setSliderValue] = useState(startingHourDifference);
-  const [startDateLeft, setStartDateLeft] = useState(currentDate);
-  const [startDateRight, setStartDateRight] = useState(nextDay);
+  const [boundedPosition, setBoundedPosition] = useState(5);
 
 
   useEffect(()=>{
     if(currentTime)
       console.log('currentTime ' + currentTime);
-    // if(sliderValue)
-    //   console.log('sliderValue ' + sliderValue);
-    // if(startDateLeft)
-    //   console.log('startDateLeft ' + startDateLeft);
-    // if(startDateRight)
-    //   console.log('startDateRight ' + startDateRight);
-    // if(showCalendarLeft)
-    //   console.log('showCalendarLeft ' + showCalendarLeft);
-    // if(showCalendarRight)
-    //   console.log('showCalendarRight ' + showCalendarRight);
-
-  }
-  //sliderValue, startDateLeft, startDateRight, showCalendarLeft, showCalendarRight
-    ,[currentTime]);
+  },[currentTime]);
   
 
   const actualTime = new Date(2024, 5, 0, 12, 0, 0, 0);
@@ -112,7 +70,7 @@ const TimeSlider = ({ onSliderRelease }) => {
     return `linear-gradient(to right, ${colorStop1}, ${colorStop2}, ${colorStop3})`;
   };
 
-  const handleThumbHover = (event) => {
+  const handleThumbHover = () => {
     document.querySelector('label').classList.add('active');
   };
 
@@ -121,10 +79,10 @@ const TimeSlider = ({ onSliderRelease }) => {
     document.querySelector('label').classList.remove('active');
   };
 
-  useEffect(() => {
-    const rangeLinePadding = 16;
-    const calcStep = (sliderRef.current.offsetWidth - rangeLinePadding) / sliderRef.current.max;
-  }, []);
+  // useEffect(() => {
+  //   const rangeLinePadding = 16;
+  //   const calcStep = (sliderRef.current.offsetWidth - rangeLinePadding) / sliderRef.current.max;
+  // }, []);
 
 
 
@@ -133,21 +91,15 @@ const TimeSlider = ({ onSliderRelease }) => {
   const maxSliderValue = hoursDifference;
   const sliderStep = 1; // Use 1 day step if difference is more than 2 days, otherwise 1 hour
 
-  const calculateBubblePosition = () => {
-    if (sliderRef.current) {
-      const sliderWidth = sliderRef.current.offsetWidth;
-      const bubblePosition = (sliderValue / maxSliderValue) * sliderWidth; // Calculate the bubble position
+  useEffect(()=>{
+    const sliderWidth = sliderRef.current.offsetWidth;
+    const bubblePosition = (sliderValue / maxSliderValue) * sliderWidth; // Calculate the bubble position
 
-      // Ensure the bubble stays within the slider bounds
-      const boundedPosition = Math.min(Math.max(0, bubblePosition), sliderWidth);
+    // Ensure the bubble stays within the slider bounds
+    setBoundedPosition(Math.min(Math.max(0, bubblePosition), sliderWidth))
+  },[currentTime, sliderRef.current]);
 
-      return {
-        transform: `translateX(${boundedPosition}px)`,
-      };
-    } else {
-      return {};
-    }
-  };
+
 
   const calculateMarkerPosition = () => {
 
@@ -232,7 +184,7 @@ const TimeSlider = ({ onSliderRelease }) => {
             htmlFor="range"
             className="slider-label"
             style={{
-              ...calculateBubblePosition(),
+              transform: `translateX(${boundedPosition}px)`
             }}
           >
             <span>{currentTime.toLocaleTimeString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>

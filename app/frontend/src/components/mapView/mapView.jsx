@@ -18,6 +18,38 @@ const MapView = ({ map_key , activeView, theme}) => {
   const [accOccupancyStatus, setAccOccupancyStatus] = useState('');
   const [mapCenter, setMapCenter] = useState(defaultCenter);
 
+
+  //----------------------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------
+  // Timeslider States 
+  
+  let currentDate = new Date(2024, 5, 0, 12, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0); // Set time to 12:00 AM
+
+  //const actualCurrentDate = new Date();
+  const actualCurrentDate = new Date(2024, 5, 0, 12, 0, 0, 0);
+
+  // Calculate the hour difference rounded down from the time at 12:00 AM
+  const startingHourDifference = Math.floor((actualCurrentDate - currentDate) / (1000 * 60 * 60));
+
+  //const nextDay = new Date();
+  const nextDay = new Date(2024, 5, 0, 12, 0, 0, 0);
+  nextDay.setDate(nextDay.getDate() + 1); // Get the next day
+  nextDay.setHours(0, 0, 0, 0); // Set time to 12:00 AM
+
+  const roundedDate = new Date(2024, 5, 0, 12, 0, 0, 0);
+  //const roundedDate = new Date();
+  roundedDate.setMinutes(0, 0, 0); // Set minutes, seconds, and milliseconds to 0
+
+  const [currentTime, setCurrentTime] = useState(roundedDate);
+  const [sliderValue, setSliderValue] = useState(startingHourDifference);
+  const [startDateLeft, setStartDateLeft] = useState(currentDate);
+  const [startDateRight, setStartDateRight] = useState(nextDay);
+  //----------------------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------
+
+
+
   useEffect(()=>{
     if(sliderEndTime)
       console.log('sliderEndTime' + sliderEndTime);
@@ -99,7 +131,14 @@ const MapView = ({ map_key , activeView, theme}) => {
               condition={weatherData.weather_main}
               description={weatherData.weather_desc}
             />
-            <TimeSlider onSliderRelease={handleEndTimeChange} />
+
+            <TimeSlider onSliderRelease={handleEndTimeChange}  
+            currentTime={currentTime}   setCurrentTime = {setCurrentTime} 
+            sliderValue={sliderValue}   setSliderValue={setSliderValue}
+            startDateLeft={startDateLeft} setStartDateLeft={setStartDateLeft}
+            startDateRight={startDateRight} setStartDateRight={setStartDateRight}/>
+
+
             <div class="currentTimesTampBox"> {sliderEndTime.toLocaleString()} </div>
           </>
         )}
