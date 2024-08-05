@@ -121,6 +121,7 @@ const MarkerWithInfoWindow = ({
 
         if(iconImage == 'parkades'){
           // Get the current occupancy and max capacity of the current parkade
+          console.log('timestamp in marker: ' + timestamp);
           let query=`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`
           let data = (await axios.get(`/executeQuery?query=${query}`)).data;
           let capacity = data[0]['Capacity'];
@@ -189,8 +190,8 @@ const MarkerWithInfoWindow = ({
     formattedTimestamp = formatTimestampToUnix(timestamp); 
   }
 
-  const thresholdDate = new Date('2024-06-06T13:00:00Z');
-  const isTimestampPastThreshold = timestamp >= thresholdDate;
+  // const thresholdDate = new Date('2024-06-06T13:00:00Z');
+  // const isTimestampPastThreshold = timestamp >= thresholdDate;
  
 
   const transformData = (data) => {
@@ -232,8 +233,8 @@ const MarkerWithInfoWindow = ({
               {selectedOption === "parkades" &&
 
               <div className='parkadeWindow' >
-                 {!isTimestampPastThreshold ? (
-                    <>
+                 { 
+                  <>
                       <div className='occupancy-chart'>
                         <Diagram
                           mapView={true}
@@ -263,43 +264,8 @@ const MarkerWithInfoWindow = ({
                         />
                       </div>
                     </>
-                  ) : (
-                    <>
-                      <div className='occupancy-chart'>
-                        <FutureDiagram
-                          mapView={true}
-                          className='occupancy-pie'
-                          timestamp={timestamp}
-                          parkade={content}
-                          type={'OCCUPANCY_PIE'}
-                          height={300}
-                          width={300}
-                          title="Occupancy"
-                          hasLegend={true}
-                          
-                          dataTransformer={transformData}
-                        />
-                      </div>
-                      <div className='compliance-chart'>
-                        <FutureDiagram
-                          mapView={true}
-                          className='compliance-pie'
-                          timestamp={timestamp}
-                          parkade={content}
-                          type={'COMPLIANCE_PIE'}
-                          height={150}
-                          width={150}
-                          title="Compliance"
-                          hasLegend={true}
-                          query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`}
-                          dataTransformer={transformData}
-                        />
-                      </div>
-                    </>
-                  )}
-
-              </div>
-              }
+                  }
+              </div>}
               {
                 (iconImage === 'accessibility') &&  <h3 > {vacant ? `Last occupied : ${payload_timestamp}` : `Occupied since : ${payload_timestamp}`}</h3>
               }

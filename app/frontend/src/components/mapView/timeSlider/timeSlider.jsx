@@ -20,10 +20,10 @@ const TimeSlider = ({ onSliderRelease,
   const [boundedPosition, setBoundedPosition] = useState(5);
 
 
-  useEffect(()=>{
-    if(currentTime)
-      console.log('currentTime ' + currentTime);
-  },[currentTime]);
+  // useEffect(()=>{
+  //   if(currentTime)
+  //     console.log('currentTime ' + currentTime);
+  // },[currentTime]);
   
 
   const actualTime = new Date(2024, 5, 0, 12, 0, 0, 0);
@@ -79,12 +79,6 @@ const TimeSlider = ({ onSliderRelease,
     document.querySelector('label').classList.remove('active');
   };
 
-  // useEffect(() => {
-  //   const rangeLinePadding = 16;
-  //   const calcStep = (sliderRef.current.offsetWidth - rangeLinePadding) / sliderRef.current.max;
-  // }, []);
-
-
 
   // Calculate the difference in hours between startDateLeft and startDateRight
   const hoursDifference = (startDateRight - startDateLeft) / (1000 * 60 * 60);
@@ -97,7 +91,7 @@ const TimeSlider = ({ onSliderRelease,
 
     // Ensure the bubble stays within the slider bounds
     setBoundedPosition(Math.min(Math.max(0, bubblePosition), sliderWidth))
-  },[currentTime, sliderRef.current]);
+  },[currentTime, sliderRef.current, startDateLeft, startDateRight]);
 
 
 
@@ -151,7 +145,7 @@ const TimeSlider = ({ onSliderRelease,
               }
             }}
             minDate={new Date('01-01-2018')}
-            maxDate={new Date(new Date().getFullYear() + 1, new Date().getMonth(), new Date().getDate())}
+            maxDate={(new Date()).setMinutes(0)}
             showTimeSelect
             timeIntervals={60} // Set time intervals to 60 minutes (1 hour)
             timeFormat="HH:mm" // Use military time format

@@ -22,7 +22,7 @@ const MapView = ({ map_key , activeView, theme}) => {
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
   // Timeslider States 
-  
+
   let currentDate = new Date(2024, 5, 0, 12, 0, 0, 0);
   currentDate.setHours(0, 0, 0, 0); // Set time to 12:00 AM
 
@@ -50,10 +50,10 @@ const MapView = ({ map_key , activeView, theme}) => {
 
 
 
-  useEffect(()=>{
-    if(sliderEndTime)
-      console.log('sliderEndTime' + sliderEndTime);
-  },[sliderEndTime])
+  // useEffect(()=>{
+  //   if(sliderEndTime)
+  //     console.log('sliderEndTime' + sliderEndTime);
+  // },[sliderEndTime])
 
 
 
