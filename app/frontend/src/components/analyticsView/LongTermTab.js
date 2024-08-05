@@ -209,7 +209,8 @@ const [loading, setLoading] = useState(false);
 
           </div>
 
-          <div className="results" >
+          <div className="results-longterm" >
+
                 {forcastResults}
             </div>  
         </div>
