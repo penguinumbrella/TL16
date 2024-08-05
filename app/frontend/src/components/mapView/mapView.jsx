@@ -14,13 +14,19 @@ const MapView = ({ map_key , activeView, theme}) => {
   const [weatherData, setWeatherData] = useState(null);
   const [selectedOption, setSelectedOption] = useState('parkades');
   const [activeIndex, setActiveIndex] = useState('');
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [sliderEndTime, setSliderEndTime] = useState(new Date());
+  const [sliderEndTime, setSliderEndTime] = useState(new Date(2024, 5, 0, 12, 0, 0, 0)); // new Date()
   const [accOccupancyStatus, setAccOccupancyStatus] = useState('');
   const [mapCenter, setMapCenter] = useState(defaultCenter);
 
+  useEffect(()=>{
+    if(sliderEndTime)
+      console.log('sliderEndTime' + sliderEndTime);
+  },[sliderEndTime])
+
+
+
   const toggleIconsVisibility = () => {
-    console.log(selectedOption)
+    // console.log(selectedOption)
     setIconsVisible(!iconsVisible);
   };
 
@@ -72,9 +78,6 @@ const MapView = ({ map_key , activeView, theme}) => {
     }
   };
 
-  const handleTimeChange = (newTime) => {
-    setCurrentTime(newTime);
-  };
 
   const handleEndTimeChange = (newTime) => {
     setSliderEndTime(newTime);
@@ -96,8 +99,8 @@ const MapView = ({ map_key , activeView, theme}) => {
               condition={weatherData.weather_main}
               description={weatherData.weather_desc}
             />
-            <TimeSlider onTimeChange={handleTimeChange} onSliderRelease={handleEndTimeChange} />
-            <div class="currentTimesTampBox"> {currentTime.toLocaleString()} </div>
+            <TimeSlider onSliderRelease={handleEndTimeChange} />
+            <div class="currentTimesTampBox"> {sliderEndTime.toLocaleString()} </div>
           </>
         )}
 

@@ -23,14 +23,9 @@ The timestamp in the slider and in the mapview are not in sync
 
 */
 
-const TimeSlider = ({ onTimeChange, onSliderRelease }) => {
+const TimeSlider = ({ onSliderRelease }) => {
 
-  
-
-  //const currentDate = new Date();
   let currentDate = new Date(2024, 5, 0, 12, 0, 0, 0);
-  console.log(currentDate);
-
   currentDate.setHours(0, 0, 0, 0); // Set time to 12:00 AM
 
   //const actualCurrentDate = new Date();
@@ -50,18 +45,31 @@ const TimeSlider = ({ onTimeChange, onSliderRelease }) => {
 
   const [currentTime, setCurrentTime] = useState(roundedDate);
   const [sliderValue, setSliderValue] = useState(startingHourDifference);
-  const [showTime, setShowTime] = useState(false);
-  const [thumbPosition, setThumbPosition] = useState({ left: 0, top: 0 });
   const [startDateLeft, setStartDateLeft] = useState(currentDate);
   const [startDateRight, setStartDateRight] = useState(nextDay);
-  const [showCalendarLeft, setShowCalendarLeft] = useState(false);
-  const [showCalendarRight, setShowCalendarRight] = useState(false);
+
+
+  useEffect(()=>{
+    if(currentTime)
+      console.log('currentTime ' + currentTime);
+    // if(sliderValue)
+    //   console.log('sliderValue ' + sliderValue);
+    // if(startDateLeft)
+    //   console.log('startDateLeft ' + startDateLeft);
+    // if(startDateRight)
+    //   console.log('startDateRight ' + startDateRight);
+    // if(showCalendarLeft)
+    //   console.log('showCalendarLeft ' + showCalendarLeft);
+    // if(showCalendarRight)
+    //   console.log('showCalendarRight ' + showCalendarRight);
+
+  }
+  //sliderValue, startDateLeft, startDateRight, showCalendarLeft, showCalendarRight
+    ,[currentTime]);
+  
 
   const actualTime = new Date(2024, 5, 0, 12, 0, 0, 0);
-  //const actualTime = new Date();
-
   const sliderRef = useRef(null);
-  const [step, setStep] = useState(0);
 
   const handleSliderChange = (event) => {
     const value = parseFloat(event.target.value);
@@ -71,7 +79,6 @@ const TimeSlider = ({ onTimeChange, onSliderRelease }) => {
     setCurrentTime(newTime);
     setSliderValue(value);
 
-    onTimeChange(newTime);
   };
 
   const handleSliderRelease = (event) => {
@@ -96,7 +103,6 @@ const TimeSlider = ({ onTimeChange, onSliderRelease }) => {
 
   const calculateGradient = () => {
     const progress = (sliderValue / maxSliderValue) * 100; // Calculate progress based on slider value and max value
-    const stepPercentage = (1 / maxSliderValue) * 100; // Calculate the percentage of one step
 
     // Calculate the color stops for the gradient
     const colorStop1 = `#37A7E5`;
@@ -107,18 +113,10 @@ const TimeSlider = ({ onTimeChange, onSliderRelease }) => {
   };
 
   const handleThumbHover = (event) => {
-    const thumbRect = event.target.getBoundingClientRect();
-    setThumbPosition({
-      left: thumbRect.left + thumbRect.width / 2,
-      top: thumbRect.top - 40, // Adjust the offset as needed
-    });
-    setShowTime(true);
-
     document.querySelector('label').classList.add('active');
   };
 
   const handleThumbLeave = () => {
-    setShowTime(false);
 
     document.querySelector('label').classList.remove('active');
   };
@@ -126,44 +124,18 @@ const TimeSlider = ({ onTimeChange, onSliderRelease }) => {
   useEffect(() => {
     const rangeLinePadding = 16;
     const calcStep = (sliderRef.current.offsetWidth - rangeLinePadding) / sliderRef.current.max;
-    setStep(calcStep);
   }, []);
 
-  const handleDateLeftClick = () => {
-    setShowCalendarLeft(!showCalendarLeft);
-  };
 
-  const handleDateRightClick = () => {
-    setShowCalendarRight(!showCalendarRight);
-  };
-
-  const handleDateLeftChange = (date) => {
-    if (date.getTime() + 4 * 60 * 60 * 1000 <= startDateRight.getTime()) {
-      setStartDateLeft(date);
-    }
-  };
-
-  const handleDateRightChange = (date) => {
-    if (startDateLeft.getTime() + 4 * 60 * 60 * 1000 <= date.getTime()) {
-      setStartDateRight(date);
-    }
-  };
 
   // Calculate the difference in hours between startDateLeft and startDateRight
   const hoursDifference = (startDateRight - startDateLeft) / (1000 * 60 * 60);
-
-  // Calculate the difference in days between startDateLeft and startDateRight
-  const daysDifference = hoursDifference / 24;
-
-  // Set the min, max, and step values for the slider
-  const minSliderValue = 0;
   const maxSliderValue = hoursDifference;
   const sliderStep = 1; // Use 1 day step if difference is more than 2 days, otherwise 1 hour
 
   const calculateBubblePosition = () => {
     if (sliderRef.current) {
       const sliderWidth = sliderRef.current.offsetWidth;
-      const sliderMax = sliderRef.current.max;
       const bubblePosition = (sliderValue / maxSliderValue) * sliderWidth; // Calculate the bubble position
 
       // Ensure the bubble stays within the slider bounds
@@ -178,16 +150,10 @@ const TimeSlider = ({ onTimeChange, onSliderRelease }) => {
   };
 
   const calculateMarkerPosition = () => {
-    {/*
-    return {
-      left: `${99.4}%`,
-      display: 'block'
-    };
-    */}
+
 
     if (actualTime >= startDateLeft && actualTime <= startDateRight && sliderRef.current) {
       const sliderWidth = sliderRef.current.offsetWidth;
-      const sliderMax = sliderRef.current.max;
       const actualTimeDifference = (actualTime - startDateLeft) / (1000 * 60 * 60);
       const markerPosition = (actualTimeDifference / hoursDifference) * sliderWidth;
 
@@ -243,11 +209,7 @@ const TimeSlider = ({ onTimeChange, onSliderRelease }) => {
       </div>
 
       <div className='sliderContainer'>
-        {/*
-        <div className='clock'>
-          <Icon as={ClockHistoryIcon} boxSize={20} />
-        </div>
-        */}
+
         <div className='sliderOnly'>
           <input
             type="range"
