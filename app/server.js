@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const sql = require("mssql");
 const dotenv = require('dotenv');
+const axios = require("axios");
 dotenv.config();
 const cors = require("cors");
 
@@ -23,7 +24,10 @@ const config = {
   "database": process.env.DB_NAME, // Database name
   "options": {
     trustServerCertificate: true
-  }
+  },
+  // Your Cognito User Pool ID and Region
+  "cognitoPoolId": process.env.USER_POOL_ID,
+  "region": process.env.REGION
 }
 
 const x_11_key = process.env.X_11_KEY;
@@ -46,7 +50,36 @@ app.use(cors());
 app.use(express.static(path.resolve(__dirname, './frontend/build')));
 // app.use(express.static(path.resolve(__dirname, './frontend/public')));
 
+const COGNITO_URL = `https://cognito-idp.${config['region']}.amazonaws.com/${config['cognitoPoolId']}`;
 
+const authentication = async (req, res, next) => {
+  try {
+      const accessToken = req.headers.authorization.split(" ")[1];
+
+      const { data } = await axios.post(
+          COGNITO_URL,
+          {
+              AccessToken: accessToken
+          },
+          {
+              headers: {
+                  "Content-Type": "application/x-amz-json-1.1",
+                  "X-Amz-Target": "AWSCognitoIdentityProviderService.GetUser"
+              }
+          }
+      )
+
+      req.user = data;
+      next();
+  } catch (error) {
+      console.log(error);
+      return res.status(401).json({
+          message: 'Unauthorized'
+      });
+  }
+};
+
+app.use(authentication);
 
 app.get("/api", (req, res) => {
     res.json({ message: "Hello from server!" });

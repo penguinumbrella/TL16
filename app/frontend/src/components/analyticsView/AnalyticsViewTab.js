@@ -22,6 +22,7 @@ import CustomTooltip from "./customToolTip";
 
 import { addDays, addWeeks } from "date-fns";
 import { getTimezoneOffset } from 'date-fns-tz'
+import { getAuthToken } from "../../getAuthToken";
 
 import {genCSVhelperParkades, genCSVhelperAccessibilty} from './csvFunctions';
 
