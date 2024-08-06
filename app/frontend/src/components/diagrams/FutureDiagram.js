@@ -56,7 +56,7 @@ const FutureDiagram = ({ type, timestamp, parkade, width, height, title = '', ha
           }
           const capacity = TABLES[parkade];
           const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
-
+          console.log(`occupancyPercentage = ${occupancyPercentage}`);
           // console.log(matchingData);
 
           setDiagData([

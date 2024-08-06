@@ -2,68 +2,60 @@ import React, { useEffect, useState } from 'react'
 import PieChartComponent from './PieChart/PieChartComponent'
 import LineGraphComponent from './LineGraph/LineGraphComponent';
 import BarGraphComponent from './BarGraph/BarGraphComponent';
+import TableComponent from './Table/TableComponent';
 import axios from 'axios';
 import { getAuthToken } from '../../getAuthToken';
 
-const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme, mapView}) => {
+const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme, mapView, rows, columns}) => {
 
   const [diagData, setDiagData] = useState([]);
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
   const [compliancePercentage, setCompliancePercentage] = useState('');
 
-  const DATA = [
-        { name: 'Group A', value: 400 },
-        { name: 'Group B', value: 300 },
-        { name: 'Group C', value: 300 },
-        { name: 'Group D', value: 200 },
-        { name: 'Group E', value: 1000}
-    ] // sample data - to be replaced by API calls
-
-    const BAR_DATA = [
-      { name: 'Group A', value_1: 400, value_2: 300, value_3: 300},
-      { name: 'Group B', value_1: 300, value_2: 800, value_3: 300 },
-      { name: 'Group C', value_1: 300, value_2: 600, value_3: 300 },
-      { name: 'Group D', value_1: 200, value_2: 300, value_3: 300 },
-      { name: 'Group E', value_1: 1000, value_2: 200, value_3: 300}
-  ] // sample
-
   const COLORS = ['#787878', '#007ae6', '#00b392', '#e69d00', '#ff661a', '#0FA122']; // TBD
-
-  const getData = (query) => {
-
-    const data = axios.get(`/executeQuery?query=${query}`, {
-      headers: {
-        'Authorization': `Bearer ${getAuthToken()}`
-      }
-    });
-    return DATA;
-  }
-
 
   useEffect(() => {
     const getData = async () => {
-      
-      const data = (await axios.get(`/executeQuery?query=${query}`, {
-        headers: {
-          'Authorization': `Bearer ${getAuthToken()}`
+
+        const data = (await axios.get(`/executeQuery?query=${query}`, {
+          headers: {
+            'Authorization': `Bearer ${getAuthToken()}`
+          }
+        })).data;
+        if (type == 'COMPLIANCE_PIE') {
+          const total = data[0]['TotalPlates'];
+          const payStation = data[0]['PayStation'];
+          const honkApp = data[0]['HonkApp'];
+          const violations = data[0]['Violation'];
+          const permit = data[0]['Permit'];
+          console.log(data);
+          setDiagData([
+            {name: 'Pay station', value: payStation},
+            {name: 'Honk', value: honkApp},
+            {name: 'Permit', value: permit},
+            {name: 'Violations', value: violations}
+          ]);
+
+          const compliancePercentage = 100 - ((violations / total) * 100).toFixed(0);
+          setOccupancyPercentage(`${compliancePercentage}%`);
         }
-      })).data;
-      console.log(data[0]['Capacity'])
-      // Calculate capacity and occupied values
-      const capacity = data[0]['Capacity'];
-      const occupied = data[0]['Vehicles'];
-    
-      // Calculate occupancy percentage
-      const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
-      setDiagData([
-        {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
-        {name: 'Occupied', value: data[0]['Vehicles']}
-      ]);
-      // Update state with occupancy percentage
-      setOccupancyPercentage(`${occupancyPercentage}%`);
-      setCompliancePercentage(`87%`);
-    }
-    if (dataOverride.length == 0)
+        else {
+          // Calculate capacity and occupied values
+          const capacity = data[0]['Capacity'];
+          const occupied = data[0]['Vehicles'];
+   
+          // Calculate occupancy percentage
+          const occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
+          setDiagData([
+              {name: 'Available', value: data[0]['Capacity'] - data[0]['Vehicles']},
+              {name: 'Occupied', value: data[0]['Vehicles']}
+          ]);
+          // Update state with occupancy percentage
+          setOccupancyPercentage(`${occupancyPercentage}%`);
+          setCompliancePercentage(`87%`);
+        }
+      }
+    if (dataOverride.length == 0 && type !== 'TABLE')
       getData();
   }, []);
 
@@ -112,7 +104,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               mapView = {mapView}
               base_font_size={15}
               data={dataOverride.length != 0 ? dataOverride : diagData} 
-              colors={COLORS} 
+              colors={['#FFD583', '#BAEFFF', '#00D583', '#F765A3']} 
               height={height} 
               width={width} 
               title={title} 
@@ -136,7 +128,11 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
           <BarGraphComponent data={dataOverride.length != 0 ? dataOverride : diagData} height={height} width={width} title={title} customToolTip={customToolTip} dataKeyY={dataKeyY} capacity={capacity}></BarGraphComponent>
         </>
         break;
-        
+    case 'TABLE':
+      toRender = <>
+          <TableComponent rows={rows} columns={columns}></TableComponent>
+        </>
+        break;    
     default:
         toRender = <>
             <h1>NOT SET</h1>
