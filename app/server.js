@@ -314,6 +314,18 @@ app.get('/api/maps_key', (req, res) => {
   res.json({map_key :  process.env.REACT_APP_MAPS_KEY})
 });
 
+const views = ['map', 'dashboard', 'live', 'analytics'];
+let currentView = 'dashboard';
+
+app.get('/api/activeView', (req,res) =>{
+  res.json({ currentView : currentView })
+});
+
+app.post('/api/activeView', (req,res) =>{
+  console.log(req.query.view);
+  currentView = req.query.view;
+  res.json({ currentView : currentView })
+});
 //---------------------------------------------
 
 // This is for getting the accessibility stalls' status and time stamp

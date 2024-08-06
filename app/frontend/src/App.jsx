@@ -20,6 +20,22 @@ function App() {
     setActiveView(view); // Set the active view to the clicked view
   };
 
+  
+
+  useEffect(()=>{
+    fetch(`/api/activeView?view=${activeView}`, {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json' 
+      }
+    })
+    .then(response => response.json()) 
+    .then(data => console.log(data))
+    .catch(error => console.error('Post activeView Error:', error)); 
+
+  }, [activeView]);
+
+
   const [map_key, setMap_key] = useState('');
 
   useEffect(() => {
