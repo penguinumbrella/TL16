@@ -7,13 +7,14 @@ import joblib
 
 import os
 
-# Change the current working directory
-os.chdir('C:\\cpen491\\TL16\\app\\LightGBM\\longterm')
 
-print(os.listdir)
+from pathlib import Path  # Import Path from pathlib
 
-# Verify the current working directory
-print(os.getcwd())
+# Determine the directory of the current script
+script_dir = Path(__file__).parent
+
+# Set the working directory to the script's directory
+os.chdir(script_dir)
 
 # Function to create a date range DataFrame
 def create_date_range_df(start_date, end_date):
@@ -128,7 +129,7 @@ def main():
 
     # Create a DataFrame with the predicted values
     #predictions_df = pd.DataFrame({'Predicted': y_pred_loaded})
-    predictions_df = pd.DataFrame({'name': X_test_df_2.index, 'value': y_pred_loaded})
+    predictions_df = pd.DataFrame({'name': X_test_df_2.index, 'Vehicle': y_pred_loaded})
     #predictions_df.drop(columns=[''])
     # Set the date as the index
     predictions_df.set_index('name', inplace=True)
@@ -138,7 +139,7 @@ def main():
 
     # Plot the predicted values without showing the x-axis
     plt.figure(figsize=(12, 6))
-    plt.plot(predictions_df['value'], label='Occupancy', color='red')
+    plt.plot(predictions_df['Vehicle'], label='Occupancy', color='red')
     plt.xlabel('Date')
     plt.ylabel('Predicted Values')
     plt.title('Predicted Values')

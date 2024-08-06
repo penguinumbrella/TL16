@@ -186,7 +186,7 @@ app.get('/api/LGBM_short',  async (req, res) => {
           // work with the diagrams
           const newRow = {
             ["name"]: row.Timestamp,
-            ["value"]: parseInt(row.Occupancy, 10)
+            ["Vehicle"]: parseInt(row.Occupancy, 10)
           };
           
           // Add the new row to the temporary list
@@ -273,8 +273,8 @@ app.post('/api/LGBM_longterm_predict', (req, res) => {
           .on('data', (data) => {
             // Push each row to parkadeResults
             
-            if (data.value) {
-              data.value = parseInt(data.value, 10);
+            if (data.Vehicle) {
+              data.Vehicle = parseInt(data.Vehicle, 10);
             }
             parkadeResults.push(data);
           })
@@ -293,7 +293,8 @@ app.post('/api/LGBM_longterm_predict', (req, res) => {
   // Process each parkade sequentially
   Promise.all(parkades.map(processParkade))
     .then(() => {
-      res.json(results);
+      res.status(200).json(
+        results);
     })
     .catch((error) => {
       console.error('Error processing parkades:', error);
@@ -306,7 +307,7 @@ app.post('/api/LGBM_shortterm_predict', (req, res) => {
   
   // Define parkades within the route handler
   const parkades = ['North', 'West', 'Rose', 'Health Sciences', 'Fraser', 'Thunderbird', 'University Lot Blvd'];
-
+  let missingDataFlag = false;
   // Function to process each parkade
   const processParkade = (parkade) => {
     return new Promise((resolve, reject) => {
@@ -327,6 +328,10 @@ app.post('/api/LGBM_shortterm_predict', (req, res) => {
 
         console.log(`stdout for ${parkade}: ${stdout}`);
 
+        const missingDataMatch = stdout.match(/missing_data: (true|false)/);
+        const missingData = missingDataMatch ? missingDataMatch[1] === 'true' : false;
+        missingDataFlag = missingData;
+
         const csvFilePath = path.join(__dirname, 'LightGBM', 'shortterm', 'predictions', `${parkade}.csv`);
 
         if (!fs.existsSync(csvFilePath)) {
@@ -338,8 +343,8 @@ app.post('/api/LGBM_shortterm_predict', (req, res) => {
         fs.createReadStream(csvFilePath)
           .pipe(csv())
           .on('data', (data) => {
-            if (data.value) {
-              data.value = parseInt(data.value, 10);
+            if (data.Vehicle) {
+              data.Vehicle = parseInt(data.Vehicle, 10);
             }
             parkadeResults.push(data);
           })
@@ -357,7 +362,7 @@ app.post('/api/LGBM_shortterm_predict', (req, res) => {
   // Process all parkades
   Promise.all(parkades.map(processParkade))
     .then(() => {
-      res.json(results);
+      res.status(200).json(results);
     })
     .catch((error) => {
       console.error('Error processing parkades:', error);

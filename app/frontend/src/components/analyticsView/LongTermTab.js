@@ -61,6 +61,16 @@ const LongTermTab = ({ renderParkadeSelection }) => {
   const [generateChecked, setGenerateChecked] = useState(false);
   const [results, setResults] = useState("");
 
+  const TABLES = {
+    'Fraser': 725,
+    'North': 990,
+    'West': 1232,
+    'Health Sciences': 1189,
+    'Thunderbird': 1634,
+    'University Lot Blvd': 216,
+    'Rose': 807,
+  };
+
   const handleSelectAllChange = (event) => {
     const checked = event.target.checked;
     setSelectAllChecked(checked);
@@ -125,6 +135,9 @@ const LongTermTab = ({ renderParkadeSelection }) => {
             title={parkade}
             dataOverride={data[parkade]}
             customToolTip={CustomTooltip}
+            capacity={TABLES[parkade]}
+            dataKeyY="Vehicle"
+
           />
         );
       }));

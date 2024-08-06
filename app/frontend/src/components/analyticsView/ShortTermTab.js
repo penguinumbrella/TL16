@@ -7,6 +7,16 @@ const ShortTermTab = () => {
   const [loading, setLoading] = useState(true);
   const [forecastResults, setForecastResults] = useState("");
 
+
+  const TABLES = {
+    'Fraser': 725,
+    'North': 990,
+    'West': 1232,
+    'Health Sciences': 1189,
+    'Thunderbird': 1634,
+    'University Lot Blvd': 216,
+    'Rose': 807,
+  };
   // Fetch short-term forecast data when the component mounts
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +48,8 @@ const ShortTermTab = () => {
             title={parkade}
             dataOverride={data[parkade]}
             customToolTip={CustomTooltip}
+            capacity= {TABLES[parkade]}
+            dataKeyY="Vehicle"
           />
         )));
       } catch (error) {

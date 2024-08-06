@@ -11,13 +11,20 @@ import get_past_data
 import os
 import datetime
 
-# Change the current working directory
-os.chdir('C:\\cpen491\\TL16\\app\\LightGBM\\shortterm')
+from pathlib import Path  # Import Path from pathlib
 
-print(os.listdir)
+# Determine the directory of the current script
+script_dir = Path(__file__).parent
+
+# Set the working directory to the script's directory
+os.chdir(script_dir)
+
+
+
+#print(os.listdir)
 
 # Verify the current working directory
-print(os.getcwd())
+#print(os.getcwd())
 
 
 # Function to create a date range DataFrame
@@ -209,7 +216,8 @@ def main():
     #start_date = pd.to_datetime("2024-08-01 21:00:00")
     end_date = start_date + timedelta(days=7) - timedelta(hours=1)
     
-    get_past_data.main(start_date, end_date)
+    missing_data = False
+    missing_data = get_past_data.main(start_date, end_date)
     # Ensure y_test has a DateTimeIndex
     #parkades = ["North", "West", "Rose", "Health Sciences", "Fraser", "Thunderbird", "University Lot Blvd"]
     parkade_map = {
@@ -316,10 +324,10 @@ def main():
     # Combine all parts into one array
     combined_predictions = np.concatenate([part1, part2, part3])
 
-    predictions_df = pd.DataFrame({'name': df_1week.index, 'value': combined_predictions})
+    predictions_df = pd.DataFrame({'name': df_1week.index, 'Vehicle': combined_predictions})
     predictions_df.set_index('name', inplace=True)
     plt.figure(figsize=(12, 6))
-    plt.plot(predictions_df['value'], label='Occupancy', color='red')
+    plt.plot(predictions_df['Vehicle'], label='Occupancy', color='red')
     plt.xlabel('Date')
     plt.ylabel('Predicted Values')
     plt.title('Predicted Values')
@@ -333,6 +341,8 @@ def main():
     output_filename = f'predictions\\{parkade}.csv'
     predictions_df.to_csv(output_filename)
     print(f"CSV file saved as {output_filename}")
+
+    return missing_data
 
 if __name__ == "__main__":
     main()
