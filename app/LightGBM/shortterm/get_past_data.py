@@ -77,7 +77,7 @@ def fetch_data(start_date, end_date):
             df = df[~df.index.duplicated(keep='last')]
 
             df = df.asfreq('h')
-            
+
             # Align with the main DataFrame
             all_data = pd.concat([all_data, df], axis=1)
 

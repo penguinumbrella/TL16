@@ -22,10 +22,10 @@ import accessibilityIconOccupied from './../../../../assets/accessibilityIconOcc
 import loadingZoneIcon from './../../../../assets/loadingZoneIcon.png'
 import loadingZoneIconPicked from './../../../../assets/loadingZoneIconPicked.png'
 
-import parkadeIcon_25 from './../../../../assets/parkadeIcon_25.png'
-import parkadeIcon_50 from './../../../../assets/parkadeIcon_50.png'
-import parkadeIcon_75 from './../../../../assets/parkadeIcon_75.png'
-import parkadeIcon_100 from './../../../../assets/parkadeIcon_100.png'
+import parkadeIcon_25 from './../../../../assets/parkadeIcon_25_black.png'
+import parkadeIcon_50 from './../../../../assets/parkadeIcon_50_black.png'
+import parkadeIcon_75 from './../../../../assets/parkadeIcon_75_black.png'
+import parkadeIcon_100 from './../../../../assets/parkadeIcon_100_black.png'
 
 function updateCSSVariables(varName, primaryColor) {
   document.documentElement.style.setProperty(varName, primaryColor);
@@ -103,6 +103,17 @@ const MarkerWithInfoWindow = ({
     }
 
 
+    const COMPLIANCE_MAP = {
+      'Fraser River': 'Fraser',
+      'North': 'North',
+      'West': 'West',
+      'Health Sciences': 'HealthSciences',
+      'Thunderbird': 'Thunderbird',
+      'University West Blvd': 'UnivWstBlvd',
+      'Rose Garden': 'Rose'
+    }
+
+
 
     const formatTimestampToUnix = (date) => {
       // Convert the date to Unix timestamp in seconds
@@ -121,6 +132,7 @@ const MarkerWithInfoWindow = ({
 
         if(iconImage == 'parkades'){
           // Get the current occupancy and max capacity of the current parkade
+          console.log('timestamp in marker: ' + timestamp);
           let query=`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`
           let data = (await axios.get(`/executeQuery?query=${query}`)).data;
           let capacity = data[0]['Capacity'];
@@ -189,8 +201,8 @@ const MarkerWithInfoWindow = ({
     formattedTimestamp = formatTimestampToUnix(timestamp); 
   }
 
-  const thresholdDate = new Date('2024-06-06T13:00:00Z');
-  const isTimestampPastThreshold = timestamp >= thresholdDate;
+  // const thresholdDate = new Date('2024-06-06T13:00:00Z');
+  // const isTimestampPastThreshold = timestamp >= thresholdDate;
  
 
   const transformData = (data) => {
@@ -199,6 +211,7 @@ const MarkerWithInfoWindow = ({
       {name: 'Occupied', value: data[0]['Vehicles']}
     ];
   }
+
 
 
   return (
@@ -232,8 +245,8 @@ const MarkerWithInfoWindow = ({
               {selectedOption === "parkades" &&
 
               <div className='parkadeWindow' >
-                 {!isTimestampPastThreshold ? (
-                    <>
+                 { 
+                  <>
                       <div className='occupancy-chart'>
                         <Diagram
                           mapView={true}
@@ -248,29 +261,23 @@ const MarkerWithInfoWindow = ({
                           dataTransformer={transformData}
                         />
                       </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className='occupancy-chart'>
-                        <FutureDiagram
+                      <div className='compliance-chart'>
+                        <Diagram
                           mapView={true}
-                          className='occupancy-pie'
-                          timestamp={timestamp}
-                          parkade={content}
-                          type={'OCCUPANCY_PIE'}
-                          height={300}
-                          width={300}
-                          title="Occupancy"
-                          hasLegend={true}
+                          className='compliance-pie' 
                           
+                          type={'COMPLIANCE_PIE'}
+                          height={150}
+                          width={150}
+                          title="Compliance"
+                          hasLegend={true}
+                          query={`select * from CurrentCompliance where ParkadeName = '${COMPLIANCE_MAP[content]}'`}
                           dataTransformer={transformData}
                         />
                       </div>
                     </>
-                  )}
-
-              </div>
-              }
+                  }
+              </div>}
               {
                 (iconImage === 'accessibility') &&  <h3 > {vacant ? `Last occupied : ${payload_timestamp}` : `Occupied since : ${payload_timestamp}`}</h3>
               }

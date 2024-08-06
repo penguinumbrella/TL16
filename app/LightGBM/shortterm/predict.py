@@ -209,7 +209,7 @@ def main():
     #start_date = pd.to_datetime("2024-08-01 21:00:00")
     end_date = start_date + timedelta(days=7) - timedelta(hours=1)
     
-    #get_past_data.main(start_date, end_date)
+    get_past_data.main(start_date, end_date)
     # Ensure y_test has a DateTimeIndex
     #parkades = ["North", "West", "Rose", "Health Sciences", "Fraser", "Thunderbird", "University Lot Blvd"]
     parkade_map = {

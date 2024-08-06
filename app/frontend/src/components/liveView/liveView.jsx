@@ -72,6 +72,8 @@ const LiveView = ({ theme }) => {
     return timeDifference < 15 * 60 * 1000;
   };
 
+  
+
   const generateChartBox = (parkadeName, lastUpdate) => {
     const showWarning = !isRecentUpdate(lastUpdate);
 
