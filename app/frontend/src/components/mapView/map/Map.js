@@ -8,6 +8,7 @@ import './map.css'; // Add a CSS file to handle the styling
 import checkIsOutOfBounds from './outOfBounds.js'
 import mapStyleDark from './mapStyleDark.json'
 import mapStyleLight from './mapStyleLight.json'
+import { getAuthToken } from '../../../getAuthToken.js';
 
 
 
@@ -77,7 +78,11 @@ const Map = ({ selectedOption, setActiveIndex, zoom, center, timestamp, accOccup
   };
 
   useEffect(() => {
-    fetch('/api/data')
+    fetch('/api/data', {
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setMarkerDataData(JSON.parse(data));

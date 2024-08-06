@@ -18,6 +18,7 @@ import CustomTooltip from "./customToolTip.jsx";
 
 import ForcastComponent from "../forcastComponent/ForcastComponent.js";
 import LoadingAnimationComp from "../loading_Animation/LoadingAnimationComp.js";
+import { getAuthToken } from '../../getAuthToken.js';
 
 const PARKADE_OPTIONS = [
   'Thunderbird', 'North', 'West', 'Health Sciences', 'Fraser River', 'Rose Garden', 'University West Blvd'
@@ -60,7 +61,11 @@ const [loading, setLoading] = useState(false);
   };
 
   const onClickLGBM = (queryParams) => {
-    fetch(`/api/LGBM_short?${queryParams}`)
+    fetch(`/api/LGBM_short?${queryParams}`, {
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         // Log the response data
@@ -106,7 +111,11 @@ const [loading, setLoading] = useState(false);
 
   const onClickLongForecast = (queryParams) =>{
     // console.log(queryParams);
-    fetch(`/api/baseline_predict?${queryParams}`)
+    fetch(`/api/baseline_predict?${queryParams}`, {
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`
+      }
+    })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');

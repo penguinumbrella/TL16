@@ -57,10 +57,14 @@ const MapView = ({ map_key , activeView, theme}) => {
     // Fetch weather data whenever the sliderEndTime changes
     fetchWeatherData(sliderEndTime);
   }, [sliderEndTime]); // Dependency on sliderEndTime
-
+  
   const handleOptionChange = (event) => {
     if (event.target.value === 'accessibility') {
-      fetch(`/api/elevenX`)
+      fetch(`/api/elevenX`, {
+        headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+      })
       .then(response => response.json())
       .then(data => {
         setSelectedOption(event.target.value);

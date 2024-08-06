@@ -9,6 +9,7 @@ import { Amplify } from 'aws-amplify';
 import { Hub } from 'aws-amplify/utils';
 import { getCurrentUser } from 'aws-amplify/auth';
 import LoginView from './components/loginView/loginView';
+import { getAuthToken } from './getAuthToken';
 
 Amplify.configure({
   Auth: {
@@ -40,7 +41,11 @@ function App() {
   const [map_key, setMap_key] = useState('');
 
   useEffect(() => {
-    fetch('/api/maps_key')
+    fetch('/api/maps_key', {
+      headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setMap_key(data.map_key);
