@@ -103,6 +103,17 @@ const MarkerWithInfoWindow = ({
     }
 
 
+    const COMPLIANCE_MAP = {
+      'Fraser River': 'Fraser',
+      'North': 'North',
+      'West': 'West',
+      'Health Sciences': 'HealthSciences',
+      'Thunderbird': 'Thunderbird',
+      'University West Blvd': 'UnivWstBlvd',
+      'Rose Garden': 'Rose'
+    }
+
+
 
     const formatTimestampToUnix = (date) => {
       // Convert the date to Unix timestamp in seconds
@@ -201,6 +212,8 @@ const MarkerWithInfoWindow = ({
     ];
   }
 
+  console.log(`TABLES[content] = ${TABLES[content]}`)
+
 
   return (
     <MarkerF
@@ -252,14 +265,14 @@ const MarkerWithInfoWindow = ({
                       <div className='compliance-chart'>
                         <Diagram
                           mapView={true}
-                          className='compliance-pie'
+                          className='compliance-pie' 
                           
                           type={'COMPLIANCE_PIE'}
                           height={150}
                           width={150}
                           title="Compliance"
                           hasLegend={true}
-                          query={`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`}
+                          query={`select * from CurrentCompliance where ParkadeName = '${COMPLIANCE_MAP[content]}'`}
                           dataTransformer={transformData}
                         />
                       </div>

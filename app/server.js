@@ -229,40 +229,76 @@ app.get('/api/LGBM_short',  async (req, res) => {
   
 });
 
+// Long term prediction
 app.post('/api/LGBM_longterm_predict', (req, res) => {
-  const { startDate, endDate, parkade } = req.body;
+  const { startDate, endDate, parkades } = req.body;
 
-  if (!startDate || !endDate || !parkade) {
-      return res.status(400).json({ error: 'Missing required fields' });
+  if (!startDate || !endDate || !parkades || !Array.isArray(parkades) || parkades.length === 0) {
+    return res.status(400).json({ error: 'Missing or invalid fields' });
   }
 
-  // Construct the command to run the Python script
-  const scriptPath = path.join(__dirname, 'LightGBM/longterm/predict.py');
-  const command = `python "${scriptPath}" "${startDate}" "${endDate}" "${parkade}"`;
+  const results = {};
 
-  // console.log(`Running command: ${command}`);
-  //const newScriptPath = path.join(__dirname, 'test.py');
+  const processParkade = (parkade) => {
+    return new Promise((resolve, reject) => {
+      // Construct the command to run the Python script
+      const scriptPath = path.join(__dirname, 'LightGBM', 'longterm', 'predict.py');
+      const command = `python "${scriptPath}" "${startDate}" "${endDate}" "${parkade}"`;
 
-  //const newCommand = `python "${newScriptPath}"`; // Adjust the path
+      console.log(`Running command for parkade ${parkade}: ${command}`);
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error for ${parkade}: ${error}`);
+          return reject(error);
+        }
 
-  console.log(`Running command: ${command}`);
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-        console.log("error1")
-        console.error(`exec error: ${error}`);
-        return res.status(500).json({ error: 'Internal Server Error' });
-    }
+        if (stderr) {
+          console.error(`stderr for ${parkade}: ${stderr}`);
+          return reject(new Error(stderr));
+        }
 
-    if (stderr) {
-        console.log("error2")
-        console.error(`stderr: ${stderr}`);
-        return res.status(500).json({ error: 'Internal Server Error' });
-    }
-    console.log('error3')
-    console.log(`stdout: ${stdout}`);
-    res.json({ message: 'Prediction done successfully!'});
-});_
+        console.log(`stdout for ${parkade}: ${stdout}`);
 
+        // Determine the output CSV file path
+        const csvFilePath = path.join(__dirname, 'LightGBM', 'longterm', 'predictions', `${parkade}.csv`);
+
+        if (!fs.existsSync(csvFilePath)) {
+          return reject(new Error('CSV file not found'));
+        }
+
+        const parkadeResults = [];
+
+        fs.createReadStream(csvFilePath)
+          .pipe(csv())
+          .on('data', (data) => {
+            // Push each row to parkadeResults
+            
+            if (data.value) {
+              data.value = parseInt(data.value, 10);
+            }
+            parkadeResults.push(data);
+          })
+          .on('end', () => {
+            // Resolve the promise with the results for this parkade
+            results[parkade] = parkadeResults;
+            resolve();
+          })
+          .on('error', (err) => {
+            reject(err);
+          });
+      });
+    });
+  };
+
+  // Process each parkade sequentially
+  Promise.all(parkades.map(processParkade))
+    .then(() => {
+      res.json(results);
+    })
+    .catch((error) => {
+      console.error('Error processing parkades:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
 });
 
 

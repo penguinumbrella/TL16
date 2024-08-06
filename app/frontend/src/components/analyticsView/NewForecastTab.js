@@ -59,23 +59,25 @@ const [loading, setLoading] = useState(false);
     }
   };
 
-
-  const onClickLGBM =(queryParams)=>{
+  const onClickLGBM = (queryParams) => {
     fetch(`/api/LGBM_short?${queryParams}`)
       .then(response => response.json())
       .then(data => {
+        // Log the response data
+        console.log('Fetched data:', data);
+  
         // Handle response data
-        // console.log(data);
-        setForcastResults (Object.keys(data).map((parkade) => {
+        setForcastResults(Object.keys(data).map((parkade) => {
           return (
             <Diagram type={'LINE'} height={'30%'} width={'90%'} title={parkade} dataOverride={data[parkade]} customToolTip={CustomTooltip}/>
-          )
-        }))
+          );
+        }));
       })
       .catch(error => {
         console.error('Error in onClickLGBM:', error);
       });
   };
+  
 
   const handleGenerateClickForcast = async () => {
     // Check if any required field is empty or missing

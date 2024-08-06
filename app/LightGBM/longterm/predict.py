@@ -17,7 +17,7 @@ print(os.getcwd())
 
 # Function to create a date range DataFrame
 def create_date_range_df(start_date, end_date):
-    date_range = pd.date_range(start=start_date, end=end_date, freq='H')
+    date_range = pd.date_range(start=start_date, end=end_date, freq='h')
     df = pd.DataFrame(date_range, columns=['date'])
     return df
 
@@ -94,18 +94,24 @@ def main():
     expanded_data = []
     processed_dates = set()
     
-    for holiday_date in holidays:
-        date = holiday_date.date()
-        if date not in processed_dates:
-            for hour in range(0, 24):
-                expanded_data.append({'date': datetime.datetime.combine(date, datetime.time(hour))})
-            processed_dates.add(date)
+    if holidays.empty:
+        df['is_holiday'] = False
+    else:
+        for holiday_date in holidays:
+            date = holiday_date.date()
+            if date not in processed_dates:
+                for hour in range(0, 24):
+                    expanded_data.append({'date': datetime.datetime.combine(date, datetime.time(hour))})
+                processed_dates.add(date)
+        
+        expanded_df = pd.DataFrame(expanded_data)
+        expanded_df = expanded_df[expanded_df['date'].dt.date.isin(holidays.date)]
+        expanded_df.reset_index(drop=True, inplace=True)
+        
+        df['is_holiday'] = df['date'].isin(expanded_df['date'])
     
-    expanded_df = pd.DataFrame(expanded_data)
-    expanded_df = expanded_df[expanded_df['date'].dt.date.isin(holidays.date)]
-    expanded_df.reset_index(drop=True, inplace=True)
-    
-    df['is_holiday'] = df['date'].isin(expanded_df['date'])
+        
+        
     df.set_index('date', inplace=True)
     X_test_df_2 = create_features(df)
     X_test_df_2 = X_test_df_2.drop(columns=['date'])
@@ -118,21 +124,22 @@ def main():
     # Make predictions using the loaded model
     y_pred_loaded = loaded_model.predict(X_test_df_2)
     y_pred_loaded = np.maximum(y_pred_loaded, 0)
+    y_pred_loaded = np.round(y_pred_loaded).astype(int)
 
     # Create a DataFrame with the predicted values
     #predictions_df = pd.DataFrame({'Predicted': y_pred_loaded})
-    predictions_df = pd.DataFrame({'date': X_test_df_2.index, 'Predicted': y_pred_loaded})
+    predictions_df = pd.DataFrame({'name': X_test_df_2.index, 'value': y_pred_loaded})
     #predictions_df.drop(columns=[''])
     # Set the date as the index
-    predictions_df.set_index('date', inplace=True)
+    predictions_df.set_index('name', inplace=True)
 
     # Save the DataFrame to a CSV file without the extra integer index column
     #predictions_df.to_csv('predictions.csv', index=True)
 
     # Plot the predicted values without showing the x-axis
     plt.figure(figsize=(12, 6))
-    plt.plot(predictions_df['Predicted'], label='Predicted', color='red')
-    plt.xlabel('Index')
+    plt.plot(predictions_df['value'], label='Occupancy', color='red')
+    plt.xlabel('Date')
     plt.ylabel('Predicted Values')
     plt.title('Predicted Values')
     plt.legend()
@@ -141,7 +148,7 @@ def main():
     plt.xticks([])
     #plt.show()
     
-    output_filename = f'predictions\{parkade}.csv'
+    output_filename = f'predictions\\{parkade}.csv'
     predictions_df.to_csv(output_filename)
     print(f"CSV file saved as {output_filename}")
 
