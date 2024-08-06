@@ -22,10 +22,10 @@ import accessibilityIconOccupied from './../../../../assets/accessibilityIconOcc
 import loadingZoneIcon from './../../../../assets/loadingZoneIcon.png'
 import loadingZoneIconPicked from './../../../../assets/loadingZoneIconPicked.png'
 
-import parkadeIcon_25 from './../../../../assets/parkadeIcon_25.png'
-import parkadeIcon_50 from './../../../../assets/parkadeIcon_50.png'
-import parkadeIcon_75 from './../../../../assets/parkadeIcon_75.png'
-import parkadeIcon_100 from './../../../../assets/parkadeIcon_100.png'
+import parkadeIcon_25 from './../../../../assets/parkadeIcon_25_black.png'
+import parkadeIcon_50 from './../../../../assets/parkadeIcon_50_black.png'
+import parkadeIcon_75 from './../../../../assets/parkadeIcon_75_black.png'
+import parkadeIcon_100 from './../../../../assets/parkadeIcon_100_black.png'
 
 function updateCSSVariables(varName, primaryColor) {
   document.documentElement.style.setProperty(varName, primaryColor);
@@ -212,7 +212,6 @@ const MarkerWithInfoWindow = ({
     ];
   }
 
-  console.log(`TABLES[content] = ${TABLES[content]}`)
 
 
   return (

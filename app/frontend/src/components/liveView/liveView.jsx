@@ -76,7 +76,6 @@ const LiveView = ({ theme }) => {
 
   const generateChartBox = (parkadeName, lastUpdate) => {
     const showWarning = !isRecentUpdate(lastUpdate);
-    console.log(`COMPLIANCE_MAP[parkadeName] = ${COMPLIANCE_MAP[parkadeName]}`)
 
     return (
       <div className='chart-box'>
