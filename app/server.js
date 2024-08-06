@@ -301,6 +301,71 @@ app.post('/api/LGBM_longterm_predict', (req, res) => {
     });
 });
 
+app.post('/api/LGBM_shortterm_predict', (req, res) => {
+  const results = {};
+  
+  // Define parkades within the route handler
+  const parkades = ['North', 'West', 'Rose', 'Health Sciences', 'Fraser', 'Thunderbird', 'University Lot Blvd'];
+
+  // Function to process each parkade
+  const processParkade = (parkade) => {
+    return new Promise((resolve, reject) => {
+      const scriptPath = path.join(__dirname, 'LightGBM', 'shortterm', 'predict.py');
+      const command = `python "${scriptPath}" "${parkade}"`;
+
+      console.log(`Running command for parkade ${parkade}: ${command}`);
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error for ${parkade}: ${error}`);
+          return reject(error);
+        }
+
+        if (stderr) {
+          console.error(`stderr for ${parkade}: ${stderr}`);
+          return reject(new Error(stderr));
+        }
+
+        console.log(`stdout for ${parkade}: ${stdout}`);
+
+        const csvFilePath = path.join(__dirname, 'LightGBM', 'shortterm', 'predictions', `${parkade}.csv`);
+
+        if (!fs.existsSync(csvFilePath)) {
+          return reject(new Error('CSV file not found'));
+        }
+
+        const parkadeResults = [];
+
+        fs.createReadStream(csvFilePath)
+          .pipe(csv())
+          .on('data', (data) => {
+            if (data.value) {
+              data.value = parseInt(data.value, 10);
+            }
+            parkadeResults.push(data);
+          })
+          .on('end', () => {
+            results[parkade] = parkadeResults;
+            resolve();
+          })
+          .on('error', (err) => {
+            reject(err);
+          });
+      });
+    });
+  };
+
+  // Process all parkades
+  Promise.all(parkades.map(processParkade))
+    .then(() => {
+      res.json(results);
+    })
+    .catch((error) => {
+      console.error('Error processing parkades:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+});
+
+
 
 //---------------------------------------------
 

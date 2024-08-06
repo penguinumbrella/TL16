@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import {
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    Typography,
-    Checkbox,
-    Button
-  } from "@mui/material";
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+  Checkbox,
+  Button
+} from "@mui/material";
 
 import './analyticsView.css';
 import DateTimePicker from 'react-datetime-picker';
@@ -16,7 +16,7 @@ import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import Diagram from '../diagrams/Diagram.js';
 import CustomTooltip from "./customToolTip.jsx";
-import "./LongTermTab.css";
+import "./LongTermTab.css"
 
 import ForcastComponent from "../forcastComponent/ForcastComponent.js";
 import LoadingAnimationComp from "../loading_Animation/LoadingAnimationComp.js";
@@ -29,20 +29,17 @@ const DATA_CATEGORY_OPTIONS = [
   'Parkade Occupancy', 'Accessibility Occupancy'
 ];
 
+const LongTermTab = ({ renderParkadeSelection }) => {
+  const [loading, setLoading] = useState(false);
 
-const LongTermTab = ({ renderParkadeSelection}) => { 
-const [loading, setLoading] = useState(false);
-
-
-// Forcast states and functions-----------------------------------------------------------
-  const formatDate = (date) =>{
+  const formatDate = (date) => {
     const year = date.getFullYear();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Month is zero-indexed
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);
     const hours = ('0' + date.getHours()).slice(-2);
     const minutes = ('0' + date.getMinutes()).slice(-2);
     const seconds = ('0' + date.getSeconds()).slice(-2);
-  
+
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   };
 
@@ -73,9 +70,7 @@ const [loading, setLoading] = useState(false);
       setSelectedParkades([]);
     }
   };
-  
 
-  
   const handleSelectAllChangeForcast = (event) => {
     const checked = event.target.checked;
     setSelectAllCheckedForcast(checked);
@@ -87,18 +82,13 @@ const [loading, setLoading] = useState(false);
   };
 
   const handleGenerateClickForcast = async () => {
-    // Check if any required field is empty or missing
     if (selectedParkadesForcast.length === 0) {
-      // If any required field is missing, don't generate anything
       alert('Please pick at least one parkade');
       return;
     }
     try {
-      setLoading(true); // Set loading state to true
-  
-      // Make the request to the backend to fetch the CSV data
+      setLoading(true);
       onClickLGBM(formatDate(startTime), formatDate(endTime), selectedParkadesForcast);
-
     } catch (error) {
       console.error('Error generating report:', error);
       alert('Failed to generate report');
@@ -106,14 +96,14 @@ const [loading, setLoading] = useState(false);
       setLoading(false);
     }
   };
+
   const onClickLGBM = (startDate, endDate, parkades) => {
-    // Construct the request body
     const requestBody = {
       startDate,
       endDate,
       parkades
     };
-  
+
     console.log(requestBody);
     fetch('/api/LGBM_longterm_predict', {
       method: 'POST',
@@ -125,7 +115,6 @@ const [loading, setLoading] = useState(false);
     .then(response => response.json())
     .then(data => {
       console.log('Received data:', data);
-      // Handle response data
       setForcastResults(Object.keys(data).map((parkade) => {
         return (
           <Diagram
@@ -137,84 +126,73 @@ const [loading, setLoading] = useState(false);
             dataOverride={data[parkade]}
             customToolTip={CustomTooltip}
           />
-        )
+        );
       }));
     })
     .catch(error => {
       console.error('Error in onClickLGBM:', error);
     });
   };
-  
 
-  //-------------------------------------------------------------------------
+  return (
+    <div className="forecastView">
+      <div className="lhs">
+      <h4>TIME FRAME</h4>
+      <div className="timeframe">
+        <Typography style={{ color: '#9C9FBB' }}>From</Typography>
+        <DateTimePicker
+          onChange={(date) => {
+            if (date) {
+              setStartTime(date);
+              setEndTime(new Date(date.getTime() + 24 * 60 * 60 * 1000));
+            }
+          }}
+          value={startTime}
+          format="y-MM-dd"
+          minDate={new Date()}
+          maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
+        />
+        <Typography style={{ color: '#9C9FBB' }}>To</Typography>
+        <DateTimePicker
+          onChange={(date) => {
+            if (date > startTime) {
+              if (date - startTime > THREE_WEEKS_MS) {
+                alert("The time range must be within three weeks.");
+              } else {
+                setEndTime(date);
+              }
+            } else {
+              alert(`Must select a time greater than ${startTime}`);
+            }
+          }}
+          value={endTime}
+          format="y-MM-dd"
+          minDate={new Date()}
+          maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
+        />
+      </div>
 
-
-
-    return (
-        <div className="forecastView">
-          <div className="lhs"> 
-            <h4>TIME FRAME</h4>
-            <div className="timeframe" style={{ display: 'flex', alignItems: 'center', gap: '10px'}}>
-              <Typography style={{ color: '#9C9FBB' }}>From</Typography>
-                <DateTimePicker
-                    onChange={(date) => {
-                      if (date) {
-                      
-                            setStartTime(date);
-                            // Automatically set endTime to one day after startTime
-                            setEndTime(new Date(date.getTime() + 24 * 60 * 60 * 1000));
-                      }
-                  }}
-                    value={startTime}
-                    format="y-MM-dd"
-                    minDate={new Date()}
-                    maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
-                    
-                />
-                <Typography style={{ color: '#9C9FBB' }}>To</Typography>
-                <DateTimePicker
-                  onChange={(date) => {
-                    if (date > startTime) {
-                      // Check if the time range is within three weeks
-                      if (date - startTime > THREE_WEEKS_MS) {
-                        alert("The time range must be within three weeks.");
-                      } else {
-                        setEndTime(date);
-                      }
-                    } else {
-                      alert(`Must select a time greater than ${startTime}`);
-                    }
-                }}
-                  value={endTime}
-                  format="y-MM-dd"
-                  minDate={new Date()}
-                  maxDate = {new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
-                />
-            </div>
-            
-            <div className='forecast-parkade-options-div'>
-                    <h3>PARKADE OPTIONS</h3>
-                    <div style={{width: "15%", display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                        <Checkbox style={{color: '#323551'}} checked={selectAllCheckedForcast} onChange={handleSelectAllChangeForcast}></Checkbox>
-                    <h4 style={{margin : '10px'}}>Select All</h4>
-                    </div>
-                    {renderParkadeSelection(PARKADE_OPTIONS, '+ Select', selectedParkadesForcast, setSelectedParkadesForcast, setSelectAllCheckedForcast)}
-                </div>
-
-          <div className='generate-container'>
-                        <Button variant="contained" color="primary" onClick={handleGenerateClickForcast} style={{width: "150px"}}>
-                            {loading ? 'Generating...' : 'Generate!'}
-                        </Button>
-                    </div>
-
-          </div>
-
-          <div className="results-longterm" >
-
-                {forcastResults}
-            </div>  
+      <div className='forecast-parkade-options-div'>
+        <h3>PARKADE OPTIONS</h3>
+        <div style={{width: "15%", display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+          <Checkbox style={{color: '#323551'}} checked={selectAllCheckedForcast} onChange={handleSelectAllChangeForcast}></Checkbox>
+          <h4 style={{margin : '10px'}}>Select All</h4>
         </div>
-    )
+        {renderParkadeSelection(PARKADE_OPTIONS, '+ Select', selectedParkadesForcast, setSelectedParkadesForcast, setSelectAllCheckedForcast)}
+      </div>
+
+      <div className='generate-container'>
+        <Button variant="contained" color="primary" onClick={handleGenerateClickForcast} style={{width: "150px"}}>
+          {loading ? 'Generating...' : 'Generate!'}
+        </Button>
+      </div>
+      </div>
+
+      <div className="results">
+        {forcastResults}
+      </div>  
+    </div>
+  );
 };
 
-export default LongTermTab
+export default LongTermTab;

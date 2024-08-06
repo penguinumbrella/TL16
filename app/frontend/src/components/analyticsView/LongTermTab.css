@@ -35,14 +35,7 @@
   }
   
   .results-longterm {
-    background-color: green;
-    flex: 1;
-    left: 0;
-    align-self: flex-start;
+
     width: 60%;
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    margin-right: 200px;
   }
   

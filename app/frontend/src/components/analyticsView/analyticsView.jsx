@@ -15,6 +15,7 @@ import Tabs from '../tabComponent/Tabs.js';
 import ForecastTab from './NewForecastTab.js';
 import AnalyticsViewTab from './AnalyticsViewTab.js';
 import LongTermTab from "./LongTermTab.js";
+import ShortTermTab from "./ShortTermTab.js"
 
 const MAX_OPTIONS = 5;
 
@@ -189,7 +190,7 @@ const AnalyticsView = ({theme}) => {
     },{
       title: 'SHORT TERM FORECAST',
       content:
-      <ForecastTab renderParkadeSelection = {renderParkadeSelection}/>
+      <ShortTermTab/>
     },
     {
       title: 'LONG TERM FORECAST',
