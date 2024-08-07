@@ -5,8 +5,6 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import sys
 import joblib
-from sqlalchemy import create_engine
-import psycopg2
 import get_past_data
 import os
 import datetime
@@ -129,7 +127,7 @@ def create_week_lag(df,parkade,start_date):
 
 def create_day_lag(df,parkade,start_date):
     # Load data from CSV file
-    data_file = 'C:/cpen491/TL16-2/TL16/machine-learning/hourly_parkade_data.csv'
+    data_file = 'hourly_parkade_data.csv'
     lag_data = pd.read_csv(data_file)
     
     # Convert the 'Timestamp' column to datetime and set it as the index
@@ -166,7 +164,7 @@ def create_day_lag(df,parkade,start_date):
 
 def create_4hour_lag(df,parkade,start_date):
     # Load data from CSV file
-    data_file = 'C:/cpen491/TL16-2/TL16/machine-learning/hourly_parkade_data.csv'
+    data_file = 'hourly_parkade_data.csv'
     lag_data = pd.read_csv(data_file)
     
     # Convert the 'Timestamp' column to datetime and set it as the index
@@ -289,9 +287,9 @@ def main():
     df_4hour = df_4hour.drop(columns=['date'])
     # Load the trained model
     
-    loaded_model_week = joblib.load(f'C:/cpen491/TL16-2/TL16/machine-learning/lgb_model_exports/1week/lgb_1week_{parkade}.pkl')
-    loaded_model_day = joblib.load(f'C:/cpen491/TL16-2/TL16/machine-learning/lgb_model_exports/1day/lgb_1day_{parkade}.pkl')
-    loaded_model_4hour = joblib.load(f'C:/cpen491/TL16-2/TL16/machine-learning/lgb_model_exports/4hour/lgb_4hour_{parkade}.pkl')
+    loaded_model_week = joblib.load(f'models/1week/lgb_1week_{parkade}.pkl')
+    loaded_model_day = joblib.load(f'models/1day/lgb_1day_{parkade}.pkl')
+    loaded_model_4hour = joblib.load(f'models/4hour/lgb_4hour_{parkade}.pkl')
 
     # Make predictions using the loaded model
     y_pred_loaded_day = loaded_model_day.predict(df_1day)

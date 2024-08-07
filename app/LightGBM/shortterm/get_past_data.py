@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 import os
 
 
-
 # Load environment variables from .env file
 load_dotenv()
 
@@ -102,11 +101,6 @@ def fetch_data(start_date, end_date):
     return missing_data
 
 def main(start_date, end_date):
-    # Change the current working directory
-    os.chdir('C:\\cpen491\\TL16\\app\\LightGBM\\shortterm')
-
-    print(os.listdir())  # Note: Add parentheses to call the function
-    print(os.getcwd())
 
     # Call the function to fetch data
     fetch_data(start_date, end_date)

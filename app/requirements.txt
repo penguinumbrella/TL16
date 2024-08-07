@@ -13,9 +13,8 @@ lightgbm
 statsmodels
 plotly
 flask
-dotenv
+python-dotenv
 joblib
 datetime
-psycopg2
 sqlalchemy
-pathlib
+pyodbc
