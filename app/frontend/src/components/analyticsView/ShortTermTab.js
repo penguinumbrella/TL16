@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Diagram from '../diagrams/Diagram.js';
 import CustomTooltip from "./customToolTip.jsx";
 import "./LongTermTab.css";
-import { getAuthToken } from '../../getAuthToken.js';
 
 const ShortTermTab = () => { 
   const [loading, setLoading] = useState(true);
   const [forecastResults, setForecastResults] = useState("");
+
 
   const TABLES = {
     'Fraser': 725,
@@ -24,11 +24,10 @@ const ShortTermTab = () => {
         setLoading(true); // Set loading state to true
 
         // Fetch short-term forecast results from the API
-        const response = await fetch('/api/LGBM_shortterm_predict', {
+        const response = await fetch('/api/LGBM_shortterm_predict_csv', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${getAuthToken()}`
+            'Content-Type': 'application/json'
           }
         });
 
