@@ -129,7 +129,7 @@ def main():
 
     # Create a DataFrame with the predicted values
     #predictions_df = pd.DataFrame({'Predicted': y_pred_loaded})
-    predictions_df = pd.DataFrame({'name': X_test_df_2.index, 'Vehicle': y_pred_loaded})
+    predictions_df = pd.DataFrame({'name': X_test_df_2.index, 'Vehicles': y_pred_loaded})
     #predictions_df.drop(columns=[''])
     # Set the date as the index
     predictions_df.set_index('name', inplace=True)
@@ -139,7 +139,7 @@ def main():
 
     # Plot the predicted values without showing the x-axis
     plt.figure(figsize=(12, 6))
-    plt.plot(predictions_df['Vehicle'], label='Occupancy', color='red')
+    plt.plot(predictions_df['Vehicles'], label='Occupancy', color='red')
     plt.xlabel('Date')
     plt.ylabel('Predicted Values')
     plt.title('Predicted Values')

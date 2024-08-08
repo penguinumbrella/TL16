@@ -201,8 +201,8 @@ def create_4hour_lag(df,parkade,start_date):
 # Main script to generate the CSV file
 import sys
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: shortterm_predict.py [parkade]")
+    if len(sys.argv) != 1:
+        print("Usage: shortterm_predict.py")
         sys.exit(1)
     
     now = datetime.datetime.now()
@@ -217,7 +217,7 @@ def main():
     missing_data = False
     missing_data = get_past_data.main(start_date, end_date)
     # Ensure y_test has a DateTimeIndex
-    #parkades = ["North", "West", "Rose", "Health Sciences", "Fraser", "Thunderbird", "University Lot Blvd"]
+    parkades = ["North", "West", "Rose", "Health Sciences", "Fraser", "Thunderbird", "University Lot Blvd"]
     parkade_map = {
         "North": "North",
         "West": "West",
@@ -228,117 +228,119 @@ def main():
         "University Lot Blvd": "University West Blvd"
     }
 
-    parkade = sys.argv[1]
+    #parkade = sys.argv[1]
 
-    df = create_date_range_df(start_date, end_date)
+    print(parkades)
+    for parkade in parkades:
+        df = create_date_range_df(start_date, end_date)
 
-    
-    df['term_date'] = False
-    
-    cal = VancouverHolidayCalendar()
-    holidays = cal.holidays(start=df['date'].min(), end=df['date'].max())
-    
-    expanded_data = []
-    processed_dates = set()
-    
-    if holidays.empty:
-        df['is_holiday'] = False
+        
+        df['term_date'] = False
+        
+        cal = VancouverHolidayCalendar()
+        holidays = cal.holidays(start=df['date'].min(), end=df['date'].max())
+        
+        expanded_data = []
+        processed_dates = set()
+        
+        if holidays.empty:
+            df['is_holiday'] = False
 
-    else:
-        print("holidays", holidays)
-        for holiday_date in holidays:
-            date = holiday_date.date()
+        else:
+            print("holidays", holidays)
+            for holiday_date in holidays:
+                date = holiday_date.date()
+                
+                if date not in processed_dates:
+                    for hour in range(0, 24):
+                        expanded_data.append({'date': datetime.datetime.combine(date, datetime.time(hour))})
+                    processed_dates.add(date)
             
-            if date not in processed_dates:
-                for hour in range(0, 24):
-                    expanded_data.append({'date': datetime.datetime.combine(date, datetime.time(hour))})
-                processed_dates.add(date)
+            print("expanded_data", expanded_data)
+            expanded_df = pd.DataFrame(expanded_data)
+            expanded_df = expanded_df[expanded_df['date'].dt.date.isin(holidays.date)]
+            expanded_df.reset_index(drop=True, inplace=True)
+            
+            df['is_holiday'] = df['date'].isin(expanded_df['date'])
         
-        print("expanded_data", expanded_data)
-        expanded_df = pd.DataFrame(expanded_data)
-        expanded_df = expanded_df[expanded_df['date'].dt.date.isin(holidays.date)]
-        expanded_df.reset_index(drop=True, inplace=True)
+            
+        df.set_index('date', inplace=True)
+        X_test_df_2 = create_features(df)
+
+        print(X_test_df_2)
+
+        df_1week = X_test_df_2.copy()
+        df_1day = X_test_df_2[X_test_df_2.index <= start_date + timedelta(hours=23)].copy()
+        df_4hour = X_test_df_2[X_test_df_2.index <= start_date + timedelta(hours=3)].copy()
+
+        print("df_4hour", df_4hour)
+        print("df_1day", df_1day)
+
+        #print(df_1week)
+        # implement lags
+        df_1week = create_week_lag(df_1week, parkade, start_date)
+        df_1day = create_day_lag(df_1day, parkade, start_date)
+        df_4hour = create_4hour_lag(df_4hour, parkade, start_date)
+        #X_test_df_2['lag_7_days_Occupancy'] = float('nan')
+
+
+        df_1week = df_1week.drop(columns=['date'])
+        df_1day = df_1day.drop(columns=['date'])
+        df_4hour = df_4hour.drop(columns=['date'])
+        # Load the trained model
         
-        df['is_holiday'] = df['date'].isin(expanded_df['date'])
-    
-        
-    df.set_index('date', inplace=True)
-    X_test_df_2 = create_features(df)
+        loaded_model_week = joblib.load(f'models/1week/lgb_1week_{parkade}.pkl')
+        loaded_model_day = joblib.load(f'models/1day/lgb_1day_{parkade}.pkl')
+        loaded_model_4hour = joblib.load(f'models/4hour/lgb_4hour_{parkade}.pkl')
 
-    print(X_test_df_2)
-
-    df_1week = X_test_df_2.copy()
-    df_1day = X_test_df_2[X_test_df_2.index <= start_date + timedelta(hours=23)].copy()
-    df_4hour = X_test_df_2[X_test_df_2.index <= start_date + timedelta(hours=3)].copy()
-
-    print("df_4hour", df_4hour)
-    print("df_1day", df_1day)
-
-    #print(df_1week)
-    # implement lags
-    df_1week = create_week_lag(df_1week, parkade, start_date)
-    df_1day = create_day_lag(df_1day, parkade, start_date)
-    df_4hour = create_4hour_lag(df_4hour, parkade, start_date)
-    #X_test_df_2['lag_7_days_Occupancy'] = float('nan')
+        # Make predictions using the loaded model
+        y_pred_loaded_day = loaded_model_day.predict(df_1day)
+        y_pred_loaded_day = np.maximum(y_pred_loaded_day, 0)
 
 
-    df_1week = df_1week.drop(columns=['date'])
-    df_1day = df_1day.drop(columns=['date'])
-    df_4hour = df_4hour.drop(columns=['date'])
-    # Load the trained model
-    
-    loaded_model_week = joblib.load(f'models/1week/lgb_1week_{parkade}.pkl')
-    loaded_model_day = joblib.load(f'models/1day/lgb_1day_{parkade}.pkl')
-    loaded_model_4hour = joblib.load(f'models/4hour/lgb_4hour_{parkade}.pkl')
+        # Make predictions using the loaded model
+        y_pred_loaded_week = loaded_model_week.predict(df_1week)
+        y_pred_loaded_week = np.maximum(y_pred_loaded_week, 0)
 
-    # Make predictions using the loaded model
-    y_pred_loaded_day = loaded_model_day.predict(df_1day)
-    y_pred_loaded_day = np.maximum(y_pred_loaded_day, 0)
+        #plt.show()
+
+        # Make predictions using the loaded model
+        y_pred_loaded_4hour = loaded_model_4hour.predict(df_4hour)
+        y_pred_loaded_4hour = np.maximum(y_pred_loaded_4hour, 0)
 
 
-    # Make predictions using the loaded model
-    y_pred_loaded_week = loaded_model_week.predict(df_1week)
-    y_pred_loaded_week = np.maximum(y_pred_loaded_week, 0)
-
-    #plt.show()
-
-    # Make predictions using the loaded model
-    y_pred_loaded_4hour = loaded_model_4hour.predict(df_4hour)
-    y_pred_loaded_4hour = np.maximum(y_pred_loaded_4hour, 0)
+        #plt.show()
 
 
-    #plt.show()
+        # Take the first 4 values from y_pred_loaded_4hour
+        part1 = y_pred_loaded_4hour[:4]
+
+        # Take values from index [4, 24] from y_pred_loaded_day
+        part2 = y_pred_loaded_day[4:24]
+
+        # Take the rest from y_pred_loaded_week
+        part3 = y_pred_loaded_week[len(part1) + len(part2):]
+
+        # Combine all parts into one array
+        combined_predictions = np.concatenate([part1, part2, part3])
+
+        predictions_df = pd.DataFrame({'name': df_1week.index, 'Vehicles': combined_predictions})
+        predictions_df.set_index('name', inplace=True)
+        plt.figure(figsize=(12, 6))
+        plt.plot(predictions_df['Vehicles'], label='Occupancy', color='red')
+        plt.xlabel('Date')
+        plt.ylabel('Predicted Values')
+        plt.title('Predicted Values')
+        plt.legend()
+
+        # Hide the x-axis labels
+        plt.xticks([])
+        #plt.show()
 
 
-    # Take the first 4 values from y_pred_loaded_4hour
-    part1 = y_pred_loaded_4hour[:4]
-
-    # Take values from index [4, 24] from y_pred_loaded_day
-    part2 = y_pred_loaded_day[4:24]
-
-    # Take the rest from y_pred_loaded_week
-    part3 = y_pred_loaded_week[len(part1) + len(part2):]
-
-    # Combine all parts into one array
-    combined_predictions = np.concatenate([part1, part2, part3])
-
-    predictions_df = pd.DataFrame({'name': df_1week.index, 'Vehicle': combined_predictions})
-    predictions_df.set_index('name', inplace=True)
-    plt.figure(figsize=(12, 6))
-    plt.plot(predictions_df['Vehicle'], label='Occupancy', color='red')
-    plt.xlabel('Date')
-    plt.ylabel('Predicted Values')
-    plt.title('Predicted Values')
-    plt.legend()
-
-    # Hide the x-axis labels
-    plt.xticks([])
-    #plt.show()
-
-
-    output_filename = f'predictions\\{parkade}.csv'
-    predictions_df.to_csv(output_filename)
-    print(f"CSV file saved as {output_filename}")
+        output_filename = f'predictions\\{parkade}.csv'
+        predictions_df.to_csv(output_filename)
+        print(f"CSV file saved as {output_filename}")
 
     return missing_data
 

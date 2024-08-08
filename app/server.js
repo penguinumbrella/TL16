@@ -453,73 +453,69 @@ app.post('/api/LGBM_shortterm_predict_csv', (req, res) => {
 
 const runLGBMShortTermPredict = () => {
   const results = {};
+  const scriptPath = path.join(__dirname, 'LightGBM', 'shortterm', 'predict.py');
+  const command = `python "${scriptPath}"`;
   
-  // Define parkades within the route handler
-  const parkades = ['North', 'West', 'Rose', 'Health Sciences', 'Fraser', 'Thunderbird', 'University Lot Blvd'];
-  let missingDataFlag = false;
+  return new Promise((resolve, reject) => {
+    console.log(`Running command: ${command}`);
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return reject(error);
+      }
 
-  // Function to process each parkade
-  const processParkade = (parkade) => {
-    return new Promise((resolve, reject) => {
-      const scriptPath = path.join(__dirname, 'LightGBM', 'shortterm', 'predict.py');
-      const command = `python "${scriptPath}" "${parkade}"`;
+      if (stderr) {
+        console.error(`stderr: ${stderr}`);
+        return reject(new Error(stderr));
+      }
 
-      console.log(`Running command for parkade ${parkade}: ${command}`);
-      exec(command, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`exec error for ${parkade}: ${error}`);
-          return reject(error);
-        }
+      console.log(`stdout: ${stdout}`);
 
-        if (stderr) {
-          console.error(`stderr for ${parkade}: ${stderr}`);
-          return reject(new Error(stderr));
-        }
+      const missingDataMatch = stdout.match(/missing_data: (true|false)/);
+      const missingDataFlag = missingDataMatch ? missingDataMatch[1] === 'true' : false;
 
-        console.log(`stdout for ${parkade}: ${stdout}`);
-
-        const missingDataMatch = stdout.match(/missing_data: (true|false)/);
-        const missingData = missingDataMatch ? missingDataMatch[1] === 'true' : false;
-        missingDataFlag = missingData;
-
+      const parkades = ['North', 'West', 'Rose', 'Health Sciences', 'Fraser', 'Thunderbird', 'University Lot Blvd'];
+      const readCsvPromises = parkades.map((parkade) => {
         const csvFilePath = path.join(__dirname, 'LightGBM', 'shortterm', 'predictions', `${parkade}.csv`);
 
         if (!fs.existsSync(csvFilePath)) {
-          return reject(new Error('CSV file not found'));
+          return Promise.reject(new Error(`CSV file for ${parkade} not found`));
         }
 
-        const parkadeResults = [];
+        return new Promise((resolve, reject) => {
+          const parkadeResults = [];
 
-        fs.createReadStream(csvFilePath)
-          .pipe(csv())
-          .on('data', (data) => {
-            if (data.Vehicle) {
-              data.Vehicle = parseInt(data.Vehicle, 10);
-            }
-            parkadeResults.push(data);
-          })
-          .on('end', () => {
-            results[parkade] = parkadeResults;
-            resolve();
-          })
-          .on('error', (err) => {
-            reject(err);
-          });
+          fs.createReadStream(csvFilePath)
+            .pipe(csv())
+            .on('data', (data) => {
+              if (data.Vehicle) {
+                data.Vehicle = parseInt(data.Vehicle, 10);
+              }
+              parkadeResults.push(data);
+            })
+            .on('end', () => {
+              results[parkade] = parkadeResults;
+              resolve();
+            })
+            .on('error', (err) => {
+              reject(err);
+            });
+        });
       });
-    });
-  };
 
-  // Process all parkades
-  return Promise.all(parkades.map(processParkade))
-    .then(() => {
-      console.log('LGBM short-term prediction completed successfully.');
-      return results;
-    })
-    .catch((error) => {
-      console.error('Error processing parkades:', error);
-      throw error;
+      Promise.all(readCsvPromises)
+        .then(() => {
+          console.log('LGBM short-term prediction completed successfully.');
+          resolve(results);
+        })
+        .catch((err) => {
+          console.error('Error reading CSV files:', err);
+          reject(err);
+        });
     });
+  });
 };
+
 
 
 
@@ -667,14 +663,15 @@ const get_elevenX = ()=>{
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 
-  //runLGBMShortTermPredict();
+  runLGBMShortTermPredict();
   // Update the accessibilty data every 10 minutes
 
+  // Update the short term LGBM data every 30 minutes
   setInterval(() => {
     runLGBMShortTermPredict().catch((error) => console.error('Scheduled run error:', error));
-  }, 60*1000*60); // 1000ms * 60s * 60m = 1 hour
+  }, 60 * 1000 * 30); // 1000ms * 60s * 60m = 1 hour
 
   setInterval(get_elevenX, 1000 * 60 * 10);
-  // Update the short term LGBM data every 10 minutes
+  
   
 });
