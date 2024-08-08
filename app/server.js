@@ -219,7 +219,7 @@ app.get('/api/LGBM_short',  async (req, res) => {
           // work with the diagrams
           const newRow = {
             ["name"]: row.Timestamp,
-            ["value"]: parseInt(row.Occupancy, 10)
+            ["Vehicle"]: parseInt(row.Occupancy, 10)
           };
           
           // Add the new row to the temporary list
@@ -306,8 +306,8 @@ app.post('/api/LGBM_longterm_predict', (req, res) => {
           .on('data', (data) => {
             // Push each row to parkadeResults
             
-            if (data.value) {
-              data.value = parseInt(data.value, 10);
+            if (data.Vehicle) {
+              data.Vehicle = parseInt(data.Vehicle, 10);
             }
             parkadeResults.push(data);
           })
@@ -326,13 +326,83 @@ app.post('/api/LGBM_longterm_predict', (req, res) => {
   // Process each parkade sequentially
   Promise.all(parkades.map(processParkade))
     .then(() => {
-      res.json(results);
+      res.status(200).json(
+        results);
     })
     .catch((error) => {
       console.error('Error processing parkades:', error);
       res.status(500).json({ error: 'Internal Server Error' });
     });
 });
+
+app.post('/api/LGBM_shortterm_predict', (req, res) => {
+  const results = {};
+  
+  // Define parkades within the route handler
+  const parkades = ['North', 'West', 'Rose', 'Health Sciences', 'Fraser', 'Thunderbird', 'University Lot Blvd'];
+  let missingDataFlag = false;
+  // Function to process each parkade
+  const processParkade = (parkade) => {
+    return new Promise((resolve, reject) => {
+      const scriptPath = path.join(__dirname, 'LightGBM', 'shortterm', 'predict.py');
+      const command = `python "${scriptPath}" "${parkade}"`;
+
+      console.log(`Running command for parkade ${parkade}: ${command}`);
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error for ${parkade}: ${error}`);
+          return reject(error);
+        }
+
+        if (stderr) {
+          console.error(`stderr for ${parkade}: ${stderr}`);
+          return reject(new Error(stderr));
+        }
+
+        console.log(`stdout for ${parkade}: ${stdout}`);
+
+        const missingDataMatch = stdout.match(/missing_data: (true|false)/);
+        const missingData = missingDataMatch ? missingDataMatch[1] === 'true' : false;
+        missingDataFlag = missingData;
+
+        const csvFilePath = path.join(__dirname, 'LightGBM', 'shortterm', 'predictions', `${parkade}.csv`);
+
+        if (!fs.existsSync(csvFilePath)) {
+          return reject(new Error('CSV file not found'));
+        }
+
+        const parkadeResults = [];
+
+        fs.createReadStream(csvFilePath)
+          .pipe(csv())
+          .on('data', (data) => {
+            if (data.Vehicle) {
+              data.Vehicle = parseInt(data.Vehicle, 10);
+            }
+            parkadeResults.push(data);
+          })
+          .on('end', () => {
+            results[parkade] = parkadeResults;
+            resolve();
+          })
+          .on('error', (err) => {
+            reject(err);
+          });
+      });
+    });
+  };
+
+  // Process all parkades
+  Promise.all(parkades.map(processParkade))
+    .then(() => {
+      res.status(200).json(results);
+    })
+    .catch((error) => {
+      console.error('Error processing parkades:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+});
+
 
 
 //---------------------------------------------
@@ -383,6 +453,18 @@ app.get('/api/maps_key', (req, res) => {
   res.json({map_key :  process.env.REACT_APP_MAPS_KEY})
 });
 
+const views = ['map', 'dashboard', 'live', 'analytics'];
+let currentView = 'dashboard';
+
+app.get('/api/activeView', (req,res) =>{
+  res.json({ currentView : currentView })
+});
+
+app.post('/api/activeView', (req,res) =>{
+  console.log(req.query.view);
+  currentView = req.query.view;
+  res.json({ currentView : currentView })
+});
 //---------------------------------------------
 
 // This is for getting the accessibility stalls' status and time stamp

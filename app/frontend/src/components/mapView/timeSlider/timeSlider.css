@@ -200,3 +200,13 @@
   border-radius: 5px; /* Optional: Add border-radius for rounded corners */
   padding: 10px; /* Optional: Add padding for better appearance */
 }
+
+
+/*-------------------------------------------------------------------------------*/
+.dateBoxRight .react-datepicker-popper {
+  left: -60px !important;
+}
+
+.dateBoxRight .react-datepicker__triangle{
+  left: 214px !important;
+}
