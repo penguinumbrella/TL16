@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Diagram from '../diagrams/Diagram.js';
 import CustomTooltip from "./customToolTip.jsx";
 import "./LongTermTab.css";
+import { getAuthToken } from '../../getAuthToken.js';
 
 const ShortTermTab = () => { 
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,9 @@ const ShortTermTab = () => {
         const response = await fetch('/api/LGBM_shortterm_predict_csv', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${getAuthToken()}`
+            
           }
         });
 
