@@ -52,7 +52,7 @@ const ShortTermTab = () => {
             dataOverride={data[parkade]}
             customToolTip={CustomTooltip}
             capacity= {TABLES[parkade]}
-            dataKeyY="Vehicle"
+            dataKeyY="Vehicles"
           />
         )));
       } catch (error) {

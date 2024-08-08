@@ -138,7 +138,7 @@ const LongTermTab = ({ renderParkadeSelection }) => {
             dataOverride={data[parkade]}
             customToolTip={CustomTooltip}
             capacity={TABLES[parkade]}
-            dataKeyY="Vehicle"
+            dataKeyY="Vehicles"
 
           />
         );
