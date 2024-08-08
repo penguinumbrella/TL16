@@ -13,3 +13,8 @@ lightgbm
 statsmodels
 plotly
 flask
+python-dotenv
+joblib
+datetime
+sqlalchemy
+pyodbc
