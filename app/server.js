@@ -403,6 +403,125 @@ app.post('/api/LGBM_shortterm_predict', (req, res) => {
     });
 });
 
+app.post('/api/LGBM_shortterm_predict_csv', (req, res) => {
+  const results = {};
+
+  // Define parkades
+  const parkades = ['North', 'West', 'Rose', 'Health Sciences', 'Fraser', 'Thunderbird', 'University Lot Blvd'];
+  let missingDataFlag = false;
+
+  // Function to process each parkade
+  const processParkade = (parkade) => {
+    return new Promise((resolve, reject) => {
+      const csvFilePath = path.join(__dirname, 'LightGBM', 'shortterm', 'predictions', `${parkade}.csv`);
+
+      if (!fs.existsSync(csvFilePath)) {
+        return reject(new Error(`CSV file not found for parkade: ${parkade}`));
+      }
+
+      const parkadeResults = [];
+
+      fs.createReadStream(csvFilePath)
+        .pipe(csv())
+        .on('data', (data) => {
+          if (data.Vehicle) {
+            data.Vehicle = parseInt(data.Vehicle, 10);
+          }
+          parkadeResults.push(data);
+        })
+        .on('end', () => {
+          results[parkade] = parkadeResults;
+          resolve();
+        })
+        .on('error', (err) => {
+          reject(err);
+        });
+    });
+  };
+
+  // Process all parkades
+  Promise.all(parkades.map(processParkade))
+    .then(() => {
+      res.status(200).json(results);
+    })
+    .catch((error) => {
+      console.error('Error processing parkades:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+});
+
+
+const runLGBMShortTermPredict = () => {
+  const results = {};
+  
+  // Define parkades within the route handler
+  const parkades = ['North', 'West', 'Rose', 'Health Sciences', 'Fraser', 'Thunderbird', 'University Lot Blvd'];
+  let missingDataFlag = false;
+
+  // Function to process each parkade
+  const processParkade = (parkade) => {
+    return new Promise((resolve, reject) => {
+      const scriptPath = path.join(__dirname, 'LightGBM', 'shortterm', 'predict.py');
+      const command = `python "${scriptPath}" "${parkade}"`;
+
+      console.log(`Running command for parkade ${parkade}: ${command}`);
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error for ${parkade}: ${error}`);
+          return reject(error);
+        }
+
+        if (stderr) {
+          console.error(`stderr for ${parkade}: ${stderr}`);
+          return reject(new Error(stderr));
+        }
+
+        console.log(`stdout for ${parkade}: ${stdout}`);
+
+        const missingDataMatch = stdout.match(/missing_data: (true|false)/);
+        const missingData = missingDataMatch ? missingDataMatch[1] === 'true' : false;
+        missingDataFlag = missingData;
+
+        const csvFilePath = path.join(__dirname, 'LightGBM', 'shortterm', 'predictions', `${parkade}.csv`);
+
+        if (!fs.existsSync(csvFilePath)) {
+          return reject(new Error('CSV file not found'));
+        }
+
+        const parkadeResults = [];
+
+        fs.createReadStream(csvFilePath)
+          .pipe(csv())
+          .on('data', (data) => {
+            if (data.Vehicle) {
+              data.Vehicle = parseInt(data.Vehicle, 10);
+            }
+            parkadeResults.push(data);
+          })
+          .on('end', () => {
+            results[parkade] = parkadeResults;
+            resolve();
+          })
+          .on('error', (err) => {
+            reject(err);
+          });
+      });
+    });
+  };
+
+  // Process all parkades
+  return Promise.all(parkades.map(processParkade))
+    .then(() => {
+      console.log('LGBM short-term prediction completed successfully.');
+      return results;
+    })
+    .catch((error) => {
+      console.error('Error processing parkades:', error);
+      throw error;
+    });
+};
+
+
 
 
 //---------------------------------------------
@@ -449,7 +568,6 @@ app.get('/api/baseline_predict', (req, res) => {
 
 
 app.get('/api/maps_key', (req, res) => {
-
   res.json({map_key :  process.env.REACT_APP_MAPS_KEY})
 });
 
@@ -549,6 +667,14 @@ const get_elevenX = ()=>{
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 
+  //runLGBMShortTermPredict();
   // Update the accessibilty data every 10 minutes
+
+  setInterval(() => {
+    runLGBMShortTermPredict().catch((error) => console.error('Scheduled run error:', error));
+  }, 60*1000*60); // 1000ms * 60s * 60m = 1 hour
+
   setInterval(get_elevenX, 1000 * 60 * 10);
+  // Update the short term LGBM data every 10 minutes
+  
 });

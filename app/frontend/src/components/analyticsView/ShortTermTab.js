@@ -24,7 +24,7 @@ const ShortTermTab = () => {
         setLoading(true); // Set loading state to true
 
         // Fetch short-term forecast results from the API
-        const response = await fetch('/api/LGBM_shortterm_predict', {
+        const response = await fetch('/api/LGBM_shortterm_predict_csv', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
