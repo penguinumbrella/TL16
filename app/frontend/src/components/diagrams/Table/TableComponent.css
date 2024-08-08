@@ -1,0 +1,26 @@
+.header-dark {
+    background-color: #323551;
+    color: #9C9FBB;
+}
+
+.pagination-dark {
+    color: white;
+}
+
+.table-container {
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+.table-container .MuiTablePagination-root {
+    color: white !important;
+}
+  
+.table-container .MuiTablePagination-root svg {
+    color: white;
+}
+  
+.table-container .MuiTablePagination-actions button {
+    color: white !important;
+}
+  

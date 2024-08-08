@@ -1,0 +1,167 @@
+.forecast-options{
+  height: 90%;
+}
+
+.close-button {
+  width: 20px; 
+  height: 20px; 
+  background-color: transparent; 
+  border: none; 
+  cursor: pointer; 
+  padding-bottom: 10px; 
+  margin-left: 90%;
+  margin-top: -10px;
+  font-size: 24px; 
+  color: #000000
+}
+
+.close-button:hover {
+  color: #f0f0f0;
+}
+
+.fullView{
+  width: 170vh;
+  height: 85%;
+  margin: 20px;
+  margin-left: 50px;
+  padding: 20px;
+  align-items: center;
+}
+
+.forecastView{
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 170vh;
+  height: 85%;
+  padding-left: 30px;
+  background-color: rgba(7, 8, 17, 0.5);
+  border-radius: 10px;
+  overflow: auto;
+  overflow-y:scroll;
+}
+
+/*------------------------------------------------------*/
+
+.analyticsView {
+  position: absolute;
+  display: flex;
+  justify-content: space-between; /* Items will be spread out with maximum space between them */
+  align-items: center;
+  width: 170vh;
+  height: 85%;
+  padding-left: 10px;
+  background-color: rgba(7, 8, 17, 0.5);
+  border-radius: 10px;
+  overflow: hidden;
+  overflow-y:scroll;
+}
+
+.analyticsView{
+  color: white;
+}
+
+.queryItems {
+  padding: 20px;
+  width: 55%;
+}
+
+
+  .visualizationView {
+    position: absolute;
+    margin: 50px;
+    margin-left: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 170vh;
+    height: 85%;
+    padding: 20px;
+    background-color: #100D1D;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .visualizationView{
+      color: #050505;
+  }
+
+.analytics-options-div {
+  width: 70%;
+  height: 15%;
+  margin-bottom: 10px;
+}
+
+.cross :hover {
+  cursor: pointer;
+}
+
+
+/* customDateTimePicker.css */
+
+/* Override calendar container style */
+.react-calendar {
+  background-color: #323551;
+  border: none;
+  border-radius: 10px;
+  color: #9C9FBB;
+}
+
+.react-datetime-picker__wrapper {
+  background-color: #323551;
+  border: none;
+  border-radius: 10px;
+  color: #9C9FBB;
+}
+
+/* Style calendar navigation */
+.react-calendar__navigation button {
+  color: #9C9FBB;
+}
+
+/* Style the calendar days */
+.react-calendar__tile {
+  background-color: #40436d;
+  color: #9C9FBB;
+}
+
+.react-calendar__tile--active {
+  background-color: #5c5f92;
+  color: white;
+}
+
+.react-calendar__tile--now {
+  background-color: #3e4064;
+  color: white;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #5c5f92;
+  color: white;
+}
+.generate-button-div {
+  align-self: flex-end;
+}
+
+.analytics-options-div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.generate-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+.results {
+  width: 60%;
+  overflow: auto;
+  height: 100%;
+}

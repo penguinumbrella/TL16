@@ -1,0 +1,39 @@
+
+
+.tab-buttons {
+  display: flex;
+}
+
+.tab-buttons button {
+  border: none;
+  background-color: transparent;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+  border-bottom: 2px solid transparent;
+  
+}
+
+:root {
+  --tab-buttons_button: aliceblue;
+  --tab-buttons_button_hover: #dddcdc;
+  --tab-buttons_button_active: #a3a3a3;
+}
+
+
+.tab-buttons button {
+  color: var(--tab-buttons_button);
+}
+
+.tab-buttons button:hover {
+  border-bottom-color: var(--tab-buttons_button_hover);
+}
+
+.tab-buttons button.active {
+  border-bottom-color: var(--tab-buttons_button_active);
+}
+
+.tab-content {
+  margin-top: 10px;
+}

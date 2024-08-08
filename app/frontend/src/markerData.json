@@ -1,0 +1,59 @@
+{
+    "parkades":   [
+                      {
+                          "name": "North",
+                          "data": 500
+                      },
+                      {
+                          "name": "West",
+                          "data": -33
+                      },
+                      {
+                          "name": "Health Sciences",
+                          "data": 420
+                      },
+                      {
+                          "name": "Thunderbird",
+                          "data": "( ͡° ͜ʖ ͡°)!!!!"
+                      },
+                      {
+                          "name": "Fraser River",
+                          "data": 999999
+                      },
+                      {
+                          "name": "Rose Garden",
+                          "data": 7007
+                      },
+                      {
+                        "name": "University West Blvd",
+                        "data": 8081
+                    }
+                  ],
+
+    "accessibility":[{"name":"AL-07","data":55},{"name":"AL-06","data":55},{"name":"AL-05","data":55},{"name":"AL-01","data":55},{"name":"AL-02","data":55},{"name":"AL-03","data":55},{"name":"AL-04","data":55},{"name":"FP-01","data":55},{"name":"FP-02","data":55},{"name":"FP-1A","data":55},{"name":"FP-2A","data":55},{"name":"HP-04","data":55},{"name":"HP-05","data":55},{"name":"HP-03","data":55},{"name":"HP-02","data":55},{"name":"HP-01","data":55},{"name":"HP-10","data":55},{"name":"HP-09","data":55},{"name":"HP-08","data":55},{"name":"HP-07","data":55},{"name":"HP-06","data":55},{"name":"NL-01","data":55},{"name":"NL-02","data":55},{"name":"NL-03","data":55},{"name":"NP-09","data":55},{"name":"NP-08","data":55},{"name":"NP-07","data":55},{"name":"NP-01","data":55},{"name":"NP-02","data":55},{"name":"NP-03","data":55},{"name":"NP-04","data":55},{"name":"NP-05","data":55},{"name":"NP-06","data":55},{"name":"NP-10","data":55},{"name":"TP-01","data":55},{"name":"TP-02","data":55},{"name":"TP-03","data":55},{"name":"TP-04","data":55},{"name":"TP-05","data":55},{"name":"TP-08","data":55},{"name":"TP-07","data":55},{"name":"TP-06","data":55},{"name":"TP-09","data":55},{"name":"TP-10","data":55},{"name":"TP-11","data":55},{"name":"TP-12","data":55},{"name":"TP-13","data":55},{"name":"TP-14","data":55},{"name":"TP-15","data":55},{"name":"TB1-1","data":55},{"name":"TB1-2","data":55},{"name":"TB1-3","data":55},{"name":"TB1-4","data":55},{"name":"TB1-5","data":55},{"name":"New-19","data":55},{"name":"New-20","data":55},{"name":"UL-06","data":55},{"name":"UL-05","data":55},{"name":"UL-04","data":55},{"name":"UL-03","data":55},{"name":"UL-02","data":55},{"name":"UL-01","data":55},{"name":"UBRD01","data":55},{"name":"WP-01","data":55},{"name":"WP-02","data":55},{"name":"WP-03","data":55},{"name":"WP-04","data":55},{"name":"WP-10","data":55},{"name":"WP-09","data":55},{"name":"WP-08","data":55},{"name":"WP-07","data":55},{"name":"WP-06","data":55},{"name":"WP-05","data":55},{"name":"W4-3","data":55},{"name":"W4-4","data":55},{"name":"W4-5","data":55},{"name":"W4-6","data":55},{"name":"W4-7","data":55},{"name":"W4-8","data":55},{"name":"W4-9","data":55},{"name":"W4-10","data":55},{"name":"W4-11","data":55},{"name":"W4-12","data":55},{"name":"W4-13","data":55},{"name":"W4-16","data":55},{"name":"W4-17","data":55},{"name":"W4-33","data":55},{"name":"W4-34","data":55},{"name":"TBirdCr01","data":55},{"name":"FL-01","data":55},{"name":"TR-01","data":55},{"name":"AR-01","data":55},{"name":"New-07","data":55},{"name":"New-08","data":55},{"name":"Cecil Green 2","data":55},{"name":"ML-01","data":55},{"name":"ML-02","data":55},{"name":"ML-03","data":55},{"name":"CL-03","data":55},{"name":"CL-02","data":55},{"name":"CL-01","data":55},{"name":"Law 1","data":55},{"name":"Law 2","data":55},{"name":"DL-01","data":55},{"name":"Cecil Green 1","data":55},{"name":"New-06","data":55},{"name":"New-09","data":55},{"name":"New-10","data":55},{"name":"New-11","data":55},{"name":"Law-3","data":55},{"name":"Law-4","data":55},{"name":"FR-03","data":55},{"name":"FR-02","data":55},{"name":"FR-01","data":55},{"name":"BR-01","data":55},{"name":"BR-02","data":55},{"name":"UR-01","data":55},{"name":"MR-01","data":55},{"name":"MR-02","data":55},{"name":"New-02","data":55},{"name":"New-12","data":55},{"name":"New-16","data":55},{"name":"New-17","data":55},{"name":"New-18","data":55},{"name":"New-01","data":55},{"name":"New-03","data":55},{"name":"New-04","data":55},{"name":"New-05","data":55},{"name":"SL-01","data":55},{"name":"SL-04","data":55},{"name":"SL-03","data":55},{"name":"SL-02","data":55},{"name":"OL-01","data":55},{"name":"OL-02","data":55},{"name":"OL-03","data":55},{"name":"OL-04","data":55},{"name":"OL-05","data":55},{"name":"New-13","data":55},{"name":"New-14","data":55},{"name":"New-15","data":55},{"name":"CG-1","data":55},{"name":"CG-2","data":55},{"name":"CG-3","data":55},{"name":"CG-4","data":55},{"name":"RG3-1","data":55},{"name":"RG3-2","data":55},{"name":"RG3-3","data":55},{"name":"RG5-1","data":55},{"name":"RG5-2","data":55},{"name":"RG5-3","data":55},{"name":"RG5-4","data":55},{"name":"RG5-5","data":55},{"name":"RG5-6","data":55},{"name":"RG5-7","data":55},{"name":"RG5-8","data":55},{"name":"RG5-9","data":55},{"name":"BM-01","data":55},{"name":"BM-02","data":55},{"name":"BM-03","data":55},{"name":"BM-04","data":55},{"name":"BM-05","data":55},{"name":"BM-06","data":55},{"name":"BM-07","data":55},{"name":"BM-08","data":55},{"name":"BM-09","data":55},{"name":"BM-10","data":55},{"name":"BM-11","data":55},{"name":"BM-12","data":55},{"name":"BM-13","data":55},{"name":"BM-14","data":55},{"name":"BM-15","data":55},{"name":"BM-16","data":55},{"name":"BM-17","data":55},{"name":"BM-18","data":55},{"name":"HSM-1","data":55},{"name":"HSM-2","data":55},{"name":"HSM-3","data":55},{"name":"HSM-4","data":55},{"name":"EMR-01","data":55},{"name":"EMR-02","data":55},{"name":"EMR-03","data":55},{"name":"EMR-04","data":55},{"name":"EMR-05","data":55},{"name":"EMR-06","data":55},{"name":"EMR-07","data":55},{"name":"EMR-08","data":55},{"name":"EMR-09","data":55},{"name":"EMR-10","data":55},{"name":"EMR-11","data":55},{"name":"EMR-12","data":55},{"name":"EMR-13","data":55},{"name":"EMR-14","data":55},{"name":"EMR-15","data":55},{"name":"EMR-16","data":55},{"name":"EMR-17","data":55},{"name":"EMR-18","data":55},{"name":"EMR-19","data":55},{"name":"EMR-20","data":55},{"name":"EMR-21","data":55},{"name":"EMR-22","data":55},{"name":"EMR-23","data":55},{"name":"EMR-24","data":55},{"name":"EMR-25","data":55},{"name":"EMR-26","data":55},{"name":"EMR-27","data":55},{"name":"EMR-28","data":55},{"name":"EMR-29","data":55},{"name":"EMR-30","data":55},{"name":"EMR-31","data":55},{"name":"EMR-32","data":55},{"name":"EMR-33","data":55},{"name":"EMR-34","data":55},{"name":"EMR-35","data":55},{"name":"EMR-36","data":55},{"name":"EMR-37","data":55},{"name":"EMR-38","data":55},{"name":"EMR-39","data":55},{"name":"EMR-40","data":55},{"name":"EMR-41","data":55},{"name":"EMR-42","data":55},{"name":"EMR-43","data":55},{"name":"EMR-44","data":55},{"name":"EMR-45","data":55},{"name":"EMR-46","data":55},{"name":"EMR-47","data":55},{"name":"EMR-48","data":55},{"name":"EMR-49","data":55},{"name":"EMR-50","data":55},{"name":"EMR-51","data":55},{"name":"EMR-52","data":55},{"name":"EMR-53","data":55},{"name":"EMR-54","data":55},{"name":"EMR-55","data":55},{"name":"EMR-56","data":55},{"name":"EMR-57","data":55},{"name":"EMR-58","data":55},{"name":"EMR-59","data":55},{"name":"EMR-60","data":55},{"name":"EMR-61","data":55},{"name":"EMR-62","data":55},{"name":"EMR-63","data":55},{"name":"EMR-64","data":55},{"name":"EMR-65","data":55},{"name":"EMR-66","data":55},{"name":"EMR-67","data":55},{"name":"EMR-68","data":55},{"name":"EMR-69","data":55},{"name":"EMR-70","data":55},{"name":"EMR-71","data":55},{"name":"EMR-72","data":55},{"name":"EMR-073","data":55},{"name":"EMR-074","data":55},{"name":"EMR-075","data":55},{"name":"EMR-076","data":55},{"name":"EMR-077","data":55},{"name":"EMR-078","data":55},{"name":"EMR-079","data":55},{"name":"EMR-080","data":55},{"name":"EMR-081","data":55},{"name":"EMR-082","data":55},{"name":"EMR-083","data":55},{"name":"EMR-084","data":55},{"name":"EMR-085","data":55},{"name":"EMR-086","data":55},{"name":"EMR-087","data":55},{"name":"EMR-088","data":55},{"name":"EMR-089","data":55},{"name":"EMR-090","data":55},{"name":"EMR-091","data":55},{"name":"EMR-092","data":55},{"name":"LMR-01","data":55},{"name":"LMR-02","data":55},{"name":"LMR-03","data":55},{"name":"WMR-01","data":55},{"name":"WMR-02","data":55},{"name":"WMR-03","data":55},{"name":"WMR-04","data":55},
+        {
+            "name": "OL-06",
+            "data" : "(._.)"
+        },
+        {
+            "name": "OL-07",
+            "data" : "(°_°)"
+        },
+        {
+            "name": "OL-08",
+            "data" : "(╯°□°）╯︵ ┻━┻"
+            
+        }],
+
+
+    "loading_zones":[{
+      "name": "Fraser River Loading Zone",
+      "data": "no"   
+    },
+    {
+        "name": "Rose Garden Loading Zone",
+        "location":60
+    }],
+    
+    "_empty_":[]
+}

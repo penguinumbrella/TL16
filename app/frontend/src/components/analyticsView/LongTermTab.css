@@ -1,0 +1,41 @@
+.forecastView {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .lhs {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+  }
+  
+  .forecastView h4 {
+    margin-bottom: 10px;
+  }
+  
+  .timeframe {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .forecast-parkade-options-div {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .generate-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  
+  .results-longterm {
+
+    width: 60%;
+  }
+  

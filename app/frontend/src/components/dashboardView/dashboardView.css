@@ -1,0 +1,131 @@
+.dashboardView {
+  position: absolute;
+  top: 50px; /* Added position for better control */
+  left: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80vw; /* Adjusted for better responsiveness */
+  height: 80vh;
+  padding: 20px;
+  background-color: rgba(2, 2, 6, 0.25);
+  border-radius: 10px;
+  overflow: hidden; /* Ensure circle stays inside the rectangle */
+  font-weight: bold;
+}
+
+.light .dashboardView {
+  color: #000034;
+}
+
+.dark .dashboardView {
+  color: #e0e1eb;
+}
+
+.headerContainer {
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 95%;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.welcomeMessage {
+  font-size: 18px;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+}
+
+.userIcon {
+  font-size: 24px;
+  margin-right: 8px;
+}
+
+.viewsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.topViews {
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 50%;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.firstview, .secondview, .thirdview {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer; /* Change mouse cursor to pointer */
+  transition: background-color 0.3s ease; /* Add transition effect */
+  img {
+    margin: 20px;
+    height: 70%;
+  }
+}
+
+.light .firstview:hover, .secondview:hover, .thirdview:hover {
+  background-color: rgba(2, 2, 6, 0.5); /* Change background color on hover */
+}
+
+.dark .firstview:hover, .secondview:hover, .thirdview:hover {
+  background-color: rgba(115, 115, 118, 0.5); /* Change background color on hover */
+}
+
+/* Rest of your CSS */
+
+.firstview {
+  width: 75%; /* Adjusted width for better alignment */
+  background-color: rgba(2, 2, 6, 0.25);
+}
+
+.secondview {
+  width: 25%; /* Adjusted width for better alignment */
+  background-color: rgba(2, 2, 6, 0.25);
+}
+
+
+.bottomView {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.viewImage {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+}
+
+.thirdview {
+  width: 98.5%;
+  background-color: rgba(2, 2, 6, 0.25);
+}

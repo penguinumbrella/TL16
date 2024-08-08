@@ -1,0 +1,212 @@
+.customSlider {
+    position: relative; /* Add relative positioning */
+    -webkit-appearance: none;
+    appearance: none;
+    width: 40vw;
+    height: 20px;
+    opacity: 1;
+    outline: none;
+    margin: 0 auto;
+    background-color: #323551;
+    border-radius: 5px;
+  }
+
+.dateBoxLeft,
+.dateBoxRight {
+  cursor: pointer;
+  position: absolute;
+  top: -40px; /* Adjust as needed */
+  font-size: 12px;
+  padding: 5px;
+  background-color: #323551;
+  color: #9C9FBB;
+  border-radius: 5px;
+}
+
+.dateBoxLeft {
+  left: 10px; /* Adjust as needed */
+}
+
+.dateBoxLeft:hover, .dateBoxLeft:active {
+    transform: scale(1.2); /* Enlarge the icon on hover/click */
+}
+
+.dateBoxRight {
+  right: 10px; /* Adjust as needed */
+}
+
+.dateBoxRight:hover, .dateBoxRight:active {
+    transform: scale(1.2); /* Enlarge the icon on hover/click */
+}
+
+.datePickerContainer {
+    position: relative; /* Required for z-index to work */
+    z-index: 2; /* Set a higher z-index for the calendar */
+  }
+  
+  .customSlider.slider-progress::-ms-fill-lower {
+    height: max(calc(1em - 1px - 1px),0px);
+    border-radius: 0.5em 0 0 0.5em;
+    margin: -1px 0 -1px -1px;
+    background: #3C9EFF;
+    border: 1px solid #b2b2b2;
+    border-right-width: 0;
+  }
+  
+  .customSlider::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    background: #832D6B;
+    height: 30px;
+    width: 5px; /* Set the width to make it rectangular */
+    border-radius: 5px; /* Adjust border-radius to make it rectangular */
+    content: var(--thumbNumber);
+  }
+
+  /* Thumb: Firefox */
+  .customSlider::-moz-range-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    background: #832D6B;
+    height: 30px;
+    width: 5px; /* Set the width to make it rectangular */
+    border-radius: 5px; /* Adjust border-radius to make it rectangular */
+  }
+
+  .sliderContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .timeContainer{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+  }
+  .clock {
+    padding-right: 10px;
+  }
+
+  label {
+    width: 35px;
+    height: 40px;
+    position: absolute;
+    top: -45px;
+    left: -35px;
+    color: hsl(0, 0%, 0%);
+    pointer-events: none;
+    opacity: 0; /* Initially hide the label */
+    transition: opacity 0.3s ease; /* Add a smooth transition effect */
+  }
+  
+  label.active {
+    opacity: 1; /* 
+    Show the label when active */
+  }
+
+
+  label span {
+    position: absolute;
+    top: 8px;
+    left: -75%;
+    text-align: center;
+    font-size: 12px;
+    z-index: 5;
+    white-space: nowrap; /* Ensure text is displayed on one line */
+  }  
+
+  .windowContainer {
+    height: inherit;
+    position: relative;
+    right: 34px;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+
+/* Override styles for the input textbox */
+.react-datepicker__input-container input {
+  /* Your custom styles here */
+  background-color: #323551;
+  color: #9C9FBB;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Override calendar container style */
+.react-datepicker {
+  background-color: #323551;
+  border: none;
+  border-radius: 10px;
+  color: #9C9FBB;
+  display: flex; /* Ensure the container is a flex container */
+  flex-direction: row; /* Arrange children horizontally */
+}
+
+/* Style calendar navigation */
+.react-datepicker__navigation button {
+  color: #9C9FBB;
+}
+
+/* Style the calendar days */
+.react-datepicker__tile {
+  background-color: #40436d;
+  color: #9C9FBB;
+}
+
+.react-datepicker__tile--active {
+  background-color: #5c5f92;
+  color: white;
+}
+
+.react-datepicker__tile--now {
+  background-color: #3e4064;
+  color: white;
+}
+
+.react-datepicker__tile:enabled:hover,
+.react-datepicker__tile:enabled:focus {
+  background-color: #5c5f92;
+  color: white;
+}
+
+/* Move time select to the right */
+.react-datepicker__time-container {
+  background-color: #5c5f92;
+  width: auto; /* Allow the container to adjust its width based on content */
+}
+
+/* Style month selector background */
+.react-datepicker__header {
+  background-color: #323551;
+  border-bottom: none; /* Remove border bottom */
+}
+
+/* Style time container background */
+.react-datepicker__time-container {
+  background-color: #323551; /* Dark gray background */
+}
+/* Style time select options */
+.react-datepicker__time-list-item {
+  background-color: #323551; /* Gray color for time select options */
+}
+
+/* Style time select scroller */
+.react-datepicker__time-scroller {
+  background-color: rgba(0, 0, 0, 0.5); /* Dark black transparent background */
+  border-radius: 5px; /* Optional: Add border-radius for rounded corners */
+  padding: 10px; /* Optional: Add padding for better appearance */
+}
+
+
+/*-------------------------------------------------------------------------------*/
+.dateBoxRight .react-datepicker-popper {
+  left: -60px !important;
+}
+
+.dateBoxRight .react-datepicker__triangle{
+  left: 214px !important;
+}

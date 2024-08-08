@@ -1,0 +1,41 @@
+.weatherIcon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(7, 8, 17, 0.6); /* Transparent background color */
+    background-blend-mode: color-burn;
+    width: 100px;
+    height: 100px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Add shadow for depth */
+
+    backdrop-filter: blur(3px); /* Adjust the blur radius as needed */
+    -webkit-backdrop-filter: blur(3px); /* For Safari */
+  }
+  .iconContainer {
+    width: 50px; /* Adjust as needed */
+    height: 50px; /* Adjust as needed */
+    margin-bottom: 10px;
+  }
+  
+  .weatherIconImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    color: #9C9FBB; /* Change color of the weather icon */
+  }
+  
+  .temperature {
+    font-size: 24px;
+    margin-bottom: 5px;
+    color: #9C9FBB;
+  }
+  
+  .condition {
+    text-align: center;
+    font-size: 13px;
+    color: #51557e;
+  }
+  
