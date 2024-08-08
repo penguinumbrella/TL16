@@ -26,6 +26,8 @@ import parkadeIcon_25 from './../../../../assets/parkadeIcon_25_black.png'
 import parkadeIcon_50 from './../../../../assets/parkadeIcon_50_black.png'
 import parkadeIcon_75 from './../../../../assets/parkadeIcon_75_black.png'
 import parkadeIcon_100 from './../../../../assets/parkadeIcon_100_black.png'
+import { getAuthToken } from '../../../../getAuthToken';
+
 
 function updateCSSVariables(varName, primaryColor) {
   document.documentElement.style.setProperty(varName, primaryColor);
@@ -134,7 +136,11 @@ const MarkerWithInfoWindow = ({
           // Get the current occupancy and max capacity of the current parkade
           console.log('timestamp in marker: ' + timestamp);
           let query=`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`
-          let data = (await axios.get(`/executeQuery?query=${query}`)).data;
+          let data = (await axios.get(`/executeQuery?query=${query}`, {
+            headers: {
+              'Authorization': `Bearer ${getAuthToken()}`
+            }
+          })).data;
           let capacity = data[0]['Capacity'];
           let occupied = data[0]['Vehicles'];
 

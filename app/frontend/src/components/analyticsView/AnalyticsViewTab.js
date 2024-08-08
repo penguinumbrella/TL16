@@ -22,6 +22,7 @@ import CustomTooltip from "./customToolTip";
 
 import { addDays, addWeeks } from "date-fns";
 import { getTimezoneOffset } from 'date-fns-tz'
+import { getAuthToken } from "../../getAuthToken";
 
 import {genCSVhelperParkades, genCSVhelperAccessibilty} from './csvFunctions';
 
@@ -145,7 +146,11 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
     if (Object.keys(queries).includes('query')) {
       // Accessibility
       console.log(queries['query']);
-      const results = await axios.get(`/executeQuery?query=${queries['query']}`)
+      const results = await axios.get(`/executeQuery?query=${queries['query']}`, {
+        headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+      });
       const columns = [];
       const response = results.data;
       if (response.length > 0) {
@@ -186,7 +191,11 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
             return;
           }
           else {
-            const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+            const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`, {
+              headers: {
+                'Authorization': `Bearer ${getAuthToken()}`
+              }
+            });
             const data = response.data;
             data.forEach((dataPoint) => {
               const item = cleanData.find(obj => obj['name'] == formatUnixTimestamp(dataPoint['TimestampUnix']))
@@ -217,7 +226,11 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
             return;
           }
           else {
-            const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+            const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`, {
+              headers: {
+                'Authorization': `Bearer ${getAuthToken()}`
+              }
+            });
             const data = response.data;
             // fix data.date to match cleanData's objects format
             data.forEach((dataPoint) => {
@@ -254,7 +267,11 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
             return;
           }
           else {
-            const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`);
+            const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`, {
+              headers: {
+                'Authorization': `Bearer ${getAuthToken()}`
+              }
+            });
             const data = response.data;
             data.forEach((dataPoint) => {
               const item = cleanData.find(obj => obj['name'] == `${formatDateString(dataPoint.week_start_date.split('T')[0])} - ${formatDateString(dataPoint.week_end_date.split('T')[0])}`)
@@ -378,7 +395,11 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
   useEffect(() => {
     const fetchAccessibilityManagementData = async () => {
       const query = 'SELECT * FROM x11_management'
-      const response = await axios.get(`/executeQuery?query=${query}`);
+      const response = await axios.get(`/executeQuery?query=${query}`, {
+        headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+      });
       const zones = [];
       const stalls = {};
       response.data.forEach((item) => {

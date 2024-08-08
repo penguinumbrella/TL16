@@ -1,12 +1,19 @@
 import React from 'react';
 import { Divider, Icon } from '@chakra-ui/react';
-import { FaHome, FaMap, FaChartPie, FaChartLine, FaCog, FaUserCircle } from 'react-icons/fa';
+import { FaHome, FaMap, FaChartPie, FaChartLine, FaCog, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import './searchBar.css';
+import { signOut } from 'aws-amplify/auth';
+import { getAuthToken } from '../getAuthToken';
 
 const SearchBar = ({ activeView, onIconClick, theme, setNewTheme }) => {
   const handleIconClick = (view, event) => {
     onIconClick(view);
   };
+  
+  const handleLogout = async (event) => {
+    console.log('Signing out!')
+    await signOut();
+  }
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -73,6 +80,7 @@ const SearchBar = ({ activeView, onIconClick, theme, setNewTheme }) => {
         </div>
         <Icon as={FaCog} className='chakra-icon' />
         <Icon as={FaUserCircle} className='chakra-icon' />
+        <Icon as={FaSignOutAlt} onClick={handleLogout}></Icon>
       </div>
     </div>
   );

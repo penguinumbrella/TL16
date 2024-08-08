@@ -4,6 +4,7 @@ import LineGraphComponent from './LineGraph/LineGraphComponent';
 import BarGraphComponent from './BarGraph/BarGraphComponent';
 import TableComponent from './Table/TableComponent';
 import axios from 'axios';
+import { getAuthToken } from '../../getAuthToken';
 
 const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme, mapView, rows, columns}) => {
 
@@ -16,7 +17,11 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
   useEffect(() => {
     const getData = async () => {
 
-        const data = (await axios.get(`/executeQuery?query=${query}`)).data;
+        const data = (await axios.get(`/executeQuery?query=${query}`, {
+          headers: {
+            'Authorization': `Bearer ${getAuthToken()}`
+          }
+        })).data;
         if (type == 'COMPLIANCE_PIE') {
           const total = data[0]['TotalPlates'];
           const payStation = data[0]['PayStation'];

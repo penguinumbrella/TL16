@@ -20,6 +20,7 @@ import "./LongTermTab.css"
 
 import ForcastComponent from "../forcastComponent/ForcastComponent.js";
 import LoadingAnimationComp from "../loading_Animation/LoadingAnimationComp.js";
+import { getAuthToken } from '../../getAuthToken.js';
 
 const PARKADE_OPTIONS = [
   'Thunderbird', 'North', 'West', 'Health Sciences', 'Fraser', 'Rose', 'University Lot Blvd'
@@ -118,7 +119,8 @@ const LongTermTab = ({ renderParkadeSelection }) => {
     fetch('/api/LGBM_longterm_predict', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getAuthToken()}`
       },
       body: JSON.stringify(requestBody)
     })

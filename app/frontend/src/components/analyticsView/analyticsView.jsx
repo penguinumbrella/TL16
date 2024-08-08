@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 
 import Tabs from '../tabComponent/Tabs.js';
+
 import ForecastTab from './NewForecastTab.js';
 import AnalyticsViewTab from './AnalyticsViewTab.js';
 import LongTermTab from "./LongTermTab.js";
