@@ -3,6 +3,7 @@ import PieChartComponent from './PieChart/PieChartComponent';
 import LineGraphComponent from './LineGraph/LineGraphComponent';
 import BarGraphComponent from './BarGraph/BarGraphComponent';
 import Papa from 'papaparse';
+import { getAuthToken } from '../../getAuthToken';
 
 const FutureDiagram = ({ type, timestamp, parkade, width, height, title = '', hasLegend, dataTransformer = () => [], dataOverride = [], 
   customToolTip, mapView }) => {
@@ -25,7 +26,11 @@ const FutureDiagram = ({ type, timestamp, parkade, width, height, title = '', ha
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch(`/data/${parkade}_predictions.csv`);
+      const response = await fetch(`/data/${parkade}_predictions.csv`, {
+        headers: {
+          'Authorization': `Bearer ${getAuthToken()}`
+        }
+      });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

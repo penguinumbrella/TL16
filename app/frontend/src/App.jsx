@@ -42,7 +42,8 @@ function App() {
     fetch(`/api/activeView?view=${activeView}`, {
       method: 'POST', 
       headers: {
-        'Content-Type': 'application/json' 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getAuthToken()}` 
       }
     })
     .then(response => response.json()) 
@@ -103,7 +104,7 @@ function App() {
 
   return ( isSignedIn ?
     <div className="container">
-      <SearchBar activeView={activeView} theme={theme} onIconClick={handleIconClick} />
+      <SearchBar activeView={activeView} theme={theme} onIconClick={handleIconClick} setNewTheme={setNewTheme}/>
       {/* Render appropriate view based on activeView state */}
       {activeView === 'map' ? <MapView  theme={theme} map_key={map_key} activeView={activeView}/> : 
        activeView === 'dashboard' ? <DashboardView onIconClick={handleIconClick} theme={theme}/> :

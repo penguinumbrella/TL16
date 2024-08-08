@@ -449,7 +449,6 @@ app.get('/api/baseline_predict', (req, res) => {
 
 
 app.get('/api/maps_key', (req, res) => {
-
   res.json({map_key :  process.env.REACT_APP_MAPS_KEY})
 });
 
