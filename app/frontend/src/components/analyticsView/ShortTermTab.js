@@ -53,6 +53,7 @@ const ShortTermTab = () => {
             customToolTip={CustomTooltip}
             capacity= {TABLES[parkade]}
             dataKeyY="Vehicles"
+            isShortTerm={true}
           />
         )));
       } catch (error) {

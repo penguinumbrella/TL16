@@ -184,7 +184,7 @@ def create_4hour_lag(df,parkade,start_date):
     
     # Create lagged columns for each day in the past week
     for i in range(4, 25):
-        lagged_df[f'lag_{i}_hours_Occupancy'] = lagged_df[parkade].shift(i * 24)
+        lagged_df[f'lag_{i}_hours_Occupancy'] = lagged_df[parkade].shift(i)
 
     lagged_df.drop(columns=[parkade], inplace=True)
     
@@ -200,6 +200,44 @@ def create_4hour_lag(df,parkade,start_date):
     return lagged_df
 # Main script to generate the CSV file
 import sys
+
+def track_nan_timestamps(df):
+    # Dictionary to hold timestamps with NaN values for each column
+    nan_timestamps = {}
+
+    # Iterate over each column
+    for column in df.columns:
+        # Find rows where the column has NaN values
+        nan_rows = df[df[column].isna()]
+        
+        # If there are any NaNs, record the timestamps
+        if not nan_rows.empty:
+            nan_timestamps[column] = nan_rows.index.tolist()
+
+    return nan_timestamps
+
+def update_nan_timestamps(existing_nan_timestamps, new_nan_timestamps):
+    # Update existing dictionary with new timestamps
+    for column, timestamps in new_nan_timestamps.items():
+        if column in existing_nan_timestamps:
+            # Add new timestamps, ensuring no duplicates
+            existing_nan_timestamps[column] = list(set(existing_nan_timestamps[column] + timestamps))
+        else:
+            existing_nan_timestamps[column] = timestamps
+
+    return existing_nan_timestamps
+
+
+# Assuming all_nan_timestamps is your dictionary from the previous code
+def extract_all_timestamps(nan_timestamps):
+    all_timestamps = set()  # Use a set to avoid duplicates
+    
+    for timestamps in nan_timestamps.values():
+        all_timestamps.update(timestamps)
+    
+    return sorted(all_timestamps)  # Return sorted list if needed
+
+
 def main():
     if len(sys.argv) != 1:
         print("Usage: shortterm_predict.py")
@@ -215,7 +253,8 @@ def main():
     end_date = start_date + timedelta(days=7) - timedelta(hours=1)
     
     missing_data = False
-    missing_data = get_past_data.main(start_date, end_date)
+    #missing_data = get_past_data.main(start_date, end_date)
+    
     # Ensure y_test has a DateTimeIndex
     parkades = ["North", "West", "Rose", "Health Sciences", "Fraser", "Thunderbird", "University Lot Blvd"]
     parkade_map = {
@@ -273,9 +312,6 @@ def main():
         df_1day = X_test_df_2[X_test_df_2.index <= start_date + timedelta(hours=23)].copy()
         df_4hour = X_test_df_2[X_test_df_2.index <= start_date + timedelta(hours=3)].copy()
 
-        print("df_4hour", df_4hour)
-        print("df_1day", df_1day)
-
         #print(df_1week)
         # implement lags
         df_1week = create_week_lag(df_1week, parkade, start_date)
@@ -287,12 +323,55 @@ def main():
         df_1week = df_1week.drop(columns=['date'])
         df_1day = df_1day.drop(columns=['date'])
         df_4hour = df_4hour.drop(columns=['date'])
+
+        # Track NaN timestamps
+
+        all_nan_timestamps = {}
+
+        # Track NaN timestamps for each DataFrame and merge results
+        all_nan_timestamps = update_nan_timestamps(all_nan_timestamps, track_nan_timestamps(df_1week))
+        all_nan_timestamps = update_nan_timestamps(all_nan_timestamps, track_nan_timestamps(df_1day))
+        all_nan_timestamps = update_nan_timestamps(all_nan_timestamps, track_nan_timestamps(df_4hour))
+
+
+        # Print results
+        for column, timestamps in all_nan_timestamps.items():
+            print(f"Column '{column}' has NaN values at the following timestamps:")
+            for timestamp in timestamps:
+                print(f"  {timestamp}")
+            print()  # Print a newline for better readability
+
+
+                
+        # Example usage
+        all_timestamps = extract_all_timestamps(all_nan_timestamps)
+
+        # Print all timestamps
+        print("All timestamps with NaN values:")
+        for timestamp in all_timestamps:
+            print(timestamp)
+
+        return
+        #print(df_1week)
+        #print(df_1day)
+        #print(df_4hour)
+        # Assume df_4hour is your DataFrame
+
+        # Specify the columns you want to see
+        columns_to_print = ['lag_4_hours_Occupancy', 'lag_10_hours_Occupancy', 'lag_24_hours_Occupancy']
+
+        # Print values of the specified columns
+
+
+        
         # Load the trained model
         
         loaded_model_week = joblib.load(f'models/1week/lgb_1week_{parkade}.pkl')
         loaded_model_day = joblib.load(f'models/1day/lgb_1day_{parkade}.pkl')
         loaded_model_4hour = joblib.load(f'models/4hour/lgb_4hour_{parkade}.pkl')
 
+
+        
         # Make predictions using the loaded model
         y_pred_loaded_day = loaded_model_day.predict(df_1day)
         y_pred_loaded_day = np.maximum(y_pred_loaded_day, 0)
