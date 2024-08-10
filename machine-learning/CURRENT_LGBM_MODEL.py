@@ -111,7 +111,7 @@ capacity_dict = {
 }
 
 
-for time_duration in range(0, 5):
+for time_duration in range(1, 3):
     time_duration_str = str(time_duration)
     if time_duration == 0:
         short_term_1_week = True
@@ -465,7 +465,7 @@ for time_duration in range(0, 5):
                     #df[f'lag_{lag_hours}_hours'] = df['Occupancy'].shift(lag_hours)
 
             if short_term_1_week:
-                for lag_days in range(1, 20):  df[f'lag_{lag_days*7}_days_Occupancy'] = (df.index - pd.Timedelta(f'{lag_days*7} days')).map(target_map['Occupancy'])
+                for lag_days in range(1, 2):  df[f'lag_{lag_days*7}_days_Occupancy'] = (df.index - pd.Timedelta(f'{lag_days*7} days')).map(target_map['Occupancy'])
 
                 """
                 for lag_days in range(1, 2):  # lags for 1 week and more
@@ -1584,9 +1584,7 @@ for time_duration in range(0, 5):
         import matplotlib.pyplot as plt
         from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-        # Ensure y_test has a DateTimeIndex
-        start_date = y_test.index.min()
-        end_date = y_test.index.max()
+        
 
         # Select a random start date within the y_test date range, ensuring there's room for 2 days after it
         random_start_date = start_date + pd.to_timedelta(np.random.randint(0, (end_date - start_date).days - 1), unit='D')
@@ -2159,10 +2157,15 @@ for time_duration in range(0, 5):
         future_export = future_with_features[columns_to_export]
 
         # Define the CSV file path
-        csv_file_path = f'LGBM_{parking_lot_to_predict}_longterm_future_predictions.csv'
+        csv_file_path = f'LGBM_{parking_lot_to_predict}_{time_duration_str}_future_predictions.csv'
 
         # Export to CSV
         #future_export.to_csv(csv_file_path, index=False)
 
         #print(f"Future predictions have been exported to {csv_file_path}")
+
+        import joblib
+
+        joblib.dump(reg, f'lgb_model_exports/{time_duration_str}/lgb_{time_duration_str}_{parking_lot_to_predict}.pkl')
+        #reg.booster_.save_model(f'lgb_model_exports/{time_duration_str}/lgb_{time_duration}_{parking_lot_to_predict}.txt')
 
