@@ -1,3 +1,11 @@
 Rose
 bagging_fraction: 0.5
 feature_fraction: 0.9
+
+Rose
+bagging_fraction: 0.5
+feature_fraction: 0.9
+
+Rose
+bagging_fraction: 0.5
+feature_fraction: 0.9
