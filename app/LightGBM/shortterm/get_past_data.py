@@ -50,6 +50,8 @@ def fetch_data(start_date, end_date):
     # Initialize DataFrame to hold results
     all_data = pd.DataFrame()
 
+    last_timestamps = []
+
     # Query each table and concatenate results
     with engine.connect() as connection:
         for table, new_name in tables.items():
@@ -93,6 +95,8 @@ def fetch_data(start_date, end_date):
             # Resample to hourly frequency and forward fill missing data
             df = df.resample('h').ffill()
 
+            last_timestamps.append(df.index[-1])
+
             # Align with the main DataFrame
             all_data = pd.concat([all_data, df], axis=1)
 
@@ -118,13 +122,15 @@ def fetch_data(start_date, end_date):
         missing_data = True
     
 
-
+    print(last_timestamps)
     print("Data retrieval complete. Saved to 'hourly_parkade_data.csv'.")
-    return missing_data
+    return last_timestamps
 
 def main(start_date, end_date):
     # Call the function to fetch data
-    fetch_data(start_date, end_date)
+    last_timestamps = fetch_data(start_date, end_date)
+    return last_timestamps
+    
 
 if __name__ == "__main__":
     # Example start_date and end_date

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Legend, LineChart, ResponsiveContainer, XAxis, YAxis, Line, Tooltip, ReferenceLine, ReferenceArea } from 'recharts';
 
-const LineGraphComponent = ({ data, width, height, title='', customToolTip, dataKeyY="value", capacity, isShortTerm = false}) => {
+const LineGraphComponent = ({ data, width, height, title='', customToolTip, dataKeyY="value", capacity, redx1="", redx2="", yellowx1="", yellowx2="", greenx1="", greenx2=""}) => {
   console.log(capacity);
+  console.log("red, yellow, green", redx1, redx2, yellowx1, yellowx2, greenx1, greenx2)
   return (
     <ResponsiveContainer width={width} height={height} style={{ display: 'flex', flexDirection: 'column', margin: '20px 0 50px 0' }}>
       <LineChart data={data}>
@@ -18,13 +19,12 @@ const LineGraphComponent = ({ data, width, height, title='', customToolTip, data
         {capacity && <ReferenceLine y={capacity} label="Capacity" stroke="red" strokeDasharray="3 3" />}
 
         {/* Conditional Reference Areas */}
-        {isShortTerm && (
-          <>
-            <ReferenceArea x1={0} x2={4} strokeOpacity={0.3} fill="blue" />
-            <ReferenceArea x1={4} x2={24} strokeOpacity={0.3} fill="green" />
-            <ReferenceArea x1={24} x2={168} strokeOpacity={0.3} fill="orange" />
-          </>
-        )}
+        <>
+          <ReferenceArea x1={redx1} x2={redx2} strokeOpacity={0.3} fill="red" />
+          <ReferenceArea x1={yellowx1} x2={yellowx2} strokeOpacity={0.3} fill="yellow" />
+          <ReferenceArea x1={greenx1} x2={greenx2} strokeOpacity={0.3} fill="green" />
+        </>
+        
       </LineChart>
       <text style={{ textAlign: 'center' }}>{title}</text>
     </ResponsiveContainer>

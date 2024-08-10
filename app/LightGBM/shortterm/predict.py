@@ -238,6 +238,47 @@ def extract_all_timestamps(nan_timestamps):
     return sorted(all_timestamps)  # Return sorted list if needed
 
 
+def create_gap_date_range_df(dates):
+    df = pd.DataFrame(pd.to_datetime(dates), columns=['date'])
+    return df
+
+def create_base_features(df_input):
+    df = df_input.copy()
+    df['term_date'] = False
+    
+    cal = VancouverHolidayCalendar()
+    holidays = cal.holidays(start=df['date'].min(), end=df['date'].max())
+    
+    expanded_data = []
+    processed_dates = set()
+    
+    if holidays.empty:
+        df['is_holiday'] = False
+
+    else:
+        print("holidays", holidays)
+        for holiday_date in holidays:
+            date = holiday_date.date()
+            
+            if date not in processed_dates:
+                for hour in range(0, 24):
+                    expanded_data.append({'date': datetime.datetime.combine(date, datetime.time(hour))})
+                processed_dates.add(date)
+        
+        print("expanded_data", expanded_data)
+        expanded_df = pd.DataFrame(expanded_data)
+        expanded_df = expanded_df[expanded_df['date'].dt.date.isin(holidays.date)]
+        expanded_df.reset_index(drop=True, inplace=True)
+        
+        df['is_holiday'] = df['date'].isin(expanded_df['date'])
+    
+        
+    df.set_index('date', inplace=True)
+    X_test_df_2 = create_features(df)
+
+    return X_test_df_2
+
+
 def main():
     if len(sys.argv) != 1:
         print("Usage: shortterm_predict.py")
@@ -247,13 +288,12 @@ def main():
     next_hour = (now + timedelta(hours=1)).replace(minute=0, second=0, microsecond=0)
 
     # Define end_date as 7 days from the next hour
-    start_date = next_hour
+    start_date_init = next_hour
     #start_date = pd.to_datetime("2024-01-01 00:00:00")
     #start_date = pd.to_datetime("2024-08-01 21:00:00")
-    end_date = start_date + timedelta(days=7) - timedelta(hours=1)
+    end_date_init = start_date_init + timedelta(days=7) - timedelta(hours=1)
     
-    missing_data = False
-    #missing_data = get_past_data.main(start_date, end_date)
+    #last_timestamps = get_past_data.main(start_date_init, end_date_init)
     
     # Ensure y_test has a DateTimeIndex
     parkades = ["North", "West", "Rose", "Health Sciences", "Fraser", "Thunderbird", "University Lot Blvd"]
@@ -266,50 +306,36 @@ def main():
         "Thunderbird": "Thunderbird",
         "University Lot Blvd": "University West Blvd"
     }
+    parkade_number_map = {
+        "North": 0,
+        "West": 1,
+        "Rose": 2,
+        "Health Sciences": 3,
+        "Fraser": 4,
+        "Thunderbird": 5,
+        "University Lot Blvd": 6
+    }
 
     #parkade = sys.argv[1]
 
     print(parkades)
     for parkade in parkades:
+        #start_date = last_timestamps[parkade_number_map[parkade]] + timedelta(hours=1)
+        #end_date = last_timestamps[parkade_number_map[parkade]] + timedelta(days=7)
+
+        start_date = start_date_init
+        end_date = end_date_init
+
+        print("sd", start_date, end_date)
         df = create_date_range_df(start_date, end_date)
 
         
-        df['term_date'] = False
-        
-        cal = VancouverHolidayCalendar()
-        holidays = cal.holidays(start=df['date'].min(), end=df['date'].max())
-        
-        expanded_data = []
-        processed_dates = set()
-        
-        if holidays.empty:
-            df['is_holiday'] = False
-
-        else:
-            print("holidays", holidays)
-            for holiday_date in holidays:
-                date = holiday_date.date()
-                
-                if date not in processed_dates:
-                    for hour in range(0, 24):
-                        expanded_data.append({'date': datetime.datetime.combine(date, datetime.time(hour))})
-                    processed_dates.add(date)
-            
-            print("expanded_data", expanded_data)
-            expanded_df = pd.DataFrame(expanded_data)
-            expanded_df = expanded_df[expanded_df['date'].dt.date.isin(holidays.date)]
-            expanded_df.reset_index(drop=True, inplace=True)
-            
-            df['is_holiday'] = df['date'].isin(expanded_df['date'])
-        
-            
-        df.set_index('date', inplace=True)
-        X_test_df_2 = create_features(df)
+        X_test_df_2 = create_base_features(df)
 
         print(X_test_df_2)
 
-        df_1week = X_test_df_2.copy()
-        df_1day = X_test_df_2[X_test_df_2.index <= start_date + timedelta(hours=23)].copy()
+        df_1week = X_test_df_2[start_date + timedelta(hours=24) <= X_test_df_2.index].copy()
+        df_1day = X_test_df_2[(start_date + timedelta(hours=4) <= X_test_df_2.index) & (X_test_df_2.index <= start_date + timedelta(hours=23))].copy()
         df_4hour = X_test_df_2[X_test_df_2.index <= start_date + timedelta(hours=3)].copy()
 
         #print(df_1week)
@@ -318,6 +344,10 @@ def main():
         df_1day = create_day_lag(df_1day, parkade, start_date)
         df_4hour = create_4hour_lag(df_4hour, parkade, start_date)
         #X_test_df_2['lag_7_days_Occupancy'] = float('nan')
+
+        df_1week.to_csv("df_1week")
+        df_1day.to_csv("df_1day")
+        df_4hour.to_csv("df_4hour")
 
 
         df_1week = df_1week.drop(columns=['date'])
@@ -351,7 +381,14 @@ def main():
         for timestamp in all_timestamps:
             print(timestamp)
 
-        return
+        
+        if all_timestamps:
+            gap_date_range_df = create_gap_date_range_df(all_timestamps)
+            long_term_df = create_base_features(create_base_features(gap_date_range_df))
+            
+            print("long_term_df", long_term_df.head())
+            
+        
         #print(df_1week)
         #print(df_1day)
         #print(df_4hour)
@@ -374,36 +411,28 @@ def main():
         
         # Make predictions using the loaded model
         y_pred_loaded_day = loaded_model_day.predict(df_1day)
-        y_pred_loaded_day = np.maximum(y_pred_loaded_day, 0)
 
 
         # Make predictions using the loaded model
         y_pred_loaded_week = loaded_model_week.predict(df_1week)
-        y_pred_loaded_week = np.maximum(y_pred_loaded_week, 0)
 
         #plt.show()
 
         # Make predictions using the loaded model
         y_pred_loaded_4hour = loaded_model_4hour.predict(df_4hour)
-        y_pred_loaded_4hour = np.maximum(y_pred_loaded_4hour, 0)
 
 
         #plt.show()
 
-
-        # Take the first 4 values from y_pred_loaded_4hour
-        part1 = y_pred_loaded_4hour[:4]
-
-        # Take values from index [4, 24] from y_pred_loaded_day
-        part2 = y_pred_loaded_day[4:24]
-
-        # Take the rest from y_pred_loaded_week
-        part3 = y_pred_loaded_week[len(part1) + len(part2):]
-
         # Combine all parts into one array
-        combined_predictions = np.concatenate([part1, part2, part3])
+        combined_predictions = np.concatenate([y_pred_loaded_4hour, y_pred_loaded_day, y_pred_loaded_week])
 
-        predictions_df = pd.DataFrame({'name': df_1week.index, 'Vehicles': combined_predictions})
+        combined_predictions = np.maximum(combined_predictions, 0)
+        combined_predictions = np.round(combined_predictions).astype(int)
+        print(len(X_test_df_2))
+        print(len(combined_predictions))
+
+        predictions_df = pd.DataFrame({'name': X_test_df_2.index, 'Vehicles': combined_predictions})
         predictions_df.set_index('name', inplace=True)
         plt.figure(figsize=(12, 6))
         plt.plot(predictions_df['Vehicles'], label='Occupancy', color='red')
@@ -416,12 +445,16 @@ def main():
         plt.xticks([])
         #plt.show()
 
+        
+        return_df = predictions_df[start_date_init <= X_test_df_2.index].copy()
+
+
 
         output_filename = f'predictions\\{parkade}.csv'
-        predictions_df.to_csv(output_filename)
+        return_df.to_csv(output_filename)
         print(f"CSV file saved as {output_filename}")
 
-    return missing_data
+    return
 
 if __name__ == "__main__":
     main()
