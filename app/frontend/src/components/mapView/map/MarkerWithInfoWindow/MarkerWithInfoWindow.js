@@ -236,7 +236,7 @@ const MarkerWithInfoWindow = ({
           className="info-window"
           style={{ backgroundColor: '#123674', border: '2px solid #ccc', padding: '10px', borderRadius: '5px', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)' }}
         >
-          <div className="info-window-contents" style='overflow: visible;'>
+          <div className="info-window-contents" >
             <h2 style={{ paddingBottom: '20px' }}>{`${content}`}</h2>
             <div className="info-window-diagrams">
               {selectedOption === "parkades" &&
