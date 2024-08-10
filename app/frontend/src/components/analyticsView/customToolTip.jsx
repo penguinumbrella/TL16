@@ -1,21 +1,28 @@
-const CustomTooltip = ({ active, payload,  label }) => {
+import React from 'react';
+import { format, parseISO } from 'date-fns';
+
+const CustomTooltip = ({ active, payload }) => {
     if (active && payload?.length) {
-        const toReturn = <div className="tooltip" style={{width: '250px', backgroundColor: '#000000', opacity: 0.7}}>
-            {payload.map((ele, index) => {
-                return <>
-                 <p>{`Time: ${ele.payload.name}`}</p>
-                 <p>{`Vehicles: ${ele.payload['Vehicles']}`}</p>
-                 {Object.keys(ele.payload).map((key) => (
-                    key !== 'name' && key !== 'Vehicles' ? (
-                        <p key={key}>{`${key}: ${ele.payload[key]}`}</p>
-                    ) : null
-                ))}
-                </>
-            })}
-        </div>;
-        return toReturn;
+        return (
+            <div className="tooltip" style={{ backgroundColor: '#000000', opacity: 0.7, padding: '10px', whiteSpace: 'nowrap' }}>
+                {payload.map((ele, index) => {
+                    const formattedTime = format(parseISO(ele.payload.name), 'yyyy MMM dd HH:mm');
+                    return (
+                        <div key={index}>
+                            <p>{`Time: ${formattedTime}`}</p>
+                            <p>{`Vehicles: ${ele.payload['Vehicles']}`}</p>
+                            {Object.keys(ele.payload).map((key) => (
+                                key !== 'name' && key !== 'Vehicles' ? (
+                                    <p key={key}>{`${key}: ${ele.payload[key]}`}</p>
+                                ) : null
+                            ))}
+                        </div>
+                    );
+                })}
+            </div>
+        );
     }
     return null;
-}
+};
 
 export default CustomTooltip;

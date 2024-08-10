@@ -659,16 +659,18 @@ const get_elevenX = ()=>{
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
+  get_elevenX();
+
+  
+  // Update the accessibilty data every 10 minutes
+  setInterval(get_elevenX, 1000 * 60 * 10);
+
 
   runLGBMShortTermPredict();
-  // Update the accessibilty data every 10 minutes
-
   // Update the short term LGBM data every 30 minutes
   setInterval(() => {
     runLGBMShortTermPredict().catch((error) => console.error('Scheduled run error:', error));
   }, 60 * 1000 * 30); // 1000ms * 60s * 60m = 1 hour
 
-  setInterval(get_elevenX, 1000 * 60 * 10);
-  
   
 });
