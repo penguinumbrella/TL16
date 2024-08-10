@@ -94,7 +94,8 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               endAngle={450}
               startColor="#888"
               className='pie-chart'
-              theme={theme}>
+              theme={theme}
+              activePieChartPercentName={activePieChartPercentName}>
             </PieChartComponent>
             </>
         break;
@@ -114,7 +115,8 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               startAngle={90}
               endAngle={450}
               startColor="#888"
-              theme={theme}>
+              theme={theme}
+              activePieChartPercentName={activePieChartPercentName}>
             </PieChartComponent>
             </>
         break;

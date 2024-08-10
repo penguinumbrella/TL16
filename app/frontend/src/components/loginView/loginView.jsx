@@ -61,7 +61,7 @@ const LoginView = () => {
         }
     }
 
-    return (loginState == 'login' ? <div className="loginView">
+    return (loginState === 'login' ? <div className="loginView">
         <h1>Login</h1>
         <TextField id="email" placeholder="Email" variant="outlined" value={email} style={{backgroundColor: '#323551', width: "70%"}}  inputProps={{ style: { color: "#9C9FBB" } }} onChange={textStateUpdate}></TextField>
         <TextField id="password" placeholder="Password" variant="outlined" value={password} type='password' style={{backgroundColor: '#323551', width: "70%"}} inputProps={{ style: { color: "#9C9FBB" } }} onChange={textStateUpdate}></TextField>

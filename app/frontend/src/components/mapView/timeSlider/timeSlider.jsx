@@ -11,19 +11,13 @@ import 'react-clock/dist/Clock.css';
 
 
 const TimeSlider = ({ onSliderRelease, 
-  currentTime, setCurrentTime, 
-  sliderValue, setSliderValue,
-  startDateLeft, setStartDateLeft,
-  startDateRight, setStartDateRight, }) => {
+  currentTime, handle_setCurrentTime, 
+  sliderValue, handle_setSliderValue,
+  startDateLeft, handle_setStartDateLeft,
+  startDateRight, handle_setStartDateRight }) => {
 
 
   const [boundedPosition, setBoundedPosition] = useState(5);
-
-
-  // useEffect(()=>{
-  //   if(currentTime)
-  //     console.log('currentTime ' + currentTime);
-  // },[currentTime]);
   
 
   const actualTime = new Date(2024, 5, 0, 12, 0, 0, 0);
@@ -34,8 +28,8 @@ const TimeSlider = ({ onSliderRelease,
     const newTime = new Date(startDateLeft);
 
     newTime.setHours(newTime.getHours() + value); // Adjust hours based on slider value
-    setCurrentTime(newTime);
-    setSliderValue(value);
+    handle_setCurrentTime(newTime);
+    handle_setSliderValue(value);
 
   };
 
@@ -44,14 +38,13 @@ const TimeSlider = ({ onSliderRelease,
     const newTime = new Date(startDateLeft);
 
     newTime.setHours(newTime.getHours() + value); // Adjust hours based on slider value
-    setCurrentTime(newTime);
-    setSliderValue(value);
-
+    handle_setCurrentTime(newTime);
+    handle_setSliderValue(value);
     onSliderRelease(newTime);
   };
 
   const getRange = (ev) => {
-    setSliderValue(ev.target.value);
+    handle_setSliderValue(ev.target.value);
   };
 
   const handleCombinedChange = (event) => {
@@ -121,7 +114,7 @@ const TimeSlider = ({ onSliderRelease,
             selected={startDateLeft} // Use selected prop instead of value
             onChange={(date) => {
               if (date < startDateRight) {
-                setStartDateLeft(date);
+                handle_setStartDateLeft(date);
               } else {
                 alert(`Must select a time lesser than ${startDateRight}`)
               }
@@ -139,7 +132,7 @@ const TimeSlider = ({ onSliderRelease,
             selected={startDateRight} // Use selected prop instead of value
             onChange={(date) => {
               if (date > startDateLeft) {
-                setStartDateRight(date);
+                handle_setStartDateRight(date);
               } else {
                 alert(`Must select a time greater than ${startDateLeft}`)
               }

@@ -12,6 +12,7 @@
   border-radius: 10px;
   overflow: hidden;
   color: #9C9FBB;
+  overflow: visible; 
 }
 
 /* Add these classes for text color changes in the keys */
@@ -27,6 +28,7 @@
   flex-grow: 1;
   overflow-y: auto;
   margin-bottom: 10px; /* Adjusted margin */
+  overflow: visible; 
 }
 
 .chart-box {
@@ -80,6 +82,7 @@
   display: flex;
   flex-direction: row;
   z-index: 1;
+  overflow: visible; 
 }
 
 .compliance-chart {
@@ -89,7 +92,8 @@
   position: absolute; /* Position it absolutely within chart-content */
   right: 0;
   bottom: 10%; /* Adjust as needed to achieve the desired vertical position */
-  z-index: 2;
+  z-index: 1;
+  overflow: visible; 
 }
 
 .last-update {
@@ -116,6 +120,10 @@
 
 .warning-sign:hover .warning-tooltip {
   opacity: 1; /* Show the tooltip on hover */
+  /* z-index: 3; */
+  /* width: 200px;
+  bottom: -30px; */
+
 }
 
 .keys {
@@ -181,3 +189,17 @@
 .charts::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.7);
 }
+
+
+
+
+.chart-box .recharts-surface g rect{
+  fill: black;
+  
+}
+
+.recharts-surface{
+  overflow: visible !important;
+} 
+
+

@@ -30,11 +30,18 @@ function App() {
 
   // State to track the active view
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const [activeView, setActiveView] = useState('dashboard'); // 'map' is the default view
+
+  // State to track the active view
+  const pageState = localStorage.getItem('pageState') || 'dashboard';
+  const [activeView, setActiveView] = useState(pageState); // 'map' is the default view
+
+  console.log(pageState)
+  
 
   // Function to handle clicking on the icons
   const handleIconClick = (view) => {
     setActiveView(view); // Set the active view to the clicked view
+    localStorage.setItem('pageState', view)
   };
   
 
@@ -106,7 +113,8 @@ function App() {
     <div className="container">
       <SearchBar activeView={activeView} theme={theme} onIconClick={handleIconClick} setNewTheme={setNewTheme}/>
       {/* Render appropriate view based on activeView state */}
-      {activeView === 'map' ? <MapView  theme={theme} map_key={map_key} activeView={activeView}/> : 
+      {/* It takes a moment for the map key to load that's why we need to check for it */}
+      {(activeView === 'map'  && map_key !== '')? <MapView  theme={theme} map_key={map_key} activeView={activeView}/> : 
        activeView === 'dashboard' ? <DashboardView onIconClick={handleIconClick} theme={theme}/> :
        activeView === 'live' ? <LiveView theme={theme}/> :
        <AnalyticsView theme={theme}/>}
