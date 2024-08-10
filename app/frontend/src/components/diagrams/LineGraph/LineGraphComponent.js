@@ -13,18 +13,25 @@ const LineGraphComponent = ({ data, width, height, title='', customToolTip, data
           : 
           <YAxis dataKey={dataKeyY} tick={{ fill: 'white' }} style={{ fontSize: "10px" }} />
         }
-        <Tooltip content={customToolTip} />
-        <Legend />
-        <Line type="monotone" dataKey={dataKeyY} stroke="#8884d8" activeDot={{ r: 4 }} />
-        {capacity && <ReferenceLine y={capacity} label="Capacity" stroke="red" strokeDasharray="3 3" />}
 
         {/* Conditional Reference Areas */}
         <>
-          <ReferenceArea x1={redx1} x2={redx2} strokeOpacity={0.3} fill="red" />
-          <ReferenceArea x1={yellowx1} x2={yellowx2} strokeOpacity={0.3} fill="yellow" />
-          <ReferenceArea x1={greenx1} x2={greenx2} strokeOpacity={0.3} fill="green" />
+          <ReferenceArea x1={redx1} x2={redx2} strokeOpacity={0.3} fill="#FF6666" />
+          <ReferenceArea x1={yellowx1} x2={yellowx2} strokeOpacity={0.3} fill="#FFD700" />
+          <ReferenceArea x1={greenx1} x2={greenx2} strokeOpacity={0.3} fill="#90EE90" />
         </>
-        
+
+        {capacity && (
+          <ReferenceLine 
+            y={capacity} 
+            label={{ position: 'top', value: 'Capacity', fill: 'white', dy: +10 }} 
+            stroke="red" 
+            strokeDasharray="3 3" 
+          />
+        )}
+        <Tooltip content={customToolTip} />
+        <Legend />
+        <Line type="monotone" dataKey={dataKeyY} stroke="#8884d8" activeDot={{ r: 4 }} />
       </LineChart>
       <text style={{ textAlign: 'center' }}>{title}</text>
     </ResponsiveContainer>
