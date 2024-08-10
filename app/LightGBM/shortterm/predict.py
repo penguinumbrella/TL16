@@ -387,6 +387,8 @@ def main():
             long_term_df = create_base_features(create_base_features(gap_date_range_df))
             
             print("long_term_df", long_term_df.head())
+
+            
             
         
         #print(df_1week)
