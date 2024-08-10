@@ -6,7 +6,9 @@ import TableComponent from './Table/TableComponent';
 import axios from 'axios';
 import { getAuthToken } from '../../getAuthToken';
 
-const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme, mapView, rows, columns}) => {
+const Diagram = ({type, width, height, title='', query='', 
+  hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, 
+  dataKeyY="value", capacity, theme, mapView, rows, columns, activePieChartPercentName}) => {
 
   const [diagData, setDiagData] = useState([]);
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
@@ -94,7 +96,8 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               endAngle={450}
               startColor="#888"
               className='pie-chart'
-              theme={theme}>
+              theme={theme}
+              activePieChartPercentName={activePieChartPercentName}>
             </PieChartComponent>
             </>
         break;
@@ -114,7 +117,8 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               startAngle={90}
               endAngle={450}
               startColor="#888"
-              theme={theme}>
+              theme={theme}
+              activePieChartPercentName={activePieChartPercentName}>
             </PieChartComponent>
             </>
         break;

@@ -5,7 +5,6 @@ import Diagram from '../../../diagrams/Diagram'
 import styles from './MarkerWithInfoWindow.css'
 import './extraStyling.css'
 
-import FutureDiagram from '../../../diagrams/FutureDiagram';
 import axios from 'axios';
 
 
@@ -160,9 +159,6 @@ const MarkerWithInfoWindow = ({
 
           else 
             setCurrentParkadeIcon(parkadeIcon);
-
-          // console.log(`${content} : ${occupancyPercentage}`);
-        
         
         }
       }
@@ -200,16 +196,11 @@ const MarkerWithInfoWindow = ({
   const { icon, pickedIcon } = iconPaths[iconImage] || iconPaths.parkades;
 
 
-  
   let formattedTimestamp;
   // Usage
   if (selectedOption == "parkades") {
     formattedTimestamp = formatTimestampToUnix(timestamp); 
   }
-
-  // const thresholdDate = new Date('2024-06-06T13:00:00Z');
-  // const isTimestampPastThreshold = timestamp >= thresholdDate;
- 
 
   const transformData = (data) => {
     return [
@@ -245,14 +236,12 @@ const MarkerWithInfoWindow = ({
           className="info-window"
           style={{ backgroundColor: '#123674', border: '2px solid #ccc', padding: '10px', borderRadius: '5px', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)' }}
         >
-          <div className="info-window-contents">
+          <div className="info-window-contents" style='overflow: visible;'>
             <h2 style={{ paddingBottom: '20px' }}>{`${content}`}</h2>
             <div className="info-window-diagrams">
               {selectedOption === "parkades" &&
 
               <div className='parkadeWindow' >
-                 { 
-                  <>
                       <div className='occupancy-chart'>
                         <Diagram
                           mapView={true}
@@ -267,22 +256,6 @@ const MarkerWithInfoWindow = ({
                           dataTransformer={transformData}
                         />
                       </div>
-                      <div className='compliance-chart'>
-                        <Diagram
-                          mapView={true}
-                          className='compliance-pie' 
-                          
-                          type={'COMPLIANCE_PIE'}
-                          height={150}
-                          width={150}
-                          title="Compliance"
-                          hasLegend={true}
-                          query={`select * from CurrentCompliance where ParkadeName = '${COMPLIANCE_MAP[content]}'`}
-                          dataTransformer={transformData}
-                        />
-                      </div>
-                    </>
-                  }
               </div>}
               {
                 (iconImage === 'accessibility') &&  <h3 > {vacant ? `Last occupied : ${payload_timestamp}` : `Occupied since : ${payload_timestamp}`}</h3>
