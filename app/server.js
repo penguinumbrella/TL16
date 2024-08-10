@@ -666,11 +666,11 @@ app.listen(PORT, () => {
   setInterval(get_elevenX, 1000 * 60 * 10);
 
 
-  // runLGBMShortTermPredict();
-  // // Update the short term LGBM data every 30 minutes
-  // setInterval(() => {
-  //   runLGBMShortTermPredict().catch((error) => console.error('Scheduled run error:', error));
-  // }, 60 * 1000 * 30); // 1000ms * 60s * 60m = 1 hour
+  runLGBMShortTermPredict();
+  // Update the short term LGBM data every 30 minutes
+  setInterval(() => {
+    runLGBMShortTermPredict().catch((error) => console.error('Scheduled run error:', error));
+  }, 60 * 1000 * 30); // 1000ms * 60s * 60m = 1 hour
 
   
 });
