@@ -23,7 +23,12 @@ const BarGraphComponent = ({ data, width, height, title='', customToolTip, dataK
             <XAxis dataKey={"name"} tick={{ fill: 'white' }} style={{fontSize: "10px"}}/>
             {capacity ? <YAxis dataKey={dataKeyY} domain={[0, capacity]} tick={{ fill: 'white' }} style={{fontSize: "10px"}}/> : <YAxis dataKey={dataKeyY} tick={{ fill: 'white' }} style={{fontSize: "10px"}}/>}
             <Tooltip content={customToolTip} cursor={{fill: 'transparent'}}/>
-            {capacity && <ReferenceLine y={capacity} label="Capacity" stroke="red" strokeDasharray="3 3" />}
+            {capacity && <ReferenceLine 
+                          y={capacity} 
+                          label={{ position: 'top', value: 'Capacity', fill: 'white', dy: +10 }} 
+                          stroke="red" 
+                          strokeDasharray="3 3" 
+            />}
             <Legend/>
         </BarChart>
         <text style={{textAlign: 'center'}}>{title}</text>

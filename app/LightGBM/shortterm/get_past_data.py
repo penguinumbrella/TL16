@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os
 
-
 # Load environment variables from .env file
 load_dotenv()
 
@@ -51,16 +50,35 @@ def fetch_data(start_date, end_date):
     # Initialize DataFrame to hold results
     all_data = pd.DataFrame()
 
+    last_timestamps = []
+
     # Query each table and concatenate results
     with engine.connect() as connection:
         for table, new_name in tables.items():
             print(f"Querying table: {table}")
             
+            '''
             query = f"""
             SELECT Vehicles, TimestampUnix
             FROM {table}
             WHERE TimestampUnix BETWEEN {start_timestamp_unix} AND {end_timestamp_unix}
+            
             """
+            '''
+            
+
+            
+            query = f"""
+                WITH MaxTimestamp AS (
+                    SELECT MAX(TimestampUnix) AS MaxTime
+                    FROM {table}
+                )
+                SELECT Vehicles, TimestampUnix
+                FROM {table}, MaxTimestamp
+                WHERE TimestampUnix BETWEEN MaxTime - 604800 AND MaxTime
+                ORDER BY TimestampUnix ASC
+                """
+
             df = pd.read_sql(query, connection)
 
             # Convert TimestampUnix to datetime
@@ -75,35 +93,44 @@ def fetch_data(start_date, end_date):
             df = df[~df.index.duplicated(keep='last')]
 
             # Resample to hourly frequency and forward fill missing data
-            df = df.asfreq('h').ffill()
+            df = df.resample('h').ffill()
+
+            last_timestamps.append(df.index[-1])
 
             # Align with the main DataFrame
             all_data = pd.concat([all_data, df], axis=1)
 
-    
     missing_data = False
     # Drop duplicate columns in case of overlapping timestamps
     all_data = all_data.groupby(all_data.index).first()
 
-    if all_data.index[0] != start_date or df.index[-1] != end_date:
-        print(f"Warning: Data for {new_name} does not cover the entire date range.")
-        missing_data = True
+    
 
     # Reset index to make Timestamp a column again
     all_data.reset_index(inplace=True)
 
-    
+    # Ensure the timestamp format is as desired
+    all_data['Timestamp'] = all_data['Timestamp'].dt.strftime('%Y-%m-%d %H:00:00')
 
+    all_data = all_data.iloc[1:]
     # Save to CSV (optional)
     all_data.to_csv('hourly_parkade_data.csv', index=False)
+    # Remove the first row from all_data
 
+    if all_data.index[0] != start_date or all_data.index[-1] != end_date:
+        print(f"Warning: Data does not cover the entire date range.")
+        missing_data = True
+    
+
+    print(last_timestamps)
     print("Data retrieval complete. Saved to 'hourly_parkade_data.csv'.")
-    return missing_data
+    return last_timestamps
 
 def main(start_date, end_date):
-
     # Call the function to fetch data
-    fetch_data(start_date, end_date)
+    last_timestamps = fetch_data(start_date, end_date)
+    return last_timestamps
+    
 
 if __name__ == "__main__":
     # Example start_date and end_date

@@ -41,20 +41,54 @@ const ShortTermTab = () => {
         const data = await response.json();
         console.log('Received data:', data);
 
-        // Handle response data and display results
-        setForecastResults(Object.keys(data).map((parkade) => (
-          <Diagram
-            key={parkade}
-            type={'LINE'}
-            height={'30%'}
-            width={'90%'}
-            title={parkade}
-            dataOverride={data[parkade]}
-            customToolTip={CustomTooltip}
-            capacity= {TABLES[parkade]}
-            dataKeyY="Vehicles"
-          />
-        )));
+        setForecastResults(Object.keys(data).map((parkade) => {
+          const lastDate = data[parkade][data[parkade].length - 1]?.name;  // Safely access the first element's name
+          console.log(`last row name for ${parkade}:`, lastDate);
+
+          let greenx1, greenx2, yellowx1, yellowx2, redx1, redx2;
+          greenx2 = data[parkade][data[parkade].length - 1]?.name;
+          const date_range_length = data[parkade].length;
+
+          
+          if (data[parkade].length < 168 - 24) {
+            greenx1 = data[parkade][0]?.name;
+          }
+          else if (data[parkade].length < 168 - 4) {
+            greenx1 = data[parkade][date_range_length-1-(24*6)]?.name;
+            yellowx2 = data[parkade][date_range_length-1-(24*6)]?.name;
+            yellowx1 = data[parkade][0]?.name;
+          } else {
+            redx1 = data[parkade][0]?.name;
+            redx2 = data[parkade][date_range_length-1-(24*6)-20]?.name;
+            yellowx1 = data[parkade][date_range_length-1-(24*6)-20]?.name;
+            yellowx2 = data[parkade][date_range_length-1-(24*6)]?.name;
+            greenx1 = data[parkade][date_range_length-1-(24*6)]?.name;
+          }
+
+          console.log(redx1, redx2, yellowx1, yellowx2, greenx1, greenx2);
+
+          
+      
+          return (
+              <Diagram
+                  key={parkade}
+                  type={'LINE'}
+                  height={'30%'}
+                  width={'90%'}
+                  title={parkade}
+                  dataOverride={data[parkade]}
+                  customToolTip={CustomTooltip}
+                  capacity={TABLES[parkade]}
+                  dataKeyY="Vehicles"
+                  redx1={redx1}
+                  redx2={redx2}
+                  yellowx1={yellowx1}
+                  yellowx2={yellowx2}
+                  greenx1={greenx1}
+                  greenx2={greenx2}
+              />
+            );
+        }));
       } catch (error) {
         console.error('Error fetching short-term forecast:', error);
         alert('Failed to generate report');
