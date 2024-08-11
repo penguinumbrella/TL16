@@ -450,10 +450,8 @@ def main():
         
         return_df = predictions_df[start_date_init <= X_test_df_2.index].copy()
 
-
-
-        output_filename = f'predictions\\{parkade}.csv'
-        return_df.to_csv(output_filename)
+        output_filename = f'predictions/{parkade}.csv'
+        predictions_df.to_csv(output_filename)
         print(f"CSV file saved as {output_filename}")
 
     return

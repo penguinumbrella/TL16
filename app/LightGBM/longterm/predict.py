@@ -149,7 +149,7 @@ def main():
     plt.xticks([])
     #plt.show()
     
-    output_filename = f'predictions\\{parkade}.csv'
+    output_filename = f'predictions/{parkade}.csv'
     predictions_df.to_csv(output_filename)
     print(f"CSV file saved as {output_filename}")
 
