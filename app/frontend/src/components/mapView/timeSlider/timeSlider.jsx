@@ -20,7 +20,8 @@ const TimeSlider = ({ onSliderRelease,
   const [boundedPosition, setBoundedPosition] = useState(5);
   
 
-  const actualTime = new Date(2024, 5, 0, 12, 0, 0, 0);
+  const actualTime = new Date();
+  actualTime.setMinutes(0, 0, 0);
   const sliderRef = useRef(null);
 
   const handleSliderChange = (event) => {

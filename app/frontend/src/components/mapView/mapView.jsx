@@ -26,20 +26,21 @@ const MapView = ({ map_key , activeView, theme}) => {
   //----------------------------------------------------------------------------------------------------------
   // Timeslider States 
 
-  const currentDate = new Date(2024, 5, 0, 12, 0, 0, 0);
-  currentDate.setHours(0, 0, 0, 0); // Set time to 12:00 AM
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
 
-  //const actualCurrentDate = new Date();
-  const actualCurrentDate = new Date(2024, 5, 0, 12, 0, 0, 0);
+  const actualCurrentDate = new Date();
+  actualCurrentDate.setMinutes(0, 0, 0);
 
   // Calculate the hour difference rounded down from the time at 12:00 AM
-  const startingHourDifference = Math.floor((actualCurrentDate - currentDate) / (1000 * 60 * 60));
+  // const startingHourDifference = Math.floor((actualCurrentDate - currentDate) / (1000 * 60 * 60));
+  // console.log(`Hours: ${startingHourDifference}`);
 
-  const nextDay = new Date(2024, 5, 0, 12, 0, 0, 0);
-  nextDay.setDate(nextDay.getDate() + 1); // Get the next day
-  nextDay.setHours(0, 0, 0, 0); // Set time to 12:00 AM
+  const prevDay = new Date();
+  prevDay.setDate(prevDay.getDate() - 1); // Get the previous day
+  prevDay.setMinutes(0, 0, 0); 
 
-  const roundedDate = new Date(2024, 5, 0, 12, 0, 0, 0);
+  const roundedDate = new Date();
   roundedDate.setMinutes(0, 0, 0); // Set minutes, seconds, and milliseconds to 0
 
 
@@ -49,11 +50,11 @@ const MapView = ({ map_key , activeView, theme}) => {
     defaultCurrentTime = new Date(defaultCurrentTime)
   }
 
-  // sliderValue is saved in local storage as string
-  const defaultSliderValue = Number(localStorage.getItem('sliderValue')) || startingHourDifference;
+  let defaultStartDateLeft = localStorage.getItem('startDateLeft') || prevDay;
+  let defaultStartDateRight = localStorage.getItem('startDateRight') || actualCurrentDate;
 
-  let defaultStartDateLeft = localStorage.getItem('startDateLeft') || currentDate;
-  let defaultStartDateRight = localStorage.getItem('startDateRight') || nextDay;
+  // sliderValue is saved in local storage as string
+  const defaultSliderValue = Number(localStorage.getItem('sliderValue')) || Math.floor((defaultStartDateRight - defaultStartDateLeft)/(1000*60*60));
 
   if(typeof(defaultStartDateLeft) !== typeof(new Date())){
     defaultStartDateLeft = new Date(defaultStartDateLeft)
@@ -67,13 +68,14 @@ const MapView = ({ map_key , activeView, theme}) => {
     // console.log(typeof(new Date(defaultStartDateRight)));
   }
 
+  const sliderEnd = new Date();
+  sliderEnd.setMinutes(0, 0, 0);
 
-  let defaultSliderEndTime = localStorage.getItem('sliderEndTime') || new Date(2024, 5, 0, 12, 0, 0, 0);
+  let defaultSliderEndTime = localStorage.getItem('sliderEndTime') || sliderEnd;
 
   if(typeof(defaultSliderEndTime) !== typeof(new Date())){
     defaultSliderEndTime = new Date(defaultSliderEndTime)
   }
-
 
   const [currentTime, setCurrentTime] = useState(defaultCurrentTime);
   const [sliderValue, setSliderValue] = useState(defaultSliderValue);
@@ -131,7 +133,7 @@ const MapView = ({ map_key , activeView, theme}) => {
     if (activeView === 'map') {
       console.log("ACTIVE VIEW IS MAP")
       // Function to fetch weather data
-      const newDate = new Date(2024, 5, 0, 12, 0, 0, 0);
+      const newDate = new Date();
 
       // Fetch weather data when component mounts
       fetchWeatherData(newDate);
