@@ -68,7 +68,7 @@ const ShortTermTab = () => {
               <Diagram
                   key={parkade}
                   type={'LINE'}
-                  height={'30%'} // Updated height for taller graphs
+                  height={'100%'} // Updated height for taller graphs
                   width={'90%'}
                   title={parkade}
                   dataOverride={data[parkade]}

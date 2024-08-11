@@ -29,7 +29,7 @@
   border: none;
   height: 2px;
   background-color: #ccc;
-  margin: 40px 0;
+  margin: 15px 0;
 }
 
 .results {
@@ -43,5 +43,6 @@
 }
 
 .graph {
-  height: 500px; /* Adjust this value as needed */
+  height: 22vh; /* Adjust this value as needed */
+  margin: 10px 0;
 }
