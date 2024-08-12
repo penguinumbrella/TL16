@@ -14,8 +14,8 @@
 --ADD Capacity int;
 
 -- Remove all rows from the table
--- TRUNCATE TABLE [Parking].[dbo].[Weekly_Occupancy_Stats];
+-- TRUNCATE TABLE [Parking].[dbo].[FraserParkade_Occupancy];
 
-UPDATE [Parking].[dbo].[CamerasList]
-SET ParkadeName = 'UnivWstBlvd'
-WHERE ParkadeName = 'UBRDLot';
+-- UPDATE [Parking].[dbo].[CamerasList]
+-- SET ParkadeName = 'UnivWstBlvd'
+-- WHERE ParkadeName = 'UBRDLot';
