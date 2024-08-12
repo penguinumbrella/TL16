@@ -41,3 +41,4 @@ for duration, df in data_by_duration.items():
     print(f"Created CSV file: {output_file}")
 
 print("CSV files created successfully.")
+

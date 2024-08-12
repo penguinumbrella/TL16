@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   FormControl,
   InputLabel,
@@ -109,21 +109,39 @@ const LongTermTab = ({ renderParkadeSelection }) => {
     }
   };
 
+  useEffect(() => {
+    console.log("loading changed to:", loading);
+  }, [loading]);
+  
+
   const handleGenerateClickForcast = async () => {
     if (selectedParkadesForcast.length === 0) {
       alert('Please pick at least one parkade');
       return;
     }
     try {
-      setLoading(true);
-      onClickLGBM(formatDate(startTime), formatDate(endTime), selectedParkadesForcast);
+      // Set loading state to true
+      setIsLoading(true);
+      console.log("Setting loading to true");
+      
+      // Await the async operation
+      await onClickLGBM(formatDate(startTime), formatDate(endTime), selectedParkadesForcast);
     } catch (error) {
       console.error('Error generating report:', error);
       alert('Failed to generate report');
     } finally {
-      setLoading(false);
+      // Ensure loading state is set to false after operation completes
+      setIsLoading(false);
+      console.log("Setting loading to false");
     }
   };
+
+// Debugging loading state changes
+useEffect(() => {
+  console.log("loading state updated to:", isLoading);
+}, [isLoading]);
+
+
 
   const onClickLGBM = (startDate, endDate, parkades) => {
     const requestBody = {
@@ -219,8 +237,8 @@ const LongTermTab = ({ renderParkadeSelection }) => {
       </div>
 
       <div className='generate-container'>
-        <Button variant="contained" color="primary" onClick={handleGenerateClickForcast} style={{width: "150px"}}>
-          {loading ? 'Generating...' : 'Generate!'}
+        <Button variant="contained" color="primary" onClick={handleGenerateClickForcast} style={{width: "150px"} } disabled={isLoading}>
+          {isLoading ? 'Generating...' : 'Generate!'}
         </Button>
       </div>
       </div>
