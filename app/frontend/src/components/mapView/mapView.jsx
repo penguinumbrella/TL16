@@ -18,6 +18,12 @@ const MapView = ({ map_key , activeView, theme}) => {
   const [sliderEndTime, setSliderEndTime] = useState(new Date(2024, 5, 0, 12, 0, 0, 0)); // new Date()
   const [accOccupancyStatus, setAccOccupancyStatus] = useState('');
   const [mapCenter, setMapCenter] = useState(defaultCenter);
+  const [fetchedData, setFetchedData] = useState(null);
+
+  const handleDataUpdate = (data) => {
+    setFetchedData(data);
+    console.log(data);
+  };
 
 
   //----------------------------------------------------------------------------------------------------------
@@ -63,6 +69,26 @@ const MapView = ({ map_key , activeView, theme}) => {
     setIconsVisible(!iconsVisible);
   };
 
+  {/*
+  const fetchWeatherData = (timestamp) => {
+    if (!fetchedData) {
+      console.error("No slider data available");
+      return;
+    }
+  
+    // Convert the timestamp to the expected format if necessary
+    const unixTimestamp = Math.floor(new Date(timestamp).getTime() / 1000);
+  
+    // Find weather data for the given timestamp from the fetched data
+    const weatherData = fetchedData.weatherData.find(item => parseInt(item.dt, 10) === unixTimestamp);
+  
+    if (weatherData) {
+      setWeatherData(weatherData); // Assuming weatherData is part of sliderData
+    } else {
+      console.error("Weather data not found for timestamp:", timestamp);
+    }
+  };
+*/}
   const fetchWeatherData = async (time) => {
     try {
       const response = await axios.get(`/weather?time=${time.toISOString()}`, {
@@ -75,6 +101,19 @@ const MapView = ({ map_key , activeView, theme}) => {
       console.error("Error fetching weather data:", error);
     }
   };
+
+  useEffect(() => {
+    console.log("CHANGED ACTIVEVIEW")
+    if (activeView === 'map') {
+      console.log("ACTIVE VIEW IS MAP")
+      // Function to fetch weather data
+      const newDate = new Date(2024, 5, 0, 12, 0, 0, 0);
+
+      // Fetch weather data when component mounts
+      fetchWeatherData(newDate);
+    }
+  }, [activeView]);
+  
 
   useEffect(() => {
     console.log("CHANGED ACTIVEVIEW")
@@ -132,20 +171,22 @@ const MapView = ({ map_key , activeView, theme}) => {
     <div className='mapView'>
       <div className='mapViewContent'>
         {/* Content of MapView */}
-        {iconsVisible && weatherData && (
+        {iconsVisible && (
           <>
             <WeatherIcon
-              currTime={weatherData.timeOfDay}
-              temperature={weatherData.temp}
-              condition={weatherData.weather_main}
-              description={weatherData.weather_desc}
+              currTime={weatherData ? weatherData.timeOfDay : null}
+              temperature={weatherData ? weatherData.temp : null}
+              condition={weatherData ? weatherData.weather_main : null}
+              description={weatherData ? weatherData.weather_desc : null}
             />
+
 
             <TimeSlider onSliderRelease={handleEndTimeChange}  
             currentTime={currentTime}   setCurrentTime = {setCurrentTime} 
             sliderValue={sliderValue}   setSliderValue={setSliderValue}
             startDateLeft={startDateLeft} setStartDateLeft={setStartDateLeft}
-            startDateRight={startDateRight} setStartDateRight={setStartDateRight}/>
+            startDateRight={startDateRight} setStartDateRight={setStartDateRight}
+            onDataUpdate={handleDataUpdate}/>
 
 
             <div class="currentTimesTampBox"> {sliderEndTime.toLocaleString()} </div>
@@ -212,6 +253,7 @@ const MapView = ({ map_key , activeView, theme}) => {
           map_key={map_key}
           theme ={theme}
           setMapCenter = {setMapCenter}
+          sliderData = {fetchedData}
         />
       </div>
       

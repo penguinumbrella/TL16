@@ -79,6 +79,7 @@ const MarkerWithInfoWindow = ({
   clusterer,
   setMarkerPosition,
   timestamp,
+  sliderData,
   vacant,
   payload_timestamp,
   theme
@@ -104,6 +105,16 @@ const MarkerWithInfoWindow = ({
       'Rose Garden': 'RoseGardenParkade'
     }
 
+    const TABLES_2 = {
+      'Fraser River': 'Fraser',
+      'North': 'North',
+      'West': 'West',
+      'Health Sciences': 'Health Sciences',
+      'Thunderbird': 'Thunderbird',
+      'University West Blvd': 'University Lot Blvd',
+      'Rose Garden': 'Rose'
+    }
+
 
     const COMPLIANCE_MAP = {
       'Fraser River': 'Fraser',
@@ -113,6 +124,16 @@ const MarkerWithInfoWindow = ({
       'Thunderbird': 'Thunderbird',
       'University West Blvd': 'UnivWstBlvd',
       'Rose Garden': 'Rose'
+    }
+
+    const CAPACITIES = {
+      'Fraser River': 725,
+      'North': 990,
+      'West': 1232,
+      'Health Sciences': 1189,
+      'Thunderbird': 1634,
+      'University West Blvd': 216,
+      'Rose Garden': 807
     }
 
 
@@ -129,10 +150,28 @@ const MarkerWithInfoWindow = ({
     // where each colour is 25%
     const [currentParkadeIcon, setCurrentParkadeIcon] = useState(parkadeIcon);
 
+    const getOccupancyData = (timestamp, sliderData) => {
+      // Format timestamp to Unix if needed (assuming formatTimestampToUnix is a function you use elsewhere)
+      const unixTimestamp = formatTimestampToUnix(timestamp);
+    
+      // Find the latest data before or equal to the given timestamp
+      const data = sliderData.vehicleData.find(item => parseInt(item.TimestampUnix, 10) === unixTimestamp);
+    
+      // Get the most recent entry
+      const latestData = data[0] || {};
+    
+      // Extract capacity and occupied values
+      
+      const occupied = latestData.TABLES_2[content] || 0;
+    
+      return { occupied };
+    };
+
     useEffect(() => {
       const printOccupancy = async ()=>{
 
         if(iconImage == 'parkades'){
+          
           // Get the current occupancy and max capacity of the current parkade
           console.log('timestamp in marker: ' + timestamp);
           let query=`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`
@@ -143,7 +182,10 @@ const MarkerWithInfoWindow = ({
           })).data;
           let capacity = data[0]['Capacity'];
           let occupied = data[0]['Vehicles'];
-
+          
+          console.log(timestamp, sliderData);
+          //const occupied = getOccupancyData(timestamp, sliderData);
+          //const capacity = CAPACITIES[content];
           let occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);
 
           if(occupancyPercentage <= 25)

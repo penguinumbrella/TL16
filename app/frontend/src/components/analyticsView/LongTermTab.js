@@ -16,11 +16,12 @@ import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import Diagram from '../diagrams/Diagram.js';
 import CustomTooltip from "./customToolTip.jsx";
-import "./LongTermTab.css"
 
 import ForcastComponent from "../forcastComponent/ForcastComponent.js";
 import LoadingAnimationComp from "../loading_Animation/LoadingAnimationComp.js";
 import { getAuthToken } from '../../getAuthToken.js';
+
+import "./LongTermTab.css";
 
 const PARKADE_OPTIONS = [
   'Thunderbird', 'North', 'West', 'Health Sciences', 'Fraser', 'Rose', 'University Lot Blvd'
@@ -55,8 +56,24 @@ const LongTermTab = ({ renderParkadeSelection }) => {
   const [longForecastResults, setLongForecastResults] = useState('');
   const [showLongForecastResults, setShowLongForecastResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+
+    // Function to set the time to 12:00:00
+  const getStartOfDay = (date) => {
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0);
+    return newDate;
+  };
+
+  // Initialize the start time to today at 12:00:00
+  const initialStartTime = getStartOfDay(new Date());
+
+  // Initialize the end time to tomorrow at 12:00:00
+  const initialEndTime = new Date(initialStartTime);
+  initialEndTime.setDate(initialEndTime.getDate() + 1);
+
+  const [startTime, setStartTime] = useState(initialStartTime);
+  const [endTime, setEndTime] = useState(initialEndTime);
+
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [selectedParkades, setSelectedParkades] = useState([]);
   const [generateChecked, setGenerateChecked] = useState(false);
@@ -150,11 +167,11 @@ const LongTermTab = ({ renderParkadeSelection }) => {
   };
 
   return (
-    <div className="forecastView">
+    <div className="longTermView">
       <div className="lhs">
       <h4>TIME FRAME</h4>
-      <div className="timeframe">
-        <Typography style={{ color: '#9C9FBB' }}>From</Typography>
+      <div className="timeframe-longterm">
+        <Typography style={{ color: '#9C9FBB'}}>From</Typography>
         <DateTimePicker
           onChange={(date) => {
             if (date) {

@@ -15,13 +15,12 @@
   color: #000000
 }
 
-.close-button:hover {
+.close-button:hover {height: 90%;
   color: #f0f0f0;
 }
 
 .fullView{
-  width: 170vh;
-  height: 85%;
+  height: 95%;
   margin: 20px;
   margin-left: 50px;
   padding: 20px;
@@ -31,35 +30,51 @@
 .forecastView{
   position: absolute;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 170vh;
+  width: 100%;
+  left: 0vw;
+  right: 80vw;
   height: 85%;
   padding-left: 30px;
   background-color: rgba(7, 8, 17, 0.5);
   border-radius: 10px;
-  overflow: auto;
-  overflow-y:scroll;
 }
 
 /*------------------------------------------------------*/
 
-.analyticsView {
+.analyticsView, .longTermView {
   position: absolute;
   display: flex;
   justify-content: space-between; /* Items will be spread out with maximum space between them */
   align-items: center;
-  width: 170vh;
-  height: 85%;
+  width: 80%;
+  height: 87%;
   padding-left: 10px;
   background-color: rgba(7, 8, 17, 0.5);
   border-radius: 10px;
   overflow: hidden;
-  overflow-y:scroll;
+  overflow-y: scroll;
 }
+
+.shortTermView {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Items will be spread out with maximum space between them */
+  align-items: center;
+  width: 80%;
+  height: 85%;
+  background-color: rgba(7, 8, 17, 0.5);
+  border-radius: 10px;
+  overflow: hidden;
+  overflow-y: scroll;
+  font-size: 0.5rem;
+}
+
 
 .analyticsView{
   color: white;
+  font-size: 0.8rem;
 }
 
 .queryItems {

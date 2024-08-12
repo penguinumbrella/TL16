@@ -14,7 +14,8 @@ const TimeSlider = ({ onSliderRelease,
   currentTime, setCurrentTime, 
   sliderValue, setSliderValue,
   startDateLeft, setStartDateLeft,
-  startDateRight, setStartDateRight, }) => {
+  startDateRight, setStartDateRight, onSliderChange,
+  onDataUpdate}) => {
 
 
   const [boundedPosition, setBoundedPosition] = useState(5);
@@ -37,6 +38,7 @@ const TimeSlider = ({ onSliderRelease,
     setCurrentTime(newTime);
     setSliderValue(value);
 
+    onSliderChange(newTime);
   };
 
   const handleSliderRelease = (event) => {
@@ -112,6 +114,35 @@ const TimeSlider = ({ onSliderRelease,
       display: 'none'
     };
   };
+
+  const fetchData = async (startDate, endDate) => {
+    try {
+      const response = await fetch(`/api/get_slider_data?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log('Data fetched successfully:', data);
+      onDataUpdate(data); // Pass data to parent
+      // Handle the fetched data as needed
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  // useEffect to call fetchData when startDateLeft changes
+  useEffect(() => {
+    if (startDateLeft && startDateRight) {
+      fetchData(startDateLeft, startDateRight);
+    }
+  }, [startDateLeft]);
+
+  // useEffect to call fetchData when startDateRight changes
+  useEffect(() => {
+    if (startDateLeft && startDateRight) {
+      fetchData(startDateLeft, startDateRight);
+    }
+  }, [startDateRight]);
 
   return (
     <div className='timeSlider'>
