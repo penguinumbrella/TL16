@@ -139,7 +139,7 @@ const LongTermTab = ({ renderParkadeSelection }) => {
             customToolTip={CustomTooltip}
             capacity={TABLES[parkade]}
             dataKeyY="Vehicles"
-
+            prediction_type="prediction"
           />
         );
       }));

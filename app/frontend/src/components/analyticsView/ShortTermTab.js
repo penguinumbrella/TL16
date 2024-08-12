@@ -81,6 +81,7 @@ const ShortTermTab = () => {
                   yellowx2={yellowx2}
                   greenx1={greenx1}
                   greenx2={greenx2}
+                  prediction_type="prediction"
               />
             </div>
           );

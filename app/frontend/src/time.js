@@ -24,7 +24,7 @@ export function formatUnixTimestamp(unixTimestamp) {
     return formattedDate;
   }
 
-  export const formatDateString = (dateString) => {
+  export const formatDateString = (dateString, timeString = '00:00') => {
     // Split the date string into components
     const [year, month, day] = dateString.split('-').map(Number);
   
@@ -44,9 +44,10 @@ export function formatUnixTimestamp(unixTimestamp) {
     // Get the full year
     const fullYear = date.getFullYear();
   
-    // Format the date string
-    const formattedDate = `${dayOfMonth} ${monthName}, ${fullYear}`;
+    // Format the date string with time
+    const formattedDate = `${dayOfMonth} ${monthName}, ${fullYear} ${timeString}`;
   
     console.log(`${dateString} -> ${formattedDate}`);
     return formattedDate;
   }
+  

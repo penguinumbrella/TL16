@@ -6,7 +6,9 @@ import TableComponent from './Table/TableComponent';
 import axios from 'axios';
 import { getAuthToken } from '../../getAuthToken';
 
-const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme, mapView, rows, columns, activePieChartPercentName, redx1, redx2, yellowx1, yellowx2, greenx1, greenx2}) => {
+const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme, mapView, rows, columns, activePieChartPercentName, redx1, redx2, yellowx1, yellowx2, greenx1, greenx2, prediction_type}) => {
+
+  console.log("Data override: ", dataOverride);
 
   const [diagData, setDiagData] = useState([]);
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
@@ -122,7 +124,7 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
         break;
     case 'LINE':
         toRender = <>
-          <LineGraphComponent data={dataOverride.length != 0 ? dataOverride : diagData} height={height} width={width} title={title} customToolTip={customToolTip} dataKeyY={dataKeyY} capacity={capacity} redx1={redx1} redx2={redx2} yellowx1={yellowx1} yellowx2={yellowx2} greenx1={greenx1} greenx2={greenx2}></LineGraphComponent>
+          <LineGraphComponent data={dataOverride.length != 0 ? dataOverride : diagData} height={height} width={width} title={title} customToolTip={customToolTip} dataKeyY={dataKeyY} capacity={capacity} redx1={redx1} redx2={redx2} yellowx1={yellowx1} yellowx2={yellowx2} greenx1={greenx1} greenx2={greenx2} prediction_type={prediction_type}></LineGraphComponent>
         </>
         break;
     case 'BAR':

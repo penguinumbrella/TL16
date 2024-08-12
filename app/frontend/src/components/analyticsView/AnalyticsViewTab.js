@@ -138,174 +138,199 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
   }
 
   const getLocalDate = (date) => {
-    const [ dd, mm, yyyy ] = date.toLocaleDateString().split('/');
-    return `${yyyy}-${mm}-${dd}`;
-  }
+    const [mm, dd, yyyy] = date.toLocaleDateString().split('/');
+    
+    // Ensure the month and day are two digits
+    const paddedMonth = mm.padStart(2, '0');
+    const paddedDay = dd.padStart(2, '0');
+    
+    return `${yyyy}-${paddedMonth}-${paddedDay}`;
+  } 
+
 
   const renderResults = async (queries) => {
     if (Object.keys(queries).includes('query')) {
-      // Accessibility
-      console.log(queries['query']);
-      const results = await axios.get(`/executeQuery?query=${queries['query']}`, {
-        headers: {
-          'Authorization': `Bearer ${getAuthToken()}`
+        // Accessibility
+        console.log(queries['query']);
+        const results = await axios.get(`/executeQuery?query=${queries['query']}`, {
+            headers: {
+                'Authorization': `Bearer ${getAuthToken()}`
+            }
+        });
+        const columns = [];
+        const response = results.data;
+        if (response.length > 0) {
+            Object.keys(response[0]).forEach((item) => {
+                columns.push({
+                    field: item,
+                    headerName: item.split('_').map((str) => str.charAt(0).toUpperCase() + str.slice(1)).join(' '),
+                    sortable: false
+                });
+            });
         }
-      });
-      const columns = [];
-      const response = results.data;
-      if (response.length > 0) {
-        Object.keys(response[0]).forEach((item) => {
-          columns.push({
-            field: item,
-            headerName: item.split('_').map((str) => str.charAt(0).toUpperCase() + str.slice(1)).join(' '),
-            sortable: false
-          });
-        })
-      }
-      response.forEach((item, i) => {
-        item.id = i;
-      })
-      return (
-        <Diagram type={'TABLE'} columns={columns} rows={response}></Diagram>
-      );
-    } else {
-      const resultsLocal = {};
-      let windowTooLarge = false;
-      let windowTooSmall = false;
-      const promises = Object.keys(queries).map(async (parkade) => {
-        const periodicity = queries[parkade]['periodicity']
-        const cleanData = []
-        if (periodicity == 'Hourly') {
-          const step = PERIODICITY_STEP[periodicity];
-          for (var i = queries[parkade]['startTime']; i<=queries[parkade]['endTime']; i += step)
-            cleanData.push({
-              'name': formatUnixTimestamp(i),
-              'Vehicles': null
-            });
-          if (cleanData.length > RESULT_LIMIT){
-            windowTooLarge = true;
-            return;
-          }
-          else if (cleanData.length == 0) {
-            windowTooSmall = true;
-            return;
-          }
-          else {
-            const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`, {
-              headers: {
-                'Authorization': `Bearer ${getAuthToken()}`
-              }
-            });
-            const data = response.data;
-            data.forEach((dataPoint) => {
-              const item = cleanData.find(obj => obj['name'] == formatUnixTimestamp(dataPoint['TimestampUnix']))
-              if (item) {
-                item['Vehicles'] = dataPoint['Vehicles']
-                item['Capacity'] = dataPoint['Capacity']
-              }
-            });
-            resultsLocal[parkade] = cleanData;
-          }
-        } else if (periodicity == 'Daily') {
-          const startDate = queries[parkade]['startTime'];
-          const endDate = queries[parkade]['endTime'];
-          let currentDate = createDate(startDate);
-          while (currentDate <= createDate(endDate)){
-            cleanData.push({
-              'name': formatDateString(getLocalDate(currentDate)),
-              'Vehicles': null
-            });
-            currentDate = addDays(currentDate, 1);
-          }
-          if (cleanData.length > RESULT_LIMIT){
-            windowTooLarge = true;
-            return;
-          }
-          else if (cleanData.length == 0) {
-            windowTooSmall = true;
-            return;
-          }
-          else {
-            const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`, {
-              headers: {
-                'Authorization': `Bearer ${getAuthToken()}`
-              }
-            });
-            const data = response.data;
-            // fix data.date to match cleanData's objects format
-            data.forEach((dataPoint) => {
-              const item = cleanData.find(obj => obj['name'] == formatDateString(dataPoint.date.split('T')[0]))
-              if (item) {
-                item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
-                item['Period Average'] = dataPoint.average_occupancy;
-                item['Period Peak'] = dataPoint.peak_occupancy;
-                item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
-                item['Capacity'] = dataPoint.Capacity
-              } 
-            });
-            resultsLocal[parkade] = cleanData;
-          }
-        } else if (periodicity == 'Weekly') {
-          const startDate = queries[parkade]['startTime'];
-          const endDate = queries[parkade]['endTime'];
-          let currentDate = createDate(startDate);
-          while (currentDate <= createDate(endDate)){
-            const from = currentDate;
-            const to = addDays(from, 6)
-            cleanData.push({
-              'name': `${formatDateString(getLocalDate(from))} - ${formatDateString(getLocalDate(to))}`,
-              'Vehicles': null
-            });
-            currentDate = addWeeks(currentDate, 1);
-          }
-          if (cleanData.length > RESULT_LIMIT){
-            windowTooLarge = true;
-            return;
-          }
-          else if (cleanData.length == 0) {
-            windowTooSmall = true;
-            return;
-          }
-          else {
-            const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`, {
-              headers: {
-                'Authorization': `Bearer ${getAuthToken()}`
-              }
-            });
-            const data = response.data;
-            data.forEach((dataPoint) => {
-              const item = cleanData.find(obj => obj['name'] == `${formatDateString(dataPoint.week_start_date.split('T')[0])} - ${formatDateString(dataPoint.week_end_date.split('T')[0])}`)
-              if (item) {
-                item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy
-                item['Period Average'] = dataPoint.average_occupancy;
-                item['Period Peak'] = dataPoint.peak_occupancy;
-                item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
-                item['Capacity'] = dataPoint.Capacity;
-              } 
-            });
-            resultsLocal[parkade] = cleanData;
-          }
-        } else if (periodicity == 'Monthly') {
-          // TODO
-        }
-      });
-      await Promise.all(promises);
-      if (windowTooLarge) {
-        alert('Time window too big, try reducing the window size or changing the periodicity');
-        return null;
-      }
-      if (windowTooSmall) {
-        alert('Time window has 0 data points. Try increasing the window size or changing the periodicity');
-        return null;
-      }
-      // console.log(resultsLocal);
-      return Object.keys(resultsLocal).sort().map((parkade) => {
+        response.forEach((item, i) => {
+            item.id = i;
+        });
         return (
-          <Diagram className='queryResultDiagram' type={queries[parkade]['diagType'] == 'Line Graph' ? 'LINE' : 'BAR'} height={'40%'} width={'95%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles" capacity={resultsLocal[parkade][0]['Capacity']}/>
-        )
-      });
+            <Diagram type={'TABLE'} columns={columns} rows={response}></Diagram>
+        );
+    } else {
+        const resultsLocal = {};
+        let windowTooLarge = false;
+        let windowTooSmall = false;
+        const promises = Object.keys(queries).map(async (parkade) => {
+            const periodicity = queries[parkade]['periodicity'];
+            const cleanData = [];
+            if (periodicity === 'Hourly') {
+                const step = PERIODICITY_STEP[periodicity];
+                for (var i = queries[parkade]['startTime']; i <= queries[parkade]['endTime']; i += step) {
+                    cleanData.push({
+                        'name': formatUnixTimestamp(i),
+                        'Vehicles': null
+                    });
+                }
+                if (cleanData.length > RESULT_LIMIT) {
+                    windowTooLarge = true;
+                    return;
+                }
+                else if (cleanData.length === 0) {
+                    windowTooSmall = true;
+                    return;
+                }
+                else {
+                    const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`, {
+                        headers: {
+                            'Authorization': `Bearer ${getAuthToken()}`
+                        }
+                    });
+                    const data = response.data;
+                    data.forEach((dataPoint) => {
+                        const item = cleanData.find(obj => obj['name'] === formatUnixTimestamp(dataPoint['TimestampUnix']));
+                        if (item) {
+                            item['Vehicles'] = dataPoint['Vehicles'];
+                            item['Capacity'] = dataPoint['Capacity'];
+                        }
+                    });
+                    resultsLocal[parkade] = cleanData;
+                }
+            } else if (periodicity === 'Daily') {
+                const startDate = queries[parkade]['startTime'];
+                const endDate = queries[parkade]['endTime'];
+                let currentDate = createDate(startDate);
+                while (currentDate <= createDate(endDate)) {
+                    const localDate = getLocalDate(currentDate);
+                    console.log(`Current Date: ${currentDate}`);
+                    console.log(`Local Date: ${localDate}`);
+                    
+                    const formattedName = formatDateString(localDate, '00:00');
+                    console.log(`Formatted Name for Daily: ${formattedName}`);
+                    
+                    cleanData.push({
+                        'name': formattedName, // Adding time to daily
+                        'Vehicles': null
+                    });
+                    
+                    currentDate = addDays(currentDate, 1);
+                }
+                console.log(`Clean Data After Daily Formatting: `, cleanData);
+
+                if (cleanData.length > RESULT_LIMIT) {
+                    windowTooLarge = true;
+                    return;
+                }
+                else if (cleanData.length === 0) {
+                    windowTooSmall = true;
+                    return;
+                }
+                else {
+                    const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`, {
+                        headers: {
+                            'Authorization': `Bearer ${getAuthToken()}`
+                        }
+                    });
+                    const data = response.data;
+                    data.forEach((dataPoint) => {
+                        const formattedDate = formatDateString(dataPoint.date.split('T')[0], '00:00');
+                        console.log(`Formatted Date from Data Point: ${formattedDate}`);
+                        
+                        const item = cleanData.find(obj => obj['name'] === formattedDate);
+                        if (item) {
+                            item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy;
+                            item['Period Average'] = dataPoint.average_occupancy;
+                            item['Period Peak'] = dataPoint.peak_occupancy;
+                            item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
+                            item['Capacity'] = dataPoint.Capacity;
+                            console.log(`Matched Item: `, item);
+                        }
+                    });
+                    resultsLocal[parkade] = cleanData;
+                    console.log(`Results Local for Parkade [${parkade}]: `, resultsLocal[parkade]);
+                }
+            } else if (periodicity === 'Weekly') {
+                const startDate = queries[parkade]['startTime'];
+                const endDate = queries[parkade]['endTime'];
+                let currentDate = createDate(startDate);
+                while (currentDate <= createDate(endDate)) {
+                    const from = currentDate;
+                    const to = addDays(from, 6);
+                    cleanData.push({
+                        'name': `${formatDateString(getLocalDate(from), '00:00')} - ${formatDateString(getLocalDate(to), '23:59')}`, // Adding time to weekly
+                        'Vehicles': null
+                    });
+                    currentDate = addWeeks(currentDate, 1);
+                }
+                if (cleanData.length > RESULT_LIMIT) {
+                    windowTooLarge = true;
+                    return;
+                }
+                else if (cleanData.length === 0) {
+                    windowTooSmall = true;
+                    return;
+                }
+                else {
+                    const response = await axios.get(`/executeQuery?query=${queries[parkade]['query']}`, {
+                        headers: {
+                            'Authorization': `Bearer ${getAuthToken()}`
+                        }
+                    });
+                    const data = response.data;
+                    data.forEach((dataPoint) => {
+                        const startOfWeek = formatDateString(dataPoint.week_start_date.split('T')[0], '00:00');
+                        const endOfWeek = formatDateString(dataPoint.week_end_date.split('T')[0], '23:59');
+                        const item = cleanData.find(obj => obj['name'] === `${startOfWeek} - ${endOfWeek}`);
+                        if (item) {
+                            item['Vehicles'] = queries[parkade]['avgPeak'] === 'Average' ? dataPoint.average_occupancy : dataPoint.peak_occupancy;
+                            item['Period Average'] = dataPoint.average_occupancy;
+                            item['Period Peak'] = dataPoint.peak_occupancy;
+                            item['Peak At'] = formatUnixTimestamp(dataPoint.peak_occupancy_time);
+                            item['Capacity'] = dataPoint.Capacity;
+                        }
+                    });
+                    resultsLocal[parkade] = cleanData;
+                }
+            } else if (periodicity === 'Monthly') {
+                // Similar logic can be applied for monthly
+            }
+        });
+        await Promise.all(promises);
+        if (windowTooLarge) {
+            alert('Time window too big, try reducing the window size or changing the periodicity');
+            return null;
+        }
+        if (windowTooSmall) {
+            alert('Time window has 0 data points. Try increasing the window size or changing the periodicity');
+            return null;
+        }
+        return Object.keys(resultsLocal).sort().map((parkade) => {
+            console.log(`Final Data Passed to LineGraphComponent for Parkade [${parkade}]: `, resultsLocal[parkade]);
+            return (
+                <Diagram className='queryResultDiagram' type={queries[parkade]['diagType'] === 'Line Graph' ? 'LINE' : 'BAR'} height={'40%'} width={'95%'} title={parkade} dataOverride={resultsLocal[parkade]} customToolTip={<CustomTooltip></CustomTooltip>} dataKeyY="Vehicles" capacity={resultsLocal[parkade][0]['Capacity']} prediction_type="real" />
+            )
+        });
     }
-  }
+}
+
+  
 
   const handleGenerateClick = async () => {
     // Check if any required field is empty or missing

@@ -2,17 +2,53 @@ import React from 'react';
 import { Legend, LineChart, ResponsiveContainer, XAxis, YAxis, Line, Tooltip, ReferenceLine, ReferenceArea, Text } from 'recharts';
 import { format, parseISO } from 'date-fns';
 
-const formatXAxis = (tickItem, allSameYear) => {
-  const date = parseISO(tickItem);
-  return allSameYear ? format(date, 'MMM dd HH:mm') : format(date, 'yyyy MMM dd HH:mm');
+const formatXAxis = (tickItem, allSameYear, prediction_type) => {
+  console.log("Prediction type:", prediction_type);
+  console.log("tickItem: ", tickItem);
+  let formatted_date = '';
+
+  if(prediction_type === 'prediction') {
+    const date = parseISO(tickItem);
+    formatted_date = allSameYear ? format(date, 'MMM dd HH:mm') : format(date, 'yyyy MMM dd HH:mm');
+    console.log("inside prediction");
+  } else {
+    // Parse the date from the tickItem which is in the format "11 August, 2024 20:00"
+    const dateParts = tickItem.split(' ');
+    const day = dateParts[0];
+    const month = dateParts[1].slice(0, 3); // First 3 letters of the month
+    const year = dateParts[2].replace(',', ''); // Remove the comma from the year
+    const time = dateParts[3];
+    
+    formatted_date = allSameYear ? `${month} ${day} ${time}` : `${year} ${month} ${day} ${time}`;
+
+    console.log("inside read");
+  }
+
+  console.log("Formatted date:", formatted_date);
+  return formatted_date;
 };
 
-const LineGraphComponent = ({ data, width, height, title='', customToolTip, dataKeyY="value", capacity, redx1="", redx2="", yellowx1="", yellowx2="", greenx1="", greenx2=""}) => {
+
+
+const LineGraphComponent = ({ data, width, height, title='', customToolTip, dataKeyY="value", capacity, redx1="", redx2="", yellowx1="", yellowx2="", greenx1="", greenx2="", prediction_type="" /* 'prediction'/'read' */ }) => {
+  
+  console.log("Data: ", data);
+
   // Check if all dates are in the same year
   const allSameYear = data.every((item, _, arr) => {
-    const year = parseISO(item.name).getFullYear();
-    return year === parseISO(arr[0].name).getFullYear();
+    const baseYear = parseISO(arr[0].name).getFullYear();
+    
+    let year;
+    if (isNaN(baseYear)) {
+      // If parseISO fails, fall back to extracting the year from the non-ISO format (e.g., "11 August, 2024 20:00")
+      year = new Date(item.name).getFullYear();
+    } else {
+      year = parseISO(item.name).getFullYear();
+    }
+    
+    return year === baseYear;
   });
+  
 
   // Get the common year if all dates are in the same year
   const commonYear = allSameYear ? parseISO(data[0].name).getFullYear() : null;
@@ -22,7 +58,7 @@ const LineGraphComponent = ({ data, width, height, title='', customToolTip, data
       <LineChart data={data}>
         <XAxis 
           dataKey="name" 
-          tickFormatter={(tickItem) => formatXAxis(tickItem, allSameYear)} 
+          tickFormatter={(tickItem) => formatXAxis(tickItem, allSameYear, prediction_type)} 
           tick={{ fill: 'white' }} 
           style={{ fontSize: "10px" }} 
         />
