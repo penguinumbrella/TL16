@@ -96,7 +96,8 @@ const LiveView = ({ theme }) => {
         <div className='chart-content'>
           <div className='occupancy-chart'>
             <Diagram className='occupancy-pie' type={'OCCUPANCY_PIE'} height="100%" width="100%" title="Occupancy" hasLegend={false}
-              query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData} mapView={false}/>
+              query={`select TOP 1 * from ${TABLES[parkadeName]}_Occupancy ORDER BY TimestampUnix DESC`} dataTransformer={transformData} mapView={false}
+              activePieChartPercentName={`OCCUPANCY_PIE_${COMPLIANCE_MAP[parkadeName]}`}/>
           </div>
           <div className='compliance-chart'>
             <Diagram className='compliance-pie' type={'COMPLIANCE_PIE'} height="100%" width="100%" title="Compliance" hasLegend={false}
