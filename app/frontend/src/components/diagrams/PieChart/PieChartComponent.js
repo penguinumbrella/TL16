@@ -3,11 +3,37 @@ import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Legend, Label } from 
 
 const PieChartComponent = ({ data, colors, width, height, 
   title='', innerRadius, outerRadius , percentageCenter, 
-  startAngle, endAngle, theme, mapView, base_font_size }) => {
+  startAngle, endAngle, theme, mapView, base_font_size, 
+  activePieChartPercentName }) => {
 
+  function updateRectangle() {
+      try{
+        console.log('updateRectangle ')
+        // Select the text and rectangle elements
+        const textElement = document.getElementById(`pieChartSectionPercentage_${activePieChartPercentName}`);
+        const rectElement = document.getElementById(`boundingBoxBackground_${activePieChartPercentName}`);
 
+        // Get the bounding box of the text element
+        const bbox = textElement.getBBox();
+  
+        // Update the rectangle's attributes
+        rectElement.setAttribute('x', (bbox.x) - 2 );
+        rectElement.setAttribute('y', (bbox.y) - 2);
+        rectElement.setAttribute('width', 1.1 * (bbox.width));
+        rectElement.setAttribute('height', 1.1 * (bbox.height));
+      }catch(e){
+        console.log('could not updateRectangle');
+        console.log('error : ' + e);
+      }
+    }
 
   const [ activeIndex, setActiveIndex ] = useState(-1);
+
+  useEffect(()=>{
+    if(activeIndex !== -1){
+      updateRectangle()
+    }
+  },[activeIndex])
 
   const RADIAN = Math.PI / 180;
 
@@ -36,7 +62,9 @@ const PieChartComponent = ({ data, colors, width, height,
     let toDisplayName;
     let toDisplayValue;
     toDisplayName = data[index].name;
-    toDisplayValue = `${percent.toFixed(1)*100}%`;
+    toDisplayValue = `${Math.round(percent * 100) }%`;
+
+    let percentFontSize = mapView ? '2em' : '1.5em' ;
 
     return (
       <g>
@@ -46,7 +74,8 @@ const PieChartComponent = ({ data, colors, width, height,
           fill="none" 
         />
         <circle cx={ex} cy={ey} r={2} fill={colors[index % colors.length]} stroke="none" />
-        <text x={ex + (cos >= 0 ? 1 : -1) * 4} y={ey} dy={5} textAnchor={textAnchor} fill="#999" fontSize='1em'>
+        <rect id={`boundingBoxBackground_${activePieChartPercentName}`} x={ex + (cos >= 0 ? 1 : -1) * 4} y={ey} width="30px" height="30px" fill="#000" rx="5" ry="5"/>
+        <text id={`pieChartSectionPercentage_${activePieChartPercentName}`} x={ex + (cos >= 0 ? 1 : -1) * 4} y={ey} dy={5} textAnchor={textAnchor} fill={colors[index % colors.length]} fontSize={percentFontSize}>
         {`${toDisplayValue}`}
         </text>
       </g>
@@ -144,7 +173,7 @@ const PieChartComponent = ({ data, colors, width, height,
           fill="#FFF"  // Use textColor based on theme
           style={{ textAlign: 'center'}} 
           className='percentage-center'
-          fontSize={text_fontsize_2}
+          fontSize='150%'
         >
           {percentageCenter}
         </text>

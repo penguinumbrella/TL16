@@ -242,7 +242,6 @@ const MarkerWithInfoWindow = ({
   const { icon, pickedIcon } = iconPaths[iconImage] || iconPaths.parkades;
 
 
-  
   let formattedTimestamp;
   // Usage
   if (selectedOption == "parkades") {
