@@ -13,24 +13,20 @@ const MapView = ({ map_key , activeView, theme}) => {
 
   const [iconsVisible, setIconsVisible] = useState(true);
   const [weatherData, setWeatherData] = useState(null);
-  const [selectedOption, setSelectedOption] = useState('parkades');
+
   const [activeIndex, setActiveIndex] = useState('');
-  const [sliderEndTime, setSliderEndTime] = useState(new Date(2024, 5, 0, 12, 0, 0, 0)); // new Date()
+
   const [accOccupancyStatus, setAccOccupancyStatus] = useState('');
   const [mapCenter, setMapCenter] = useState(defaultCenter);
-  const [fetchedData, setFetchedData] = useState(null);
 
-  const handleDataUpdate = (data) => {
-    setFetchedData(data);
-    console.log(data);
-  };
+  const [selectedOption, setSelectedOption] = useState('parkades');
 
 
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
   // Timeslider States 
 
-  let currentDate = new Date();
+  const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
 
   const actualCurrentDate = new Date();
@@ -45,23 +41,73 @@ const MapView = ({ map_key , activeView, theme}) => {
   prevDay.setMinutes(0, 0, 0); 
 
   const roundedDate = new Date();
-  //const roundedDate = new Date();
   roundedDate.setMinutes(0, 0, 0); // Set minutes, seconds, and milliseconds to 0
 
-  const [currentTime, setCurrentTime] = useState(roundedDate);
-  const [sliderValue, setSliderValue] = useState(startingHourDifference);
-  const [startDateLeft, setStartDateLeft] = useState(currentDate);
-  const [startDateRight, setStartDateRight] = useState(nextDay);
+
+  // currentTime is saved in local storage as an array of strings 
+  let defaultCurrentTime =  localStorage.getItem('currentTime') || roundedDate; 
+  if(typeof(defaultCurrentTime) !== typeof(new Date())){
+    defaultCurrentTime = new Date(defaultCurrentTime)
+  }
+
+  let defaultStartDateLeft = localStorage.getItem('startDateLeft') || prevDay;
+  let defaultStartDateRight = localStorage.getItem('startDateRight') || actualCurrentDate;
+
+  // sliderValue is saved in local storage as string
+  const defaultSliderValue = Number(localStorage.getItem('sliderValue')) || Math.floor((defaultStartDateRight - defaultStartDateLeft)/(1000*60*60));
+
+  if(typeof(defaultStartDateLeft) !== typeof(new Date())){
+    defaultStartDateLeft = new Date(defaultStartDateLeft)
+    // console.log(defaultStartDateLeft);
+    // console.log(typeof(new Date(defaultStartDateLeft)));
+  }
+
+  if(typeof(defaultStartDateRight) !== typeof(new Date())){
+    defaultStartDateRight = new Date(defaultStartDateRight)
+    // console.log(defaultStartDateRight);
+    // console.log(typeof(new Date(defaultStartDateRight)));
+  }
+
+  const sliderEnd = new Date();
+  sliderEnd.setMinutes(0, 0, 0);
+
+  let defaultSliderEndTime = localStorage.getItem('sliderEndTime') || sliderEnd;
+
+  if(typeof(defaultSliderEndTime) !== typeof(new Date())){
+    defaultSliderEndTime = new Date(defaultSliderEndTime)
+  }
+
+  const [currentTime, setCurrentTime] = useState(defaultCurrentTime);
+  const [sliderValue, setSliderValue] = useState(defaultSliderValue);
+  const [startDateLeft, setStartDateLeft] = useState(defaultStartDateLeft);
+  const [startDateRight, setStartDateRight] = useState(defaultStartDateRight);
+
+  const [sliderEndTime, setSliderEndTime] = useState(defaultSliderEndTime); // new Date()
+  // console.log(`currentTime = ${currentTime}`);
+
   //----------------------------------------------------------------------------------------------------------
+  
+  const handle_setCurrentTime = (newTime)=>{
+    setCurrentTime(newTime);
+    localStorage.setItem('currentTime', newTime);
+  }
+
+  const handle_setSliderValue = (value)=>{
+    setSliderValue(value);
+    localStorage.setItem('sliderValue', value);
+  }
+
+  const handle_setStartDateLeft = (date)=>{
+    setStartDateLeft(date);
+    localStorage.setItem('startDateLeft', date);
+  }
+
+  const handle_setStartDateRight = (date)=>{
+    setStartDateRight(date);
+    localStorage.setItem('startDateRight', date);
+  }
+  
   //----------------------------------------------------------------------------------------------------------
-
-
-
-  // useEffect(()=>{
-  //   if(sliderEndTime)
-  //     console.log('sliderEndTime' + sliderEndTime);
-  // },[sliderEndTime])
-
 
 
   const toggleIconsVisibility = () => {
@@ -69,26 +115,6 @@ const MapView = ({ map_key , activeView, theme}) => {
     setIconsVisible(!iconsVisible);
   };
 
-  {/*
-  const fetchWeatherData = (timestamp) => {
-    if (!fetchedData) {
-      console.error("No slider data available");
-      return;
-    }
-  
-    // Convert the timestamp to the expected format if necessary
-    const unixTimestamp = Math.floor(new Date(timestamp).getTime() / 1000);
-  
-    // Find weather data for the given timestamp from the fetched data
-    const weatherData = fetchedData.weatherData.find(item => parseInt(item.dt, 10) === unixTimestamp);
-  
-    if (weatherData) {
-      setWeatherData(weatherData); // Assuming weatherData is part of sliderData
-    } else {
-      console.error("Weather data not found for timestamp:", timestamp);
-    }
-  };
-*/}
   const fetchWeatherData = async (time) => {
     try {
       const response = await axios.get(`/weather?time=${time.toISOString()}`, {
@@ -113,22 +139,6 @@ const MapView = ({ map_key , activeView, theme}) => {
       fetchWeatherData(newDate);
     }
   }, [activeView]);
-  
-
-  useEffect(() => {
-    console.log("CHANGED ACTIVEVIEW")
-    if (activeView === 'map') {
-      console.log("ACTIVE VIEW IS MAP")
-      // Function to fetch weather data
-      //const newDate = new Date();
-      //newDate.setMinutes(0,0,0);
-      //console.log(newDate);
-      const newDate = new Date(2024, 5, 0, 12, 0, 0, 0);
-
-      // Fetch weather data when component mounts
-      fetchWeatherData(newDate);
-    }
-  }, [activeView]);
 
   useEffect(() => {
     // Fetch weather data whenever the sliderEndTime changes
@@ -147,6 +157,8 @@ const MapView = ({ map_key , activeView, theme}) => {
         setSelectedOption(event.target.value);
         setActiveIndex(''); // Reset the active index
         setAccOccupancyStatus(data);
+
+        localStorage.setItem('accOccupancyStatus', data);
       })
       .catch(error => {
         console.error('Error in api/elevenX:', error);
@@ -161,6 +173,7 @@ const MapView = ({ map_key , activeView, theme}) => {
 
   const handleEndTimeChange = (newTime) => {
     setSliderEndTime(newTime);
+    localStorage.setItem('sliderEndTime', newTime);
   };
 
   
@@ -171,22 +184,20 @@ const MapView = ({ map_key , activeView, theme}) => {
     <div className='mapView'>
       <div className='mapViewContent'>
         {/* Content of MapView */}
-        {iconsVisible && (
+        {iconsVisible && weatherData && (
           <>
             <WeatherIcon
-              currTime={weatherData ? weatherData.timeOfDay : null}
-              temperature={weatherData ? weatherData.temp : null}
-              condition={weatherData ? weatherData.weather_main : null}
-              description={weatherData ? weatherData.weather_desc : null}
+              currTime={weatherData.timeOfDay}
+              temperature={weatherData.temp}
+              condition={weatherData.weather_main}
+              description={weatherData.weather_desc}
             />
 
-
             <TimeSlider onSliderRelease={handleEndTimeChange}  
-            currentTime={currentTime}   setCurrentTime = {setCurrentTime} 
-            sliderValue={sliderValue}   setSliderValue={setSliderValue}
-            startDateLeft={startDateLeft} setStartDateLeft={setStartDateLeft}
-            startDateRight={startDateRight} setStartDateRight={setStartDateRight}
-            onDataUpdate={handleDataUpdate}/>
+            currentTime={currentTime}   handle_setCurrentTime = {handle_setCurrentTime} 
+            sliderValue={sliderValue}   handle_setSliderValue={handle_setSliderValue}
+            startDateLeft={startDateLeft} handle_setStartDateLeft={handle_setStartDateLeft}
+            startDateRight={startDateRight} handle_setStartDateRight={handle_setStartDateRight}/>
 
 
             <div class="currentTimesTampBox"> {sliderEndTime.toLocaleString()} </div>
@@ -253,7 +264,6 @@ const MapView = ({ map_key , activeView, theme}) => {
           map_key={map_key}
           theme ={theme}
           setMapCenter = {setMapCenter}
-          sliderData = {fetchedData}
         />
       </div>
       
