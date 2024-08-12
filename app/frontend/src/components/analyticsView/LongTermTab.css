@@ -1,24 +1,21 @@
-.forecastView {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  box-sizing: border-box;
+.shortTermView{
+  margin: 0;
 }
+
 
 .intro-section {
   width: 100%;
   max-width: 800px;
   text-align: center;
-  margin-bottom: 40px;
 }
 
 .intro-section h2 {
-  font-size: 2em;
+  padding-top: 20px;
   margin-bottom: 10px;
 }
 
 .intro-section p {
+  
   font-size: 1.2em;
   margin-bottom: 20px;
 }
@@ -29,7 +26,6 @@
   border: none;
   height: 2px;
   background-color: #ccc;
-  margin: 15px 0;
 }
 
 .results {
@@ -43,6 +39,15 @@
 }
 
 .graph {
-  height: 22vh; /* Adjust this value as needed */
-  margin: 40px 0;
+  height: 30vh;
+}
+.timeframe-longterm{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  
+}
+
+.timeframe-longterm > * {
+  padding-right: 30px; /* Adjust the value as needed */
 }

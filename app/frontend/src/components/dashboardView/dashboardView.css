@@ -1,13 +1,13 @@
 .dashboardView {
   position: absolute;
-  top: 50px; /* Added position for better control */
-  left: 180px;
+  left: 12vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80vw; /* Adjusted for better responsiveness */
-  height: 80vh;
+  width: 100vw - 400px; /* Adjusted for better responsiveness */
+  height: 90%;
   padding: 20px;
+  margin-right: 2vw;
   background-color: rgba(2, 2, 6, 0.25);
   border-radius: 10px;
   overflow: hidden; /* Ensure circle stays inside the rectangle */
@@ -52,14 +52,13 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  width: 98%;
+  height: 90%;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .topViews {
-  margin: 10px;
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -128,4 +127,7 @@
 .thirdview {
   width: 98.5%;
   background-color: rgba(2, 2, 6, 0.25);
+  img {
+    height: 60%;
+  }
 }

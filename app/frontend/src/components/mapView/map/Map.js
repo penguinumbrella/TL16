@@ -3,7 +3,6 @@ import { GoogleMap, useJsApiLoader, MarkerClusterer } from '@react-google-maps/a
 import MarkerWithInfoWindow from './MarkerWithInfoWindow/MarkerWithInfoWindow';
 import mapMarkers from './coordinates.json';
 import initialMarkerData from '../../../markerData.json';
-import './map.css'; // Add a CSS file to handle the styling
 
 import checkIsOutOfBounds from './outOfBounds.js'
 import mapStyleDark from './mapStyleDark.json'
@@ -12,7 +11,7 @@ import { getAuthToken } from '../../../getAuthToken.js';
 
 
 
-const Map = ({ selectedOption, setActiveIndex, zoom, center, timestamp, accOccupancyStatus, map_key, theme, setMapCenter}) => { // Accept setActiveIndex as a prop
+const Map = ({ selectedOption, setActiveIndex, zoom, center, timestamp, accOccupancyStatus, map_key, theme, setMapCenter, sliderData}) => { // Accept setActiveIndex as a prop
   const [activeIndex, setActiveIndexState] = useState('');
   const [markerData, setMarkerDataData] = useState(initialMarkerData);
   const [markerPosition, setMarkerPosition] =  useState(center);
@@ -151,6 +150,7 @@ const Map = ({ selectedOption, setActiveIndex, zoom, center, timestamp, accOccup
                     iconImage={selectedOption}
                     data={getMarkerData(selectedOption, item.name)}
                     timestamp = {timestamp}
+                    sliderData = {sliderData}
                     setMarkerPosition ={setMarkerPosition}
                     theme = {theme}
                   />)}))

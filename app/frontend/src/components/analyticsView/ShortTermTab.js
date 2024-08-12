@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Diagram from '../diagrams/Diagram.js';
 import CustomTooltip from "./customToolTip.jsx";
-import "./LongTermTab.css";
 import { getAuthToken } from '../../getAuthToken.js';
+import "./LongTermTab.css";
 
 const ShortTermTab = () => { 
   const [loading, setLoading] = useState(true);
@@ -98,7 +98,7 @@ const ShortTermTab = () => {
   }, []);
 
   return (
-    <div className="forecastView">
+    <div className="shortTermView">
       <div className="intro-section">
         <h2>Short-Term Parking Occupancy Predictions</h2>
         <p>Welcome to the parking occupancy predictions section. Here you will find the latest forecast data for various parkades. Scroll down to explore the detailed predictions for each location.</p>

@@ -78,8 +78,6 @@ const SearchBar = ({ activeView, onIconClick, theme, setNewTheme }) => {
           <span className={`theme-label theme-label-dark ${theme === 'dark' ? 'active' : ''}`}>Dark</span>
           <span className={`theme-label theme-label-light ${theme === 'light' ? 'active' : ''}`}>Light</span>
         </div>
-        <Icon as={FaCog} className='chakra-icon' />
-        <Icon as={FaUserCircle} className='chakra-icon' />
         <Icon as={FaSignOutAlt} onClick={handleLogout}></Icon>
       </div>
     </div>
