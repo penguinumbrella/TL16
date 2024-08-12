@@ -11,7 +11,7 @@ RUN pip install -r ./requirements.txt
 
 RUN cd app && npm install && npm run build
 
-RUN apt install lsb-release -y && apt install curl -y && ./install_odbc.sh
+RUN apt install lsb-release -y && apt install curl -y && apt install dos2unix && dos2unix install_odbc.sh && ./install_odbc.sh
 
 WORKDIR /TL16/app/
 
