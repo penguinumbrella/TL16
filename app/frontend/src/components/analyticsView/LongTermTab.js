@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   FormControl,
   InputLabel,
@@ -16,11 +16,12 @@ import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import Diagram from '../diagrams/Diagram.js';
 import CustomTooltip from "./customToolTip.jsx";
-import "./LongTermTab.css"
 
 import ForcastComponent from "../forcastComponent/ForcastComponent.js";
 import LoadingAnimationComp from "../loading_Animation/LoadingAnimationComp.js";
 import { getAuthToken } from '../../getAuthToken.js';
+
+import "./LongTermTab.css";
 
 const PARKADE_OPTIONS = [
   'Thunderbird', 'North', 'West', 'Health Sciences', 'Fraser', 'Rose', 'University Lot Blvd'
@@ -55,8 +56,24 @@ const LongTermTab = ({ renderParkadeSelection }) => {
   const [longForecastResults, setLongForecastResults] = useState('');
   const [showLongForecastResults, setShowLongForecastResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+
+    // Function to set the time to 12:00:00
+  const getStartOfDay = (date) => {
+    const newDate = new Date(date);
+    newDate.setHours(0, 0, 0, 0);
+    return newDate;
+  };
+
+  // Initialize the start time to today at 12:00:00
+  const initialStartTime = getStartOfDay(new Date());
+
+  // Initialize the end time to tomorrow at 12:00:00
+  const initialEndTime = new Date(initialStartTime);
+  initialEndTime.setDate(initialEndTime.getDate() + 1);
+
+  const [startTime, setStartTime] = useState(initialStartTime);
+  const [endTime, setEndTime] = useState(initialEndTime);
+
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [selectedParkades, setSelectedParkades] = useState([]);
   const [generateChecked, setGenerateChecked] = useState(false);
@@ -92,21 +109,39 @@ const LongTermTab = ({ renderParkadeSelection }) => {
     }
   };
 
+  useEffect(() => {
+    console.log("loading changed to:", loading);
+  }, [loading]);
+  
+
   const handleGenerateClickForcast = async () => {
     if (selectedParkadesForcast.length === 0) {
       alert('Please pick at least one parkade');
       return;
     }
     try {
-      setLoading(true);
-      onClickLGBM(formatDate(startTime), formatDate(endTime), selectedParkadesForcast);
+      // Set loading state to true
+      setIsLoading(true);
+      console.log("Setting loading to true");
+      
+      // Await the async operation
+      await onClickLGBM(formatDate(startTime), formatDate(endTime), selectedParkadesForcast);
     } catch (error) {
       console.error('Error generating report:', error);
       alert('Failed to generate report');
     } finally {
-      setLoading(false);
+      // Ensure loading state is set to false after operation completes
+      setIsLoading(false);
+      console.log("Setting loading to false");
     }
   };
+
+// Debugging loading state changes
+useEffect(() => {
+  console.log("loading state updated to:", isLoading);
+}, [isLoading]);
+
+
 
   const onClickLGBM = (startDate, endDate, parkades) => {
     const requestBody = {
@@ -150,11 +185,13 @@ const LongTermTab = ({ renderParkadeSelection }) => {
   };
 
   return (
-    <div className="forecastView">
+    <div className="longTermView">
       <div className="lhs">
-      <h4>TIME FRAME</h4>
-      <div className="timeframe">
-        <Typography style={{ color: '#9C9FBB' }}>From</Typography>
+      <h3>TIME FRAME</h3>
+
+      <div className="timeframe" style={{ display: 'flex', alignItems: 'center', paddingBottom:`50px`}}>
+          <div className='timeframe-from' style={{paddingRight: `50px`}}>
+          <Typography style={{ color: '#9C9FBB' }}>From</Typography>
         <DateTimePicker
           onChange={(date) => {
             if (date) {
@@ -167,8 +204,10 @@ const LongTermTab = ({ renderParkadeSelection }) => {
           minDate={new Date()}
           maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
         />
-        <Typography style={{ color: '#9C9FBB' }}>To</Typography>
-        <DateTimePicker
+        </div>
+        <div className='timeframe-to'>
+          <Typography style={{ color: '#9C9FBB' }}>To</Typography>
+          <DateTimePicker
           onChange={(date) => {
             if (date > startTime) {
               if (date - startTime > THREE_WEEKS_MS) {
@@ -186,6 +225,7 @@ const LongTermTab = ({ renderParkadeSelection }) => {
           maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
         />
       </div>
+      </div>
 
       <div className='forecast-parkade-options-div'>
         <h3>PARKADE OPTIONS</h3>
@@ -197,8 +237,8 @@ const LongTermTab = ({ renderParkadeSelection }) => {
       </div>
 
       <div className='generate-container'>
-        <Button variant="contained" color="primary" onClick={handleGenerateClickForcast} style={{width: "150px"}}>
-          {loading ? 'Generating...' : 'Generate!'}
+        <Button variant="contained" color="primary" onClick={handleGenerateClickForcast} style={{width: "150px"} } disabled={isLoading}>
+          {isLoading ? 'Generating...' : 'Generate!'}
         </Button>
       </div>
       </div>

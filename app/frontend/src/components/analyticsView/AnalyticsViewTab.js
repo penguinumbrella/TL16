@@ -473,7 +473,8 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
           </div>
           <div className='analytics-options-div'>
             <h4>TIME FRAME</h4>
-            <div className="timeframe" style={{ display: 'flex', alignItems: 'center', gap: '10px'}}>
+            <div className="timeframe" style={{ display: 'flex', alignItems: 'center'}}>
+              <div className='timeframe-from' style={{paddingRight: `100px`}}>
               <Typography style={{ color: '#9C9FBB' }}>From</Typography>
                 <DateTimePicker
                     onChange={(date) => {
@@ -487,6 +488,8 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
                     maxDate={new Date()  
                     }
                 />
+                </div>
+                <div className='timeframe-to'>
                 <Typography style={{ color: '#9C9FBB' }}>To</Typography>
                 <DateTimePicker
                   onChange={(date) => {
@@ -499,6 +502,7 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
                   minDate={new Date('01-01-2018')}
                   maxDate={new Date()}
                 />
+                </div>
             </div>
           </div>
           <div className='analytics-options-div'>

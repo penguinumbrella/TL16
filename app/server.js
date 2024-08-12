@@ -4,6 +4,8 @@ const sql = require("mssql");
 const dotenv = require('dotenv');
 const axios = require("axios");
 dotenv.config();
+
+const { parse } = require('json2csv');
 const cors = require("cors");
 
 //const timeSlider = require("routes")
@@ -79,7 +81,7 @@ const authentication = async (req, res, next) => {
   }
 };
 
-app.use(authentication);
+//app.use(authentication);
 
 app.get("/api", (req, res) => {
     res.json({ message: "Hello from server!" });
@@ -171,6 +173,247 @@ app.get('/api/data', (req, res) => {
   });
 });
 
+
+app.get('/api/get_slider_data', async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    console.log(`Received request for date range: ${startDate} to ${endDate}`);
+
+    const startTimestamp = new Date(startDate);
+    const endTimestamp = new Date(endDate);
+
+    const startTimestampUnix = Math.floor(startTimestamp.getTime() / 1000);
+    const endTimestampUnix = Math.floor(endTimestamp.getTime() / 1000);
+
+    console.log(`Converted to Unix timestamps: start = ${startTimestampUnix}, end = ${endTimestampUnix}`);
+
+    const tables = {
+      'dbo.NorthParkade_Occupancy': 'North',
+      'dbo.WestParkade_Occupancy': 'West',
+      'dbo.RoseGardenParkade_Occupancy': 'Rose',
+      'dbo.HealthSciencesParkade_Occupancy': 'Health Sciences',
+      'dbo.FraserParkade_Occupancy': 'Fraser',
+      'dbo.ThunderbirdParkade_Occupancy': 'Thunderbird',
+      'dbo.UnivWstBlvdParkade_Occupancy': 'University Lot Blvd'
+    };
+
+    const allParkadeData = [];
+    const parkadeNames = Object.values(tables);
+    const parkadeKeys = Object.keys(tables);
+
+    for (const [table, parkade] of Object.entries(tables)) {
+      const query = `
+        WITH HourlyData AS (
+            SELECT 
+                DATEADD(hour, DATEDIFF(hour, 0, DATEADD(SECOND, [TimestampUnix], '1970-01-01')), 0) AS HourStart,
+                MAX([TimestampUnix]) AS MaxTimestamp
+            FROM ${table}
+            WHERE [TimestampUnix] BETWEEN ${startTimestampUnix} AND ${endTimestampUnix}
+            GROUP BY DATEADD(hour, DATEDIFF(hour, 0, DATEADD(SECOND, [TimestampUnix], '1970-01-01')), 0)
+        )
+        SELECT 
+          t.[TimestampUnix],
+          t.[Vehicles],
+          '${parkade}' AS Parkade
+        FROM 
+            HourlyData h
+        JOIN 
+            ${table} t ON t.[TimestampUnix] = h.MaxTimestamp
+        ORDER BY 
+            h.HourStart ASC
+      `;
+
+      console.log(`Querying table: ${table} for parkade: ${parkade}`);
+
+      const parkadeData = await executeQuery(query);
+      allParkadeData.push(...parkadeData);
+
+      console.log(`Fetched ${parkadeData.length} records for ${parkade}`);
+    }
+
+    // Transform data for CSV
+    const combinedData = {};
+    parkadeNames.forEach(name => {
+      combinedData[name] = [];
+    });
+
+    allParkadeData.forEach(record => {
+      const { TimestampUnix, Vehicles, Parkade } = record;
+      if (!combinedData[TimestampUnix]) {
+        combinedData[TimestampUnix] = { TimestampUnix };
+        parkadeNames.forEach(name => {
+          combinedData[TimestampUnix][name] = 0; // Initialize all parkades with 0
+        });
+      }
+      combinedData[TimestampUnix][Parkade] = Vehicles;
+    });
+
+    // Convert combinedData into CSV format
+    const csvHeader = ['TimestampUnix', ...parkadeNames];
+    const csvRows = Object.values(combinedData).map(row => 
+      csvHeader.map(header => row[header] || 0)
+    );
+    
+    const csvString = [csvHeader, ...csvRows].map(row => row.join(',')).join('\n');
+
+    // Save the combined CSV
+    fs.writeFileSync('sliderData/combined_vehicle_data.csv', csvString);
+    console.log('Saved combined vehicle data to combined_vehicle_data.csv');
+
+    const weatherQuery = `
+      SELECT [dt], [weather_main], [weather_desc], [temp]
+      FROM [Parking].[dbo].[actual_weather]
+      WHERE [dt] BETWEEN ${startTimestampUnix} AND ${endTimestampUnix}
+    `;
+
+    const weatherData = await executeQuery(weatherQuery);
+
+    console.log(`Fetched ${weatherData.length} weather records`);
+
+    if (weatherData.length > 0) {
+      const weatherCsv = parse(weatherData);
+      fs.writeFileSync('sliderData/weather_data.csv', weatherCsv);
+      console.log('Saved weather data to weather_data.csv');
+    } else {
+      console.log('No weather data found for the specified date range.');
+    }
+
+    res.json({
+      message: 'Data successfully saved',
+      weatherData,
+      vehicleData: combinedData
+    });
+    console.log('Successfully sent response with weather and vehicle data');
+  } catch (error) {
+    console.error('Error fetching slider data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+app.get('/api/get_parkade_occupancies', async (req, res) => {
+  try {
+    const { timestamp } = req.query;
+
+    if (!timestamp) {
+      return res.status(400).json({ error: 'Timestamp query parameter is required.' });
+    }
+
+    const timestampUnix = Math.floor(new Date(timestamp).getTime() / 1000);
+
+    console.log(`Received request for timestamp: ${timestamp}, Unix timestamp: ${timestampUnix}`);
+
+    const tables = {
+      'dbo.NorthParkade_Occupancy': 'North',
+      'dbo.WestParkade_Occupancy': 'West',
+      'dbo.RoseGardenParkade_Occupancy': 'Rose',
+      'dbo.HealthSciencesParkade_Occupancy': 'Health Sciences',
+      'dbo.FraserParkade_Occupancy': 'Fraser',
+      'dbo.ThunderbirdParkade_Occupancy': 'Thunderbird',
+      'dbo.UnivWstBlvdParkade_Occupancy': 'University Lot Blvd'
+    };
+
+    const queries = Object.entries(tables).map(([table, parkade]) => {
+      return executeQuery(`
+        SELECT [Vehicles]
+        FROM ${table}
+        WHERE [TimestampUnix] = ${timestampUnix}
+      `).then(data => {
+        return {
+          parkade,
+          data: data.length > 0 ? data[0] : { Vehicles: 0 } // Default to 0 if no data found
+        };
+      });
+    });
+
+    const resultsArray = await Promise.all(queries);
+
+    const results = resultsArray.reduce((acc, { parkade, data }) => {
+      acc[parkade] = data;
+      return acc;
+    }, {});
+
+    console.log('Fetched data:', results);
+
+    res.json(results);
+    console.log('Successfully sent response with parkade occupancies');
+
+  } catch (error) {
+    console.error('Error fetching parkade occupancies:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+// Helper function to validate timestamp
+const isValidTimestamp = (timestamp) => {
+  return !isNaN(parseInt(timestamp, 10)) && parseInt(timestamp, 10) > 0;
+};
+
+// Convert timestamp to Unix timestamp (if needed)
+const toUnixTimestamp = (timestamp) => {
+  // Check if the timestamp is an ISO 8601 string
+  if (typeof timestamp === 'string' && timestamp.includes('T')) {
+    const date = new Date(timestamp);
+    
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+      throw new Error('Invalid ISO 8601 timestamp format');
+    }
+    
+    // Convert to Unix timestamp in seconds
+    return Math.floor(date.getTime() / 1000);
+  }
+
+  // Convert timestamp to a number
+  const parsedTimestamp = Number(timestamp);
+
+  // Check if the timestamp is a valid number
+  if (isNaN(parsedTimestamp)) {
+    throw new Error('Invalid timestamp format');
+  }
+
+  // Check if the timestamp is in milliseconds (length > 10 digits)
+  // Convert milliseconds to seconds if needed
+  return parsedTimestamp.toString().length > 10 
+    ? Math.floor(parsedTimestamp / 1000) 
+    : parsedTimestamp;
+};
+
+
+// Endpoint to get data from CSV based on timestamp
+app.get('api/weatherpoint', (req, res) => {
+  const timestamp = req.query.timestamp;
+
+  if (!isValidTimestamp(timestamp)) {
+    return res.status(400).json({ error: 'Invalid or missing timestamp query parameter.' });
+  }
+
+  const unixTimestamp = toUnixTimestamp(timestamp);
+  const csvFilePath = path.join(__dirname, 'weather_data.csv'); // Path to your CSV file
+  const results = [];
+
+  console.log(`Searching for timestamp: ${unixTimestamp}`);
+
+  fs.createReadStream(csvFilePath)
+    .pipe(csv())
+    .on('data', (data) => {
+      const csvTimestamp = parseInt(data.dt, 10);
+      if (csvTimestamp === unixTimestamp) {
+        results.push(data);
+      }
+    })
+    .on('end', () => {
+      if (results.length > 0) {
+        res.json(results);
+      } else {
+        res.status(404).json({ message: 'No data found for the given timestamp.' });
+      }
+    })
+    .on('error', (error) => {
+      console.error('Error reading CSV file:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+});
 
 
 //-------------------------------------------------------------------------------

@@ -293,7 +293,7 @@ def main():
     #start_date = pd.to_datetime("2024-08-01 21:00:00")
     end_date_init = start_date_init + timedelta(days=7) - timedelta(hours=1)
     
-    #last_timestamps = get_past_data.main(start_date_init, end_date_init)
+    last_timestamps = get_past_data.main(start_date_init, end_date_init)
     
     # Ensure y_test has a DateTimeIndex
     parkades = ["North", "West", "Rose", "Health Sciences", "Fraser", "Thunderbird", "University Lot Blvd"]
@@ -320,11 +320,11 @@ def main():
 
     print(parkades)
     for parkade in parkades:
-        #start_date = last_timestamps[parkade_number_map[parkade]] + timedelta(hours=1)
-        #end_date = last_timestamps[parkade_number_map[parkade]] + timedelta(days=7)
+        start_date = last_timestamps[parkade_number_map[parkade]] + timedelta(hours=1)
+        end_date = last_timestamps[parkade_number_map[parkade]] + timedelta(days=7)
 
-        start_date = start_date_init
-        end_date = end_date_init
+        #start_date = start_date_init
+        #end_date = end_date_init
 
         print("sd", start_date, end_date)
         df = create_date_range_df(start_date, end_date)
@@ -450,8 +450,10 @@ def main():
         
         return_df = predictions_df[start_date_init <= X_test_df_2.index].copy()
 
+
+
         output_filename = f'predictions/{parkade}.csv'
-        predictions_df.to_csv(output_filename)
+        return_df.to_csv(output_filename)
         print(f"CSV file saved as {output_filename}")
 
     return

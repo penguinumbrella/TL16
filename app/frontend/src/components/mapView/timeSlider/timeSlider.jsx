@@ -11,13 +11,20 @@ import 'react-clock/dist/Clock.css';
 
 
 const TimeSlider = ({ onSliderRelease, 
-  currentTime, handle_setCurrentTime, 
-  sliderValue, handle_setSliderValue,
-  startDateLeft, handle_setStartDateLeft,
-  startDateRight, handle_setStartDateRight }) => {
+  currentTime, setCurrentTime, 
+  sliderValue, setSliderValue,
+  startDateLeft, setStartDateLeft,
+  startDateRight, setStartDateRight, onSliderChange,
+  onDataUpdate}) => {
 
 
   const [boundedPosition, setBoundedPosition] = useState(5);
+
+
+  // useEffect(()=>{
+  //   if(currentTime)
+  //     console.log('currentTime ' + currentTime);
+  // },[currentTime]);
   
 
   const actualTime = new Date();
@@ -29,9 +36,10 @@ const TimeSlider = ({ onSliderRelease,
     const newTime = new Date(startDateLeft);
 
     newTime.setHours(newTime.getHours() + value); // Adjust hours based on slider value
-    handle_setCurrentTime(newTime);
-    handle_setSliderValue(value);
+    setCurrentTime(newTime);
+    setSliderValue(value);
 
+    onSliderChange(newTime);
   };
 
   const handleSliderRelease = (event) => {
@@ -39,13 +47,14 @@ const TimeSlider = ({ onSliderRelease,
     const newTime = new Date(startDateLeft);
 
     newTime.setHours(newTime.getHours() + value); // Adjust hours based on slider value
-    handle_setCurrentTime(newTime);
-    handle_setSliderValue(value);
+    setCurrentTime(newTime);
+    setSliderValue(value);
+
     onSliderRelease(newTime);
   };
 
   const getRange = (ev) => {
-    handle_setSliderValue(ev.target.value);
+    setSliderValue(ev.target.value);
   };
 
   const handleCombinedChange = (event) => {
@@ -107,6 +116,35 @@ const TimeSlider = ({ onSliderRelease,
     };
   };
 
+  const fetchData = async (startDate, endDate) => {
+    try {
+      const response = await fetch(`/api/get_slider_data?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log('Data fetched successfully:', data);
+      onDataUpdate(data); // Pass data to parent
+      // Handle the fetched data as needed
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  // useEffect to call fetchData when startDateLeft changes
+  useEffect(() => {
+    if (startDateLeft && startDateRight) {
+      fetchData(startDateLeft, startDateRight);
+    }
+  }, [startDateLeft]);
+
+  // useEffect to call fetchData when startDateRight changes
+  useEffect(() => {
+    if (startDateLeft && startDateRight) {
+      fetchData(startDateLeft, startDateRight);
+    }
+  }, [startDateRight]);
+
   return (
     <div className='timeSlider'>
       <div className='dateBoxContainer'>
@@ -115,7 +153,7 @@ const TimeSlider = ({ onSliderRelease,
             selected={startDateLeft} // Use selected prop instead of value
             onChange={(date) => {
               if (date < startDateRight) {
-                handle_setStartDateLeft(date);
+                setStartDateLeft(date);
               } else {
                 alert(`Must select a time lesser than ${startDateRight}`)
               }
@@ -133,7 +171,7 @@ const TimeSlider = ({ onSliderRelease,
             selected={startDateRight} // Use selected prop instead of value
             onChange={(date) => {
               if (date > startDateLeft) {
-                handle_setStartDateRight(date);
+                setStartDateRight(date);
               } else {
                 alert(`Must select a time greater than ${startDateLeft}`)
               }

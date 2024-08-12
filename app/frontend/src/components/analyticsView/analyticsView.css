@@ -15,15 +15,14 @@
   color: #000000
 }
 
-.close-button:hover {
+.close-button:hover {height: 90%;
   color: #f0f0f0;
 }
 
 .fullView{
-  width: 170vh;
-  height: 85%;
+  height: 95%;
   margin: 20px;
-  margin-left: 50px;
+  margin-left: 0px;
   padding: 20px;
   align-items: center;
 }
@@ -31,35 +30,97 @@
 .forecastView{
   position: absolute;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 170vh;
+  width: 100%;
+  left: 0vw;
+  right: 80vw;
   height: 85%;
   padding-left: 30px;
   background-color: rgba(7, 8, 17, 0.5);
   border-radius: 10px;
-  overflow: auto;
-  overflow-y:scroll;
 }
 
 /*------------------------------------------------------*/
-
-.analyticsView {
+.analyticsView, .longTermView {
   position: absolute;
   display: flex;
-  justify-content: space-between; /* Items will be spread out with maximum space between them */
+  justify-content: space-between;
   align-items: center;
-  width: 170vh;
-  height: 85%;
+  width: 80%;
+  height: 87%;
   padding-left: 10px;
   background-color: rgba(7, 8, 17, 0.5);
   border-radius: 10px;
   overflow: hidden;
-  overflow-y:scroll;
+  overflow-y: scroll;
+  font-size: 0.8rem;
+
+  /* Hide scrollbar initially */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
 }
+
+.analyticsView::-webkit-scrollbar,
+.longTermView::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent; /* Invisible initially */
+}
+
+.analyticsView::-webkit-scrollbar-thumb,
+.longTermView::-webkit-scrollbar-thumb {
+  background-color: transparent; /* Invisible initially */
+  border-radius: 10px;
+}
+
+/* Show scrollbar on hover */
+.analyticsView:hover::-webkit-scrollbar-thumb,
+.longTermView:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+}
+
+.analyticsView:hover::-webkit-scrollbar,
+.longTermView:hover::-webkit-scrollbar {
+  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent track */
+}
+
+/* Firefox specific - show scrollbar on hover */
+.analyticsView:hover,
+.longTermView:hover {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.3); /* Thumb and track */
+}
+
+.shortTermView {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Items will be spread out with maximum space between them */
+  align-items: center;
+  width: 80%;
+  height: 87%;
+  padding-left: 10px;
+  background-color: rgba(7, 8, 17, 0.5);
+  border-radius: 10px;
+  overflow: hidden;
+  overflow-y: scroll;
+  font-size: 0.8rem;
+
+  /* Initial scrollbar hidden */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+
+}
+
+.shortTermView::-webkit-scrollbar{
+  display: none; /* Safari and Chrome */
+}
+
+
+
 
 .analyticsView{
   color: white;
+  font-size: 0.8rem;
 }
 
 .queryItems {

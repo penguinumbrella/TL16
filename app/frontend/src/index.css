@@ -7,17 +7,23 @@ body {
   justify-content: center;
   height: 100vh;
   font-family: 'Outfit', sans-serif;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-image 0.3s, color 0.3s;
 }
 
 body.dark {
-  background-color: #282c34;
+  background-image: url("../public/bgdark.png");;
   color: white;
+  background-size: cover; /* Ensure the background image covers the entire container */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Prevent background image from repeating */
 }
 
 body.light {
-  background-color: #f0f0f0;
+  background-image: url("../public/bglight.png");;
   color: #0e0e0e;
+  background-size: cover; /* Ensure the background image covers the entire container */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Prevent background image from repeating */
 }
 
 .container-login {

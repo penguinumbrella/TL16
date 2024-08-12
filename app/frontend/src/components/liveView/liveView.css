@@ -7,12 +7,10 @@
   align-items: center;
   /* width: 170vh; */
   width: 85%;
-  height: 85%;
+  height: 95%;
   background-color: transparent;
   border-radius: 10px;
-  overflow: hidden;
   color: #9C9FBB;
-  overflow: visible; 
 }
 
 /* Add these classes for text color changes in the keys */
@@ -26,18 +24,16 @@
   width: 100%;
   justify-content: center;
   flex-grow: 1;
-  overflow-y: auto;
   margin-bottom: 10px; /* Adjusted margin */
-  overflow: visible; 
 }
 
 .chart-box {
-  width: calc(24% - 20px);
-  height: 35vh; /* Adjusted height */
+  width: calc(24% - 10px);
+  height: 40vh; /* Adjusted height */
   background-color: rgba(7, 8, 17, 0.5);
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
   box-sizing: border-box;
   border: 1px solid black;
   border-radius: 20px;
@@ -82,7 +78,6 @@
   display: flex;
   flex-direction: row;
   z-index: 1;
-  overflow: visible; 
 }
 
 .compliance-chart {
@@ -92,8 +87,7 @@
   position: absolute; /* Position it absolutely within chart-content */
   right: 0;
   bottom: 10%; /* Adjust as needed to achieve the desired vertical position */
-  z-index: 1;
-  overflow: visible; 
+  z-index: 2;
 }
 
 .last-update {
@@ -106,7 +100,7 @@
 .warning-tooltip {
   position: absolute;
   width: 200px;
-  bottom: -30px; /* Adjust the distance of the tooltip from the icon */
+  bottom: -180px; /* Adjust the distance of the tooltip from the icon */
   left: 50%; /* Position the tooltip horizontally centered */
   transform: translateX(-50%);
   background-color: rgba(0, 0, 0, 0.7);
@@ -120,10 +114,6 @@
 
 .warning-sign:hover .warning-tooltip {
   opacity: 1; /* Show the tooltip on hover */
-  /* z-index: 3; */
-  /* width: 200px;
-  bottom: -30px; */
-
 }
 
 .keys {
@@ -173,7 +163,8 @@
 
 /* Custom scrollbar styling */
 .charts::-webkit-scrollbar {
-  width: 12px;
+  height: 0;
+  width: 0px;
 }
 
 .charts::-webkit-scrollbar-track {
@@ -189,17 +180,3 @@
 .charts::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.7);
 }
-
-
-
-
-.chart-box .recharts-surface g rect{
-  fill: black;
-  
-}
-
-.recharts-surface{
-  overflow: visible !important;
-} 
-
-

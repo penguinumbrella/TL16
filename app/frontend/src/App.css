@@ -26,18 +26,17 @@
   display: flex;
   font-family: 'Outfit', sans-serif;
   font-weight: bold;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-image 0.3s, color 0.3s;
+  align-items: center; /* Centers vertically */
 }
 
 .container.dark {
-  background-color: #282c34;
-  color: white;
-  background-image: url("../public/bgdark.png");
+
+  background-image: url("./assets/bgdark.png");
 }
 
 .container.light {
-  background-color: #f0f0f0;
-  color: #050505;
+
   background-image: url("../public/bglight.png");
 }
 
