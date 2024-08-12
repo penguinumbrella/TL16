@@ -20,7 +20,7 @@ const formatCustomTooltipTime = (timeString) => {
 const CustomTooltip = ({ active, payload }) => {
     if (active && payload?.length) {
         return (
-            <div className="tooltip" style={{ backgroundColor: '#000000', opacity: 0.7, padding: '10px', whiteSpace: 'nowrap' }}>
+            <div className="tooltip" style={{ backgroundColor: '#000000', opacity: 0.7, padding: '10px', whiteSpace: 'nowrap', color: 'white'}}>
                 {payload.map((ele, index) => {
                     const formattedTime = formatCustomTooltipTime(ele.payload.name);
                     return (
