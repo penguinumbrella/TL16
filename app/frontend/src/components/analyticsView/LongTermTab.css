@@ -2,6 +2,7 @@
   margin: 0;
 }
 
+
 .intro-section {
   width: 100%;
   max-width: 800px;
@@ -9,11 +10,12 @@
 }
 
 .intro-section h2 {
-  font-size: 2em;
+  padding-top: 20px;
   margin-bottom: 10px;
 }
 
 .intro-section p {
+  
   font-size: 1.2em;
   margin-bottom: 20px;
 }
@@ -42,8 +44,46 @@
 .timeframe-longterm{
   display: flex;
   flex-direction: row;
+  margin-bottom: 20px;
+  
 }
 
 .timeframe-longterm > * {
   padding-right: 30px; /* Adjust the value as needed */
+}
+
+.results {
+  /* Hide scrollbar initially */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+.results::-webkit-scrollbar,
+.results::-webkit-scrollbar {
+  width: 8px;
+  background-color: transparent; /* Invisible initially */
+}
+
+.results::-webkit-scrollbar-thumb,
+.results::-webkit-scrollbar-thumb {
+  background-color: transparent; /* Invisible initially */
+  border-radius: 10px;
+}
+
+/* Show scrollbar on hover */
+.results:hover::-webkit-scrollbar-thumb,
+.results:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+}
+
+.results:hover::-webkit-scrollbar,
+.results:hover::-webkit-scrollbar {
+  background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent track */
+}
+
+/* Firefox specific - show scrollbar on hover */
+.results:hover,
+.results:hover {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.3); /* Thumb and track */
 }

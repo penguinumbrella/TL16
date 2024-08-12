@@ -169,9 +169,11 @@ const LongTermTab = ({ renderParkadeSelection }) => {
   return (
     <div className="longTermView">
       <div className="lhs">
-      <h4>TIME FRAME</h4>
-      <div className="timeframe-longterm">
-        <Typography style={{ color: '#9C9FBB'}}>From</Typography>
+      <h3>TIME FRAME</h3>
+
+      <div className="timeframe" style={{ display: 'flex', alignItems: 'center', paddingBottom:`50px`}}>
+          <div className='timeframe-from' style={{paddingRight: `50px`}}>
+          <Typography style={{ color: '#9C9FBB' }}>From</Typography>
         <DateTimePicker
           onChange={(date) => {
             if (date) {
@@ -184,8 +186,10 @@ const LongTermTab = ({ renderParkadeSelection }) => {
           minDate={new Date()}
           maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
         />
-        <Typography style={{ color: '#9C9FBB' }}>To</Typography>
-        <DateTimePicker
+        </div>
+        <div className='timeframe-to'>
+          <Typography style={{ color: '#9C9FBB' }}>To</Typography>
+          <DateTimePicker
           onChange={(date) => {
             if (date > startTime) {
               if (date - startTime > THREE_WEEKS_MS) {
@@ -202,6 +206,7 @@ const LongTermTab = ({ renderParkadeSelection }) => {
           minDate={new Date()}
           maxDate={new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
         />
+      </div>
       </div>
 
       <div className='forecast-parkade-options-div'>

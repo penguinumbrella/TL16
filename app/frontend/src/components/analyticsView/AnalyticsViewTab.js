@@ -448,8 +448,8 @@ const AnalyticsViewTab = ({renderParkadeSelection, menuItems, renderZoneSelectio
           </div>
           <div className='analytics-options-div'>
             <h4>TIME FRAME</h4>
-            <div className="timeframe" style={{ display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-              <div className='timeframe-from'>
+            <div className="timeframe" style={{ display: 'flex', alignItems: 'center'}}>
+              <div className='timeframe-from' style={{paddingRight: `100px`}}>
               <Typography style={{ color: '#9C9FBB' }}>From</Typography>
                 <DateTimePicker
                     onChange={(date) => {
