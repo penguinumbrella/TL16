@@ -3,3 +3,4 @@ node_modules
 app/.env
 *.pem
 __pycache__
+machine-learning/preprocessing/output_minute.csv
