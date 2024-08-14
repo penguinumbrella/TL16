@@ -222,7 +222,7 @@ const MapView = ({ map_key , activeView, theme}) => {
              />
              <label htmlFor="parkades" style={{ color: 'red' }}>Parkades</label>
            </div>
-           <div className="form-group">
+           {/* <div className="form-group">
              <input
                type="radio"
                id="loading_zones"
@@ -232,7 +232,7 @@ const MapView = ({ map_key , activeView, theme}) => {
                onChange={handleOptionChange}
              />
              <label htmlFor="loading_zones">Loading Zones</label>
-           </div>
+           </div> */}
            <div className="form-group">
              <input
                type="radio"
@@ -247,7 +247,7 @@ const MapView = ({ map_key , activeView, theme}) => {
          </form>
          <div className="labels">
            <div className="label-item">Parking</div>
-           <div className="label-item">Loading Zones</div>
+           {/* <div className="label-item">Loading Zones</div> */}
            <div className="label-item">Accessibility Stalls</div>
          </div>
        </div>

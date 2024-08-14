@@ -115,9 +115,9 @@ function App() {
       {/* Render appropriate view based on activeView state */}
       {/* It takes a moment for the map key to load that's why we need to check for it */}
       {(activeView === 'map'  && map_key !== '')? <MapView  theme={theme} map_key={map_key} activeView={activeView}/> : 
-       activeView === 'dashboard' ? <DashboardView onIconClick={handleIconClick} theme={theme}/> :
-       activeView === 'live' ? <LiveView theme={theme}/> :
-       <AnalyticsView theme={theme}/>}
+        activeView === 'analytics' ? <AnalyticsView theme={theme}/> : 
+        activeView === 'live' ? <LiveView theme={theme}/> :
+        <DashboardView onIconClick={handleIconClick} theme={theme}/>}
     </div> : 
     <div className='container-login'>
         <LoginView></LoginView>
