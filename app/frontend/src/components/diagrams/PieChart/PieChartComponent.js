@@ -1,14 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Legend, Label } from 'recharts';
+import {convertToPercentages} from './convertToPercentages'
 
 const PieChartComponent = ({ data, colors, width, height, 
   title='', innerRadius, outerRadius , percentageCenter, 
   startAngle, endAngle, theme, mapView, base_font_size, 
-  activePieChartPercentName }) => {
+  activePieChartPercentName, diagData}) => {
+  
+  let copliance_percentage = {
+    'Pay station' : 0,
+    'Honk' : 0,
+    'Violations' : 0,
+    'Permit' : 0
+  }
+
+  if(diagData){
+    let perc = []
+    let total = 0;
+    for(let i = 0; i <diagData.length ; i++){
+      total += diagData[i].value;
+      copliance_percentage[diagData[i].name] = diagData[i].value;
+    }
+
+    for(let i = 0; i <diagData.length ; i++){
+      perc.push(copliance_percentage[diagData[i].name] / total);
+    }
+    // console.log(convertToPercentages(perc))
+    perc = convertToPercentages(perc);
+    for(let i = 0; i < diagData.length ; i++){
+      copliance_percentage[diagData[i].name] = perc[i];
+    }
+    
+  }
+    
 
   function updateRectangle() {
       try{
-        console.log('updateRectangle ')
         // Select the text and rectangle elements
         const textElement = document.getElementById(`pieChartSectionPercentage_${activePieChartPercentName}`);
         const rectElement = document.getElementById(`boundingBoxBackground_${activePieChartPercentName}`);
@@ -62,7 +89,15 @@ const PieChartComponent = ({ data, colors, width, height,
     let toDisplayName;
     let toDisplayValue;
     toDisplayName = data[index].name;
-    toDisplayValue = `${Math.round(percent * 100) }%`;
+    
+
+    // console.log(`toDisplayValue = ${toDisplayValue}`);
+    // console.log(`toDisplayName = ${toDisplayName}`);
+
+    if(diagData)
+      toDisplayValue = `${copliance_percentage[toDisplayName]}%`;
+    else
+      toDisplayValue = `${Math.round(percent * 100) }%`;
 
     let percentFontSize = mapView ? '2em' : '1.5em' ;
 
@@ -142,7 +177,7 @@ const PieChartComponent = ({ data, colors, width, height,
           labelLine={false} 
           activeIndex={activeIndex}
           activeShape={renderActiveShape} 
-          onMouseEnter={(_, index) => setActiveIndex(index)}
+          onMouseEnter={(_ , index) => setActiveIndex(index)}
           onMouseLeave={() => setActiveIndex(-1)}
           innerRadius={innerRadius}
           outerRadius={outerRadius}
@@ -178,7 +213,6 @@ const PieChartComponent = ({ data, colors, width, height,
           {percentageCenter}
         </text>
       </PieChart>
-      
     </ResponsiveContainer>
   )
 }

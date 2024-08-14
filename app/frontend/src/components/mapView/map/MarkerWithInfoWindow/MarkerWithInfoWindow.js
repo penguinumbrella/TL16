@@ -172,7 +172,7 @@ const MarkerWithInfoWindow = ({
         if(iconImage == 'parkades'){
           
           // Get the current occupancy and max capacity of the current parkade
-          console.log('timestamp in marker: ' + timestamp);
+          // console.log('timestamp in marker: ' + timestamp);
           let query=`select TOP 1 * from ${TABLES[content]}_Occupancy WHERE TimestampUnix <= ${formatTimestampToUnix(timestamp)} ORDER BY TimestampUnix DESC`
           let data = (await axios.get(`/executeQuery?query=${query}`, {
             headers: {
@@ -182,7 +182,7 @@ const MarkerWithInfoWindow = ({
           let capacity = data[0]['Capacity'];
           let occupied = data[0]['Vehicles'];
           
-          console.log(timestamp, sliderData);
+          // console.log(timestamp, sliderData);
           //const occupied = getOccupancyData(timestamp, sliderData);
           //const capacity = CAPACITIES[content];
           let occupancyPercentage = ((occupied / capacity) * 100).toFixed(0);

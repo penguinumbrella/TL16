@@ -87,7 +87,7 @@
   position: absolute; /* Position it absolutely within chart-content */
   right: 0;
   bottom: 10%; /* Adjust as needed to achieve the desired vertical position */
-  z-index: 2;
+  z-index: 1;
 }
 
 .last-update {
@@ -179,4 +179,8 @@
 
 .charts::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.7);
+}
+
+.recharts-surface{
+  overflow: visible;
 }

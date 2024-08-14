@@ -8,7 +8,7 @@ import { getAuthToken } from '../../getAuthToken';
 
 const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransformer=()=>[], dataOverride=[], customToolTip, dataKeyY="value", capacity, theme, mapView, rows, columns, activePieChartPercentName, redx1, redx2, yellowx1, yellowx2, greenx1, greenx2, prediction_type}) => {
 
-  console.log("Data override: ", dataOverride);
+  // console.log("Data override: ", dataOverride);
 
   const [diagData, setDiagData] = useState([]);
   const [occupancyPercentage, setOccupancyPercentage] = useState('');
@@ -118,7 +118,8 @@ const Diagram = ({type, width, height, title='', query='', hasLegend, dataTransf
               endAngle={450}
               startColor="#888"
               theme={theme}
-              activePieChartPercentName={activePieChartPercentName}>
+              activePieChartPercentName={activePieChartPercentName}
+              diagData={diagData}>
             </PieChartComponent>
             </>
         break;
