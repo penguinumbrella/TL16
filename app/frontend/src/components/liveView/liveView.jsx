@@ -127,25 +127,25 @@ const LiveView = ({ theme }) => {
         <div className='key'>
           <span className='key-label'>Occupancy:</span>
           <div className='key-list'>
-            <div className='key-item'>
+            {/* <div className='key-item'>
               <span className='key-circle' style={{ backgroundColor: '#E697FF' }}></span>
               <span className='key-description'>undergraduate</span>
-            </div>
+            </div> */}
             <div className='key-item'>
               <span className='key-circle' style={{ backgroundColor: '#76A5FF' }}></span>
-              <span className='key-description'>graduate</span>
+              <span className='key-description'>Occupied</span>
             </div>
-            <div className='key-item'>
+            {/* <div className='key-item'>
               <span className='key-circle' style={{ backgroundColor: '#FFA5CB' }}></span>
               <span className='key-description'>faculty</span>
             </div>
             <div className='key-item'>
               <span className='key-circle' style={{ backgroundColor: '#82F0FF' }}></span>
               <span className='key-description'>transient</span>
-            </div>
+            </div> */}
             <div className='key-item'>
               <span className='key-circle' style={{ backgroundColor: '#323551' }}></span>
-              <span className='key-description'>available</span>
+              <span className='key-description'>Available</span>
             </div>
           </div>
         </div>
@@ -155,19 +155,19 @@ const LiveView = ({ theme }) => {
           <div className='key-list'>
             <div className='key-item'>
               <span className='key-circle' style={{ backgroundColor: '#FFD583' }}></span>
-              <span className='key-description'>pay station</span>
+              <span className='key-description'>Pay station</span>
             </div>
             <div className='key-item'>
               <span className='key-circle' style={{ backgroundColor: '#BAEFFF' }}></span>
-              <span className='key-description'>honk</span>
+              <span className='key-description'>Honk</span>
             </div>
             <div className='key-item'>
               <span className='key-circle' style={{ backgroundColor: '#00D583' }}></span>
-              <span className='key-description'>permit</span>
+              <span className='key-description'>Permit</span>
             </div>
             <div className='key-item'>
               <span className='key-circle' style={{ backgroundColor: '#F765A3' }}></span>
-              <span className='key-description'>violation</span>
+              <span className='key-description'>Violation</span>
             </div>
           </div>
         </div>
