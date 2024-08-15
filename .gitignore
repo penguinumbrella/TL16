@@ -4,7 +4,8 @@ app/.env
 *.pem
 __pycache__
 machine-learning/preprocessing/output_minute.csv
-app/LightGBM/shortterm/predictions/*
+app/LightGBM/shortterm/predictions/*.csv
+app/LightGBM/shortterm/predictions/df_*
 app/LightGBM/longterm/predictions/*
 app/LightGBM/shortterm/df_*
 app/LightGBM/shortterm/hourly_parkade_data.csv
