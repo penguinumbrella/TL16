@@ -45,16 +45,20 @@ const MapView = ({ map_key , activeView, theme}) => {
 
 
   // currentTime is saved in local storage as an array of strings 
-  let defaultCurrentTime =  localStorage.getItem('currentTime') || roundedDate; 
+  // let defaultCurrentTime =  localStorage.getItem('currentTime') || roundedDate; 
+  let defaultCurrentTime = roundedDate;
   if(typeof(defaultCurrentTime) !== typeof(new Date())){
     defaultCurrentTime = new Date(defaultCurrentTime)
   }
 
-  let defaultStartDateLeft = localStorage.getItem('startDateLeft') || prevDay;
-  let defaultStartDateRight = localStorage.getItem('startDateRight') || actualCurrentDate;
+  // let defaultStartDateLeft = localStorage.getItem('startDateLeft') || prevDay;
+  // let defaultStartDateRight = localStorage.getItem('startDateRight') || actualCurrentDate;
+  let defaultStartDateLeft =  prevDay;
+  let defaultStartDateRight = actualCurrentDate;
 
   // sliderValue is saved in local storage as string
-  const defaultSliderValue = Number(localStorage.getItem('sliderValue')) || Math.floor((defaultStartDateRight - defaultStartDateLeft)/(1000*60*60));
+  // const defaultSliderValue = Number(localStorage.getItem('sliderValue')) || Math.floor((defaultStartDateRight - defaultStartDateLeft)/(1000*60*60));
+  const defaultSliderValue = Math.floor((defaultStartDateRight - defaultStartDateLeft)/(1000*60*60));
 
   if(typeof(defaultStartDateLeft) !== typeof(new Date())){
     defaultStartDateLeft = new Date(defaultStartDateLeft)
@@ -71,7 +75,8 @@ const MapView = ({ map_key , activeView, theme}) => {
   const sliderEnd = new Date();
   sliderEnd.setMinutes(0, 0, 0);
 
-  let defaultSliderEndTime = localStorage.getItem('sliderEndTime') || sliderEnd;
+  // let defaultSliderEndTime = localStorage.getItem('sliderEndTime') || sliderEnd;
+  let defaultSliderEndTime =  sliderEnd;
 
   if(typeof(defaultSliderEndTime) !== typeof(new Date())){
     defaultSliderEndTime = new Date(defaultSliderEndTime)
