@@ -9,7 +9,8 @@ import get_past_data
 import os
 import datetime
 
-from pathlib import Path  # Import Path from pathlib
+from pathlib import Path  # Import Path from pathlib 
+
 
 # Determine the directory of the current script
 script_dir = Path(__file__).parent
