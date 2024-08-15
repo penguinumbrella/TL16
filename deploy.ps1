@@ -1,4 +1,4 @@
-y# Variables
+# Variables
 $clusterName = "TL16-UBCParking"
 $taskDefinition = "UBCParkingTask"
 $subnetId = "subnet-0b6c2c62288fee95b"
