@@ -4,19 +4,21 @@
   background-color: transparent;
 }
 .info-window-contents {
-  background-color: #010101e6; 
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.2);
   padding: 10px;
   padding-bottom: 10px;
   border-radius: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
   max-width: 235px; /* Example: Limit maximum width */
-  color: #9C9FBB;
+  color: rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   flex-direction: column;
   width: fit-content;
   height: fit-content;
+  backdrop-filter: blur(10px); /* Frosted glass effect */
   
 }
 
@@ -45,9 +47,12 @@ max-height: 200px;
 
 
 :root {
---info-window-contents_background-color: #000;
---info-window-contents_h2_color: #fff;
---info-window-diagrams_h3: #9c9fbb;
+--info-window-contents_background-color: rgba(255, 255, 255, 0.2);
+
+--info-window-contents_h2_color: rgba(255, 255, 255, 0.2);
+--info-window-diagrams_h3:rgba(255, 255, 255, 0.2);
+backdrop-filter: blur(10px); /* Frosted glass effect */
+overflow: hidden;
 }
 
 

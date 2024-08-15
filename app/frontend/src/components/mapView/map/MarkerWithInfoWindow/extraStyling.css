@@ -1,6 +1,6 @@
 :root {
-  --gm-style_gm-style-iw-c_background-color: #000;
-  --gm-style_gm-style-iw-tc__after_background: #fff;
+  --gm-style_gm-style-iw-c_background-color: rgba(255, 255, 255, 0.2);
+  --gm-style_gm-style-iw-tc__after_background: rgba(255, 255, 255, 0.2); 
 }
 
 
@@ -38,6 +38,8 @@
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
   flex-direction: column;
+  overflow: hidden;
+  backdrop-filter: blur(10px); /* Frosted glass effect */
 }
 
 

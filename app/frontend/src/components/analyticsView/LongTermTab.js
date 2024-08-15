@@ -129,10 +129,6 @@ const LongTermTab = ({ renderParkadeSelection }) => {
     } catch (error) {
       console.error('Error generating report:', error);
       alert('Failed to generate report');
-    } finally {
-      // Ensure loading state is set to false after operation completes
-      setIsLoading(false);
-      console.log("Setting loading to false");
     }
   };
 
@@ -181,6 +177,10 @@ useEffect(() => {
     })
     .catch(error => {
       console.error('Error in onClickLGBM:', error);
+    })
+    .finally(() => {
+      setIsLoading(false);
+      console.log("Setting loading to false");
     });
   };
 

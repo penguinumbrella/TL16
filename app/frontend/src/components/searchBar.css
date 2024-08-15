@@ -81,8 +81,8 @@
 
 .navicon-container .circle {
   position: absolute;
-  width: 2vw;
-  height: auto;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   top: 50%;
   left: 50%;

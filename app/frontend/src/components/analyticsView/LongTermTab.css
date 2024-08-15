@@ -48,6 +48,13 @@
   
 }
 
+.generate-container button[disabled] {
+  opacity: 0.6; /* Ensure it's visible */
+  color: #ffffff; /* White text to ensure contrast */
+  background-color: #3f51b5; /* Keep the primary color or choose another visible color */
+}
+
+
 .timeframe-longterm > * {
   padding-right: 30px; /* Adjust the value as needed */
 }
